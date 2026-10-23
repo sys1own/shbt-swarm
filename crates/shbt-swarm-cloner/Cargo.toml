@@ -1,0 +1,9 @@
+[package]
+name = "shbt-swarm-cloner"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+shbt-swarm-core = { path = "../shbt-swarm-core" }
+shbt-swarm-mmio = { path = "../shbt-swarm-mmio" }

@@ -1,0 +1,21 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/shbt-swarm-core",
+    "crates/shbt-swarm-mmio",
+    "crates/shbt-swarm-cloner",
+    "crates/shbt-swarm-bio",
+    "crates/shbt-swarm-ai",
+    "crates/shbt-swarm-shield",
+    "crates/shbt-swarm-foundry",
+    "crates/shbt-swarm-architect",
+    "crates/shbt-swarm-mar312x",
+    "crates/shbt-swarm-sim",
+    "crates/shbt-swarm-hil",
+]
+
+[workspace.package]
+version = "0.4.312"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/sys1own/shbt-swarm"

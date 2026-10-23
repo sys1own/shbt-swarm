@@ -1,0 +1,9 @@
+target/
+docs/*.aux
+docs/*.log
+docs/*.out
+docs/*.toc
+kernel/*.o
+kernel/*.a
+kernel/src/*.o
+

@@ -1,0 +1,9 @@
+[package]
+name = "shbt-swarm-foundry"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Phase 3 Universal Matter Folding Superoperator (R_univ^SWARM), Dynamic Sugawara Framing Compensator, and 230-Space-Group Kohn-Sham Lattice Projector"
+
+[dependencies]
+shbt-swarm-core = { path = "../shbt-swarm-core" }

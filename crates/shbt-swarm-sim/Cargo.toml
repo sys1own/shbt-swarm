@@ -1,0 +1,17 @@
+[package]
+name = "shbt-swarm-sim"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Multiphysics Digital Twin for SHBT-SWARM: 5th-Order Minimum-Jerk Eikonal Foliation, GST-225 Acoustic Impedance Matching, and Hyper-Temporal Enclave Evolution"
+
+[dependencies]
+shbt-swarm-core = { path = "../shbt-swarm-core" }
+shbt-swarm-mmio = { path = "../shbt-swarm-mmio" }
+shbt-swarm-cloner = { path = "../shbt-swarm-cloner" }
+shbt-swarm-bio = { path = "../shbt-swarm-bio" }
+shbt-swarm-ai = { path = "../shbt-swarm-ai" }
+shbt-swarm-shield = { path = "../shbt-swarm-shield" }
+shbt-swarm-foundry = { path = "../shbt-swarm-foundry" }
+shbt-swarm-architect = { path = "../shbt-swarm-architect" }
+shbt-swarm-mar312x = { path = "../shbt-swarm-mar312x" }

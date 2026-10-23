@@ -1,0 +1,26 @@
+[package]
+name = "shbt-swarm-hil"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Hardware-in-the-Loop (HIL) & 104-Gate Formal Verification Harness for SHBT-SWARM"
+
+[[bin]]
+name = "swarm-audit"
+path = "src/bin/swarm_audit.rs"
+
+[[test]]
+name = "workspace_integration"
+path = "../../tests/workspace_integration.rs"
+
+[dependencies]
+shbt-swarm-core = { path = "../shbt-swarm-core" }
+shbt-swarm-mmio = { path = "../shbt-swarm-mmio" }
+shbt-swarm-cloner = { path = "../shbt-swarm-cloner" }
+shbt-swarm-bio = { path = "../shbt-swarm-bio" }
+shbt-swarm-ai = { path = "../shbt-swarm-ai" }
+shbt-swarm-shield = { path = "../shbt-swarm-shield" }
+shbt-swarm-foundry = { path = "../shbt-swarm-foundry" }
+shbt-swarm-architect = { path = "../shbt-swarm-architect" }
+shbt-swarm-mar312x = { path = "../shbt-swarm-mar312x" }
+shbt-swarm-sim = { path = "../shbt-swarm-sim" }

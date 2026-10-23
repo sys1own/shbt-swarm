@@ -1,0 +1,10 @@
+[package]
+name = "shbt-swarm-architect"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Phase 3 Zero-Compute Simulation-to-Reality Isomorphism Bridge, MERA-DAG Planetary Tile Instancer, and 5-Tier Turnkey Civilization Ledger"
+
+[dependencies]
+shbt-swarm-core = { path = "../shbt-swarm-core" }
+shbt-swarm-foundry = { path = "../shbt-swarm-foundry" }

@@ -1,0 +1,9 @@
+[package]
+name = "shbt-swarm-mar312x"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Phase 4 Exotic-Material Autopoietic Mass-Annihilation Reactor (SHBT-MAR-312X) Control, 4D Weyl-PTC DEC-X, and Direct Boundary-Conformal Synthesis Bus"
+
+[dependencies]
+shbt-swarm-core = { path = "../shbt-swarm-core" }
