@@ -8,21 +8,22 @@
 [![Rust Workspace](https://img.shields.io/badge/Rust%20Workspace-11%20Crates%20(%23!%5Bno__std%5D)-orange)](#)
 
 ##### Quick Navigation
-- 1. System Highlights at a Glance (104/104 Gates PASS, 20/20 Z3 Theorems UNSAT)
-- 2. Formal SHBT No-Cloning Theorems vs. Constructive Von Neumann Quine Replication
-- 3. Universal Multi-Species Matter & Biogenic Cloner (R_clone^SWARM) & Daughter Spacecraft Ledger
-- 4. Holographic Symplectic-Topological Equilibrium Network (SHBT-STEN)
-- 5. Collective Sp(2g, Z) Swarm Consensus, Hyper-Temporal Enclaves & Safety Shield
-- 6. Universal Arbitrary Matter Folding (R_univ^SWARM) & 230-Space-Group Lattice Projector
-- 7. Zero-Compute Simulation-to-Reality Isomorphism & 5-Tier 202.55 Mt Civilization Stack
-- 8. 5th-Gen Exotic-Material Autopoietic Mass-Annihilation Reactor (SHBT-MAR-312X)
-- 9. Bare-Metal C11 Microkernel & 11-Crate Rust Workspace Topology
-- 10. Master 104-Gate Verification Matrix & 20 Formal Z3 SMT Proofs
-- 11. 10-Repository SHBT Ecosystem Crosswalk
-- Build, Verification & Audit Commands
+- [1. System Highlights at a Glance](#section-1)
+- [2. Formal SHBT No-Cloning Theorems vs. Constructive Von Neumann Quine Replication](#section-2)
+- [3. Universal Multi-Species Matter & Biogenic Cloner (R_clone^SWARM) & Daughter Spacecraft Ledger](#section-3)
+- [4. Holographic Symplectic-Topological Equilibrium Network (SHBT-STEN)](#section-4)
+- [5. Collective Sp(2g, Z) Swarm Consensus, Hyper-Temporal Enclaves & Safety Shield](#section-5)
+- [6. Universal Arbitrary Matter Folding (R_univ^SWARM) & 230-Space-Group Lattice Projector](#section-6)
+- [7. Zero-Compute Simulation-to-Reality Isomorphism & 5-Tier 202.55 Mt Civilization Stack](#section-7)
+- [8. 5th-Gen Exotic-Material Autopoietic Mass-Annihilation Reactor (SHBT-MAR-312X)](#section-8)
+- [9. Bare-Metal C11 Microkernel & 11-Crate Rust Workspace Topology](#section-9)
+- [10. Master 104-Gate Verification Matrix & 20 Formal Z3 SMT Proofs](#section-10)
+- [11. 10-Repository SHBT Ecosystem Crosswalk](#section-11)
+- [Build, Verification & Audit Commands](#commands)
 
 ---
 
+<a id="section-1"></a>
 ## 1. System Highlights at a Glance (104/104 Gates PASS, 20/20 Z3 Theorems UNSAT)
 
 `sys1own/shbt-swarm` represents the comprehensive flight, cognitive conditioning, planetary architecture, and exawatt-class mass-annihilation power platform within Static Holographic Boundary Theory (SHBT). The platform unites four developmental phases into a single binary-compatible C11 microkernel (`include/shbt_swarm_mmio.h`, 128 bytes at `0x70000000`, 135,168-byte 64-bank `UnifiedStinespringHyperFrame` at `0x70020000`), eleven `#![no_std]` and multiphysics Rust crates, twenty formal Z3 SMT proofs (`20/20 UNSAT`), and 104 Hardware-in-the-Loop verification gates (`104/104 PASS`):
@@ -38,6 +39,7 @@
 
 ---
 
+<a id="section-2"></a>
 ## 2. Formal SHBT No-Cloning Theorems vs. Constructive Von Neumann Quine Replication (Pathways A, B, C)
 
 Static Holographic Boundary Theory establishes rigorous limits preventing the replication of unknown quantum states while enabling constructive quine duplication of compiled macroscopic payloads:
@@ -59,6 +61,7 @@ When replicating compiled computational basis states (`|<psi_1|psi_2>| in {0, 1}
 
 ---
 
+<a id="section-3"></a>
 ## 3. Universal Multi-Species Matter & Biogenic Cloner (`R_clone^SWARM`) & Daughter Spacecraft Ledger (`7,200.00 kg` `MAR-312C` & `5,892.30 kg` `MAR-312X`)
 
 ### 3.1 346-Slot Dynkin Weight Partition
@@ -95,6 +98,7 @@ All conversions maintain strict `Delta B == 0`, `Delta(B - L) == 0`, `Delta Q_EM
 
 ---
 
+<a id="section-4"></a>
 ## 4. Holographic Symplectic-Topological Equilibrium Network (`SHBT-STEN`): 101-Layer TTN-MERA, `54.432 ps` PT-GoI Inference & Zero-Heat Tomita–Takesaki Learning
 
 ### 4.1 Multi-Scale World Modeling via 101-Layer TTN-MERA
@@ -117,6 +121,7 @@ Erasure entropy is shunted into the dark Stinespring ledger via Heegaard-Floer s
 
 ---
 
+<a id="section-5"></a>
 ## 5. Collective `Sp(2g, Z)` Swarm Consensus, Blueshifted Hyper-Temporal Enclaves (`α ∈ [10¹, 10⁴]`) & Proof-Carrying CBF/CLF Xenobiological Triage (`Class M0, X0, X1, X2`)
 
 ### 5.1 Higher-Genus Symplectic Hive Consensus (Theorem 3.1, THM-AI-03)
@@ -139,6 +144,7 @@ Inside localized SGLT metric warp envelopes, proper time is blueshifted by facto
 
 ---
 
+<a id="section-6"></a>
 ## 6. Universal Arbitrary Matter Folding (`R_univ^SWARM`), Dynamic Sugawara Framing Compensator & 230-Space-Group Kohn–Sham Lattice Projector
 
 ### 6.1 Spatially Continuous Dynkin Weight Routing
@@ -160,6 +166,7 @@ Synthesized atoms are anchored into arbitrary crystalline or amorphous structure
 
 ---
 
+<a id="section-7"></a>
 ## 7. Zero-Compute Simulation-to-Reality Isomorphism (`ΔC_post-sim ≡ 0`), MERA-DAG Planetary Scaling (`10⁴⁵` Nucleons) & 5-Tier `202.55 Mt` Turnkey Human Civilization Stack
 
 ### 7.1 Zero-Compute Simulation-to-Reality Isomorphism (Theorem 3.1, THM-UNIV-02)
@@ -186,6 +193,7 @@ A standard 1-million-person turnkey settlement node comprises 202.55 Mt (1.2198e
 
 ---
 
+<a id="section-8"></a>
 ## 8. 5th-Gen Exotic-Material Autopoietic Mass-Annihilation Reactor (SHBT-MAR-312X): 950.00 kg Nacelle, 99.20% SHBT-DEC-X, 48.0 T Superhydride Coils, 25.00 EW Tier 4 Forge & 99.85% Direct Boundary Bus
 
 ![SHBT-MAR-312C vs SHBT-MAR-312X Reactor Architecture Comparison](docs/reactor-comparison.jpg)
@@ -230,6 +238,7 @@ The Direct Boundary Bus couples mass-annihilation energy directly into the bound
 
 ---
 
+<a id="section-9"></a>
 ## 9. Bare-Metal C11 Microkernel (`SHBT-MMIO-SWARM` v4 @ `0x70000000`) & 11-Crate Rust Workspace Topology
 
 ### 9.1 Memory Map & Register Architecture
@@ -286,6 +295,7 @@ graph TD
 
 ---
 
+<a id="section-10"></a>
 ## 10. Master 104-Gate Verification Matrix & 20 Formal Z3 SMT Proofs
 
 ### 10.1 104-Gate Verification Gate Summary (`104/104 PASS`)
@@ -327,6 +337,7 @@ All 20 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 
 ---
 
+<a id="section-11"></a>
 ## 11. 10-Repository SHBT Ecosystem Crosswalk
 
 `sys1own/shbt-swarm` operates as the apex synthesis and operational flight node connecting the complete SHBT multi-repository infrastructure:
@@ -346,6 +357,7 @@ All 20 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 
 ---
 
+<a id="commands"></a>
 ## Build, Verification & Audit Commands
 
 ### 1. Build and Test Freestanding C11 Kernel
