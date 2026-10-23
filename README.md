@@ -234,7 +234,7 @@ Under Tier 4 Planetary Forge power (`25.00 EW` gross, `24.80 EW` net electric), 
 The Direct Boundary Bus couples mass-annihilation energy directly into the boundary CFT operator algebra:
 - **Sub-15 ms Daughter Spacecraft Replication:** Transmutes a 5,892.30 kg MAR-312X daughter ship in `13.42 ms` (or a 7,200.00 kg legacy ship in `16.40 ms`).
 - **Rapid Planetary Synthesis:** A 10,000-ship swarm synthesizes an entire 202.55 Mt human settlement in `46.12 s` (from mineral regolith) or `12.22 s` (with Class X2 biomass assimilation).
-- **41-Core Jump-Cruiser Andromeda Transit:** Expanding single-frame fuel magazine capacity from 38 to 41 cores (`16,406.59 kg <= 16,600.00 kg`) enables continuous cruise at `2,482,950c`, completing the 2.537-million-light-year transit to the Andromeda Galaxy (M31) in `8.957 hours`.
+- **41-Core Jump-Cruiser Andromeda Transit:** Expanding single-frame fuel magazine capacity from 38 to 41 cores (16,406.59 kg <= 16,600.00 kg) and engaging Tier 4 Hyper-Impulse (2,482,950c) reduces the 2.537-million-light-year transit to the Andromeda Galaxy (M31) from 10.33 days (248.1 hours at 89,618c on MAR-312C) to just 8.957 hours (537.4 minutes on MAR-312X) -- a 27.7x operational speedup (-96.39% transit time).
 
 ---
 
