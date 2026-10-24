@@ -196,11 +196,11 @@ A standard 1-million-person turnkey settlement node comprises 202.55 Mt (1.2198e
 <a id="section-8"></a>
 ## 8. 5th-Gen Exotic-Material Autopoietic Mass-Annihilation Reactor (SHBT-MAR-312X): 950.00 kg Nacelle, 99.20% SHBT-DEC-X, 48.0 T Superhydride Coils, 25.00 EW Tier 4 Forge & 99.85% Direct Boundary Bus
 
-![SHBT-MAR-312C vs SHBT-MAR-312X Reactor Architecture Comparison](docs/reactor-comparison.jpg)
+![SHBT-MAR-312X Exotic-Material Reactor Nacelle Architecture](docs/reactor-comparison.jpg)
 
-### 8.1 Reactor Architecture Comparison & Subsystem Cutaway Walkthrough
+### 8.1 SHBT-MAR-312X Reactor Nacelle Architecture & Subsystem Cutaway Walkthrough
 
-The figure above illustrates the evolutionary progression across three reactor generations: the first-generation baseline (SHBT-MAR-312, 4,096.99 kg, 1.3114 m³), the second-generation compacted nacelle (SHBT-MAR-312C, 2,257.70 kg, 0.8589 m³), and the fifth-generation exotic-material autopoietic reactor (SHBT-MAR-312X, 950.00 kg, 0.3500 m³). Phase 3 universal arbitrary matter folding and Kohn-Sham topological tethering yield a massive -57.92% dry mass reduction (-1,307.70 kg) and -59.25% volume reduction (-0.5089 m³). The physical rationale and subsystem breakdown across all eight labeled cutaways comprise:
+The cutaway diagram above illustrates the fifth-generation exotic-material autopoietic mass-annihilation reactor nacelle (`SHBT-MAR-312X`, total dry mass 950.00 kg, displacement envelope 0.3500 m3³). Designed through Phase 3 universal arbitrary matter folding and Kohn-Sham topological tethering, the MAR-312X nacelle achieves a -57.92% mass reduction (-1,307.70 kg) and -59.25% volume compaction (-0.5089 m3³) compared to the second-generation MAR-312C nacelle (2,257.70 kg, 0.8589 m3³), and an overall -76.81% mass reduction relative to the first-generation baseline (4,096.99 kg, 1.3114 m3³). The physical rationale and operational role of each labeled subsystem cutaway comprise:
 
 1. **Annular Catalytic Seed Die (12.50 kg, -66.84% vs. 37.70 kg):** Replaces sintered 7:6 HfB₂–¹²C with an atomically continuous hexagonal Lonsdaleite / cubic ¹²C and c-¹¹B¹⁵N superlattice. Clamped by Chern-Simons Wyckoff tethers (k_tether = 5.1295e10 N/m, |delta x| <= 10 fm), opening a complete 3D photonic/phononic stopband at omega_spont that suppresses spontaneous isomer de-excitation (rho_DOS = 0 => F_P = 0 => t_1/2^eff -> inf, 0.000 W quiescent boil-off) while delivering stimulated optical trigger gain G_isomer = 85.40 > 61.15, Mossbauer recoilless fraction f_M = 0.9942, [001] Borrmann transmission eps_B = 0.9995 (tau_B = 1,542 > 1,500), and Frenkel shear limit sigma_allow = 4,800.00 MPa (4.80 GPa).
 2. **Solid-State 4D Weyl-Polariton & PTC Direct Energy Converter (SHBT-DEC-X, 260.00 kg, -63.91% vs. 720.40 kg):** Replaces the mechanical 5-stage electrostatic W/Ta/Be/Mo louver duct with a monolithic 5-zone solid-state topological converter. Utilizes 4D synthetic-lattice second-Chern Weyl semimetals (TaAs/NbP, C_2 = +1 != 0, backscatter C_bc == 0) and Photonic Time-Crystal (PTC) k-gap parametric deceleration of relativistic charged pions and muons along vacuum-like Borrmann channels with Kohn-Sham screening (E_KS = 352.48 eV), eliminating bremsstrahlung (P_Brem == 0 W) and physical foil sputtering to deliver eta_DEC-X = 99.200% (reducing uncollected converter loss by 13.1x to 0.800%).
@@ -221,7 +221,7 @@ The figure above illustrates the evolutionary progression across three reactor g
 | **Fuel Injector System** | 215.00 kg | 165.20 kg | 95.00 kg | -42.49% (-70.20 kg) | CsV3Sb5 Kagome levitation, contactless dark-braid feed |
 | **Crowbar Safety System** | 68.00 kg | 55.00 kg | 17.50 kg | -68.18% (-37.50 kg) | PT-symmetric Weyl-exciton switch, t_trip = 1.701 ps |
 | **SMES Recovery Ring** | 168.99 kg | 125.00 kg | 45.00 kg | -64.00% (-80.00 kg) | Superhydride inductive loop, 99.88% energy recovery |
-| **Total Reactor Nacelle** | **4,096.99 kg** | **2,257.70 kg** | **950.00 kg** | **-57.92% (-1,307.70 kg)** | **Envelope: 0.3500 m³ (-59.25% vs 0.8589 m³)** |
+| **Total Reactor Nacelle** | **4,096.99 kg** | **2,257.70 kg** | **950.00 kg** | **-57.92% (-1,307.70 kg)** | **Envelope: 0.3500 m3³ (-59.25% vs 0.8589 m3³)** |
 
 ### 8.2 Thermal Chain and Tier 4 Planetary Forge (25.00 EW)
 
