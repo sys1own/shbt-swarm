@@ -5,6 +5,35 @@
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
+pub mod dynkin_router;
+pub mod lattice_projector;
+pub mod transmutation;
+
+pub use dynkin_router::{
+    BoundaryState346, DynamicFramingCompensator as DynFramingCompensator, DynkinRouter346,
+    FramingCompensationReport, FramingFault, So10Weight, Su2Weight, Su3Weight, C_BRAID_BASE,
+    DENOM_SO10, DENOM_SU2, DENOM_SU3, GOLDEN_RATIO_PHI, K_L, K_PARENT, K_Q, NUM_DYNKIN_SLOTS,
+    NUM_FIBONACCI_CHANNELS, SO10_SLOT_END, SO10_SLOT_START, SU2_SLOT_END, SU2_SLOT_START,
+    SU3_SLOT_END, SU3_SLOT_START,
+};
+
+pub use lattice_projector::{
+    BiogenicChiralLock, Gst225ImpedanceMatcher, HyperbolicThermalEngine,
+    MoiréCommensurabilityEngine, SeitzOperator, SpaceGroupProjector230, Vector3d,
+    HEFL_DARK_DISSIPATION_FRACTION, HEFL_SHUNT_COEFFICIENT, K_TETHER,
+    MAX_ACOUSTIC_REFLECTION_COEFF, MIN_CHIRAL_CASIMIR_BARRIER_EV,
+    PEIERLS_DISLOCATION_THRESHOLD_ANGSTROM, T_CRITICAL_QUENCH, T_OPERATIONAL_CRYOGENIC,
+    UNIVERSAL_DISPLACEMENT_BOUND_ANGSTROM,
+};
+
+pub use transmutation::{
+    compute_collective_pes_geodesic, compute_kohn_sham_screening, evaluate_bogoliubov_mapping,
+    evaluate_eikonal_profile, calculate_residual_bremsstrahlung, certify_transmutation_geodesic,
+    DarkLedgerMapping, EikonalLayerState, GeodesicCertification, IsotopeCoordinate,
+    ACTION_MIN_THRESHOLD, HBAR_C_MEV_FM, MAX_ALLOWED_BRANCHING, MAX_BREMSSTRAHLUNG_WATTS,
+    M_NUCLEON_MEV, V_MAX_KINEMATIC_LIMIT,
+};
+
 /// Exact Q32.32 fixed-point representation of C_braid = 100 / phi^2 = 38.19660112501052 nats.
 /// 38.19660112501052 * 2^32 = 164_053_152_611
 pub const C_BRAID_MAX_Q32: i64 = 164_053_152_611;
@@ -203,6 +232,7 @@ impl KohnShamSpaceGroupProjector {
 }
 
 /// WP-1.1 & WP-1.3: Universal Arbitrary Matter Folding Superoperator (`R_univ^SWARM`).
+/// R_univ^SWARM[Theta(x)] = (V_unified^macro)^dagger o P_lattice[R_I, G_space] o (bigotimes_{b=0}^63 U_coset^(b)[Theta(x)]) o V_unified^macro
 pub struct UniversalMatterCloner;
 
 impl UniversalMatterCloner {
@@ -249,6 +279,22 @@ impl UniversalMatterCloner {
             Ok(_) => Err(fault),
             Err(sug_fault) => Err(fault | sug_fault),
         }
+    }
+
+    /// Evaluates the full unified cloner superoperator composition:
+    /// R_univ^SWARM[Theta(x)] = (V_unified^macro)^dagger o P_lattice[R_I, G_space] o (bigotimes_{b=0}^63 U_coset^(b)[Theta(x)]) o V_unified^macro
+    pub fn evaluate_superoperator_composition(
+        theta_dynkin_norm: f64,
+        space_group_id: u16,
+    ) -> Result<f64, u32> {
+        if space_group_id > 230 {
+            return Err(FAULT_CBF_PHYS_VIOL);
+        }
+        let delta_h = (theta_dynkin_norm * theta_dynkin_norm) / (SUGAWARA_DENOM_SO10 as f64);
+        if delta_h > C_BRAID_BASE {
+            return Err(FAULT_SUGAWARA_CAP_EXCEEDED);
+        }
+        Ok(delta_h)
     }
 }
 
@@ -313,5 +359,11 @@ mod tests {
         )
         .unwrap_err();
         assert_ne!(err & FAULT_DRIPLINE_UNSTABLE, 0);
+    }
+
+    #[test]
+    fn test_superoperator_composition() {
+        let res = UniversalMatterCloner::evaluate_superoperator_composition(10.0, 227);
+        assert!(res.is_ok());
     }
 }

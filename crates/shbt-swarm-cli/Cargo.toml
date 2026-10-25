@@ -1,0 +1,9 @@
+[package]
+name = "shbt-swarm-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Master CLI for sys1own/shbt-swarm verification and gate audits"
+
+[dependencies]
+shbt-swarm-hil = { path = "../shbt-swarm-hil" }

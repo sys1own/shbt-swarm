@@ -12,6 +12,7 @@ members = [
     "crates/shbt-swarm-mar312x",
     "crates/shbt-swarm-sim",
     "crates/shbt-swarm-hil",
+    "crates/shbt-swarm-cli",
 ]
 
 [workspace.package]

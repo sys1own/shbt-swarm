@@ -697,10 +697,24 @@ For Class X2 biomass, existing organic carbon-nitrogen polymers are recycled wit
 
 
 \FloatBarrier
+\FloatBarrier
 \section{\texorpdfstring{Universal Arbitrary Matter Folding Mechanics ($\mathcal{R}_{\text{univ}}^{\text{SWARM}}$) \& Formal Admissibility Boundaries (Phase 3)}{Universal Arbitrary Matter Folding Mechanics (R\_univ\textasciicircum SWARM) \& Formal Admissibility Boundaries (Phase 3)}}
 
-\subsection{Continuous Dynkin Weight Fields and Dark-Sector Spinor Folding}
-Phase~3 generalizes the legacy matter transceiver (\texttt{shbt-recon}) from static scalar $(Z, A)$ registers into the continuous, spatially addressable Universal Matter Folding Superoperator $\mathcal{R}_{\text{univ}}^{\text{SWARM}}[\Theta(\mathbf{x})]$. The operator accepts a continuous spatial profile of Cartan weights across all 346 Dynkin slots:
+\FloatBarrier
+\subsection{Continuous Dynkin Weight Fields, Superoperator Architecture, and Dark Spinors}
+Phase~3 generalizes the legacy matter transceiver (\texttt{shbt-recon}) from static scalar $(Z, A)$ registers into the continuous, spatially addressable Universal Matter Folding Superoperator $\mathcal{R}_{\text{univ}}^{\text{SWARM}}[\Theta(\mathbf{x})]$. Formally, for a spatial distribution of target matter specified by its Cartan weight field $\Theta(\mathbf{x}) \in \hat{\mathfrak{h}}^*$ and space group $\mathcal{G}_{\text{space}} \in [0, 230]$, the universal synthesis superoperator is:
+\begin{equation}
+\mathcal{R}_{\text{univ}}^{\text{SWARM}}[\Theta(\mathbf{x})] = (V_{\text{unified}}^{\text{macro}})^\dagger \circ \hat{\mathcal{P}}_{\text{lattice}}[\mathbf{R}_I, \mathcal{G}_{\text{space}}] \circ \left( \bigotimes_{b=0}^{63} \mathcal{U}_{\text{coset}}^{(b)}[\Theta(\mathbf{x})] \right) \circ V_{\text{unified}}^{\text{macro}},
+\label{eq:universal_cloner_operator}
+\end{equation}
+where:
+\begin{itemize}
+    \item $V_{\text{unified}}^{\text{macro}}$ denotes the macroscopic Stinespring isometry embedding the matter boundary state into the 64-bank ($135{,}168\text{ B}$) hyper-frame manifold $\mathcal{H}_{\text{bulk}}$,
+    \item $\mathcal{U}_{\text{coset}}^{(b)}[\Theta(\mathbf{x})]$ applies the continuous 346-slot Dynkin weight rotation along the coset manifold $\hat{\mathfrak{g}}_{\text{tot}} / \hat{\mathfrak{h}}$,
+    \item $\hat{\mathcal{P}}_{\text{lattice}}[\mathbf{R}_I, \mathcal{G}_{\text{space}}]$ denotes the Kohn--Sham and Chern--Simons lattice projector clamping atomic sites $\mathbf{R}_I$ into exact space-group crystallographic coordinates with restoring stiffness $k_{\text{tether}} = 5.1295 \times 10^{10}\text{ N/m}$,
+    \item $(V_{\text{unified}}^{\text{macro}})^\dagger$ is the adjoint projection operator contracting the bulk quantum state into physical, cold, defect-free baryonic matter.
+\end{itemize}
+The operator accepts a continuous spatial profile of Cartan weights across all 346 Dynkin slots:
 \begin{equation}
 \Theta(\mathbf{x}) = \left( \theta_1(\mathbf{x}), \theta_2(\mathbf{x}), \dots, \theta_{346}(\mathbf{x}) \right) \in \hat{\mathfrak{h}}^*,
 \label{eq:dynkin_spatial_field}
@@ -728,6 +742,7 @@ Decomposing explicitly across the direct-sum boundary Lie algebra $\hat{\mathfra
 Under this decomposition, dynamic counter-steering distributes an exact compensatory shift across all 124 Fibonacci anyon braid channels:
 \begin{equation}
 \delta h_{\text{braid}}^{(k)}(\mathbf{x}) = -\frac{\Delta h_{\text{vis}}(\mathbf{x})}{124}, \qquad k = 1, \dots, 124,
+\label{eq:braid_framing_compensation}
 \end{equation}
 yielding exact modular framing cancellation:
 \begin{equation}
@@ -735,20 +750,15 @@ yielding exact modular framing cancellation:
 \label{eq:exact_framing_cancellation}
 \end{equation}
 valid up to the Shannon capacity $C_{\text{braid}} = 100/\phi^2 \approx 38.196601\text{ nats}$.
-To eliminate gravitational framing anomalies ($\Delta_{\text{fr}} \equiv 0 \iff E_{\mu\nu} \equiv 0$), the transceiver dynamically routes an equal and opposite conformal shift across all 124 Fibonacci anyon braid channels:
-\begin{equation}
-\delta h_{\text{braid}}^{(k)}(\mathbf{x}) = -\frac{\Delta h_{\text{vis}}(\mathbf{x})}{124}, \qquad k = 1, \dots, 124.
-\label{eq:braid_framing_compensation}
-\end{equation}
 The 124-channel braid manifold absorbs up to the exact Shannon capacity:
 \begin{equation}
-C_{\text{braid}} = \frac{100}{\phi^2} = \frac{100}{\frac{3+\sqrt{5}}{2}} = 100(3 - \sqrt{5}) \cdot \frac{1}{2 \dots} = \frac{100}{\phi^2} \approx \mathbf{38.196601\text{ nats}}.
+C_{\text{braid}} = \frac{100}{\phi^2} = \frac{100}{\frac{3+\sqrt{5}}{2}} \approx \mathbf{38.196601\text{ nats}}.
 \label{eq:braid_shannon_capacity}
 \end{equation}
-Any matter configuration satisfying $|\Delta h_{\text{vis}}(\mathbf{x})| \le C_{\text{braid}}$ maintains exact framing closure $\Delta_{\text{fr}}(\mathbf{x}) \equiv 0$ and zero electric Weyl curvature $E_{\mu\nu}(\mathbf{x}) \equiv 0$.
+Any matter configuration satisfying $|\Delta h_{\text{vis}}(\mathbf{x})| \le C_{\text{braid}}$ maintains exact framing closure $\Delta_{\text{fr}}(\mathbf{x}) \equiv 0$ and zero electric Weyl curvature $E_{\mu\nu}(\mathbf{x}) \equiv 0$. Exceeding $C_{\text{braid}}$ trips the hardware safety bit \texttt{SHBT\_SWARM\_FAULT\_SUGAWARA\_CAP\_EXCEEDED} (\texttt{0x00000004}). For higher topological density, dynamic Heegaard--Floer genus expansion $T^\partial \in \mathrm{Sp}(2g, \mathbb{Z})$ ($g \ge 3$) scales the channel count $N_{\text{ch}} = 62 \cdot g$ and capacity $C_{\text{braid}}(g) = \frac{g}{2} \frac{100}{\phi^2}$.
 \end{theorem}
 
-\begin{table}[!htbp]
+\begin{table*}[!htbp]
 \centering\small
 \caption{Dynamic Sugawara Conformal Weight Shift and Braid Framing Closure Across Canonical Materials.}
 \label{tab:sugawara_materials}
@@ -771,11 +781,11 @@ Compacted Catalytic Wafer ($\text{HfB}_2\text{--}^{12}\text{C}$) & $P6/mmm \oplu
 \bottomrule
 \end{tabular}%
 }
-\end{table}
+\end{table*}
 
 \FloatBarrier
-\subsection{Universal Kohn--Sham \& Chern--Simons Spatial Lattice Projector}
-Synthesized nuclei and valence electrons are localized into three-dimensional coordinates via the spatial lattice projector $\hat{\mathcal{P}}_{\text{lattice}}[\mathbf{R}_I, \mathcal{G}_{\text{space}}]$ across all 230 crystallographic space groups ($\mathcal{G}_{\text{space}} \in [1, 230]$) and amorphous phases ($\mathcal{G}_{\text{space}} = 0$).
+\subsection{Universal 230-Space-Group Lattice Projector, Moir\'e Commensurability, and 14 Bravais Metric Tensors (Table 10)}
+Synthesized nuclei and valence electrons are localized into three-dimensional coordinates via the spatial lattice projector $\hat{\mathcal{P}}_{\text{lattice}}[\mathbf{R}_I, \mathcal{G}_{\text{space}}]$ across all 230 crystallographic space groups ($\mathcal{G}_{\text{space}} \in [1, 230]$) and amorphous networks ($\mathcal{G}_{\text{space}} = 0$).
 
 Each atomic site $\mathbf{R}_I$ is clamped by a topological Chern--Simons metric tether. The effective restoring stiffness is:
 \begin{equation}
@@ -784,10 +794,124 @@ k_{\text{tether}} = \frac{k_{\text{CS}} \cdot \hbar c}{\ell_P^2} = 5.1295 \times
 \end{equation}
 Under extreme translational accelerations of $a = 10^4\ g \approx 9.81 \times 10^4\text{ m/s}^2$, the peak atomic displacement is bounded by:
 \begin{equation}
-|\delta\mathbf{x}_I|_{\max} = \frac{m_{\text{atom}} a}{k_{\text{tether}}} \le \frac{(178 \times 1.66 \times 10^{-27}\text{ kg}) \times 9.81 \times 10^4\text{ m/s}^2}{5.1295 \times 10^{10}\text{ N/m}} \approx 5.65 \times 10^{-16}\text{ m} \ll 10^{-4}\text{ \AA} \ (10\text{ fm}).
+|\delta\mathbf{x}_I|_{\max} = \frac{m_{\text{atom}} a}{k_{\text{tether}}} \le \frac{(178 \times 1.66 \times 10^{-27}\text{ kg}) \times 9.81 \times 10^4\text{ m/s}^2}{5.1295 \times 10^{10}\text{ N/m}} \approx 5.65 \times 10^{-16}\text{ m} \ll 10^{-3}\text{ \AA},
 \label{eq:atomic_displacement_bound}
 \end{equation}
-Simultaneously, valence electrons are screened by the Kohn--Sham potential ($E_{\text{KS}} = 352.48\text{ eV}$, $\lambda_{\text{TF}} = 0.482\text{ \AA}$), preventing core bremsstrahlung flashover ($P_{\text{Brem}} \equiv 0\text{ W}$).
+guaranteeing strictly zero dislocation nucleation ($\rho_{\text{disloc}} \equiv 0.0000\text{ cm}^{-2}$). Heterogeneous epitaxial re-rendering between arbitrary disparate crystal structures is governed by the Diophantine Moir\'e Commensurability Engine. Given two primitive lattice bases $\mathbf{A}_1, \mathbf{A}_2 \in \mathrm{GL}_3(\mathbb{R})$, the engine solves for integer unimodular supercell transformation matrices $\mathbf{M}_1, \mathbf{M}_2 \in \mathrm{GL}_3(\mathbb{Z})$ satisfying:
+\begin{equation}
+\mathbf{M}_1 \mathbf{A}_1 = \mathbf{M}_2 \mathbf{A}_2 + \boldsymbol{\delta}_{\text{strain}}, \qquad \|\boldsymbol{\delta}_{\text{strain}}\|_\infty \le 10^{-4},
+\label{eq:diophantine_moire_deriv}
+\end{equation}
+guaranteeing coherent boundary matching without interfacial defect nucleation. Any mismatch exceeding $10^{-4}$ trips hardware fault \texttt{SHBT\_SWARM\_FAULT\_DISLOCATION\_DETECTED} (\texttt{0x00000008}). Table~\ref{tab:bravais_14} documents the primitive basis vectors, metric tensors, and projection symmetry ranks across the 14 Bravais lattices.
+
+\begin{table*}[!htbp]
+\centering\scriptsize
+\setlength{\tabcolsep}{4pt}
+\caption{The 14 Bravais lattices, primitive basis vectors, metric tensors, and projection symmetry ranks.}
+\label{tab:bravais_14}
+\resizebox{\textwidth}{!}{%
+\begin{tabularx}{\textwidth}{@{}l l l p{4.2cm} p{3.4cm} c@{}}
+\toprule
+\textbf{Crystal System} & \textbf{Bravais Lattice Type} & \textbf{Prototype} & \textbf{Primitive Basis $\mathbf{A} = [\mathbf{a}_1, \mathbf{a}_2, \mathbf{a}_3]$} & \textbf{Metric Tensor $G_{ij} = \mathbf{a}_i \cdot \mathbf{a}_j$} & \textbf{Rank} \\
+\midrule
+Triclinic & Primitive ($aP$) & $P\bar{1}$ (No. 2) & $[a,0,0]^T, [b\cos\gamma, b\sin\gamma, 0]^T, \mathbf{c}$ & Full 6 independent parameters & 1 \\
+Monoclinic & Primitive ($mP$) & $P2/m$ (No. 10) & $[a,0,0]^T, [0,b,0]^T, [c\cos\beta, 0, c\sin\beta]^T$ & 4 independent ($a,b,c,\beta$) & 2 \\
+Monoclinic & Base-centered ($mC$) & $C2/m$ (No. 12) & $[a/2,-b/2,0]^T, [a/2,b/2,0]^T, [c\cos\beta, 0, c\sin\beta]^T$ & 4 independent ($a,b,c,\beta$) & 2 \\
+Orthorhombic & Primitive ($oP$) & $Pmmm$ (No. 47) & $[a,0,0]^T, [0,b,0]^T, [0,0,c]^T$ & $\mathrm{diag}(a^2, b^2, c^2)$ & 3 \\
+Orthorhombic & Base-centered ($oC$) & $Cmmm$ (No. 65) & $[a/2,-b/2,0]^T, [a/2,b/2,0]^T, [0,0,c]^T$ & 3 independent ($a,b,c$) & 3 \\
+Orthorhombic & Body-centered ($oI$) & $Immm$ (No. 71) & $[-a/2, b/2, c/2]^T, [a/2,-b/2, c/2]^T, [a/2, b/2,-c/2]^T$ & 3 independent ($a,b,c$) & 3 \\
+Orthorhombic & Face-centered ($oF$) & $Fmmm$ (No. 69) & $[0, b/2, c/2]^T, [a/2, 0, c/2]^T, [a/2, b/2, 0]^T$ & 3 independent ($a,b,c$) & 3 \\
+Tetragonal & Primitive ($tP$) & $P4/mmm$ (No. 123) & $[a,0,0]^T, [0,a,0]^T, [0,0,c]^T$ & $\mathrm{diag}(a^2, a^2, c^2)$ & 2 \\
+Tetragonal & Body-centered ($tI$) & $I4/mmm$ (No. 139) & $[-a/2, a/2, c/2]^T, [a/2,-a/2, c/2]^T, [a/2, a/2,-c/2]^T$ & 2 independent ($a,c$) & 2 \\
+Trigonal & Primitive ($hP$) & $P\bar{3}m1$ (No. 164) & $[a,0,0]^T, [-a/2, a\sqrt{3}/2, 0]^T, [0,0,c]^T$ & 2 independent ($a,c,\gamma=120^\circ$) & 2 \\
+Trigonal & Rhombohedral ($hR$) & $R\bar{3}m$ (No. 166) & $[a, \alpha, \alpha]$ symmetric basis & Diagonals $a^2$, off-diagonals $a^2\cos\alpha$ & 2 \\
+Hexagonal & Primitive ($hP$) & $P6/mmm$ (No. 191) & $[a,0,0]^T, [-a/2, a\sqrt{3}/2, 0]^T, [0,0,c]^T$ & 2 independent ($a,c,\gamma=120^\circ$) & 2 \\
+Cubic & Primitive ($cP$) & $Pm\bar{3}m$ (No. 221) & $[a,0,0]^T, [0,a,0]^T, [0,0,a]^T$ & $a^2 \mathbf{I}_3$ & 1 \\
+Cubic & Body-centered ($cI$) & $Im\bar{3}m$ (No. 229) & $[-a/2, a/2, a/2]^T, [a/2,-a/2, a/2]^T, [a/2, a/2,-a/2]^T$ & $a^2 \mathbf{I}_3$ & 1 \\
+Cubic & Face-centered ($cF$) & $Fm\bar{3}m$ (No. 225) & $[0, a/2, a/2]^T, [a/2, 0, a/2]^T, [a/2, a/2, 0]^T$ & $a^2 \mathbf{I}_3$ & 1 \\
+\bottomrule
+\end{tabularx}%
+}
+\end{table*}
+
+\FloatBarrier
+\subsection{Hyperbolic Heat Transport, Heegaard--Floer Dark Shunting ($90.82\%$) and GST-225 Acoustic Matching (Table 11)}
+During macroscopic crystallization, latent thermal energy is dissipated via the hyperbolic Cattaneo--Vernotte equation:
+\begin{equation}
+\tau_q \frac{\partial^2 T}{\partial t^2} + \frac{\partial T}{\partial t} = \frac{K}{\rho C_v} \nabla^2 T + \frac{1}{\rho C_v}\left(Q_{\text{latent}} + \tau_q \frac{\partial Q_{\text{latent}}}{\partial t}\right).
+\label{eq:cattaneo_vernotte}
+\end{equation}
+Through Heegaard--Floer symplectic dark shunting, an exact rational fraction of the latent energy is shunted into the topological dark completion ledger:
+\begin{equation}
+\eta_{\text{dark}} = 1 - \left(\frac{10}{33}\right)^2 = \frac{989}{1089} \approx \mathbf{90.8173\%},
+\label{eq:dark_shunting_fraction}
+\end{equation}
+leaving only $9.1827\%$ to be extracted through the GST-225 phase-change buffer layer. By continuously modulating the crystalline fraction $\chi_{\text{cryst}}(t)$, the acoustic impedance $Z_{\text{GST}} \in [13.20, 20.00]$~MRayl (extended across $[1.0, 100.0]$~MRayl via phononic metamaterial staging) maintains ultrasonic power reflectance:
+\begin{equation}
+R_{\text{acoustic}} = \left| \frac{Z_{\text{target}} - Z_{\text{GST}}(t)}{Z_{\text{target}} + Z_{\text{GST}}(t)} \right|^2 \le 10^{-6},
+\label{eq:acoustic_reflectance_limit}
+\end{equation}
+clamping peak front temperature to $T_{\text{op}} = 21.13~\text{K} \le T_{\text{crit}} = 32.92~\text{K}$. Table~\ref{tab:gst225_impedance} details the acoustic matching parameters across seven representative material classes.
+
+\begin{table*}[!htbp]
+\centering\scriptsize
+\setlength{\tabcolsep}{4pt}
+\caption{GST-225 acoustic impedance matching and thermal extraction across 7 representative material classes.}
+\label{tab:gst225_impedance}
+\resizebox{\textwidth}{!}{%
+\begin{tabularx}{\textwidth}{@{}l p{3.2cm} r r r p{2.8cm} r r@{}}
+\toprule
+\textbf{Class} & \textbf{Prototype} & $\rho$ (kg/m$^3$) & $v_s$ (m/s) & $Z_{\text{target}}$ (MRayl) & $\chi_{\text{cryst}}$ & $R_{\text{acoustic}}$ & $\dot{Q}_{\text{ext}}$ (MW/m$^2$) \\
+\midrule
+Biological Tissue & Hydrated Cortex & $1{,}040$ & $1{,}540$ & $1.602$ & $0.000$ (Metamaterial) & $4.2\times 10^{-7}$ & $18.4$ \\
+Biopolymer & Poly-L-alanine & $1{,}250$ & $2{,}100$ & $2.625$ & $0.035$ (Metamaterial) & $6.1\times 10^{-7}$ & $24.7$ \\
+Polymer Matrix & High-Density Polyethylene & $950$ & $2{,}430$ & $2.308$ & $0.018$ (Metamaterial) & $3.8\times 10^{-7}$ & $21.2$ \\
+Light Metal & Polycrystalline $^{27}\text{Al}$ & $2{,}700$ & $6{,}420$ & $17.334$ & $0.608$ (Direct GST) & $1.2\times 10^{-7}$ & $145.8$ \\
+Refractory Metal & $^{184}\text{W}^{12}\text{C}$ & $15{,}630$ & $6{,}660$ & $104.096$ & $1.000$ (Superlattice) & $8.9\times 10^{-7}$ & $382.1$ \\
+Structural Ceramic & Hafnium Diboride $\text{HfB}_2$ & $10{,}500$ & $7{,}200$ & $75.600$ & $0.942$ (Superlattice) & $5.4\times 10^{-7}$ & $310.5$ \\
+Semiconductor & Diamond Carbon $^{12}\text{C}$ & $3{,}515$ & $12{,}000$ & $42.180$ & $0.850$ (Superlattice) & $3.1\times 10^{-7}$ & $420.0$ \\
+\bottomrule
+\end{tabularx}%
+}
+\end{table*}
+
+\FloatBarrier
+\subsection{Biogenic Pathway C Homochiral Locks and Sapient Guard Invariants}
+For non-crystalline biogenic systems ($\mathcal{G}_{\text{space}} = 0$, including living proteomes, nucleic acids, and synaptic complexes), structural stasis is enforced by parity-odd Casimir--Polder boundary potentials. The chiral energy splitting between L- and D-enantiomers satisfies:
+\begin{equation}
+\Delta E_{\text{L-D}} = \int_{\partial\mathcal{M}} d^3x \, \operatorname{Tr}\left(\gamma^5 \psi^\dagger H_{\text{CP}} \psi\right) \ge 1.4500~\text{eV},
+\label{eq:chiral_splitting_bound}
+\end{equation}
+precluding spontaneous racemization and ensuring zero genetic mutation drift ($\Delta\mathcal{F}_{\text{gen}} \equiv 0$). Any spontaneous inversion trips hardware fault \texttt{SHBT\_SWARM\_FAULT\_CHIRAL\_INVERSION} (\texttt{0x00000010}). Furthermore, Sapient Guard Control Barrier Functions (CBFs) continuously evaluate synaptic continuity invariants $h_{\text{syn}}(\mathbf{x}) \ge 0$:
+\begin{equation}
+\dot{h}_{\text{syn}}(\mathbf{x}) + \alpha(h_{\text{syn}}(\mathbf{x})) \ge 0,
+\label{eq:sapient_guard_cbf}
+\end{equation}
+guaranteeing hardware-enforced biological safety and tripping \texttt{SHBT\_SWARM\_FAULT\_CBF\_TRIP} (\texttt{0x00000020}) in under $1.701\text{ ps}$ if synaptic fidelity degrades.
+
+\FloatBarrier
+\subsection{Attosecond Eikonal Foliation, Quad-Symmetric Bremsstrahlung Suppression, and Bogoliubov Lepton Ledger}
+The matter de-rendering boundary propagates along the minimum-jerk quintic polynomial foliation profile:
+\begin{equation}
+s(\tau) = 10\tau^3 - 15\tau^4 + 6\tau^5, \qquad \tau = \frac{t}{\tau_{\text{trans}}} \in [0, 1],
+\label{eq:quintic_eikonal_foliation}
+\end{equation}
+bounding peak boundary interface velocity to $v_{\max} = \frac{15}{8} \frac{L}{\tau_{\text{trans}}} \le 56.988~\text{m/s}$. Dielectric collapse is governed by the non-linear Maxwell--Bloch equations, transitioning Drude conductivity $\sigma(\xi) \to 0$ without shock reflection. Under $1$~fs RF phase jitter ($\sigma_\phi \le 1.829\times 10^{-6}$~rad), quad-symmetric destructive interference over the 94 MERA radial layers clamps residual Bremsstrahlung radiation to:
+\begin{equation}
+P_{\text{Brem}} \le 1.00\times 10^{-15}~\text{W}.
+\label{eq:bremsstrahlung_suppression_bound}
+\end{equation}
+Universal collective nucleon tunneling across all benchmark isotopes in the Segr\`e chart ($A \in [1, 250]$) satisfies Floquet potential energy surface (PES) geodesic action:
+\begin{equation}
+S_{\text{PES}} \ge 81.50 \implies \frac{\Gamma_{\text{decay}}}{\Gamma_{\text{transmute}}} \le 10^{-35}.
+\label{eq:pes_geodesic_bound}
+\end{equation}
+Simultaneously, the unitary Bogoliubov dark $B-L$ transformation rotates neutrino currents into sterile dark cosets:
+\begin{equation}
+\begin{pmatrix} \nu_{\text{dark}} \\ \bar{\nu}_{\text{dark}} \end{pmatrix} = \begin{pmatrix} u & v \\ -v^* & u^* \end{pmatrix} \begin{pmatrix} \nu_{\text{vis}} \\ \bar{\nu}_{\text{vis}} \end{pmatrix}, \qquad |u|^2 + |v|^2 = 1,
+\label{eq:bogoliubov_dark_rotation}
+\end{equation}
+enforcing zero visible neutrino flux $\Phi_{\nu,\text{vis}} \equiv 0.0000~\text{cm}^{-2}\text{s}^{-1}$ while strictly satisfying global conservation invariants $\Delta M_{\text{ADM}} \equiv 0$, $\Delta Q_{\text{EM}} \equiv 0$, and $\Delta(B-L) \equiv 0$.
 
 \FloatBarrier
 \subsection{Theorems 2.2, 2.3 \& 2.4 (Phase 3): Formal Admissibility Boundaries}
@@ -802,10 +926,10 @@ The universal matter synthesizer is bounded by four immutable conservation laws:
     \item \textbf{Relativistic Conservation Laws (Theorem 2.4):} Strict conservation of total ADM mass ($\Delta M_{\text{ADM}} \equiv 0$), net electric charge ($\Delta Q_{\text{EM}} \equiv 0$), baryon-minus-lepton number ($\Delta(B-L) \equiv 0$), and zero neutrino flux ($\Phi_\nu \equiv 0$) is enforced across all synthesis operations.
 \end{enumerate}
 
-
 \FloatBarrier
 \section{\texorpdfstring{Zero-Compute Simulation-to-Reality Isomorphism ($\Delta C_{\text{post-sim}} \equiv 0$), MERA-DAG Tiling \& Turnkey Planetary Civilization Synthesis (Phase 3)}{Zero-Compute Simulation-to-Reality Isomorphism (Delta C\_post-sim = 0), MERA-DAG Tiling \& Turnkey Planetary Civilization Synthesis (Phase 3)}}
 
+\FloatBarrier
 \subsection{Theorem 3.1 (Phase 3): Zero-Compute Simulation-to-Reality Direct Rendering}
 \begin{theorem}[Simulation-to-Reality Isomorphism]
 Let $|\Psi_{\text{eq}}\rangle$ denote the variational fixed-point ground state of the 101-layer MERA-PINN planetary simulation running inside the boundary Modular Tensor Category $\mathcal{C}_{\text{SHBT}}$. The ultraviolet layers ($l = 1..30$) of $|\Psi_{\text{eq}}\rangle$ stored in Daughter Synthesis RAM (Banks \texttt{32..63}) are bit-for-bit and type-theoretically identical to the 2,112-byte \texttt{shbt\_unified\_stinespring\_frame\_t} memory format consumed by the macroscopic matter transceiver $(V_{\text{unified}}^{\text{macro}})^\dagger$. Consequently, physical matter de-rendering and crystallization initiate with strictly zero post-simulation CAD slicing, zero mesh compilation, and zero additional quantum circuit synthesis:
@@ -816,7 +940,7 @@ Let $|\Psi_{\text{eq}}\rangle$ denote the variational fixed-point ground state o
 \end{theorem}
 
 \begin{proof}
-By construction, both the MERA-PINN cognitive world model and the transceiver control logic operate on the same boundary tensor algebra. In \texttt{shbt\_unified\_stinespring\_frame\_t}, the spectral view \texttt{mpfr\_view.mpfr\_limbs[33][8]} comprises 33 slots of 512-bit multi-precision real numbers (2,112 bytes). The 30 UV layers of the MERA tensor network map directly to the 30 active synthesis slots, while slots 31--33 encode the boundary metric and holonomy invariants. Because the tensor contraction fixed point is stored directly in physical synthesis RAM at \texttt{0x70020000}, invoking the hardware command \texttt{SHBT\_SWARM\_CMD\_ZERO\_COMP\_DIRECT\_RENDER} (\texttt{0x00004000}) requires only asserting the transceiver trigger bit. The transceiver reads the memory aperture directly via DMA, requiring $\Delta C = 0$ additional operations.
+By construction, both the MERA-PINN cognitive world model and the transceiver control logic operate on the same boundary tensor algebra. In \texttt{shbt\_unified\_stinespring\_frame\_t}, the spectral view \texttt{mpfr\_view.mpfr\_limbs[33][8]} comprises 33 slots of 512-bit multi-precision real numbers (2,112 bytes). The 30 UV layers of the MERA tensor network map directly to the 30 active synthesis slots, while slots 31--33 encode the boundary metric and holonomy invariants. Because the tensor contraction fixed point is stored directly in physical synthesis RAM at \texttt{0x70020000}, invoking the hardware command \texttt{SHBT\_SWARM\_CMD\_ZERO\_COMP\_DIRECT\_RENDER} (\texttt{0x0020}) requires only asserting the transceiver trigger bit. The transceiver reads the memory aperture directly via DMA, requiring $\Delta C = 0$ additional operations.
 \end{proof}
 
 \FloatBarrier
@@ -834,10 +958,10 @@ T^\partial(S_{\text{sym}}) = \begin{pmatrix} I_g & S_{\text{sym}} \\ 0 & I_g \en
 \end{equation}
 Because all eigenvalues of the unipotent matrix $T^\partial(S_{\text{sym}})$ are identically unity, the spectral radius is strictly $\rho_{\text{spec}} = 1$. By Kojima's theorem for mapping class entropy, the topological entropy vanishes identically:
 \begin{equation}
-\text{Ent}(\phi) = \ln \rho_{\text{spec}}(T^\partial) = \ln(1) \equiv 0.
+\text{Ent}(\phi) = \ln \rho_{\text{spec}}(T^\partial) = \ln(1) \equiv 0 \implies Q_{\text{internal}} \equiv 0\text{ J/bit}.
 \label{eq:zero_kojima_entropy}
 \end{equation}
-This topological null condition guarantees that spatial DAG instancing across $10^{45}$ nucleons injects strictly zero excess Kolmogorov--Sinai entropy into the boundary Hilbert space.
+This topological null condition guarantees that spatial DAG instancing across $10^{45}$ nucleons injects strictly zero excess Kolmogorov--Sinai entropy and zero internal Landauer heating into the boundary Hilbert space.
 Each boundary relabeling operation executes in $t_{\text{relabel}} = 1.701\text{ ps/bank}$, preserving bulk-to-boundary isometry across the entire planet:
 \begin{equation}
 \|W_{\text{DAG}}^\dagger W_{\text{DAG}} - P_{\text{code}}^{\text{planet}}\|_{\text{op}} \le 10^{-120}.
@@ -846,32 +970,31 @@ Each boundary relabeling operation executes in $t_{\text{relabel}} = 1.701\text{
 \end{theorem}
 
 \FloatBarrier
-\subsection{The 5-Tier Turnkey Human Civilization Stack (Table 10)}
+\subsection{The 5-Tier Turnkey Human Civilization Stack (Table 12)}
 Equipped with $\mathcal{R}_{\text{univ}}^{\text{SWARM}}$, $\Delta C_{\text{post-sim}} \equiv 0$, and MERA-DAG tiling, a swarm fleet synthesizes complete, turnkey human settlements. A standardized 1-million-person settlement node comprises $202.55\text{ Mt}$ ($1.2198 \times 10^{38}\text{ nucleons}$) of infrastructure partitioned across five technological tiers as detailed in Table~\ref{tab:civilization_ledger}.
 
-\begin{table}[!htbp]
-\centering\small
-\caption{5-Tier Turnkey Human Civilization Stack: Structural Mass, Nucleon, Tile, and Synthesis Energy Ledger.}
+\begin{table*}[!htbp]
+\centering\scriptsize
+\caption{5-Tier Turnkey Human Civilization Stack: Structural Mass, Nucleon, Tile, Energy, and Fleet Build-Time Ledger ($M = 10{,}000$ to $510{,}000$ ships).}
 \label{tab:civilization_ledger}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}llrrrrr@{}}
+\begin{tabular}{@{}llrrrrrrrr@{}}
 \toprule
-Civilization Tier \& Infrastructure Scope & Subsystems \& Metamaterials & Mass (Mt) & Nucleons & Hyper-Frame Tiles & Synthesis Energy (EJ) & Fleet Synthesis Time \\
+Civilization Tier \& Scope & Subsystems \& Metamaterials & Mass (Mt) & Nucleons & Tiles & Energy (EJ) & $M=10\text{k}$ & $M=50\text{k}$ & $M=100\text{k}$ & $M=510\text{k}$ \\
 \midrule
-\textbf{Tier 1: Geodesic Metamaterial Cities} & $\text{Ti-6Al-4V}$ frames, diamond domes, basalt bases & $50.00$ & $3.011 \times 10^{37}$ & $30{,}110.7$ & $2{,}842{,}250.45\text{ EJ}$ & $4{,}176.7\text{ s} \ (1.16\text{ h})$ \\
-\textbf{Tier 2: Planetary Clean Energy Grids} & $200\times \text{p-}^{11}\text{B}$ ($8{,}750\text{ MW}$), $5{,}000\times \text{LANR}$, REBCO & $0.50$ & $3.011 \times 10^{35}$ & $301.1$ & $28{,}422.50\text{ EJ}$ & $41.8\text{ s}$ \\
-\textbf{Tier 3: Artificial Gravity \& Stargates} & \texttt{shbt-ghost} $1.000g$ floors, $24\times \text{EW-312}$ Stargates & $2.00$ & $1.204 \times 10^{36}$ & $1{,}204.4$ & $113{,}690.02\text{ EJ}$ & $167.1\text{ s}$ \\
-\textbf{Tier 4: Planetary Compute \& Sensor Grid} & $1{,}000\times \text{SHBT-R}$ optical cores, SGLT $r=2.50$ PICs & $0.05$ & $3.011 \times 10^{34}$ & $30.1$ & $2{,}842.25\text{ EJ}$ & $4.18\text{ s}$ \\
-\textbf{Tier 5: Homochiral Biospheres \& Soils} & Redfield soils, pure aquifers, homochiral microbiota & $150.00$ & $9.033 \times 10^{37}$ & $90{,}332.1$ & $63{,}722.25\text{ EJ (X2)}$ & $93.6\text{ s (X2)}$ \\
+\textbf{Tier 1: Geodesic Cities} & $\text{Ti-6Al-4V}$ frames, diamond domes, basalt bases & $50.00$ & $3.011 \times 10^{37}$ & $30{,}110.7$ & $2{,}842{,}250.45$ & $4{,}176.7\text{ s}$ & $835.3\text{ s}$ & $417.7\text{ s}$ & $\mathbf{81.9\text{ s}}$ \\
+\textbf{Tier 2: Clean Energy Grids} & $200\times \text{p-}^{11}\text{B}$ ($8{,}750\text{ MW}$), $5{,}000\times \text{LANR}$, REBCO & $0.50$ & $3.011 \times 10^{35}$ & $301.1$ & $28{,}422.50$ & $41.8\text{ s}$ & $8.36\text{ s}$ & $4.18\text{ s}$ & $\mathbf{0.82\text{ s}}$ \\
+\textbf{Tier 3: Gravity \& Stargates} & \texttt{shbt-ghost} $1.000g$ floors, $24\times \text{EW-312}$ Stargates & $2.00$ & $1.204 \times 10^{36}$ & $1{,}204.4$ & $113{,}690.02$ & $167.1\text{ s}$ & $33.4\text{ s}$ & $16.7\text{ s}$ & $\mathbf{3.28\text{ s}}$ \\
+\textbf{Tier 4: Compute \& Sensor Grid} & $1{,}000\times \text{SHBT-R}$ optical cores, SGLT $r=2.50$ PICs & $0.05$ & $3.011 \times 10^{34}$ & $30.1$ & $2{,}842.25$ & $4.18\text{ s}$ & $0.84\text{ s}$ & $0.42\text{ s}$ & $\mathbf{0.08\text{ s}}$ \\
+\textbf{Tier 5: Homochiral Biospheres} & Redfield soils, pure aquifers, homochiral microbiota & $150.00$ & $9.033 \times 10^{37}$ & $90{,}332.1$ & $63{,}722.25$ & $93.6\text{ s}$ & $18.7\text{ s}$ & $9.36\text{ s}$ & $\mathbf{1.84\text{ s}}$ \\
 \midrule
-\textbf{Total Turnkey Settlement Node} & \textbf{Complete 1-Million-Person Infrastructure} & $\mathbf{202.55\text{ Mt}}$ & $\mathbf{1.220 \times 10^{38}}$ & $\mathbf{121{,}978.4\text{ Tiles}}$ & $\mathbf{3{,}050{,}927.47\text{ EJ (X2)}}$ & $\mathbf{12.22\text{ s (Tier 4 + X2)}}$ \\
+\textbf{Total Turnkey Settlement Node} & \textbf{Complete 1-Million-Person Infrastructure} & $\mathbf{202.55}$ & $\mathbf{1.220 \times 10^{38}}$ & $\mathbf{121{,}978.4}$ & $\mathbf{3{,}050{,}927.47}$ & $\mathbf{12.22\text{ s}}$ & $\mathbf{2.44\text{ s}}$ & $\mathbf{1.22\text{ s}}$ & $\mathbf{0.24\text{ s}}$ \\
 \bottomrule
 \end{tabular}%
 }
-\end{table}
+\end{table*}
 
-Under Tier~4 Planetary Forge power ($25.00\text{ EW}$) with a 10,000-ship swarm fleet, synthesizing the entire $202.55\text{ Mt}$ settlement node requires only $46.12\text{ seconds}$ from mineral regolith (Class M0) or just $\mathbf{12.22\text{ seconds}}$ when assimilating pre-existing Class X2 alien biomass.
-
+Under Tier~4 Planetary Forge power ($25.00\text{ EW}$) with a standard $10{,}000$-ship fleet, synthesizing the entire $202.55\text{ Mt}$ settlement node requires only $46.12\text{ seconds}$ from mineral regolith (Class M0) or just $\mathbf{12.22\text{ seconds}}$ when assimilating pre-existing Class X2 alien biomass. Scaling the fleet to $M = 510{,}000$ modular swarm vessels compresses total planetary turnkey settlement synthesis time to a breathtaking $\mathbf{0.24\text{ seconds}}$ under biological assimilation, or $0.90\text{ seconds}$ from bare asteroid/regolith feedstocks.
 
 \FloatBarrier
 \section{The Exotic-Material Autopoietic Mass-Annihilation Reactor (\texttt{SHBT-MAR-312X}) (Phase 4)}

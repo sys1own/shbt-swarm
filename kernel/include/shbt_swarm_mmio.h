@@ -58,14 +58,23 @@
 #define SHBT_SWARM_CMD_WEYL_EXCITON_CROWBAR     0x80000000U /* Phase 4: 1.701 ps Weyl-Exciton abort */
 #define SHBT_SWARM_CMD_PCSS_CROWBAR             0x80000000U /* Legacy alias for hardware crowbar */
 
+/* Phase 3 Direct Subsystem Command Opcodes */
+#define SHBT_SWARM_CMD_UNIV_SYNTH_OPCODE        0x0010U /* Phase 3 Subsystem Opcode (0x0010) */
+#define SHBT_SWARM_CMD_DIRECT_RENDER_OPCODE     0x0020U /* Phase 3 Subsystem Opcode (0x0020) */
+#define SHBT_SWARM_CMD_MERA_DAG_OPCODE          0x0030U /* Phase 3 Subsystem Opcode (0x0030) */
+
 /* Phase 1 + Phase 2 + Phase 3 + Phase 4 Fault Bitmasks for fault_mask_reg (0x10) */
 #define SHBT_SWARM_FAULT_NONE                           0x00000000U
 #define SHBT_SWARM_FAULT_ADM_IMBALANCE                  0x00000001U /* M_feedstock != M_payload */
 #define SHBT_SWARM_FAULT_PARTITION_LOCK                 0x00000002U /* eta_A : eta_D != 10 : 23 */
 #define SHBT_SWARM_FAULT_FRAMING_WEYL                   0x00000004U /* Delta_fr != 0 or E_munu != 0 */
+#define SHBT_SWARM_FAULT_SUGAWARA_CAP_EXCEEDED_TRIP     0x00000004U /* Phase 3: Hardware trip bit 0x00000004 */
 #define SHBT_SWARM_FAULT_BL_ANOMALY                     0x00000008U /* Delta(B-L)_tot != 0 */
+#define SHBT_SWARM_FAULT_DISLOCATION_DETECTED           0x00000008U /* Phase 3: Wyckoff tether displacement breach */
 #define SHBT_SWARM_FAULT_NEUTRINO_LEAK                  0x00000010U /* Phi_nu > 0 */
+#define SHBT_SWARM_FAULT_CHIRAL_INVERSION               0x00000010U /* Phase 3: Parity-odd Casimir-Polder breach */
 #define SHBT_SWARM_FAULT_SECDED_UNCORR                  0x00000020U /* Double-bit flip in B_3 word */
+#define SHBT_SWARM_FAULT_CBF_TRIP                       0x00000020U /* Phase 3: Control Barrier Function trip */
 #define SHBT_SWARM_FAULT_CAYLEY_HASH                    0x00000040U /* Phylogenetic quine / Byzantine mismatch */
 #define SHBT_SWARM_FAULT_THERMAL_CLAMP                  0x00000080U /* T_QC > 4.2 K or T_MAR > 192.50 K */
 #define SHBT_SWARM_FAULT_CBF_PHYS_VIOL                  0x00000100U /* Phase 2: h_phys(x) < 0 barrier breach */
@@ -149,8 +158,38 @@ typedef struct __attribute__((aligned(4096))) {
     shbt_unified_stinespring_frame_t       daughter_synth_ram[32];  /* Banks 32..63 (RW MERA-UV / Synth) */
 } shbt_unified_stinespring_hyperframe_t;
 
+typedef shbt_unified_stinespring_hyperframe_t UnifiedStinespringHyperFrame;
+
 _Static_assert(sizeof(shbt_unified_stinespring_hyperframe_t) == 135168,
                "UnifiedStinespringHyperFrame must be exactly 135,168 bytes");
+_Static_assert(sizeof(UnifiedStinespringHyperFrame) == 135168,
+               "sizeof(UnifiedStinespringHyperFrame) == 135168");
+
+/**
+ * @brief Hardware MMIO Barrier and Memory Flush Primitive
+ */
+static inline void shbt_mmio_write_barrier(void) {
+#if defined(__x86_64__)
+    __asm__ __volatile__("sfence" ::: "memory");
+#elif defined(__aarch64__)
+    __asm__ __volatile__("dmb oshst" ::: "memory");
+#else
+    __atomic_thread_fence(__ATOMIC_SEQ_CST);
+#endif
+}
+
+/**
+ * @brief Flush and invalidate a single 512-bit cache line for spatial tensor streaming
+ */
+static inline void shbt_clwb(const void *addr) {
+#if defined(__x86_64__)
+    __asm__ __volatile__("clwb %0" : : "m"(*(const char *)addr) : "memory");
+#elif defined(__aarch64__)
+    __asm__ __volatile__("dc cvac, %0" : : "r"(addr) : "memory");
+#else
+    (void)addr;
+#endif
+}
 
 /* 128-Byte Dual-Cacheline SHBT-MMIO-SWARM v4 Register Layout at 0x70000000 */
 #pragma pack(push, 1)

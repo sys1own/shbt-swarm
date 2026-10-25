@@ -25,6 +25,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "shbt-swarm-cli"
+version = "0.4.312"
+dependencies = [
+ "shbt-swarm-hil",
+]
+
+[[package]]
 name = "shbt-swarm-cloner"
 version = "0.4.312"
 dependencies = [
