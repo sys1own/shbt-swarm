@@ -4,7 +4,10 @@
 //! `max|s''(tau)| = 10/sqrt(3) = 5.77350269`), dynamic GST-225 acoustic impedance matching
 //! (`R_acoustic <= 10^-6`), blueshifted hyper-temporal biological enclave evolution
 //! (`alpha in [10, 10^4]`), and MERA-DAG planetary construction timing across fleet sizes
-//! (`M = 1, 1000, 10000, 100000, 510000`).
+//! (`M = 1, 1000, 10000, 100000, 510000`), and Phase 4 MAR-312X multi-physics digital twin.
+
+pub mod reactor_twin;
+pub use reactor_twin::*;
 
 /// Maximum de-render front velocity in m/s (`56.988 m/s`).
 pub const MAX_DERENDER_VELOCITY_MPS: f64 = 56.988;

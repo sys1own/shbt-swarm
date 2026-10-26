@@ -1,22 +1,52 @@
 //! `crates/shbt-swarm-mar312x/src/lib.rs`
 //! `#![no_std]` First-Principles Control, Telemetry & Safety Verification Crate
-//! for the Exotic-Material Autopoietic Mass-Annihilation Reactor (`SHBT-MAR-312X`).
+//! for the 5th-Gen Exotic-Material Autopoietic Mass-Annihilation Reactor (`SHBT-MAR-312X`).
 
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
-/// Exact subsystem masses in grams (summing to 950,000 g = 950.00 kg).
-pub const MASS_SUB1_SEED_DIE_G: u64         = 12_500;
-pub const MASS_SUB2_DEC_X_G: u64            = 260_000;
-pub const MASS_SUB3_SUPERHYDRIDE_BUS_G: u64 = 215_000;
-pub const MASS_SUB4_FRACTON_SHIELD_G: u64   = 145_000;
-pub const MASS_SUB5_MONOLITH_CAVITY_G: u64  = 160_000;
-pub const MASS_SUB6_DARK_INJECTOR_G: u64    = 95_000;
-pub const MASS_SUB7_8_SWITCH_SMES_G: u64    = 62_500; // 17.50 kg switches + 45.00 kg SMES
-pub const MASS_NACELLE_TOTAL_G: u64         = 950_000;
-pub const MASS_LEGACY_MAR312C_G: u64        = 2_257_700; // 2,257.70 kg
-pub const VOL_NACELLE_TOTAL_ML: u64         = 350_000;   // 0.3500 m^3
-pub const VOL_LEGACY_MAR312C_ML: u64        = 858_900;   // 0.8589 m^3
+pub mod purcell_seed;
+pub mod polariton_decx;
+pub mod superhydride_coils;
+pub mod fracton_shield;
+pub mod autopoiesis;
+pub mod crowbar_smes;
+
+pub use purcell_seed::*;
+pub use polariton_decx::*;
+pub use superhydride_coils::*;
+pub use fracton_shield::*;
+pub use autopoiesis::*;
+pub use crowbar_smes::*;
+
+/// Exact 8-subsystem masses in grams (summing to 950,000 g = 950.00 kg).
+pub const MASS_SUB1_SEED_DIE_G: u64           = 12_500;   // 12.50 kg (P6_3/mmc)
+pub const MASS_SUB2_DEC_X_G: u64              = 260_000;  // 260.00 kg (I4_1md)
+pub const MASS_SUB3_SUPERHYDRIDE_BUS_G: u64   = 215_000;  // 215.00 kg (Fm-3m)
+pub const MASS_SUB4_FRACTON_SHIELD_G: u64     = 145_000;  // 145.00 kg (P6/mmm)
+pub const MASS_SUB5_MONOLITH_CAVITY_G: u64    = 160_000;  // 160.00 kg (Fd-3m)
+pub const MASS_SUB6_KAGOME_CFT_BUS_G: u64     = 52_500;   // 52.50 kg (R-3m)
+pub const MASS_SUB7_PT_WEYL_CROWBAR_G: u64    = 40_000;   // 40.00 kg (F-43m)
+pub const MASS_SUB8_SMES_RECOVERY_RING_G: u64 = 65_000;   // 65.00 kg (P6_3mc)
+pub const MASS_NACELLE_TOTAL_G: u64           = 950_000;  // 950.00 kg (Exact)
+
+/// Backwards compatibility aliases.
+pub const MASS_SUB6_DARK_INJECTOR_G: u64      = MASS_SUB6_KAGOME_CFT_BUS_G;
+pub const MASS_SUB7_8_SWITCH_SMES_G: u64      = MASS_SUB7_PT_WEYL_CROWBAR_G + MASS_SUB8_SMES_RECOVERY_RING_G; // 105.00 kg
+
+pub const MASS_LEGACY_MAR312C_G: u64          = 2_257_700; // 2,257.70 kg
+
+/// Exact 8-subsystem volumes in millilitres (cm^3) (summing to 350,000 mL = 0.3500 m^3).
+pub const VOL_SUB1_SEED_DIE_ML: u64           = 1_200;    // 0.0012 m^3
+pub const VOL_SUB2_DEC_X_ML: u64              = 110_000;  // 0.1100 m^3
+pub const VOL_SUB3_SUPERHYDRIDE_BUS_ML: u64   = 68_000;   // 0.0680 m^3
+pub const VOL_SUB4_FRACTON_SHIELD_ML: u64     = 38_000;   // 0.0380 m^3
+pub const VOL_SUB5_MONOLITH_CAVITY_ML: u64    = 45_500;   // 0.0455 m^3
+pub const VOL_SUB6_KAGOME_CFT_BUS_ML: u64     = 18_500;   // 0.0185 m^3
+pub const VOL_SUB7_PT_WEYL_CROWBAR_ML: u64    = 27_000;   // 0.0270 m^3
+pub const VOL_SUB8_SMES_RECOVERY_RING_ML: u64 = 41_800;   // 0.0418 m^3
+pub const VOL_NACELLE_TOTAL_ML: u64           = 350_000;  // 0.3500 m^3
+pub const VOL_LEGACY_MAR312C_ML: u64          = 858_900;  // 0.8589 m^3
 
 /// Upgraded SHBT-EW-312 spacecraft dry mass with MAR-312X nacelle (`5,892.30 kg` vs `7,200.00 kg`).
 pub const UPGRADED_SHIP_DRY_MASS_G: u64     = 5_892_300;
@@ -76,8 +106,21 @@ impl Mar312xExoticNacelleConfig {
             + MASS_SUB3_SUPERHYDRIDE_BUS_G
             + MASS_SUB4_FRACTON_SHIELD_G
             + MASS_SUB5_MONOLITH_CAVITY_G
-            + MASS_SUB6_DARK_INJECTOR_G
-            + MASS_SUB7_8_SWITCH_SMES_G
+            + MASS_SUB6_KAGOME_CFT_BUS_G
+            + MASS_SUB7_PT_WEYL_CROWBAR_G
+            + MASS_SUB8_SMES_RECOVERY_RING_G
+    }
+
+    #[inline]
+    pub const fn total_nacelle_volume_ml() -> u64 {
+        VOL_SUB1_SEED_DIE_ML
+            + VOL_SUB2_DEC_X_ML
+            + VOL_SUB3_SUPERHYDRIDE_BUS_ML
+            + VOL_SUB4_FRACTON_SHIELD_ML
+            + VOL_SUB5_MONOLITH_CAVITY_ML
+            + VOL_SUB6_KAGOME_CFT_BUS_ML
+            + VOL_SUB7_PT_WEYL_CROWBAR_ML
+            + VOL_SUB8_SMES_RECOVERY_RING_ML
     }
 
     #[inline]
@@ -98,6 +141,7 @@ impl Mar312xExoticNacelleConfig {
 }
 
 const _: () = assert!(Mar312xExoticNacelleConfig::total_nacelle_mass_g() == MASS_NACELLE_TOTAL_G);
+const _: () = assert!(Mar312xExoticNacelleConfig::total_nacelle_volume_ml() == VOL_NACELLE_TOTAL_ML);
 
 /// WP-1.1: Subsystem 1 — Purcell-Inhibited Hyper-Diamond / Lonsdaleite-c-BN Seed Die.
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
@@ -248,13 +292,11 @@ impl DirectBoundaryTransmutationBus {
         if net_b_minus_l != 0 {
             return Err(FAULT_BL_ANOMALY);
         }
-        // Tier 4 gross = 25,000 PW; Direct bus net = 25,000 * 0.9985 = 24,962.5 PW
         let work_pj = if use_upgraded_5892kg_hull {
             Self::UPGRADED_SHIP_SYNTH_WORK_PJ
         } else {
             Self::LEGACY_SHIP_SYNTH_WORK_PJ
         };
-        // t_us = (work_pj * 1,000,000) / 24,962,500_TW = (work_pj * 1000) / 24,962
         let t_rep_us = (work_pj * 1_000) / 24_962;
         Ok(t_rep_us) // 13,418 us (13.42 ms) for 5,892.30 kg; 16,396 us (16.40 ms) for 7,200 kg
     }
@@ -276,7 +318,6 @@ impl AutopoieticSelfHealingEngine {
         rom_quine_cayley_hash: [u64; 3],
         wyckoff_excursion_fm: u32,
     ) -> Result<(u64, u64), u32> {
-        // Verify nuclear recoil excursion is strictly below displacement threshold (10 fm << 100,000 fm)
         if wyckoff_excursion_fm > 10 {
             return Err(FAULT_SUPERHYDRIDE_TETHER_LOSS);
         }
@@ -285,9 +326,8 @@ impl AutopoieticSelfHealingEngine {
             && live_reactor_cayley_hash[2] == rom_quine_cayley_hash[2];
 
         self.cumulative_heal_cycles = self.cumulative_heal_cycles.saturating_add(1);
-        let q_internal_joules_per_bit = 0u64; // Strictly 0 J/bit for unitary modular flow sigma_{-t}^Psi
+        let q_internal_joules_per_bit = 0u64;
         if !hash_match {
-            // Instantaneous 17.01 ps modular restoration to ROM[00..09] reference
             Ok((self.cumulative_heal_cycles, q_internal_joules_per_bit))
         } else {
             Ok((self.cumulative_heal_cycles, q_internal_joules_per_bit))
@@ -305,6 +345,8 @@ mod tests {
         assert_eq!(cfg.verify_single_frame_adm_closure(), Ok(16_406_590));
         let bad_cfg = Mar312xExoticNacelleConfig { loaded_cores: 42 };
         assert_eq!(bad_cfg.verify_single_frame_adm_closure(), Err(FAULT_ADM_IMBALANCE));
+        assert_eq!(Mar312xExoticNacelleConfig::total_nacelle_mass_g(), 950_000);
+        assert_eq!(Mar312xExoticNacelleConfig::total_nacelle_volume_ml(), 350_000);
     }
 
     #[test]

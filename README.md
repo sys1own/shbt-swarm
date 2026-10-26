@@ -243,9 +243,9 @@ The cutaway diagram above illustrates the fifth-generation exotic-material autop
 3. **Ambient-Pressure Tethered Clathrate Superhydride Coils & Bus (215.00 kg, -58.97% vs. 524.02 kg):** Replaces heavy Hastelloy-backed REBCO coils (18.5 T, T_crit = 32.92 K) and liquid-helium cryo-loops with Chern-Simons Wyckoff-tethered ternary clathrate superhydrides (LaBeH₈–CaH₆–¹²C on h-¹¹B¹⁵N/graphene ribbons). Topological tethering absorbs 180.0 GPa of internal virial expansion pressure at zero external mechanical anvil pressure (P_ext == 0 Pa), sustaining B_op = 48.0 T (B_c2 > 95 T) and T_crit = 192.50 K (a massive 171.37 K thermal margin above T_op = 21.13 K), coupled to a solid-state ¹²C hyper-diamond ballistic phonon bus (kappa = 42,500 W/m·K) and Heegaard-Floer symplectic Carnot-bypass thermal shunt (S = 100/1089).
 4. **12-Layer Fracton-Symplectic Shield Sleeve (145.00 kg, -62.33% vs. 384.88 kg):** Eliminates passive 105 kg W-Cu shielding in favor of 12 concentric Sp(2g, Z) (g >= 4) fracton-symplectic boundary sheets (eta_B = 10/33) integrated with the 48.0 T magnetic sheath. Cascaded symplectic projection attenuates radiation flux by S^12 = (100/1089)^12 = 3.73351e-13, yielding total transmission T_rad <= 10^-14 and clamping crew dose to 0.0004 mSv/yr (300x below limits) during 25.00 EW forge burns.
 5. **Monolithic Borrmann & Squeezed Cavity (160.00 kg, -34.83% vs. 245.50 kg):** Integrates the reaction chamber and SHBT-R 52-hexamer InP/InGaAsP metrology waveguides into a single dislocation-free Type-IIa diamond block, sustaining 3-stage polariton squeezing of r_3 = 3.82 >= 3.80 (33.18 dB sub-shot-noise suppression) to lock Borrmann standing-wave nodes to Wyckoff planes within 10^-5 A.
-6. **Topological Kagome Dark-Braid Injector Ring (SHBT-IBR-312X, 95.00 kg, -42.49% vs. 165.20 kg):** Synthesized from CsV₃Sb₅ and GST-225 at eta_B = 0.500, levitating and feeding 376.99 kg fuel cassettes with zero mechanical wear.
-7. **PT-Symmetric Weyl-Exciton Crowbar Switches (17.50 kg, -68.18% vs. 55.00 kg):** Non-Hermitian InGaAsP/TaAs optical switches biased at the exceptional point (UM)^2 = 0, collapsing cavity fields in t_trip = 1.701 ps (1,470x faster than 2.50 ns PCSS).
-8. **Superhydride SMES Inductive Ring (45.00 kg, -64.00% vs. 125.00 kg):** 48.0 T zero-resistance clathrate coil capturing 99.88% of inductive energy during pulse aborts.
+6. **Direct Boundary CFT Bus & Micro-Batch Kagome Injector (52.50 kg, -68.22% vs. 165.20 kg):** Direct boundary-conformal mass-annihilation bus (eta_direct = 99.850%) paired with a CsV3Sb5 Kagome levitation injector (R-3m, displacement 0.01850 m3) operating at eta_B = 0.500, feeding 14.85 ms micro-batches (376.99 kg fuel cassettes) with zero mechanical wear.
+7. **PT-Symmetric Exceptional-Point Weyl-Exciton Crowbar (40.00 kg, -27.27% vs. 55.00 kg):** Non-Hermitian InGaAsP/TaAs optical switches biased at the exceptional point (UM)^2 = 0 (F-43m, displacement 0.02700 m3), providing sub-picosecond quench response (t_trip = 1.701 ps, 1,470x faster than 2.50 ns PCSS) with a 240.0 kV holdoff margin.
+8. **48.0 T Superhydride SMES Inductive Recovery Ring (65.00 kg, -48.00% vs. 125.00 kg):** Ternary clathrate superconducting magnetic energy storage ring (P6_3mc, displacement 0.04180 m3) storing 38.319 MJ at 100.00 kA operating current, recapturing 99.880% of inductive energy during pulse aborts.
 
 | Subsystem Component | SHBT-MAR-312 (Gen 1) | SHBT-MAR-312C (Gen 2) | SHBT-MAR-312X (Gen 5) | Mass Delta (Gen 2 -> Gen 5) | Physical Innovation |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -254,9 +254,9 @@ The cutaway diagram above illustrates the fifth-generation exotic-material autop
 | **Magnetic Confinement Coils** | 1,120.00 kg | 524.02 kg | 215.00 kg | -58.97% (-309.02 kg) | Ambient-pressure LaBeH8-CaH6-12C, 48.0 T, T_crit = 192.5 K |
 | **Radiation Shielding** | 710.00 kg | 384.88 kg | 145.00 kg | -62.33% (-239.88 kg) | 12-layer Sp(2g, Z) fracton-symplectic sleeve, T_rad <= 10^-14 |
 | **Cavity & Optics** | 390.00 kg | 245.50 kg | 160.00 kg | -34.83% (-85.50 kg) | Monolithic Type-IIa diamond block, 33.18 dB squeezing |
-| **Fuel Injector System** | 215.00 kg | 165.20 kg | 95.00 kg | -42.49% (-70.20 kg) | CsV3Sb5 Kagome levitation, contactless dark-braid feed |
-| **Crowbar Safety System** | 68.00 kg | 55.00 kg | 17.50 kg | -68.18% (-37.50 kg) | PT-symmetric Weyl-exciton switch, t_trip = 1.701 ps |
-| **SMES Recovery Ring** | 168.99 kg | 125.00 kg | 45.00 kg | -64.00% (-80.00 kg) | Superhydride inductive loop, 99.88% energy recovery |
+| **Direct CFT Bus & Injector** | 215.00 kg | 165.20 kg | 52.50 kg | -68.22% (-112.70 kg) | Direct boundary-conformal bus + CsV3Sb5 Kagome injector |
+| **PT-Weyl Crowbar Switch** | 68.00 kg | 55.00 kg | 40.00 kg | -27.27% (-15.00 kg) | PT-symmetric Weyl-exciton switch, t_trip = 1.701 ps |
+| **SMES Recovery Ring** | 168.99 kg | 125.00 kg | 65.00 kg | -48.00% (-60.00 kg) | Superhydride 48.0 T inductive loop, 99.880% energy recovery |
 | **Total Reactor Nacelle** | **4,096.99 kg** | **2,257.70 kg** | **950.00 kg** | **-57.92% (-1,307.70 kg)** | **Envelope: 0.3500 m³ (-59.25% vs 0.8589 m³)** |
 
 ### 8.2 Thermal Chain and Tier 4 Planetary Forge (25.00 EW)
@@ -327,7 +327,25 @@ graph TD
     architect --> hil
     mar312x --> hil
     sim --> hil
+    hil --> cli[shbt-swarm-cli: std]
 ```
+
+#### Complete 12-Crate Workspace Roster
+
+| Crate Name | Compilation Target | Primary Architectural Role & Responsibility |
+| :--- | :--- | :--- |
+| `shbt-swarm-core` | `#![no_std]` | Primitive fixed-point arithmetic, Stinespring state vectors, physical constants, and error types |
+| `shbt-swarm-mmio` | `#![no_std]` | 128-byte C11 MMIO register driver, dual-cacheline layout, and 64-bank hyper-frame aperture |
+| `shbt-swarm-cloner` | `#![no_std]` | Solovay-Kitaev Depth-9 braid compilation, SECDED syndrome tracking, and parent quine ROM |
+| `shbt-swarm-bio` | `#![no_std]` | Biogenic homochiral cryo-vault protection, Casimir-Polder barrier, and xenobiological triage |
+| `shbt-swarm-ai` | `#![no_std]` | 101-layer TTN-MERA world model, PT-GoI inference solver, and zero-heat Tomita-Takesaki flow |
+| `shbt-swarm-shield` | `#![no_std]` | Heegaard-Floer Sp(2g, Z) symplectic consensus, dark shunting, and hyper-temporal enclaves |
+| `shbt-swarm-foundry` | `#![no_std]` | Continuous 346-slot Dynkin weight field router and dynamic Sugawara framing compensator |
+| `shbt-swarm-architect`| `#![no_std]` | Universal 230-space-group lattice projector, moire commensurability, and 202.55 Mt city stack |
+| `shbt-swarm-mar312x` | `#![no_std]` | 8-subsystem 950.00 kg autopoietic reactor, DEC-X converter, and 48.0 T clathrate coils |
+| `shbt-swarm-sim` | `std` | High-fidelity multiphysics digital twin, Cattaneo-Vernotte second-sound, and transit kinetics |
+| `shbt-swarm-hil` | `std` | Hardware-in-the-loop harness, 104-gate verification suite, and multi-crate integration tests |
+| `shbt-swarm-cli` | `std` | Master operator command-line interface, automated audit runner, and verification reporting |
 
 ---
 
