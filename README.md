@@ -3,12 +3,12 @@
 **Autonomous Interstellar Von Neumann Swarm Architecture: Macroscopic Anyon-Braid Cloning, Holographic Symplectic-Topological Intelligence, Universal Arbitrary Matter Folding, and the Exotic Autopoietic Mass-Annihilation Reactor**
 
 [![ABI Version](https://img.shields.io/badge/SHBT--MMIO--SWARM-v4%20(0x00040312)-blue)](#)
-[![Z3 SMT Proofs](https://img.shields.io/badge/Z3%20SMT%20Theorems-20%2F20%20UNSAT-brightgreen)](#)
+[![Z3 SMT Proofs](https://img.shields.io/badge/Z3%20SMT-24%2F24%20UNSAT-brightgreen)](#)
 [![Verification Gates](https://img.shields.io/badge/HIL%20Verification%20Gates-104%2F104%20PASS-brightgreen)](#)
 [![Rust Workspace](https://img.shields.io/badge/Rust%20Workspace-12%20Crates%20(%23!%5Bno__std%5D)-orange)](#)
 
 ##### Quick Navigation
-- [1. System Highlights at a Glance](#section-1)
+- [1. System Highlights at a Glance (104/104 Gates PASS, 24/24 Z3 Theorems UNSAT)](#1-system-highlights-at-a-glance)
 - [2. Formal SHBT No-Cloning Theorems vs. Constructive Von Neumann Quine Replication](#section-2)
 - [3. Universal Multi-Species Matter & Biogenic Cloner (R_clone^SWARM) & Daughter Spacecraft Ledger](#section-3)
 - [4. Holographic Symplectic-Topological Equilibrium Network (SHBT-STEN)](#section-4)
@@ -17,13 +17,13 @@
 - [7. Zero-Compute Simulation-to-Reality Isomorphism & 5-Tier 202.55 Mt Civilization Stack](#section-7)
 - [8. 5th-Gen Exotic-Material Autopoietic Mass-Annihilation Reactor (SHBT-MAR-312X)](#section-8)
 - [9. Bare-Metal C11 Microkernel & 12-Crate Rust Workspace Topology](#section-9)
-- [10. Master 104-Gate Verification Matrix & 24 Formal Z3 SMT Proofs](#section-10)
+- [10. Master 104-Gate Verification Matrix & 24 Formal Z3 SMT Proofs](#10-master-104-gate-verification-matrix--24-formal-z3-smt-proofs)
 - [11. 10-Repository SHBT Ecosystem Crosswalk](#section-11)
 - [Build, Verification & Audit Commands](#commands)
 
 ---
 
-<a id="section-1"></a>
+<a id="section-1"></a><a id="1-system-highlights-at-a-glance"></a>
 ## 1. System Highlights at a Glance (104/104 Gates PASS, 24/24 Z3 Theorems UNSAT)
 
 `sys1own/shbt-swarm` represents the comprehensive flight, cognitive conditioning, planetary architecture, and exawatt-class mass-annihilation power platform within Static Holographic Boundary Theory (SHBT). The platform unites four developmental phases into a single binary-compatible C11 microkernel (`include/shbt_swarm_mmio.h`, 128 bytes at `0x70000000`, 135,168-byte 64-bank `UnifiedStinespringHyperFrame` at `0x70020000`), twelve `#![no_std]` and multiphysics Rust crates, twenty-four formal Z3 SMT proofs (`24/24 UNSAT`), and 104 Hardware-in-the-Loop verification gates (`104/104 PASS`):
@@ -132,7 +132,7 @@ Cognitive weight adaptation operates via open-system Tomita-Takesaki relative mo
 
 Inter-spacecraft swarm coordination across `M = 10^6` nodes is structured as a simplicial sheaf over Delaunay tetrahedralizations:
 - **Spacelike No-Signaling Invariance:** With cross-coupling block `S_AB == 0` for spacelike-separated nodes, the partial trace satisfies `Tr_B(E_AB(rho_AB)) == rho_A`, mathematically forbidding acausal signaling across the fleet.
-- **Global Symplectic Unipotence:** Consensus routing operates via integer symplectic matrices `T_ij in Sp(2g, Z)` (genus `g = M + 2 >= 3`). The global shear matrix `T = [[I_2M, S], [0, I_2M]]` is unipotent of index 2: `(T - I)^2 == 0`. All eigenvalues equal `1.0`, guaranteeing unit spectral radius `rho_spec(T) = 1.0` and zero algebraic entropy (`Ent(phi) == 0`).
+- **Global Symplectic Unipotence:** Consensus routing operates via integer symplectic matrices `T_ij in Sp(2g, Z)` (genus `g = M + 2 >= 3`). The global shear matrix `T = [[I_2M, S], [0, I_2M]]` is unipotent of index 2: `(T - I)^2 == 0`. All eigenvalues equal `1.0`, guaranteeing unit spectral radius `rho_spec(T)alpha = 1.0` and zero algebraic entropy (`Ent(phi) == 0`).
 - **Byzantine Detection & Fault Signalling:** Byzantine state injection is detected within `1.701 ps` by evaluating the Burau-Cayley phylogenetic braid hash `H_Cayley`, raising `SHBT_SWARM_FAULT_CAYLEY_HASH` (`0x00000040`) or `SHBT_SWARM_FAULT_SIMPLICIAL_SHEAR_MISMATCH` (`0x00010000`).
 
 ### 5.2 Blueshifted Hyper-Temporal Enclaves & Israel-Darmois Junction Matching
@@ -257,7 +257,7 @@ Under Tier 4 Planetary Forge power (25.00 EW) with a standard 10,000-ship fleet,
 
 ### 8.1 SHBT-MAR-312X Reactor Nacelle Architecture & Subsystem Cutaway Walkthrough
 
-The cutaway diagram above illustrates the fifth-generation exotic-material autopoietic mass-annihilation reactor nacelle (`SHBT-MAR-312X`, total dry mass 950.00 kg, displacement envelope 0.3500 m³). Designed through Phase 3 universal arbitrary matter folding and Kohn-Sham topological tethering, the MAR-312X nacelle achieves a -57.92% mass reduction (-1,307.70 kg) and -59.25% volume compaction (-0.5089 m³) compared to the second-generation MAR-312C nacelle (2,257.70 kg, 0.8589 m³), and an overall -76.81% mass reduction relative to the first-generation baseline (4,096.99 kg, 1.3114 m³). The physical rationale and operational role of each labeled subsystem cutaway comprise:
+The cutaway diagram above illustrates the fifth-generation exotic-material autopoietic mass-annihilation reactor nacelle (`SHBT-MAR-312X`, total dry mass 950.00 kg, displacement envelope 0.3500 m^3³). Designed through Phase 3 universal arbitrary matter folding and Kohn-Sham topological tethering, the MAR-312X nacelle achieves a -57.92% mass reduction (-1,307.70 kg) and -59.25% volume compaction (-0.5089 m³) compared to the second-generation MAR-312C nacelle (2,257.70 kg, 0.8589 m^3³), and an overall -76.81% mass reduction relative to the first-generation baseline (4,096.99 kg, 1.3114 m³). The physical rationale and operational role of each labeled subsystem cutaway comprise:
 
 1. **Annular Catalytic Seed Die (12.50 kg, -66.84% vs. 37.70 kg):** Replaces sintered 7:6 HfB₂–¹²C with an atomically continuous hexagonal Lonsdaleite / cubic ¹²C and c-¹¹B¹⁵N superlattice. Clamped by Chern-Simons Wyckoff tethers (k_tether = 5.1295e10 N/m, |delta x| <= 10 fm), opening a complete 3D photonic/phononic stopband at omega_spont that suppresses spontaneous isomer de-excitation (rho_DOS = 0 => F_P = 0 => t_1/2^eff -> inf, 0.000 W quiescent boil-off) while delivering stimulated optical trigger gain G_isomer = 85.40 > 61.15, Mossbauer recoilless fraction f_M = 0.9942, [001] Borrmann transmission eps_B = 0.9995 (tau_B = 1,542 > 1,500), and Frenkel shear limit sigma_allow = 4,800.00 MPa (4.80 GPa).
 2. **Solid-State 4D Weyl-Polariton & PTC Direct Energy Converter (SHBT-DEC-X, 260.00 kg, -63.91% vs. 720.40 kg):** Replaces the mechanical 5-stage electrostatic W/Ta/Be/Mo louver duct with a monolithic 5-zone solid-state topological converter. Utilizes 4D synthetic-lattice second-Chern Weyl semimetals (TaAs/NbP, C_2 = +1 != 0, backscatter C_bc == 0) and Photonic Time-Crystal (PTC) k-gap parametric deceleration of relativistic charged pions and muons along vacuum-like Borrmann channels with Kohn-Sham screening (E_KS = 352.48 eV), eliminating bremsstrahlung (P_Brem == 0 W) and physical foil sputtering to deliver eta_DEC-X = 99.200% (reducing uncollected converter loss by 13.1x to 0.800%).
@@ -278,7 +278,7 @@ The cutaway diagram above illustrates the fifth-generation exotic-material autop
 | **Direct CFT Bus & Injector** | 215.00 kg | 165.20 kg | 52.50 kg | -68.22% (-112.70 kg) | Direct boundary-conformal bus + CsV3Sb5 Kagome injector |
 | **PT-Weyl Crowbar Switch** | 68.00 kg | 55.00 kg | 40.00 kg | -27.27% (-15.00 kg) | PT-symmetric Weyl-exciton switch, t_trip = 1.701 ps |
 | **SMES Recovery Ring** | 168.99 kg | 125.00 kg | 65.00 kg | -48.00% (-60.00 kg) | Superhydride 48.0 T inductive loop, 99.880% energy recovery |
-| **Total Reactor Nacelle** | **4,096.99 kg** | **2,257.70 kg** | **950.00 kg** | **-57.92% (-1,307.70 kg)** | **Envelope: 0.3500 m³ (-59.25% vs 0.8589 m³)** |
+| **Total Reactor Nacelle** | **4,096.99 kg** | **2,257.70 kg** | **950.00 kg** | **-57.92% (-1,307.70 kg)** | **Envelope: 0.3500 m^3³ (-59.25% vs 0.8589 m^3³)** |
 
 ### 8.2 Thermal Chain and Tier 4 Planetary Forge (25.00 EW)
 
@@ -370,7 +370,7 @@ graph TD
 
 ---
 
-<a id="section-10"></a>
+<a id="section-10"></a><a id="10-master-104-gate-verification-matrix--24-formal-z3-smt-proofs"></a>
 ## 10. Master 104-Gate Verification Matrix & 24 Formal Z3 SMT Proofs
 
 ### 10.1 104-Gate Verification Gate Summary (`104/104 PASS`)
@@ -474,18 +474,18 @@ All 24 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 | [`shbt-power`](https://github.com/sys1own/shbt-power) | Commercial p-¹¹B Aneutronic Fusion Power Plant Twin | Multi-gigawatt p-¹¹B aneutronic fusion power generation (8,750 MW fusion / 7,832.903 MW net export), 128-byte `SHBT-MMIO-POWER`, 906.00 kW Landauer debt schedule, closed-loop thermal ledger, 78-gate verification audit (78/78 PASS) + 84-EXT checks, 16 Z3 proofs. |
 | [`shbt-cf`](https://github.com/sys1own/shbt-cf) | LANR Cold Fusion Reactor Workbench & Thermal-Hydraulics | 1,800-module LANR starter grid (555.03 W net/cell, 999.054 kW net DC array @ 400 V), dynamic Floquet–Adler–Wiser dielectric screening (`U_eff = 352.48 eV`), dual-stage CoSb₃/ZrNiSn TEG enthalpy recovery, Kapitza resistance `ΔT_K = 3.546 K`, 3D Eulerian-Eulerian helium thermal-hydraulics, 50-gate verification matrix (`GATE-01`–`GATE-50`). |
 | [`shbt-ghost`](https://github.com/sys1own/shbt-ghost) | Ghost Seed Reactionless Propulsion & Metric Stabilization | 3+1D CCZ4 numerical relativity with Gundlach damping (`κ₁ = 0.15, κ₂ = 0.0`), ADM metric stabilization (`β^i → 0, ||det(g)+1|| ≤ 10⁻¹²`), sub-2.5 ns PCSS GaN/4H-SiC optical crowbar circuits, 94.20% SiC inductive recovery shunts, 312-channel reactionless artificial gravity generation (1.000g habitability floors, zero-Coriolis metric screening `E_μν ≡ 0`), stand-off Bondi–Hoyle mass harvesting, 78-gate verification audit (`GATE-BAT-01..08`), 12 Z3 proofs. |
-| [`shbt-recon`](https://github.com/sys1own/shbt-recon) | Macroscopic State Translocation & Bipartite Fuel Foundry Twin | Macroscopic Stinespring dilation (`V_unified^macro`), 101-layer Adaptive TTN-MERA, topological dark ledger (`η_D = 23/33`, 124 Fibonacci braids), bipartite coset fuel synthesis operator (`R_synth^MAR`, `Δh_vis = 45/64`), 64-bank `UnifiedStinespringHyperFrame` (`135,168 B` @ `0x70020000`), Mode II 4.2 K readout (`Q_readout = 4.0194 × 10⁻²³ J/bit`), compacted `SHBT-MAR-312C` nacelle (`2,257.70 kg`), `SHBT-IBR-312` magazine, 144-gate verification audit, 29 Z3 formal SMT proofs. |
+| [`shbt-recon`](https://github.com/sys1own/shbt-recon) | Macroscopic State Translocation & Bipartite Fuel Foundry Twin | Macroscopic Stinespring dilation (`V_unified^macro`), 101-layer Adaptive TTN-MERA, topological dark ledger (`ηeta_D = 23/33`, 124 Fibonacci braids), bipartite coset fuel synthesis operator (`R_synth^MAR`, `Δh_vis = 45/64`), 64-bank `UnifiedStinespringHyperFrame` (`135,168 B` @ `0x70020000`), Mode II 4.2 K readout (`Q_readout = 4.0194 × 10⁻²³ J/bit`), compacted `SHBT-MAR-312C` nacelle (`2,257.70 kg`), `SHBT-IBR-312` magazine, 144-gate verification audit, 29 Z3 formal SMT proofs. |
 | [`shbt-sglt`](https://github.com/sys1own/shbt-sglt) | Synthetic Gravitational Lensing Telescope Stack | 2PN relativistic beam optics in harmonic coordinates, Two-Mode Squeezed Vacuum (TMSV) heterodyne metrology (`r = 2.50`, `21.715 dB`, noise ASD `S_r^{1/2} ≤ 0.010 pm/√Hz`), 5th-order minimum-jerk flight profiles (`||s'''|| ≤ 5.7735`), SE-L2 formation flight, CVD Diamond-on-GaN thermal dissipation, 70-gate verification audit, 14 Z3 proofs. |
 | [`shbt-exotic`](https://github.com/sys1own/shbt-exotic) | Multi-Protocol Spacetime Engineering Co-Simulation | Cross-protocol metric coupling across all 6 phenomena (warp + stasis + translocation + wells + comms + quine), Ford–Roman Quantum Inequality (QI) dark-ledger auditing, Heegaard–Floer symplectic boundary relabeling (`T^∂_ij ∈ Sp(2g, Z)`), dynamic 5-stage relativistic PDE solvers, 70-gate verification audit + 80-EXT checks, 8 Z3 formal proofs. |
-| [`shbt-warp`](https://github.com/sys1own/shbt-warp) | Holographic Warp Drive Digital Twin & 3+1D ADM Engine | 3+1D Alcubierre metric foliation (`α = 1.0`, `γ_ij = δ_ij`, `β^x = -v_s exp(Δ_mod/2) f_SHBT`), 4th-Gen `SHBT-MAR-312` (`4,096.99 kg`) / compacted `SHBT-MAR-312C` (`2,257.70 kg`, `0.8589 m³`) / 5th-Gen `SHBT-MAR-312X` (`950.00 kg`, `0.3500 m³`, `25.00 EW`, `2,482,950c`) mass-annihilation reactors, `SHBT-IBR-312` magazine (`41 cores / 1,378.06 EJ`), `SHBT-EW-312` Effective Traversable Wormhole System (`89.6c → 2,482,950c`, `8.957-hour` Andromeda M31 transit), 221-gate verification audit, 28 Z3 formal proofs. |
-| [`shbt-swarm`](https://github.com/sys1own/shbt-swarm) | Autonomous Interstellar Von Neumann Swarm Architecture | Macroscopic anyon-braid quine cloning (`R_clone^SWARM`, `13.418 ms` Jump-Cruiser ship replication), non-Hermitian PT-GoI optical template imprinting (`54.432 ps`), `SHBT-STEN` cognitive solver & Proof-Carrying CBF Xenobiological Safety Shield (Classes M0, X0, X1, X2), `R_univ^SWARM` universal 230-space-group matter folding (202.55 Mt planetary synthesis, `11.40 μs` Mode 1c direct breeding), 5th-Gen `SHBT-MAR-312X` autopoietic reactor (`950.00 kg`, `0.3500 m³`, `25.00 EW`, `99.200%` `SHBT-DEC-X`, `37,016.7×` sensible heat reduction), 104-gate verification audit, 20 Z3 formal SMT proofs. |
+| [`shbt-warp`](https://github.com/sys1own/shbt-warp) | Holographic Warp Drive Digital Twin & 3+1D ADM Engine | 3+1D Alcubierre metric foliation (`αalpha = 1.0`, `γ_ij = δ_ij`, `β^x = -v_s exp(Δ_mod/2) f_SHBT`), 4th-Gen `SHBT-MAR-312` (`4,096.99 kg`) / compacted `SHBT-MAR-312C` (`2,257.70 kg`, `0.8589 m^3³`) / 5th-Gen `SHBT-MAR-312X` (`950.00 kg`, `0.3500 m^3³`, `25.00 EW`, `2,482,950c`) mass-annihilation reactors, `SHBT-IBR-312` magazine (`41 cores / 1,378.06 EJ`), `SHBT-EW-312` Effective Traversable Wormhole System (`89.6c → 2,482,950c`, `8.957-hour` Andromeda M31 transit), 221-gate verification audit, 28 Z3 formal proofs. |
+| [`shbt-swarm`](https://github.com/sys1own/shbt-swarm) | Autonomous Interstellar Von Neumann Swarm Architecture | Macroscopic anyon-braid quine cloning (`R_clone^SWARM`, `13.418 ms` Jump-Cruiser ship replication), non-Hermitian PT-GoI optical template imprinting (`54.432 ps`), `SHBT-STEN` cognitive solver & Proof-Carrying CBF Xenobiological Safety Shield (Classes M0, X0, X1, X2), `R_univ^SWARM` universal 230-space-group matter folding (202.55 Mt planetary synthesis, `11.40 us` Mode 1c direct breeding), 5th-Gen `SHBT-MAR-312X` autopoietic reactor (`950.00 kg`, `0.3500 m^3^3`, `25.00 EW`, `99.200%` `SHBT-DEC-X`, `37,016.7x` sensible heat reduction), 104/104 Gates PASS, 24/24 Z3 UNSAT. |
 
 ### Upstream Architectural Foundations & Lineage
 
 `sys1own/shbt-swarm` is the apex synthesis repository of the SHBT program, integrating core physical, mathematical, and computational invariants contributed by all nine upstream repositories:
 - **`sys1own/shbt-qc` (Canonical Optical Hardware Origin):** Serves as the primary origin of the **SHBT-R photonic processing architecture**, 52-hexamer InP/InGaAsP microcavities (3-stage polariton squeezing cascade), the ultrafast **non-Hermitian PT-symmetric Geometry of Interaction (GoI) optical solver** (`t_prop = 1.701 ps`), and the **Tomita-Takesaki inverse modular automorphism flow (`σ_{-t}^Ψ`)** executing over the dark ledger at `Q_internal = 0 J/bit`. These mechanisms directly enabled `shbt-swarm`'s Phase 1 zero-heat quine replication (`R_clone^SWARM`), `54.432 ps` optical template projection, and the Phase 2 `SHBT-STEN` cognitive world model.
 - **`sys1own/shbt-recon` (Translocation & Synthesis Core):** Contributed the macroscopic Stinespring isometry (`V_unified^macro`), 101-layer Adaptive TTN-MERA, 64-bank `UnifiedStinespringHyperFrame` (`135,168 B`), Mode II 4.2 K readout (`Q_readout = 4.0194 × 10⁻²³ J/bit`), and bipartite coset fuel synthesis operator (`R_synth^MAR`, `Δh_vis = 45/64`), directly catalyzing Phase 1 Pathway C bio-capture (`F_bio ≥ 1 - 10⁻¹²²`) and Phase 3 Universal Arbitrary Matter Folding (`R_univ^SWARM`) across all 230 space groups.
-- **`sys1own/shbt-warp` (Propulsion & Reactor Baseline):** Provided the 4th-Gen `SHBT-MAR-312` and compacted `SHBT-MAR-312C` catalytic wafer nacelles, `SHBT-IBR-312` magazine, and `SHBT-EW-312` wormhole corridor as the direct propulsion baseline that `shbt-swarm` Phase 4 evolved into the 5th-Gen `SHBT-MAR-312X` exotic autopoietic reactor (`950.00 kg`, `0.3500 m³`, `25.00 EW`, `2,482,950c`), unlocking `13.418 ms` daughter vessel replication and `8.957-hour` Andromeda M31 transit.
+- **`sys1own/shbt-warp` (Propulsion & Reactor Baseline):** Provided the 4th-Gen `SHBT-MAR-312` and compacted `SHBT-MAR-312C` catalytic wafer nacelles, `SHBT-IBR-312` magazine, and `SHBT-EW-312` wormhole corridor as the direct propulsion baseline that `shbt-swarm` Phase 4 evolved into the 5th-Gen `SHBT-MAR-312X` exotic autopoietic reactor (`950.00 kg`, `0.3500 m^3³`, `25.00 EW`, `2,482,950c`), unlocking `13.418 ms` daughter vessel replication and `8.957-hour` Andromeda M31 transit.
 - **`sys1own/shbt-precision` (Mathematical Substrate):** Provided the 512-bit MPFR arithmetic core, `(26, 8, 312)` WZW character convergence, 346 Dynkin slots, and Callan–Symanzik RG thresholds, establishing the exact Casimir denominators `(28, 22, 640)` for the continuous Dynamic Sugawara Framing Compensator and Zero-Compute Simulation-to-Reality Isomorphism (`ΔC_post-sim ≡ 0`).
 - **`sys1own/shbt-ghost` (Numerical Relativity & Crowbars):** Provided 3+1D CCZ4 numerical relativity with Gundlach damping, sub-2.5 ns PCSS crowbars, and stand-off Bondi–Hoyle mass harvesting, forming the foundation for Phase 2 in-situ feedstock scooping and Proof-Carrying CBF Xenobiological Triage (Classes M0, X0, X1, X2).
 - **`sys1own/shbt-sglt` (Relativistic Optics & Metrology):** Provided 2PN relativistic beam optics, Two-Mode Squeezed Vacuum (TMSV) metrology (`r = 2.50`, `21.715 dB`), and 5th-order minimum-jerk kinematics feeding sensory input into the `SHBT-STEN` world model.
@@ -503,7 +503,7 @@ All 24 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 make -C kernel test
 ```
 
-### 2. Execute All 20 Formal Z3 SMT Proofs
+### 2. Execute All 24 Formal Z3 SMT Proofs
 ```bash
 uv run --with z3-solver python formal/verify_swarm_cloning.py
 uv run --with z3-solver python formal/verify_swarm_ai_safety.py

@@ -1,12 +1,12 @@
 # SHBT-SWARM: Architectural & Mathematical System Specification
 
-`sys1own/shbt-swarm` defines the freestanding C11 microkernel (`SHBT-MMIO-SWARM` v4, ABI `0x00040312`), eleven `#![no_std]` and multiphysics Rust crates, twenty Z3 SMT formal theorems (`unsat`), and 104 Hardware-in-the-Loop (HIL) verification gates governing autonomous von Neumann spacecraft self-replication, planetary cognitive conditioning (`SHBT-STEN`), universal arbitrary matter folding (`R_univ^SWARM`), and the exotic-material autopoietic mass-annihilation reactor (`SHBT-MAR-312X`).
+`sys1own/shbt-swarm` defines the freestanding C11 microkernel (`SHBT-MMIO-SWARM` v4, ABI `0x00040312`), twelve `#![no_std]` and multiphysics Rust crates, twenty-four formal Z3 SMT theorems (`24/24 UNSAT`), and 104 Hardware-in-the-Loop (HIL) verification gates governing autonomous von Neumann spacecraft self-replication, planetary cognitive conditioning (`SHBT-STEN`), universal arbitrary matter folding (`R_univ^SWARM`), and the exotic-material autopoietic mass-annihilation reactor (`SHBT-MAR-312X`).
 
 ---
 
-## 1. 11-Crate DAG Topology, #![no_std] vs. std Boundaries, and Workspace Architecture
+## 1. 12-Crate DAG Topology, #![no_std] vs. std Boundaries, and Workspace Architecture
 
-The `sys1own/shbt-swarm` workspace comprises 11 tightly integrated crates organized as a strict Directed Acyclic Graph (DAG) with zero circular dependencies. Ten crates enforce strict `#![no_std]` compliance with zero dynamic heap allocations, while the simulation twin (`shbt-swarm-sim`) and hardware-in-the-loop qualification harness (`shbt-swarm-hil`) operate under `std` for host-side multi-physics modeling and qualification verification.
+The `sys1own/shbt-swarm` workspace comprises 12 tightly integrated crates organized as a strict Directed Acyclic Graph (DAG) with zero circular dependencies. Ten crates enforce strict `#![no_std]` compliance with zero dynamic heap allocations, while the simulation twin (`shbt-swarm-sim`) and hardware-in-the-loop qualification harness (`shbt-swarm-hil`) operate under `std` for host-side multi-physics modeling and qualification verification.
 
 ```mermaid
 graph TD
@@ -39,6 +39,8 @@ graph TD
     H --> K
     I --> K
     J --> K
+    A --> L[shbt-swarm-cli: std]
+    B --> L
 ```
 
 ### 1.1 Crate Role and Boundary Classification Matrix
@@ -56,6 +58,7 @@ graph TD
 | `shbt-swarm-mar312x` | `#![no_std]` | Phase 4 Exotic-Material Autopoietic Mass-Annihilation Reactor (`SHBT-MAR-312X`), Purcell seed die, 99.20% SHBT-DEC-X converter, 48.0 T clathrate coils, and 25.00 EW Tier 4 Direct Boundary Bus. |
 | `shbt-swarm-sim` | `std` | Multi-physics digital twin modeling non-equilibrium Cattaneo-Vernotte hyperbolic heat transfer, relativistic MHD plasma dynamics, and Monte Carlo fleet expansion kinetics. |
 | `shbt-swarm-hil` | `std` | Hardware-in-the-Loop qualification runner executing the 104-gate verification suite (`104/104 PASS`) and exporting the formal machine-readable telemetry ledger. |
+| `shbt-swarm-cli` | `std` | Command-line interface and diagnostic tooling for swarm node initialization, telemetry inspection, and simulation orchestration. |
 
 ### 1.2 Cross-Repository Logic Transfer Matrix
 
@@ -105,50 +108,50 @@ Every spacecraft, biological payload, or architectural tile is represented in th
 
 ### 3.1 Adaptive TTN-MERA World Model & Single-Pass Non-Hermitian `PT-GoI` Optical Inference (`THM-AI-01`, `THM-AI-01-EXT`)
 
-- **Adaptive Renormalization Depth:** Multi-scale planetary world-modeling utilizes a Tree Tensor Network coupled to a Multi-scale Entanglement Renormalization Ansatz (TTN-MERA) with depth scaling $L(N) = 94 + \lceil \log_2(N / 10^{28}) \rceil$ spanning $L \in [94, 101]$ layers for payloads up to $10^{45}$ nucleons. HaPPY $\{5,4\}$ pentagon codes enforce holographic isometry $\|W^\dagger W - P_{\text{code}}\|_{\text{op}} \le 10^{-120}$, receiving real-time sensory inputs from `shbt-sglt` Two-Mode Squeezed Vacuum (TMSV) interferometers ($r = 2.50$, $21.715\text{ dB}$) and Bessel $J_0^2$ tomography.
-- **InP/InGaAsP Photonic Microcavity Array:** Realized via 312 Whispering Gallery Mode (WGM) resonators arranged across 52 hexamers. Material constants at $\lambda_0 = 1,550.0\text{ nm}$: core index $n_{\text{core}} = 3.4382$, cladding index $n_{\text{clad}} = 3.1670$, effective index $n_{\text{eff}} = 3.26889$, group index $n_g = 3.64213$, track pitch $L_{\text{hex}} = 156.00\ \mu\text{m}$.
-- **Exceptional-Point Nilpotency & Girard GoI:** Tuning the optical loop operator $L_{\text{loop}} = U M$ to a second-order non-Hermitian exceptional point (EP2) where $(U M)^2 \equiv 0$ collapses the resolvent Neumann series into the exact single-pass algebraic identity $\operatorname{EX}(M, U) = (I + U M) U$.
-- **Real-Time Deadline Margin:** Single-bank optical propagation delay is $t_{\text{prop}} = n_{\text{eff}} L_{\text{hex}} / c = 1.701\text{ ps/bank}$ ($1701\text{ fs}$). Cumulative 32-bank equilibrium latency is $T_{\text{eq}}^{(32)} = 32 \times 1.701\text{ ps} = 54.432\text{ ps}$ ($54432\text{ fs}$), providing $\ge 363,663\times$ real-time margin inside the $19.795\ \mu\text{s}$ ($50.518\text{ kHz}$) microkernel tick.
-- **Puiseux Perturbation Stability:** Under bounded perturbations $\|\delta L\|_{\text{op}} \le \varepsilon_{\text{crit}} = 2.50 \times 10^{-121}$, resolvent truncation error satisfies $\varepsilon_{\text{iso}} \le 10^{-120}$ and spectral radius $\rho(\tilde{L}) < 1.0$, suppressing infinite-impulse ringdown instabilities.
+- **Adaptive Renormalization Depth:** Multi-scale planetary world-modeling utilizes a Tree Tensor Network coupled to a Multi-scale Entanglement Renormalization Ansatz (TTN-MERA) with depth scaling `L(N) = 94 + ceil(log2(N / 10^28))` spanning `L in [94, 101]` layers for payloads up to `10^45` nucleons. HaPPY `{5,4}` pentagon codes enforce holographic code isometry `||W^dag W - P_code||_op <= 10^-120`, receiving real-time sensory inputs from `shbt-sglt` Two-Mode Squeezed Vacuum (TMSV) interferometers (`r = 2.50`, `21.715 dB`) and Bessel `J_0^2` tomography.
+- **InP/InGaAsP Photonic Microcavity Array:** Realized via 312 Whispering Gallery Mode (WGM) resonators arranged across 52 hexamers. Material constants at `lambda_0 = 1,550.0 nm`: core index `n_core = 3.4382`, cladding index `n_clad = 3.1670`, effective modal index `n_eff = 3.26889`, group index `n_g = 3.64213`, track pitch `L_hex = 156.00 um`.
+- **Exceptional-Point Nilpotency & Girard GoI:** Tuning the optical loop operator `L_loop = U M` to a second-order non-Hermitian exceptional point (EP2) where `(U M)^2 == 0` collapses the resolvent Neumann series into the exact single-pass algebraic identity `EX(M, U) = (I + U M) U`.
+- **Real-Time Deadline Margin:** Single-bank optical propagation delay evaluates to `t_prop = n_eff * L_hex / c = 1.701 ps/bank` (`1701 fs`). Cumulative 32-bank equilibrium latency is `T_eq^(32) = 32 * 1.701 ps = 54.432 ps` (`54432 fs`), providing `>= 363,663x` real-time margin inside the `19.795 us` (`50.518 kHz`) microkernel tick deadline.
+- **Puiseux Perturbation Stability:** Under bounded perturbations `||delta L||_op <= eps_crit = 2.50e-121`, resolvent truncation error satisfies `eps_iso <= 10^-120` and spectral radius `rho(tilde_L) < 1.0`, suppressing infinite-impulse ringdown instabilities.
 - **Deterministic Fixed-Point Implementation:** Packaged in `#![no_std]` Rust (`crates/shbt-swarm-ai/src/pt_goi_solver.rs`) using deterministic signed Q32.32 arithmetic (`FixedQ32`) and 64-byte aligned 312-channel polariton state vectors (`PolaritonVector`).
 
 ### 3.2 Isentropic Relative Modular Flow & Heegaard-Floer Symplectic Landauer Shunting (`THM-AI-02`, `THM-AI-02-EXT`)
 
-- **Open-System Tomita-Takesaki Flow:** Cognitive weight adaptation evolves via modular automorphism flow generated by the Connes Radon-Nikodym cocycle derivative $[D\Phi : D\Psi]_t$ under sensory prediction error $\delta\mathcal{F}_{\text{STEN}} = \mathcal{D}_{\text{KL}}(\rho_{\text{MERA}}^{\text{UV}} \,\|\, \rho_{\text{sglt}}^{\text{obs}})$.
-- **Zero Internal Heat Dissipation:** Because cocycle evolution preserves the unitary spectrum, internal von Neumann entropy production rate vanishes identically: $\dot{S}_{\text{vN}} \equiv 0 \implies Q_{\text{internal}} \equiv 0\text{ J/bit}$.
-- **Diamond-on-GaN Symplectic Landauer Shunt:** External sensory erasure entropy is dissipated through Diamond-on-GaN phonon scattering into a topological dark Stinespring ledger. Dilation weight completeness $\eta_D + \eta_A = 23/33 + 10/33 = 1$ yields exact quadratic shunting $S = (\eta_A / (\eta_D + \eta_A))^2 = (10/33)^2 = 100/1089 \approx 0.091827$ ($9.18\%$ visible, $90.82\%$ dark).
-- **Cryogenic Cold Stage Clamping:** At the $T_{\text{cold}} = 4.2\text{ K}$ cold stage ($E_{\text{Landauer}} = k_B(4.2)\ln 2 \approx 4.01937 \times 10^{-23}\text{ J/bit}$), visible sensible dissipation is strictly clamped to $P_{\text{vis}} = S \cdot P_{\text{total}} \le 1.01\text{ nW}$ ($1010\text{ pW}$) at peak enclave sweep rate $\alpha = 10^4\text{ sweeps/s}$ ($P_{\text{total}} \approx 11.0\text{ nW}$), preserving cryostat equilibrium ($T_{\text{QC}} \le 4.2\text{ K}$).
+- **Open-System Tomita-Takesaki Flow:** Cognitive weight adaptation evolves via modular automorphism flow generated by the Connes Radon-Nikodym cocycle derivative `[D Phi : D Psi]_t` under sensory prediction error `delta F_STEN = D_KL(rho_MERA^UV || rho_sglt^obs)`.
+- **Zero Internal Heat Dissipation:** Because cocycle evolution preserves the unitary spectrum, internal von Neumann entropy production rate vanishes identically: `dS_vN/dt == 0 ==> Q_internal == 0 J/bit`.
+- **Diamond-on-GaN Symplectic Landauer Shunt:** External sensory erasure entropy is dissipated through Diamond-on-GaN phonon scattering into a topological dark Stinespring ledger. Dilation weight completeness `eta_D + eta_A = 23/33 + 10/33 = 1` yields exact quadratic shunting `S = (eta_A / (eta_D + eta_A))^2 = (10/33)^2 = 100/1089 ~ 0.091827` (`9.18%` visible, `90.82%` dark ledger).
+- **Cryogenic Cold Stage Clamping:** At the `T_cold = 4.2 K` cold stage (`E_Landauer = k_B * 4.2 * ln 2 ~ 4.01937e-23 J/bit`), visible sensible dissipation is strictly clamped to `P_vis = S * P_total <= 1.01 nW` (`1010 pW`) at peak enclave sweep rate `alpha = 10^4 sweeps/s` (`P_total ~ 11.0 nW`), preserving cryostat equilibrium (`T_QC <= 4.2 K`).
 - **C-ABI Layout:** Enforces exact 128-byte dual-cacheline alignment: `#[repr(C, align(128))] ModularWeightState` (`crates/shbt-swarm-ai/src/modular_learning.rs`).
 
 ### 3.3 Relativistic Causality, Simplicial Sheaf Consensus & Hyper-Temporal Enclaves (`THM-AI-03`, `THM-AI-04-EXT`)
 
-- **Spacelike No-Signaling Preservation:** Inter-spacecraft coordination across $M = 10^6$ nodes over Delaunay tetrahedralizations enforces $S_{AB} \equiv 0$ for spacelike separation, guaranteeing $\operatorname{Tr}_B(\mathcal{E}_{AB}(\rho_{AB})) \equiv \rho_A$ and mathematically precluding acausal signalling.
-- **Global Symplectic Unipotence:** Consensus operations occur via integer symplectic matrices $T_{ij} \in \mathrm{Sp}(2g, \mathbb{Z})$ (genus $g = M + 2 \ge 3$). Global shear matrix $\mathbf{T} = \begin{pmatrix} I_{2M} & \mathbf{S} \\ 0 & I_{2M} \end{pmatrix}$ is unipotent of index 2: $(\mathbf{T} - I)^2 \equiv 0$. All eigenvalues equal $1.0$, guaranteeing unit spectral radius $\rho_{\text{spec}}(\mathbf{T}) = 1.0$ and zero algebraic entropy $\operatorname{Ent}(\phi) \equiv 0$.
-- **Israel-Darmois Junction Matching:** Inside localized SGLT warp envelopes with proper time blueshift $\alpha = d\tau/dt \in [10^1, 10^4]$, thin-shell junction conditions enforce extrinsic curvature jump $[K^a_b] \equiv 0$, vanishing surface energy-momentum $\sigma \equiv 0$, and zero surface tension $\tau_{\text{surf}} \equiv 0$.
-- **12-Layer Fracton Weyl Cancellation:** Eliminates interior spatial gradients ($\|\nabla_i \alpha\|_{\text{interior}} = 0$) and tidal shearing ($E_{\mu\nu} = 0$). At $\alpha = 10^4$, the swarm executes $3.6366 \times 10^9$ Model Predictive Control sweeps per microkernel tick.
-- **135,168-Byte Hyper-Frame:** Serializes continuous telemetry and consensus state into the 64-bank hyper-frame (`UnifiedStinespringHyperFrame`: 64 banks $\times$ 2,112 bytes) mapped to physical MMIO base `0x70020000`.
+- **Spacelike No-Signaling Preservation:** Inter-spacecraft coordination across `M = 10^6` nodes over Delaunay tetrahedralizations enforces `S_AB == 0` for spacelike separation, guaranteeing `Tr_B(E_AB(rho_AB)) == rho_A` and mathematically precluding acausal signalling across the fleet.
+- **Global Symplectic Unipotence:** Consensus operations occur via integer symplectic matrices `T_ij in Sp(2g, Z)` (genus `g = M + 2 >= 3`). Global shear matrix `T = [[I_2M, S], [0, I_2M]]` is unipotent of index 2: `(T - I)^2 == 0`. All eigenvalues equal `1.0`, guaranteeing unit spectral radius `rho_spec(T) = 1.0` and zero algebraic entropy `Ent(phi) == 0`.
+- **Israel-Darmois Junction Matching:** Inside localized SGLT warp envelopes with proper time blueshift `alpha = dtau/dt in [10^1, 10^4]`, thin-shell junction conditions enforce extrinsic curvature jump `[K^a_b] == 0`, vanishing surface energy-momentum `sigma == 0`, and zero surface tension `tau_surf == 0`.
+- **12-Layer Fracton Weyl Cancellation:** Eliminates interior spatial gradients (`||grad_i alpha||_interior == 0`) and tidal shearing (`E_munu == 0`). At `alpha = 10^4`, the swarm executes `3.6366e9` Model Predictive Control sweeps per microkernel tick.
+- **135,168-Byte Hyper-Frame:** Serializes continuous telemetry and consensus state into the 64-bank hyper-frame (`UnifiedStinespringHyperFrame`: 64 banks x 2,112 bytes) mapped to physical MMIO base `0x70020000`.
 
-### 3.4 Proof-Carrying Relative-Degree $r=2$ HOCBF Safety Shield & Xenobiological Triage (`THM-AI-04`..`06`, `THM-AI-05-EXT`)
+### 3.4 Proof-Carrying Relative-Degree r=2 HOCBF Safety Shield & Xenobiological Triage (`THM-AI-04`..`06`, `THM-AI-05-EXT`)
 
-The hardware filter in `crates/shbt-swarm-shield/src/hocbf_engine.rs` enforces High-Order Control Barrier Functions (HOCBFs) with relative degree $r=2$:
+The hardware filter in `crates/shbt-swarm-shield/src/hocbf_engine.rs` enforces High-Order Control Barrier Functions (HOCBFs) with relative degree `r = 2`:
 
-- **Recursive Lie Derivative Barrier Chains:** For state constraint $h(\mathbf{x}) \ge 0$:
-  $$\psi_0(\mathbf{x}) = h(\mathbf{x})$$
-  $$\psi_1(\mathbf{x}) = \mathcal{L}_f h(\mathbf{x}) + \kappa_1 h(\mathbf{x})$$
-  $$\psi_2(\mathbf{x}, u) = \mathcal{L}_f^2 h(\mathbf{x}) + \mathcal{L}_g\mathcal{L}_f h(\mathbf{x}) u + (\kappa_1 + \kappa_2)\mathcal{L}_f h(\mathbf{x}) + \kappa_1\kappa_2 h(\mathbf{x}) \ge 0$$
-- **Four Canonical Physical Constraints (Relative Degree $r=2$):**
-  1. Cryogenic core temperature: $h_T(\mathbf{x}) = T_{\max} - T \ge 0$ ($T_{\max} = 380.0\text{ K}$, $\dot{T}$).
-  2. Structural shell mechanical stress: $h_\sigma(\mathbf{x}) = \sigma_{\max} - \sigma \ge 0$ ($\sigma_{\max} = 850.0\text{ MPa}$, $\dot{\sigma}$).
-  3. Reactor core magnetic flux: $h_\Phi(\mathbf{x}) = \Phi_{\max}^2 - \Phi^2 \ge 0$ ($\Phi_{\max} = 45.0\text{ Wb}$, $\dot{\Phi}$).
-  4. Swarm local population density: $h_\rho(\mathbf{x}) = \rho_{\max} - \rho \ge 0$ ($\rho_{\max} = 128.0\text{ ships/km}^3$, $\dot{\rho}$).
-- **Active-Set QP Control Filtering:** Quadratic Program projection (`filter_control`) with $L_2$ slack regularization ($p_{\text{slack}} = 10^6$) projects raw control demand $u_{\text{raw}}$ to $u_{\text{filtered}}$ ensuring $\psi_2(\mathbf{x}, u) \ge 0$. Nagumo boundary transversality checks certify that composite safe set $\mathcal{C}^* = \{ \mathbf{x} \mid \psi_0(\mathbf{x}) \ge 0 \land \psi_1(\mathbf{x}) \ge 0 \}$ is strictly positively invariant.
-- **Hardware Interlocks:** Violations assert `SHBT_SWARM_FAULT_HOCBF_BARRIER_TRIP` (`0x00004000`) and trigger the $1.701\text{ ps}$ optical Weyl crowbar (`0x80000000`).
-- **Planetary Habitability CLF ($V_{\text{terra}}$):** Drives monotonic convergence $dV_{\text{terra}}/dt \le -\kappa V_{\text{terra}}$ toward the Earth-compatible attractor ($T_{\text{surf}} = 288.15\text{ K}$, $P_{\text{N2}} = 78.084\text{ kPa}$, $P_{\text{O2}} = 20.946\text{ kPa}$, $P_{\text{CO2}} = 0.040\text{ kPa}$, $P_{\text{H2O}} = 1.013\text{ kPa}$, ocean $\text{pH} = 8.10$, salinity $35.0\text{ g/kg}$, dipole $B \ge 30.0\ \mu\text{T}$).
+- **Recursive Lie Derivative Barrier Chains:** For state constraint `h(x) >= 0`:
+  - `psi_0(x) = h(x)`
+  - `psi_1(x) = L_f h(x) + kappa_1 * h(x)`
+  - `psi_2(x, u) = L_f^2 h(x) + L_g L_f h(x) * u + (kappa_1 + kappa_2) * L_f h(x) + kappa_1 * kappa_2 * h(x) >= 0`
+- **Four Canonical Physical Constraints (Relative Degree r=2):**
+  1. Cryogenic core temperature: `h_T(x) = T_max - T >= 0` (`T_max = 380.0 K`, `T_dot`).
+  2. Structural shell mechanical stress: `h_sigma(x) = sigma_max - sigma >= 0` (`sigma_max = 850.0 MPa`, `sigma_dot`).
+  3. Reactor core magnetic flux: `h_Phi(x) = Phi_max^2 - Phi^2 >= 0` (`Phi_max = 45.0 Wb`, `Phi_dot`).
+  4. Swarm local population density: `h_rho(x) = rho_max - rho >= 0` (`rho_max = 128.0 ships/km^3`, `rho_dot`).
+- **Active-Set QP Control Filtering:** Quadratic Program projection (`filter_control`) with `L_2` slack regularization (`p_slack = 10^6`) projects raw control demand `u_raw` to `u_filtered` ensuring `psi_2(x, u) >= 0`. Nagumo boundary transversality checks certify that composite safe set `C* = { x | psi_0(x) >= 0 and psi_1(x) >= 0 }` is strictly positively invariant.
+- **Hardware Interlocks:** Violations assert `SHBT_SWARM_FAULT_HOCBF_BARRIER_TRIP` (`0x00004000`) and trigger the `1.701 ps` optical Weyl crowbar (`0x80000000`).
+- **Planetary Habitability CLF (V_terra):** Drives monotonic convergence `dV_terra/dt <= -kappa * V_terra` toward the Earth-compatible attractor (`T_surf = 288.15 K`, `P_N2 = 78.084 kPa`, `P_O2 = 20.946 kPa`, `P_CO2 = 0.040 kPa`, `P_H2O = 1.013 kPa`, ocean `pH = 8.10`, salinity `35.0 g/kg`, dipole `B >= 30.0 uT`).
 - **Exhaustive Xenobiological Triage Partition (`status_reg [31:28]`):**
-  - **Class X0 (`0x10000000`, $D_{\text{Cayley}} = 0$):** Earth-seeded biology. Strictly locked out (`SHBT_SWARM_FAULT_X0_PROTECT_LCK = 0x0800`).
-  - **Class X1 (`0x20000000`, $D_{\text{Cayley}} > 0, C_{\text{MERA}} \ge 10^6$):** Sapient alien life. Strictly locked out (`SHBT_SWARM_FAULT_X1_SAPIENT_LCK = 0x1000`); planetary quarantine triggered.
-  - **Class X2 (`0x40000000`, $D_{\text{Cayley}} > 0, 0 < C_{\text{MERA}} < 10^6$):** Primitive non-sapient biomass. Approved for non-ionizing molecular recycling (`SHBT_SWARM_CMD_XENO_ASSIMILATE`), reducing transmutation work by $99.25\%$ (saving $\Delta W_{\text{synth}} = 56.420194\text{ TJ/kg}$).
-  - **Class M0 (`0x00000000`, $D_{\text{Cayley}} > 0, C_{\text{MERA}} = 0$):** Barren abiotic regolith. Approved for baseline Mode 1b harvesting.
+  - **Class X0 (`0x10000000`, `D_Cayley == 0`):** Earth-seeded biology. Strictly locked out (`SHBT_SWARM_FAULT_X0_PROTECT_LCK = 0x0800`).
+  - **Class X1 (`0x20000000`, `D_Cayley > 0`, `C_MERA >= 10^6`):** Sapient alien life. Strictly locked out (`SHBT_SWARM_FAULT_X1_SAPIENT_LCK = 0x1000`); planetary quarantine triggered.
+  - **Class X2 (`0x40000000`, `D_Cayley > 0`, `0 < C_MERA < 10^6`):** Primitive non-sapient biomass. Approved for non-ionizing molecular recycling (`SHBT_SWARM_CMD_XENO_ASSIMILATE`), reducing transmutation work by `99.25%` (saving `Delta W_synth = 56.420194 TJ/kg`).
+  - **Class M0 (`0x00000000`, `D_Cayley > 0`, `C_MERA == 0`):** Barren abiotic regolith. Approved for baseline Mode 1b harvesting.
 
 ---
 
@@ -230,7 +233,7 @@ The complete verification pipeline for `sys1own/shbt-swarm` guarantees mathemati
 
 ### 7.2 The 24 Formal Z3 SMT Theorems (24/24 UNSAT)
 
-All 24 formal theorems are formulated via negation refutation in quantifier-free non-linear arithmetic and discharged with status `unsat`:
+All 24 formal theorems across 4 domain scripts (`verify_swarm_cloning.py` (4), `verify_swarm_ai_safety.py` (10), `verify_universal_synthesis.py` (5), and `verify_mar312x_reactor.py` (5)) are formulated via negation refutation in quantifier-free non-linear arithmetic and discharged with status `unsat` (24/24 UNSAT):
 
 1. `THM-CLONE-01`: Categorical and ADM Vacuum No-Cloning Impossibility.
 2. `THM-CLONE-02`: Solovay-Kitaev Depth-9 Quine Fidelity and Phylogenetic Drift Nullification.
