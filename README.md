@@ -326,7 +326,7 @@ At exawatt-scale operational tiers, stimulated Brillouin scattering generates in
 |                                                                                                       |
 |  +-------------------------------------------------------------------------------------------------+  |
 |  |                 SHBT-MAR-312X Autopoietic Mass-Annihilation Reactor (950.00 kg, 0.3500 m^3)     |  |
-|  |  - Fuel: 41 x 376.99 kg Metamaterial Core Cells (15,456.59 kg ADM fuel mass)                     |  |
+|  |  - Fuel: 41 x 376.99 kg Metamaterial Core Cells (15,456.59 kg ADM fuel mass)                    |  |
 |  |  - Solid-State 4D Weyl-PTC SHBT-DEC-X Direct Conversion: eta_DEC-X = 0.99200 (99.200%)          |  |
 |  |  - Sensible Thermal Leakage: f_sensible = 2.130395e-9 (cold mass T_op = 24.85 K <= 192.50 K)    |  |
 |  +--------------------------------------------+----------------------------------------------------+  |
@@ -334,28 +334,28 @@ At exawatt-scale operational tiers, stimulated Brillouin scattering generates in
 |                                               v                                                       |
 |  +-------------------------------------------------------------------------------------------------+  |
 |  |                  Direct Boundary-Conformal CFT Bus (B_direct^MAR-X) & LANR Rail                 |  |
-|  |  - Direct Bus Conversion Efficiency: eta_direct = 0.99850 (99.850%)                              |  |
+|  |  - Direct Bus Conversion Efficiency: eta_direct = 0.99850 (99.850%)                             |  |
 |  |  - Net Actuation Conversion: eta_act = 0.99200 * 0.99850 = 0.990512 (99.0512%)                  |  |
-|  |  - LANR Power Generator: +999.054 kW DC at 4.2 K vs. 906.000 kW CFT Debt (+93.054 kW Surplus)  |  |
+|  |  - LANR Power Generator: +999.054 kW DC at 4.2 K vs. 906.000 kW CFT Debt (+93.054 kW Surplus)   |  |
 |  +--------------------------------------------+----------------------------------------------------+  |
 |                                               |                                                       |
 |                                               v                                                       |
 |  +-------------------------------------------------------------------------------------------------+  |
 |  |           Monolithic 8x8 InP/InGaAs HBT & InP/InGaAsP PIC Boundary Character Rotator            |  |
-|  |  - 64 Independent Actuation Channels (8x8 Grid, 127 um Interposer / 50 um Active Mesa Pitch)   |  |
-|  |  - 1550.00 nm DFB Master Carrier (15.0 mW CW) -> 6-Stage MMI Splitter Tree (0.42 dB/stage)    |  |
-|  |  - InGaAsP MZI IQ Modulators (V_pi = 1.65 V, L_int = 3.20 mm)                                   |  |
-|  |  - Linear Collector Bias Mapping: V_mn in [3.800 V, 7.400 V] via 16-Bit IQ Words [0, 65535]   |  |
-|  |  - K_p = 1.85 V/rad PID Phase Lock -> sigma_phi <= 5.05e-5 rad, Coherence C >= 0.9995 (0.9999987)|
-|  |  - Timing Jitter: 0.201 fs (< 1.707 fs limit); Routing Bandwidth: 2.560 Tbps (64 x 40 Gbps)     |  |
+|  | - 64 Independent Actuation Channels (8x8 Grid, 127 um Interposer / 50 um Active Mesa Pitch)     |  |
+|  | - 1550.00 nm DFB Master Carrier (15.0 mW CW) -> 6-Stage MMI Splitter Tree (0.42 dB/stage)       |  |
+|  | - InGaAsP MZI IQ Modulators (V_pi = 1.65 V, L_int = 3.20 mm)                                    |  |
+|  | - Linear Collector Bias Mapping: V_mn in [3.800 V, 7.400 V] via 16-Bit IQ Words [0, 65535]      |  |
+|  | - K_p = 1.85 V/rad PID Phase Lock -> sigma_phi <= 5.05e-5 rad, Coherence C >= 0.9995 (0.9999987)|  |
+|  | - Timing Jitter: 0.201 fs (< 1.707 fs limit); Routing Bandwidth: 2.560 Tbps (64 x 40 Gbps)      |  |
 |  +--------------------------------------------+----------------------------------------------------+  |
 |                                               |                                                       |
 |                                               v                                                       |
 |  +-------------------------------------------------------------------------------------------------+  |
 |  |              Sapphire / Helium-4 Quarter-Wave Acoustic Tamping & Airbridge Decoupling           |  |
 |  |  - Densified-Silica Quarter-Wave Layer: Z_m = 1.1512 MRayl, d_m = 6.395 nm at f_ac = 85.0 GHz   |  |
-|  |  - Power Reflectance: R_acoustic = 8.78e-10 <= 1.0e-6; Peak Stress: 124.60 MPa <= 350.00 MPa   |  |
-|  |  - Suspended Au/InP Micro-Airbridges: f_res = 19.82 MHz -> Clock Isolation 3,632.69x >= 3500x  |  |
+|  |  - Power Reflectance: R_acoustic = 8.78e-10 <= 1.0e-6; Peak Stress: 124.60 MPa <= 350.00 MPa    |  |
+|  |  - Suspended Au/InP Micro-Airbridges: f_res = 19.82 MHz -> Clock Isolation 3,632.69x >= 3500x   |  |
 |  |  - EP2 Pt-Weyl Crowbar: 1.701 ps Trip Latency -> 48 T SMES 99.880% Inductive Recovery           |  |
 |  +--------------------------------------------+----------------------------------------------------+  |
 |                                               |                                                       |
