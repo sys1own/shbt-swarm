@@ -56,7 +56,7 @@ graph TD
 | `shbt-swarm-foundry` | `#![no_std]` | Phase 3 Universal Arbitrary Matter Folding (`R_univ^SWARM`), 346-slot continuous Dynkin weight routing, Dynamic Sugawara Framing Compensator, and 230-space-group Kohn-Sham lattice projector. |
 | `shbt-swarm-architect` | `#![no_std]` | Zero-Compute Simulation-to-Reality Isomorphism bridge (`Delta C_post-sim == 0`), MERA-DAG planetary tile instancing, and 5-tier 202.55 Mt turnkey human civilization synthesizer. |
 | `shbt-swarm-mar312x` | `#![no_std]` | Phase 4 Exotic-Material Autopoietic Mass-Annihilation Reactor (`SHBT-MAR-312X`), Purcell seed die, 99.20% SHBT-DEC-X converter, 48.0 T clathrate coils, and 25.00 EW Tier 4 Direct Boundary Bus. |
-| `shbt-swarm-sim` | `std` | Multi-physics digital twin modeling non-equilibrium Cattaneo-Vernotte hyperbolic heat transfer, relativistic MHD plasma dynamics, and Monte Carlo fleet expansion kinetics. |
+| `shbt-swarm-sim` | `std` | Multi-physics digital twin executing the closed-loop 6-stage fuel-to-boundary simulation cascade in lockstep across `reactor_twin.rs`, `hbt_pic_rotator.rs`, and `warp_soliton_coupling.rs`, modeling non-equilibrium Cattaneo-Vernotte hyperbolic heat transfer, relativistic MHD plasma dynamics, and Monte Carlo fleet expansion. |
 | `shbt-swarm-hil` | `std` | Hardware-in-the-Loop qualification runner executing the 112-gate verification suite (`112/112 PASS`) and exporting the formal machine-readable telemetry ledger. |
 | `shbt-swarm-cli` | `std` | Command-line interface and diagnostic tooling for swarm node initialization, telemetry inspection, and simulation orchestration. |
 
@@ -219,6 +219,24 @@ The direct boundary-conformal synthesis bus (`B_direct^MAR-X`) and LANR rail int
 - **Minimum-Jerk Soliton Trajectory:** `s(tau) = 10*tau^3 - 15*tau^4 + 6*tau^5` holds residual acceleration to `a_res <= 1.0e-7 m/s^2`. Shift-vector soliton `beta^x` scales across 4 tiers: 99.3c, 754.9c, 99,308c, and 2,482,950c (Andromeda M31 transit in 8.957 hours crew proper time inside alpha_cabin = 10^-3 enclave).
 - **Pt-Weyl Crowbar Interlock:** Non-Hermitian EP2 crowbar trips in 1.701 ps (<= 2.50 ns), recovering 99.880% of 48.0 T magnetic energy via the SMES ring, clamping collector bias to 0.0 V with 110.00 ns acoustic holdoff and 9.24 ns phase restoration.
 - **EDA PDK Export:** Freestanding generation of `pic8x8.gds` (1.0 pm grid), `waveguide.step`, and `interposer.s2p` (Z0 = 50.12 Ohm, |S11| = -58.4 dB <= -24.5 dB).
+
+### 5.7 Complete Fuel-to-Boundary Simulation Tick Sequence & Digital Twin Architecture (`shbt-swarm-sim`)
+
+In `crates/shbt-swarm-sim/src/reactor_twin.rs`, the simulation digital twin ties together the physical reactor core, conversion bus, 8x8 InP/InGaAs HBT and InP/InGaAsP PIC character rotator array, and warp soliton drive into a unified closed-loop multi-physics simulation loop. The three submodules execute in lockstep at every simulation timestep (nominal master clock `dt = 13.8889 ps` or adaptive macroscopic step `dt = 1.0 us`):
+- `reactor_twin.rs`: Simulates catalytic Purcell seed die triggering, micro-batch mass-annihilation kinetics, 5-zone 4D Weyl-polariton conversion (`eta_DEC-X = 99.200%`), and direct boundary bus transfer (`eta_bus = 99.850%`).
+- `hbt_pic_rotator.rs`: Simulates the 64-channel (8x8) InP/InGaAs HBT and InP/InGaAsP PIC array, computing linear collector bias mapping across `[3.800 V, 7.400 V]`, electro-optic MZI phase modulation, PID phase error integration, acoustic quarter-wave tamping, and micro-airbridge electro-mechanical isolation.
+- `warp_soliton_coupling.rs`: Transduces net actuation power `P_act = 0.990512 * P_gross` into the macroscopic Alcubierre/EW-312 warp soliton shift vector `beta^x(t, x)`, executes 5th-order minimum-jerk acceleration trajectories, and monitors the non-Hermitian EP2 crowbar interlock.
+
+#### Six-Stage Simulation Tick Dataflow
+
+| Stage | Simulation Module | Governing Equations & Physics Operations | Output State & Hardware Telemetry |
+| :--- | :--- | :--- | :--- |
+| **1. Annihilation Source** | `reactor_twin.rs` (`DarkBraidMagazine`) | `P_gross = m_dot * c^2`; 41 bipartite cores (`188.495 kg` visible + `188.495 kg` dark); catalytic seed triggering | Instantaneous thermal-equivalent power `P_gross in [992 TW, 25.00 EW]`; fuel mass depletion `Delta m` |
+| **2. DEC-X Conversion & Bus** | `reactor_twin.rs` (`WeylPtcDecXConverter`) | `P_act = eta_bus * eta_DEC-X * P_gross = 0.990512 * P_gross`; `P_LANR^net = +81.104 kW` net TEG rail | Graded HVDC rail (`0.015 - 2.700 MV`); Landauer thermal debt fully serviced |
+| **3. Transduction Interface** | `hbt_pic_rotator.rs` (`InPInGaAsHbtPicArray`) | `V_mn = 3.800 + (3.600 / 2pi) * (theta_mn mod 2pi)`; `K_p = 1.85 V/rad`; `C = exp(-0.5 * sigma_phi^2) >= 0.9995` | 64-channel collector bias `V_mn in [3.800 V, 7.400 V]`; phase jitter `sigma_phi <= 5.05e-5 rad`; spatial coherence `C >= 0.9995` |
+| **4. CFT Character Transform** | `shbt-swarm-core` / `shbt-swarm-foundry` | `Delta h_vis = 45/64`; dynamic framing `delta h_braid = -Delta h_vis / 124 => Delta_fr == 0`; `P_G^(230)` Wyckoff projection | Conformal weight translation; zero boundary stress anomaly (`E_munu == 0`); atomistic lattice pinning |
+| **5. Swarm Actuation** | `warp_soliton_coupling.rs` (`Mar312xSolitonDriveBridge`) | `beta^x = -v_s(t) * C(sigma_phi) * exp(Delta_mod/2) * f_SHBT(x)`; 5th-order profile `s(tau)`; or `R_univ^SWARM` / `R_clone^SWARM` | Warp shift vector `beta^x` up to `2,482,950c` (`a_res <= 1.0e-7 m/s^2`); M31 transit in `8.957 h`; or `13.418 ms` ship replication |
+| **6. Acoustic & Crowbar Protection** | `hbt_pic_rotator.rs` (`QuarterWaveAcousticTamping`) | `Z_m = 1.1512 MRayl`, `d_m = 6.395 nm => R_acoustic = 8.78e-10 <= 1e-6`; EP2 crowbar `t_trip = 1.701 ps` | Substrate stress `sigma_max = 124.60 MPa <= 350.00 MPa`; 48 T SMES inductive energy recovery `99.880%` |
 
 ## 6. Canonical C11 Register Map (`SHBT-MMIO-SWARM` v4 at `0x70000000`)
 
