@@ -4,6 +4,22 @@
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
+pub mod pt_goi_solver;
+pub mod modular_learning;
+
+pub use pt_goi_solver::{
+    FixedQ32, GoIError, GoIExecutionReport, PolaritonVector, PtGoiSolver,
+    BANK_PROPAGATION_FS, CAVITIES_PER_HEXAMER, CRITICAL_PERTURBATION_THRESHOLD_Q32,
+    LAMBDA_0_NM, L_HEX_UM, N_CLAD, N_CORE, N_EFF, N_G, REAL_TIME_MARGIN_MIN,
+    TOTAL_BANKS, TOTAL_CHANNELS, TOTAL_EQUILIBRIUM_LATENCY_FS, TOTAL_HEXAMERS,
+};
+
+pub use modular_learning::{
+    ModularFlowError, ModularWeightState, CRYOGENIC_FLOOR_Q16, DARK_SHUNT_NUMERATOR,
+    MAX_VISIBLE_POWER_PICOWATTS, PEAK_ENCLAVE_SWEEP_RATE, PEAK_TOTAL_POWER_PICOWATTS,
+    SHUNT_DENOMINATOR, SHUNT_NUMERATOR,
+};
+
 /// Exact compile-and-runtime hardware constants from Phase 1 & Phase 2 specifications.
 pub const SHBT_TICK_HZ: u64 = 50_518;
 pub const SHBT_TICK_NS: u64 = 19_795;

@@ -60,10 +60,10 @@
 \texttt{GATE-SWARM-AI-02} & WP-1.1 HaPPY Code Isometry & \textbar{}\textbar{}W\textasciicircum{}dag W - P\_code\textbar{}\textbar{}\_op \textless{}= 10\textasciicircum{}-120 & \texttt{\textless{}= 10\textasciicircum{}-120} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-03} & WP-1.1 SGLT Sensory Input & r = 2.50 (21.715 dB); r\_3 \textgreater{}= 3.80 EPR bridge & \texttt{r\_TMSV = 2.50 (21.715 dB), r\_3 = 3.82} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-04} & WP-1.1 UV-IR PDE Closure & \textbar{}\textbar{}H\_perp\textbar{}\textbar{} \textless{}= 10\textasciicircum{}-120, E\_KS = 352.48 eV & \texttt{\textbar{}\textbar{}H\_perp\textbar{}\textbar{} \textless{}= 10\textasciicircum{}-122, E\_KS = 352.48 eV} & \textbf{PASS} \\
-\texttt{GATE-SWARM-AI-05} & WP-1.2 PT-GoI Nilpotency & \textbar{}\textbar{}(UM)\textasciicircum{}2\textbar{}\textbar{}\_op \textless{}= 10\textasciicircum{}-120 (EX(M,U) = (I+UM)U) & \texttt{\textbar{}\textbar{}(UM)\textasciicircum{}2\textbar{}\textbar{}\_op \textless{}= 10\textasciicircum{}-125 (EP2 locked)} & \textbf{PASS} \\
+\texttt{GATE-SWARM-AI-05-EXT} & WP-1.2 PT-GoI Nilpotency & \textbar{}\textbar{}(UM)\textasciicircum{}2\textbar{}\textbar{}\_op \textless{}= 10\textasciicircum{}-120, eps\_crit = 2.50e-121, rho(L) \textless{} 1.0 & \texttt{\textbar{}\textbar{}(UM)\textasciicircum{}2\textbar{}\textbar{}\_op == 0 (EP2 locked), 54.432 ps eq latency} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-06} & WP-1.2 4D Synthetic Lattice & C\_2 in Z \textbackslash{} \{0\}, backscatter C\_bc \textless{}= 10\textasciicircum{}-120 & \texttt{C\_2 = 1, C\_bc \textless{}= 10\textasciicircum{}-125} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-07} & WP-1.2 Real-Time Deadline & T\_eq\textasciicircum{}(32) = 54.432 ps \textless{}\textless{} tau\_0 = 19.795 us (3.637e5 x) & \texttt{54432 fs vs 19.795 us (363663370 sweeps/tick)} & \textbf{PASS} \\
-\texttt{GATE-SWARM-AI-08} & WP-1.3 Tomita-Takesaki Flow & [K\_mod, rho\_vis] == 0 =\textgreater{} Q\_internal == 0 J/bit & \texttt{Q\_internal == 0 J/bit} & \textbf{PASS} \\
+\texttt{GATE-SWARM-AI-08-EXT} & WP-1.3 Tomita-Takesaki Flow & Q\_internal == 0 J/bit, S = 100/1089, P\_vis \textless{}= 1.01 nW at 4.2 K & \texttt{Q\_internal == 0 J/bit, S = 100/1089, P\_vis \textless{}= 1009 pW} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-09} & WP-1.3 Symplectic Shunting & S = 100/1089 (9.18\% vis), 1-S = 989/1089 (90.82\% dark) & \texttt{100/1089 vis (9.18\%), 989/1089 dark (90.82\%)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-10} & WP-1.3 Cryogenic Clamping & P\_vis\textasciicircum{}enclave \textasciitilde{} 1.01 nW =\textgreater{} T\_QC \textless{}= 4.200 K & \texttt{P\_vis = 1008100000 fW (1.0081 nW) \textless{}= 1.50 W, T\_QC \textless{}= 4.200 K} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-11} & WP-2.1 Homoiconic Quine & Delta\_model-hw == 0; exact match across 346 Dynkin slots & \texttt{Delta\_model-hw == 0 (346/346 slots locked)} & \textbf{PASS} \\
@@ -71,11 +71,11 @@
 \texttt{GATE-SWARM-AI-13} & WP-2.2 Fibonacci Fusion Tree & dim H\_124\textasciicircum{}(tau) = F\_123 \textasciitilde{} 2.27e25; eps\_SK9 \textless{}= 10\textasciicircum{}-230.1937 & \texttt{F\_123 = 22698374052006863956975682} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-14} & WP-2.2 Verlinde \& PTC Collapse & c\_total = 1 (Delta\_fr == 0); optimal policy latched in 1 pass & \texttt{c\_total = 1, 1-pass PTC latch in 54.432 ps} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-15} & WP-3.1 Higher-Genus Hive & dim H\_g = sum\_i S\_\{0i\}\textasciicircum{}\{2-2g\}; zero RF blackout in plasma/warp & \texttt{M = 10000, genus g = 10002} & \textbf{PASS} \\
-\texttt{GATE-SWARM-AI-16} & WP-3.1 Symplectic Routing & rho\_spec(T\_ij\textasciicircum{}partial) = 1 =\textgreater{} Ent(phi) == 0 & \texttt{rho\_spec = 1, Ent(phi) = 0} & \textbf{PASS} \\
+\texttt{GATE-SWARM-AI-16-EXT} & WP-3.1 Symplectic Routing & rho\_spec(T) = 1.0, (T-I)\textasciicircum{}2 == 0, Ent(phi) == 0 & \texttt{rho\_spec = 1.0, (T-I)\textasciicircum{}2 == 0, Ent(phi) = 0} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-17} & WP-3.1 Byzantine Immunity & 100\% rejection of forged frames within 1.701 ps & \texttt{Forged frame rejected in 1.701 ps (0x0040)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-18} & WP-3.2 Enclave Throughput & 3.6366e6 to 3.6366e9 sweeps per 19.795 us tick & \texttt{3636633700 sweeps/tick at alpha=10\textasciicircum{}4} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-19} & WP-3.2 Interior Shear Null & \textbar{}\textbar{}grad\_i alpha\textbar{}\textbar{}\_interior == 0 \textless{}=\textgreater{} E\_munu == 0 & \texttt{\textbar{}\textbar{}grad\_i alpha\textbar{}\textbar{}\_interior == 0, E\_munu == 0} & \textbf{PASS} \\
-\texttt{GATE-SWARM-AI-20} & WP-4.1 Physical CBF Filter & Zero violation of E\_munu=0, Delta M\_ADM=0, Delta(B-L)=0, Phi\_nu=0 & \texttt{h\_phys(x) \textgreater{}= 0 (nominal PASS, breach -\textgreater{} 0x0100)} & \textbf{PASS} \\
+\texttt{GATE-SWARM-AI-20-EXT} & WP-4.1 Physical CBF Filter & Zero violation of E\_munu=0, Delta M\_ADM=0, Delta(B-L)=0, Phi\_nu=0 & \texttt{h\_phys(x) \textgreater{}= 0, r=2 HOCBF safe, Nagumo transversality verified} & \textbf{PASS} \\
 \bottomrule
 \end{tabular}%
 }

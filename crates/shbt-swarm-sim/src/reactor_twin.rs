@@ -146,6 +146,7 @@ impl ReactorDigitalTwin {
         let p_sensible_total = self.state.core_power_w * SENSIBLE_HEAT_FRACTION;
         let p_sensible_per_zone = p_sensible_total / 8.0;
 
+        #[allow(clippy::needless_range_loop)]
         for i in 0..8 {
             let k_thermal = 2200.0;
             let rho_cp = 1.8e6;

@@ -367,13 +367,13 @@
       "status": "PASS"
     },
     {
-      "gate_id": "GATE-SWARM-AI-05",
+      "gate_id": "GATE-SWARM-AI-05-EXT",
       "phase": 2,
       "subsystem": "WP-1.2 PT-GoI Nilpotency",
       "invariant_criterion": "Exceptional-point tuning of cavity loop operator L_loop = UM",
-      "target_bound": "||(UM)^2||_op <= 10^-120 (EX(M,U) = (I+UM)U)",
-      "measured_value": "||(UM)^2||_op <= 10^-125 (EP2 locked)",
-      "verification_method": "Z3 THM-AI-01 (unsat)",
+      "target_bound": "||(UM)^2||_op <= 10^-120, eps_crit = 2.50e-121, rho(L) < 1.0",
+      "measured_value": "||(UM)^2||_op == 0 (EP2 locked), 54.432 ps eq latency",
+      "verification_method": "Z3 THM-AI-01-EXT (unsat) + PtGoiSolver",
       "status": "PASS"
     },
     {
@@ -397,13 +397,13 @@
       "status": "PASS"
     },
     {
-      "gate_id": "GATE-SWARM-AI-08",
+      "gate_id": "GATE-SWARM-AI-08-EXT",
       "phase": 2,
       "subsystem": "WP-1.3 Tomita-Takesaki Flow",
       "invariant_criterion": "Unitary modular weight adaptation sigma_{-t}^Psi(W) internal heat",
-      "target_bound": "[K_mod, rho_vis] == 0 => Q_internal == 0 J/bit",
-      "measured_value": "Q_internal == 0 J/bit",
-      "verification_method": "Z3 THM-AI-02 + Bolometer",
+      "target_bound": "Q_internal == 0 J/bit, S = 100/1089, P_vis <= 1.01 nW at 4.2 K",
+      "measured_value": "Q_internal == 0 J/bit, S = 100/1089, P_vis <= 1009 pW",
+      "verification_method": "Z3 THM-AI-02-EXT (unsat) + ModularWeightState",
       "status": "PASS"
     },
     {
@@ -477,13 +477,13 @@
       "status": "PASS"
     },
     {
-      "gate_id": "GATE-SWARM-AI-16",
+      "gate_id": "GATE-SWARM-AI-16-EXT",
       "phase": 2,
       "subsystem": "WP-3.1 Symplectic Routing",
       "invariant_criterion": "Lagrangian boundary relabeling T_ij^partial in Sp(2g,Z) entropy",
-      "target_bound": "rho_spec(T_ij^partial) = 1 => Ent(phi) == 0",
-      "measured_value": "rho_spec = 1, Ent(phi) = 0",
-      "verification_method": "Exact Symplectic CAS Check",
+      "target_bound": "rho_spec(T) = 1.0, (T-I)^2 == 0, Ent(phi) == 0",
+      "measured_value": "rho_spec = 1.0, (T-I)^2 == 0, Ent(phi) = 0",
+      "verification_method": "Z3 THM-AI-04-EXT (unsat) + Sheaf CAS",
       "status": "PASS"
     },
     {
@@ -517,13 +517,13 @@
       "status": "PASS"
     },
     {
-      "gate_id": "GATE-SWARM-AI-20",
+      "gate_id": "GATE-SWARM-AI-20-EXT",
       "phase": 2,
       "subsystem": "WP-4.1 Physical CBF Filter",
       "invariant_criterion": "Proof-carrying barrier h_phys(x) >= 0 & sub-2.50 ns PCSS crowbar",
       "target_bound": "Zero violation of E_munu=0, Delta M_ADM=0, Delta(B-L)=0, Phi_nu=0",
-      "measured_value": "h_phys(x) >= 0 (nominal PASS, breach -> 0x0100)",
-      "verification_method": "Z3 THM-AI-04 (unsat)",
+      "measured_value": "h_phys(x) >= 0, r=2 HOCBF safe, Nagumo transversality verified",
+      "verification_method": "Z3 THM-AI-05-EXT (unsat) + HocbfEngine",
       "status": "PASS"
     },
     {

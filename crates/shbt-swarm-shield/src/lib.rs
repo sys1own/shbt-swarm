@@ -5,6 +5,9 @@
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
+pub mod hocbf_engine;
+pub use hocbf_engine::{BarrierConfig, HocbfEngine, LinearConstraint, PhysicalState, QpFilterResult};
+
 pub const C_CRIT_SAPIENT_Q16: u64 = 1_000_000 << 16; // C_crit^sapient = 10^6 nat-layers
 pub const W_SYNTH_REGOLITH_KJ_PER_UG: u64 = 56_845;  // 56.845009 TJ/kg
 pub const W_SYNTH_X2_BIOMASS_KJ_PER_UG: u64 = 425;   // 0.424815 TJ/kg

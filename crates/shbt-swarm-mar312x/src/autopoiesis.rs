@@ -212,10 +212,7 @@ impl AutopoieticEngine {
         }
 
         // Step 3: Advance second-sound thermal watchdog
-        let thermal_res = self.evaluate_hyperbolic_thermal_step(TICK_PERIOD_PS);
-        if let Err(e) = thermal_res {
-            return Err(e);
-        }
+        self.evaluate_hyperbolic_thermal_step(TICK_PERIOD_PS)?;
 
         // Step 4: Advance tick counter atomically
         self.tick_counter.fetch_add(1, Ordering::AcqRel);
@@ -233,6 +230,12 @@ impl AutopoieticEngine {
 }
 
 /// Static singleton allocation of the engine for bare-metal runtime execution.
+impl Default for AutopoieticEngine {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 pub static mut MAR312X_AUTOPOIESIS_ENGINE: AutopoieticEngine = AutopoieticEngine::new();
 
 #[cfg(test)]

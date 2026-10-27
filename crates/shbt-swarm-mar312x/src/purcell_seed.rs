@@ -144,7 +144,7 @@ impl BorrmannCavityConfig {
     /// Delta_dB = 20 * r_3 * log10(e) approx 33.1798 dB.
     #[inline]
     pub fn calculate_squeezing_db(&self) -> f64 {
-        const LOG10_E: f64 = 0.434_294_481_903_251_8;
+        const LOG10_E: f64 = core::f64::consts::LOG10_E;
         20.0 * self.squeezing_r3 * LOG10_E
     }
 

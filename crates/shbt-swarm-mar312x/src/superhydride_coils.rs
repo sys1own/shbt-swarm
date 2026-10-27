@@ -131,7 +131,7 @@ impl SuperhydrideCoilDriver {
             let kappa = read_volatile(&(*regs).ep2_coupling_kappa_mhz);
             let gamma = read_volatile(&(*regs).ep2_damping_gamma_mhz);
 
-            let diff = if kappa > gamma { kappa - gamma } else { gamma - kappa };
+            let diff = kappa.abs_diff(gamma);
             if diff > (kappa / 1000) {
                 return Err(DriverError::Ep2TuningLoss);
             }

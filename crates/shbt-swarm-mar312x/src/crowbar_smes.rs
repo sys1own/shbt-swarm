@@ -101,7 +101,7 @@ mod tests {
     #[test]
     fn test_crowbar_ep2_and_holdoff() {
         assert!(verify_ep2_critical_coupling(100.0, 100.05, 0.1));
-        assert!(DIELECTRIC_SAFETY_FACTOR >= 1.70);
+        const { assert!(DIELECTRIC_SAFETY_FACTOR >= 1.70) };
         assert_eq!(CROWBAR_TRIP_LATENCY_FS, 1_701);
     }
 }

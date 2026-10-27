@@ -49,6 +49,9 @@
 #define SHBT_SWARM_CMD_SP2G_HIVE_SYNC           0x00000400U /* Phase 2: Sp(2g,Z) dark-ledger consensus */
 #define SHBT_SWARM_CMD_AP_MPC_ENCLAVE           0x00000800U /* Phase 2: Alpha > 1 Pareto re-optimization */
 #define SHBT_SWARM_CMD_XENO_ASSIMILATE          0x00001000U /* Phase 2: Class X2 non-ionizing recycling */
+/* Extended Opcodes */
+#define SHBT_SWARM_CMD_HOCBF_EVAL_FILTER           0x00002000U /* Execute r=2 QP barrier filter */
+#define SHBT_SWARM_CMD_CRYOPHONON_SHUNT_ENGAGE     0x00004000U /* Engage Diamond-GaN S=100/1089 shunt */
 #define SHBT_SWARM_CMD_EXEC_UNIV_SYNTH          0x00002000U /* Phase 3: R_univ^SWARM arbitrary matter */
 #define SHBT_SWARM_CMD_ZERO_COMP_DIRECT_RENDER  0x00004000U /* Phase 3: Delta C_post-sim = 0 render */
 #define SHBT_SWARM_CMD_MERA_DAG_INSTANCE        0x00008000U /* Phase 3: Sp(2g,Z) MERA-DAG tiling */
@@ -82,6 +85,11 @@
 #define SHBT_SWARM_FAULT_CLF_DIVERGENCE                 0x00000400U /* Phase 2: dV_terra/dt > -kappa * V_terra */
 #define SHBT_SWARM_FAULT_X0_PROTECT_LCK                 0x00000800U /* Phase 2: Attempted de-render of Class X0 */
 #define SHBT_SWARM_FAULT_X1_SAPIENT_LCK                 0x00001000U /* Phase 2: Attempted de-render of Class X1 */
+/* Extended Status / Fault Bits for Phase 2 First-Principles Closure */
+#define SHBT_SWARM_FAULT_EP2_PERTURBATION_EXCEEDED 0x00002000U /* ||delta L||_op > eps_crit */
+#define SHBT_SWARM_FAULT_HOCBF_BARRIER_TRIP        0x00004000U /* psi_2(x,u) < 0 or r=2 breach */
+#define SHBT_SWARM_FAULT_CRYOGENIC_SHUNT_OVERFLOW  0x00008000U /* P_vis > 1.01 nW at 4.2 K stage */
+#define SHBT_SWARM_FAULT_SIMPLICIAL_SHEAR_MISMATCH 0x00010000U /* rho_spec(T) != 1.0 */
 #define SHBT_SWARM_FAULT_SUGAWARA_CAP_EXCEEDED          0x00002000U /* Phase 3: |Delta h_vis| > 38.196601 nats */
 #define SHBT_SWARM_FAULT_DRIPLINE_UNSTABLE              0x00004000U /* Phase 3: Non-integrable / unbound nucleus */
 #define SHBT_SWARM_FAULT_SIM_TO_RENDER_HASH_MISMATCH    0x00008000U /* Phase 3: MERA-PINN UV != Synth Frame hash */

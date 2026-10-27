@@ -328,10 +328,9 @@ impl AutopoieticSelfHealingEngine {
         self.cumulative_heal_cycles = self.cumulative_heal_cycles.saturating_add(1);
         let q_internal_joules_per_bit = 0u64;
         if !hash_match {
-            Ok((self.cumulative_heal_cycles, q_internal_joules_per_bit))
-        } else {
-            Ok((self.cumulative_heal_cycles, q_internal_joules_per_bit))
+            return Err(FAULT_CAYLEY_HASH);
         }
+        Ok((self.cumulative_heal_cycles, q_internal_joules_per_bit))
     }
 }
 
