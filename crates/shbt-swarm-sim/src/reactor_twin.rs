@@ -2,6 +2,11 @@
 //! High-Precision Multi-Physics Digital Twin Simulation Engine for SHBT-MAR-312X Nacelle.
 
 use core::f64::consts::PI;
+use shbt_swarm_mar312x::{
+    Mar312xSolitonDriveBridge, Mar312xPowerTier, ShiftVectorSolitonState,
+    EdaExportError, export_gdsii_buf, export_step_buf, export_s2p_buf,
+    INTERPOSER_TARGET_Z0,
+};
 
 pub const P_TIER0_WATTS: f64 = 1.004e6;
 pub const P_TIER4_WATTS: f64 = 25.00e18;
@@ -95,6 +100,7 @@ pub struct ReactorDigitalTwin {
     pub total_mass_kg: f64,
     pub total_volume_m3: f64,
     pub state: DynamicTwinState,
+    pub hbt_rotator_bridge: Mar312xSolitonDriveBridge,
 }
 
 impl Default for ReactorDigitalTwin {
@@ -111,6 +117,7 @@ impl ReactorDigitalTwin {
         Self {
             total_mass_kg: total_mass,
             total_volume_m3: total_volume,
+            hbt_rotator_bridge: Mar312xSolitonDriveBridge::new(),
             state: DynamicTwinState {
                 current_time_s: 0.0,
                 core_power_w: P_TIER0_WATTS,
@@ -198,6 +205,36 @@ impl ReactorDigitalTwin {
         let passes_tolerance = (transit_time_hours - 8.95682).abs() < 0.01;
         (transit_time_hours, passes_tolerance)
     }
+
+    pub fn step_soliton_actuation(
+        &mut self,
+        tier: Mar312xPowerTier,
+        tau: f64,
+        theta_x_rad: f64,
+        theta_y_rad: f64,
+    ) -> Result<ShiftVectorSolitonState, u32> {
+        self.hbt_rotator_bridge.step_coupling(
+            tier,
+            tau,
+            10.0,
+            theta_x_rad,
+            theta_y_rad,
+            0.0,
+        )
+    }
+
+    pub fn export_rotator_eda_artifacts(
+        &self,
+        gds_buf: &mut [u8],
+        step_buf: &mut [u8],
+        s2p_buf: &mut [u8],
+    ) -> Result<(usize, usize, usize), EdaExportError> {
+        let n_gds = export_gdsii_buf(gds_buf)?;
+        let n_step = export_step_buf(step_buf, 3.20, 0.05, 0.35)?;
+        let freqs = [10.0, 20.0, 30.0, 40.0];
+        let n_s2p = export_s2p_buf(s2p_buf, INTERPOSER_TARGET_Z0, &freqs)?;
+        Ok((n_gds, n_step, n_s2p))
+    }
 }
 
 #[cfg(test)]
@@ -223,5 +260,24 @@ mod tests {
 
         assert!(twin.cycle_microbatch_injection(14.85));
         assert!(!twin.cycle_microbatch_injection(15.5));
+    }
+
+    #[test]
+    fn test_reactor_twin_soliton_and_eda_export() {
+        let mut twin = ReactorDigitalTwin::new();
+        let state = twin.step_soliton_actuation(
+            Mar312xPowerTier::Tier4PlanetaryForge,
+            1.0,
+            0.01,
+            -0.02,
+        ).unwrap();
+        assert_eq!(state.target_velocity_c, 2_482_950.0);
+        assert!(state.spatial_coherence >= 0.9995);
+
+        let mut gds = [0u8; 8192];
+        let mut step = [0u8; 2048];
+        let mut s2p = [0u8; 2048];
+        let (ng, ns, n2) = twin.export_rotator_eda_artifacts(&mut gds, &mut step, &mut s2p).unwrap();
+        assert!(ng > 0 && ns > 0 && n2 > 0);
     }
 }

@@ -11,6 +11,9 @@ pub mod superhydride_coils;
 pub mod fracton_shield;
 pub mod autopoiesis;
 pub mod crowbar_smes;
+pub mod hbt_pic_rotator;
+pub mod warp_soliton_coupling;
+pub mod eda_export;
 
 pub use purcell_seed::*;
 pub use polariton_decx::*;
@@ -18,6 +21,9 @@ pub use superhydride_coils::*;
 pub use fracton_shield::*;
 pub use autopoiesis::*;
 pub use crowbar_smes::*;
+pub use hbt_pic_rotator::*;
+pub use warp_soliton_coupling::*;
+pub use eda_export::*;
 
 /// Exact 8-subsystem masses in grams (summing to 950,000 g = 950.00 kg).
 pub const MASS_SUB1_SEED_DIE_G: u64           = 12_500;   // 12.50 kg (P6_3/mmc)

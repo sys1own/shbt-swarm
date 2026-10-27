@@ -1,12 +1,12 @@
 //! `tests/workspace_integration.rs`
 //! End-to-End Integration Test Suite for the `shbt-swarm` Workspace.
 
-use shbt_swarm_hil::evaluate_all_104_gates;
+use shbt_swarm_hil::evaluate_all_112_gates;
 
 #[test]
-fn integration_verify_all_104_gates() {
-    let gates = evaluate_all_104_gates();
-    assert_eq!(gates.len(), 104);
+fn integration_verify_all_112_gates() {
+    let gates = evaluate_all_112_gates();
+    assert_eq!(gates.len(), 112);
     for gate in &gates {
         assert!(
             gate.passed,

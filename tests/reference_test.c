@@ -98,6 +98,28 @@ int main(void) {
     assert((g_test_mmio.fault_mask_reg & SHBT_SWARM_FAULT_ADM_IMBALANCE) != 0U);
     assert(g_test_mmio.cmd_reg == SHBT_SWARM_CMD_WEYL_EXCITON_CROWBAR);
 
-    printf("[PASS] C11 static asserts, struct offsets, Hamming(72,64) SECDED, and 50.518 kHz kernel tick verified.\n");
+    /* 4. Verify 8x8 InP/InGaAs HBT & PIC Phase Words and Bias Voltages across boundary angles */
+    const double pi_val = 3.14159265358979323846;
+    uint16_t w_0 = shbt_swarm_emitter_phase_word(0.0);
+    assert(w_0 == 0U);
+    assert(shbt_swarm_hbt_bias_mv(w_0) == 3800U);
+
+    uint16_t w_pi_2 = shbt_swarm_emitter_phase_word(pi_val / 2.0);
+    assert(w_pi_2 == 16384U);
+    assert(shbt_swarm_hbt_bias_mv(w_pi_2) == 4700U);
+
+    uint16_t w_pi = shbt_swarm_emitter_phase_word(pi_val);
+    assert(w_pi == 32768U);
+    assert(shbt_swarm_hbt_bias_mv(w_pi) == 5600U);
+
+    uint16_t w_3pi_2 = shbt_swarm_emitter_phase_word(3.0 * pi_val / 2.0);
+    assert(w_3pi_2 == 49152U);
+    assert(shbt_swarm_hbt_bias_mv(w_3pi_2) == 6500U);
+
+    uint16_t w_2pi = shbt_swarm_emitter_phase_word(2.0 * pi_val);
+    assert(w_2pi == 0U);
+    assert(shbt_swarm_hbt_bias_mv(w_2pi) == 3800U);
+
+    printf("[PASS] C11 static asserts, struct offsets, Hamming(72,64) SECDED, 8x8 HBT/PIC bias, and 50.518 kHz kernel tick verified.\n");
     return 0;
 }

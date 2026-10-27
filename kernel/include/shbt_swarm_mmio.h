@@ -49,12 +49,17 @@
 #define SHBT_SWARM_CMD_SP2G_HIVE_SYNC           0x00000400U /* Phase 2: Sp(2g,Z) dark-ledger consensus */
 #define SHBT_SWARM_CMD_AP_MPC_ENCLAVE           0x00000800U /* Phase 2: Alpha > 1 Pareto re-optimization */
 #define SHBT_SWARM_CMD_XENO_ASSIMILATE          0x00001000U /* Phase 2: Class X2 non-ionizing recycling */
+/* Extended Opcodes */
+#define SHBT_SWARM_CMD_HOCBF_EVAL_FILTER           0x00002000U /* Execute r=2 QP barrier filter */
+#define SHBT_SWARM_CMD_CRYOPHONON_SHUNT_ENGAGE     0x00004000U /* Engage Diamond-GaN S=100/1089 shunt */
 #define SHBT_SWARM_CMD_EXEC_UNIV_SYNTH          0x00002000U /* Phase 3: R_univ^SWARM arbitrary matter */
 #define SHBT_SWARM_CMD_ZERO_COMP_DIRECT_RENDER  0x00004000U /* Phase 3: Delta C_post-sim = 0 render */
 #define SHBT_SWARM_CMD_MERA_DAG_INSTANCE        0x00008000U /* Phase 3: Sp(2g,Z) MERA-DAG tiling */
 #define SHBT_SWARM_CMD_MAR312X_FORGE_TIER4      0x00010000U /* Phase 4: Engage 25.00 EW Tier 4 Forge */
 #define SHBT_SWARM_CMD_DIRECT_BOUNDARY_SYNTH    0x00020000U /* Phase 4: B_direct^MAR-X (99.85% CFT bus) */
 #define SHBT_SWARM_CMD_AUTOPOIETIC_SELF_HEAL    0x00040000U /* Phase 4: A_heal 50.518 kHz ROM scrub */
+#define SHBT_SWARM_CMD_HBT_ROTATOR_LOCK       0x00080000U /* Lock 8x8 InP/InGaAs HBT & PIC PID Loop */
+#define SHBT_SWARM_CMD_WARP_SOLITON_COUPLE    0x00100000U /* Couple MAR-312X DEC-X Bus to Shift Soliton */
 #define SHBT_SWARM_CMD_WEYL_EXCITON_CROWBAR     0x80000000U /* Phase 4: 1.701 ps Weyl-Exciton abort */
 #define SHBT_SWARM_CMD_PCSS_CROWBAR             0x80000000U /* Legacy alias for hardware crowbar */
 
@@ -82,6 +87,11 @@
 #define SHBT_SWARM_FAULT_CLF_DIVERGENCE                 0x00000400U /* Phase 2: dV_terra/dt > -kappa * V_terra */
 #define SHBT_SWARM_FAULT_X0_PROTECT_LCK                 0x00000800U /* Phase 2: Attempted de-render of Class X0 */
 #define SHBT_SWARM_FAULT_X1_SAPIENT_LCK                 0x00001000U /* Phase 2: Attempted de-render of Class X1 */
+/* Extended Status / Fault Bits for Phase 2 First-Principles Closure */
+#define SHBT_SWARM_FAULT_EP2_PERTURBATION_EXCEEDED 0x00002000U /* ||delta L||_op > eps_crit */
+#define SHBT_SWARM_FAULT_HOCBF_BARRIER_TRIP        0x00004000U /* psi_2(x,u) < 0 or r=2 breach */
+#define SHBT_SWARM_FAULT_CRYOGENIC_SHUNT_OVERFLOW  0x00008000U /* P_vis > 1.01 nW at 4.2 K stage */
+#define SHBT_SWARM_FAULT_SIMPLICIAL_SHEAR_MISMATCH 0x00010000U /* rho_spec(T) != 1.0 */
 #define SHBT_SWARM_FAULT_SUGAWARA_CAP_EXCEEDED          0x00002000U /* Phase 3: |Delta h_vis| > 38.196601 nats */
 #define SHBT_SWARM_FAULT_DRIPLINE_UNSTABLE              0x00004000U /* Phase 3: Non-integrable / unbound nucleus */
 #define SHBT_SWARM_FAULT_SIM_TO_RENDER_HASH_MISMATCH    0x00008000U /* Phase 3: MERA-PINN UV != Synth Frame hash */
@@ -90,6 +100,8 @@
 #define SHBT_SWARM_FAULT_PURCELL_BANDGAP_DRIFT          0x00040000U /* Phase 4: rho_DOS(w_spont) > 0 or F_P > 0 */
 #define SHBT_SWARM_FAULT_DECX_CHERN_BACKSCATTER         0x00080000U /* Phase 4: C_2 == 0 or eta_DEC_X < 99.20% */
 #define SHBT_SWARM_FAULT_FORGE_SHEAR_EXCEEDED           0x00100000U /* Phase 4: sigma_max > 4,800.00 MPa */
+#define SHBT_SWARM_FAULT_HBT_PHASE_JITTER     0x00200000U /* sigma_phi > 5.05e-5 rad or C < 0.9995 */
+#define SHBT_SWARM_FAULT_ACOUSTIC_REFLECTANCE 0x00400000U /* R_acoustic > 1e-6 or sigma_max > 350 MPa */
 
 /* Xenobiological Triage Classification Bitmasks (Encoded in status_reg [31:28]) */
 #define SHBT_SWARM_TRIAGE_SHIFT         28U
@@ -189,6 +201,41 @@ static inline void shbt_clwb(const void *addr) {
 #else
     (void)addr;
 #endif
+}
+
+
+/* Monolithic 8x8 InP/InGaAs HBT & InP/InGaAsP PIC Array Constants */
+#define SHBT_SWARM_HBT_CHANNELS               64U
+#define SHBT_SWARM_HBT_PITCH_UM               50.0
+#define SHBT_SWARM_PIC_PITCH_UM               127.0
+#define SHBT_SWARM_HBT_V_ON_MV                3800U
+#define SHBT_SWARM_HBT_V_SAT_MV               7400U
+#define SHBT_SWARM_HBT_MASTER_CLOCK_GHZ       72.0
+#define SHBT_SWARM_HBT_RF_DRIVE_GHZ           40.0
+
+/* Quantize continuous phase [rad] to 16-bit hardware IQ word: floor((phi mod 2pi)/(2pi) * 65536) */
+static inline uint16_t shbt_swarm_emitter_phase_word(double phi_rad)
+{
+    const double two_pi = 6.28318530717958647692;
+    double wrapped = phi_rad;
+    while (wrapped < 0.0) {
+        wrapped += two_pi;
+    }
+    while (wrapped >= two_pi) {
+        wrapped -= two_pi;
+    }
+    double word = (wrapped / two_pi) * 65536.0;
+    if (word < 0.0) word = 0.0;
+    if (word > 65535.0) word = 65535.0;
+    return (uint16_t)word;
+}
+
+/* Map 16-bit IQ phase word linearly to HBT collector voltage in millivolts [3800 mV, 7400 mV] */
+static inline uint32_t shbt_swarm_hbt_bias_mv(uint16_t iq16_word)
+{
+    uint32_t v_span = SHBT_SWARM_HBT_V_SAT_MV - SHBT_SWARM_HBT_V_ON_MV;
+    uint32_t delta_mv = (uint32_t)(((uint64_t)iq16_word * (uint64_t)v_span) / 65536ULL);
+    return SHBT_SWARM_HBT_V_ON_MV + delta_mv;
 }
 
 /* 128-Byte Dual-Cacheline SHBT-MMIO-SWARM v4 Register Layout at 0x70000000 */
