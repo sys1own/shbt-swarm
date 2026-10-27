@@ -387,62 +387,62 @@ The closed-loop power-to-actuation pipeline achieves:
 In sys1own/shbt-swarm, the digital twin (`crates/shbt-swarm-sim`) does not treat bulk metric propulsion, universal matter folding, or quine replication as decoupled phenomenological abstractions. Instead, it simulates the entire closed-loop transduction pipeline from fuel annihilation to holographic boundary character shifts across six deterministic physical stages:
 
 ```text
-+--------------------------------------------------------------------------------------------------------------------+
-|                CLOSED-LOOP SHBT-SWARM FUEL-TO-BOUNDARY SIMULATION & ACTUATION CASCADE                              |
-+--------------------------------------------------------------------------------------------------------------------+
-|  STAGE 1: ANNIHILATION SOURCE (SHBT-MAR-312X Core & SHBT-IBR-312X Dark-Braid Magazine)                            |
-|  * 376.99 kg Bipartite Core: 188.495 kg visible 178m2HfB2-12C + 188.495 kg dark D_B-folded 16_bar anti-baryons    |
-|  * Energy Density: 33.8822 EJ gross/core; 41 cores in 0-volume dark ledger = 1,378.06 EJ single-frame capacity     |
-|  * Catalytic Trigger: 12.50 kg Purcell Lonsdaleite/12C-c-11B15N die induces micro-batch annihilation in 160 kg cavity |
-+--------------------------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------------------+
+|                CLOSED-LOOP SHBT-SWARM FUEL-TO-BOUNDARY SIMULATION & ACTUATION CASCADE                                |
++----------------------------------------------------------------------------------------------------------------------+
+|  STAGE 1: ANNIHILATION SOURCE (SHBT-MAR-312X Core & SHBT-IBR-312X Dark-Braid Magazine)                               |
+|  * 376.99 kg Bipartite Core: 188.495 kg visible 178m2HfB2-12C + 188.495 kg dark D_B-folded 16_bar anti-baryons       |
+|  * Energy Density: 33.8822 EJ gross/core; 41 cores in 0-volume dark ledger = 1,378.06 EJ single-frame capacity       |
+|  * Catalytic Trigger: 12.50 kg Purcell Lonsdaleite/12C-c-11B15N die induces micro-batch annihilation in 160 kg cavity|
++----------------------------------------------------------------------------------------------------------------------+
 |
 v (Annihilation Quanta & Relativistic Flux)
 +--------------------------------------------------------------------------------------------------------------------+
 |  STAGE 2: SOLID-STATE CONVERSION & CFT DIRECT BUS (SHBT-DEC-X Converter)                                           |
-|  * 5-Zone 4D Weyl-Polariton & Photonic Time-Crystal (260.00 kg, eta_DEC-X = 99.200%, P_Brem == 0)                 |
-|  * Direct Boundary CFT Bus: B_direct^MAR-X (eta_bus = 99.850%) -> Net Boundary Power P_act = 0.990512 * P_gross     |
+|  * 5-Zone 4D Weyl-Polariton & Photonic Time-Crystal (260.00 kg, eta_DEC-X = 99.200%, P_Brem == 0)                  |
+|  * Direct Boundary CFT Bus: B_direct^MAR-X (eta_bus = 99.850%) -> Net Boundary Power P_act = 0.990512 * P_gross    |
 |  * LANR Auxiliary Rail: 999.054 kW services 906.000 kW emitter Landauer debt (+81.104 kW net thermal margin)       |
 +--------------------------------------------------------------------------------------------------------------------+
 |
 v (0.015 - 2.700 MV Graded HVDC Rail)
 +--------------------------------------------------------------------------------------------------------------------+
 |  STAGE 3: 8x8 InP/InGaAs HBT & PIC TRANSDUCTION INTERFACE (crates/shbt-swarm-mar312x/src/hbt_pic_rotator.rs)       |
-|  * Optical Carrier: 1550.00 nm DFB laser (193.414489 THz, 15.0 mW) + 6-stage binary MMI splitters (<= 0.42 dB/st) |
+|  * Optical Carrier: 1550.00 nm DFB laser (193.414489 THz, 15.0 mW) + 6-stage binary MMI splitters (<= 0.42 dB/st)  |
 |  * Electro-Optic Phase Modulation: 64 traveling-wave InGaAsP MZIs (V_pi = 1.65 V, L_m = 3.20 mm, T_k = -2.18 dB)   |
-|  * HBT Driver Lattice: 64 InP/InGaAs HBTs (d_e = 50.0 um, f_master = 72.0 GHz, R_aggregate = 2.560 Tb/s)          |
-|  * Linear Bias Mapping: V_{m,n} = 3.800 V + (3.600 V / 2pi) * (theta_{m,n} mod 2pi) in [3.800 V, 7.400 V]         |
+|  * HBT Driver Lattice: 64 InP/InGaAs HBTs (d_e = 50.0 um, f_master = 72.0 GHz, R_aggregate = 2.560 Tb/s)           |
+|  * Linear Bias Mapping: V_{m,n} = 3.800 V + (3.600 V / 2pi) * (theta_{m,n} mod 2pi) in [3.800 V, 7.400 V]          |
 |  * PID Jitter Suppression: K_p = 1.85 V/rad -> sigma_phi <= 5.05e-5 rad, Coherence C >= 0.9995, Jitter = 1.707 fs  |
 +--------------------------------------------------------------------------------------------------------------------+
 |
 v (Coherent 40.0 GHz Spatial Phase Profile & IQ16 Words)
 +--------------------------------------------------------------------------------------------------------------------+
-|  STAGE 4: BOUNDARY CFT CHARACTER TRANSFORMATION ((26, 8, 312) WZW Affine Boundary Register)                       |
+|  STAGE 4: BOUNDARY CFT CHARACTER TRANSFORMATION ((26, 8, 312) WZW Affine Boundary Register)                        |
 |  * Cartan Weight Translation: Visible U_Cartan(Delta lambda_vis) in su(2)_26 x su(3)_8                             |
-|  * Coset Spinor Rotation: 16 -> 16_bar in so(10)_312 / [su(2)_26 x su(3)8] (Delta h_vis = 45/64 = 0.703125)     |
+|  * Coset Spinor Rotation: 16 -> 16_bar in so(10)_312 / [su(2)_26 x su(3)8] (Delta h_vis = 45/64 = 0.703125)        |
 |  * Dynamic Framing Compensation: delta h_braid = -Delta h_vis / 124 -> Delta_fr == 0 (Stress Tensor E_munu == 0)   |
 |  * 230-Space-Group Wyckoff Projection: P_G^(230) pins atomistic coordinates at zero post-sim compile compute       |
 +--------------------------------------------------------------------------------------------------------------------+
 |
 v (Fefferman-Graham Boundary Stress Projection)
-+--------------------------------------------------------------------------------------------------------------------+
-|  STAGE 5: MACROSCOPIC SWARM ACTUATION                                                                              |
-|  1. WARP SOLITON PROPULSION: beta^x = -v_s(t) * C(sigma_phi) * exp(Delta_mod/2) * f_SHBT(x)                       |
-|     - Tier 1 Continuous Cruise: 992.00 TW -> 99.3c                                                                 |
-|     - Tier 2 Sustained Burst: 7.541 PW -> 754.9c                                                                   |
-|     - Tier 3 Exawatt Impulse: 992.00 PW -> 99,308c                                                                 |
-|     - Tier 4 Hyper-Impulse: 25.00 EW -> 2,482,950c (Andromeda M31 transit in 8.957 hours)                         |
-|     - Minimum-Jerk Profile: max(ds/dtau) = 1.8750, max(|d^2s/dtau^2|) = 5.7735, a_res <= 1.0e-7 m/s^2            |
-|  2. UNIVERSAL MATTER FOLDING (R_univ^SWARM): Materializes turnkey 202.55 Mt infrastructure at Delta C_post-sim == 0|
-|  3. CONSTRUCTIVE QUINE CLONING (R_clone^SWARM): 13.418 ms daughter Jump-Cruisers, 11.40 us Mode 1c core reloading  |
++---------------------------------------------------------------------------------------------------------------------+
+|  STAGE 5: MACROSCOPIC SWARM ACTUATION                                                                               |
+|  1. WARP SOLITON PROPULSION: beta^x = -v_s(t) * C(sigma_phi) * exp(Delta_mod/2) * f_SHBT(x)                         |
+|     - Tier 1 Continuous Cruise: 992.00 TW -> 99.3c                                                                  |
+|     - Tier 2 Sustained Burst: 7.541 PW -> 754.9c                                                                    |
+|     - Tier 3 Exawatt Impulse: 992.00 PW -> 99,308c                                                                  |
+|     - Tier 4 Hyper-Impulse: 25.00 EW -> 2,482,950c (Andromeda M31 transit in 8.957 hours)                           |
+|     - Minimum-Jerk Profile: max(ds/dtau) = 1.8750, max(|d^2s/dtau^2|) = 5.7735, a_res <= 1.0e-7 m/s^2               |
+|  2. UNIVERSAL MATTER FOLDING (R_univ^SWARM): Materializes turnkey 202.55 Mt infrastructure at Delta C_post-sim == 0 |
+|  3. CONSTRUCTIVE QUINE CLONING (R_clone^SWARM): 13.418 ms daughter Jump-Cruisers, 11.40 us Mode 1c core reloading   |
 |  4. SIMPLICIAL Sp(2g, Z) CONSENSUS: Unipotent sheaf routing over 10^6 ships, hyper-temporal enclaves (alpha <= 10^4)|
-+--------------------------------------------------------------------------------------------------------------------+
++---------------------------------------------------------------------------------------------------------------------+
 |
 v (Closed-Loop Thermal, Acoustic & Safety Telemetry)
 +--------------------------------------------------------------------------------------------------------------------+
 |  STAGE 6: ACOUSTIC TAMPING & CROWBAR PROTECTION                                                                    |
-|  * 85.0 GHz Brillouin Matching: d_m = 6.395 nm, Z_m = 1.1512 MRayl -> R_acoustic = 8.78e-10 <= 1.0e-6             |
-|  * Structural Clamping: Peak von Mises stress sigma_max = 124.60 MPa <= 350.00 MPa (64.4% margin)                 |
-|  * SHUNT_TRIG Crowbar: 1.701 ps PtWeylCrowbar clamps V_{m,n} < 3.800 V, 48.0 T SMES absorbs 99.88% inductive energy |
+|  * 85.0 GHz Brillouin Matching: d_m = 6.395 nm, Z_m = 1.1512 MRayl -> R_acoustic = 8.78e-10 <= 1.0e-6              |
+|  * Structural Clamping: Peak von Mises stress sigma_max = 124.60 MPa <= 350.00 MPa (64.4% margin)                  |
+|  * SHUNT_TRIG Crowbar: 1.701 ps PtWeylCrowbar clamps V_{m,n} < 3.800 V, 48.0 T SMES absorbs 99.88% inductive energy|
 +--------------------------------------------------------------------------------------------------------------------+
 ```
 
