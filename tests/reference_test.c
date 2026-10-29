@@ -28,11 +28,27 @@ int main(void) {
     assert(sizeof(shbt_logos_therm_shunt_t) == 64U);
     assert(sizeof(shbt_logos_omnibus_ctrl_t) == 128U);
     assert(sizeof(shbt_logos_ctrl_t) == 256U);
+    assert(sizeof(shbt_causal_observer_frame_t) == 128U);
+    assert(sizeof(shbt_vessel_admissibility_cert_t) == 64U);
+    assert(sizeof(shbt_apotheosis_ctrl_t) == 256U);
 
-    /* Verify Phase 5B control bit definitions */
+    /* Verify Phase 5B & Phase 6 ABI & control definitions */
+    assert(SHBT_SWARM_ABI_VERSION == 0x00060312U);
+    assert(SHBT_APOTH_MMIO_BASE == 0x4000C000UL);
+    assert(SHBT_OMNIBUS_HYPERFRAME_DMA_BASE == 0x70020000UL);
+    assert(SHBT_APOTH_EGRESS_SAFEWORD_IRQ == 0x80000000UL);
+    assert(SHBT_APOTH_CMD_ASCEND == 0x00000001UL);
+    assert(SHBT_APOTH_CMD_DESCEND_SOMATIC == 0x00000002UL);
+    assert(SHBT_APOTH_CMD_DEITY_LAW_REWRITE == 0x00000004UL);
+    assert(SHBT_APOTH_CMD_VERLINDE_MULTIPLEX == 0x00000008UL);
+    assert(SHBT_APOTH_CMD_SANDBOX_FORK_X1 == 0x00000010UL);
+    assert(SHBT_APOTH_CMD_ZERO_COMP_RENDER == 0x00000020UL);
+    assert(SHBT_APOTH_CMD_SYNTH_AVATAR == 0x00000040UL);
+    assert(SHBT_APOTH_CMD_BRAID_CRYSTALLIZE == 0x00000080UL);
+
     assert(SHBT_LOGOS_MODULAR_Q_ZERO_LOCK == (1ULL << 0));
     assert(SHBT_LOGOS_COHERENT_UNCOMPUTE_EN == (1ULL << 1));
-    assert(SHBT_LOGOS_SIM_X1_PROTECT_LATCH == (1ULL << 8));
+    assert(SHBT_LOGOS_SIM_X1_PROTECT_LATCH == 0x00000002UL);
     assert(SHBT_LOGOS_SIM_KILL_DISABLE_LOCK == (1ULL << 9));
 
     assert(offsetof(shbt_sten_dark_telemetry_t, v_terra_lyapunov_q32) == 0x00U);
@@ -81,7 +97,7 @@ int main(void) {
     memset(&g_test_hyperframe, 0, sizeof(g_test_hyperframe));
 
     g_test_mmio.magic_id = 0x5357524DU;
-    g_test_mmio.abi_version = 0x00040312U;
+    g_test_mmio.abi_version = SHBT_SWARM_ABI_VERSION;
     g_test_mmio.feedstock_mass_ug = 5892300000ULL;
     g_test_mmio.target_payload_mass_ug = 5892300000ULL;
     g_test_mmio.net_b_minus_l_balance = 0LL;

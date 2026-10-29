@@ -18,3 +18,4 @@ shbt-swarm-mar312x = { path = "../shbt-swarm-mar312x" }
 shbt-swarm-omega = { path = "../shbt-swarm-omega" }
 shbt-swarm-aegis = { path = "../shbt-swarm-aegis" }
 shbt-swarm-logos = { path = "../shbt-swarm-logos" }
+shbt-swarm-apotheosis = { path = "../shbt-swarm-apotheosis" }

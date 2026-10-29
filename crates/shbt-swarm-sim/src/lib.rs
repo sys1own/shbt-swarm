@@ -8,9 +8,11 @@
 
 pub mod reactor_twin;
 pub mod galactic_twin;
+pub mod apotheosis_twin;
 
 pub use reactor_twin::*;
 pub use galactic_twin::*;
+pub use apotheosis_twin::*;
 
 /// Maximum de-render front velocity in m/s (`56.988 m/s`).
 pub const MAX_DERENDER_VELOCITY_MPS: f64 = 56.988;

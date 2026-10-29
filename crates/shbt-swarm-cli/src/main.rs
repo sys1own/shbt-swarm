@@ -2,7 +2,7 @@
 //! Master CLI tool for sys1own/shbt-swarm verification and gate audits.
 //! Configured with Kardashev Type III Galactic Synthesis as the primary default operational mode.
 
-use shbt_swarm_hil::evaluate_all_144_gates;
+use shbt_swarm_hil::evaluate_all_160_gates;
 use shbt_swarm_sim::{GalacticSynthesisSimulation, SwarmOperationalMode};
 
 fn main() -> std::process::ExitCode {
@@ -10,8 +10,8 @@ fn main() -> std::process::ExitCode {
     match args.next().as_deref() {
         Some("verify") | None => {
             println!("========================================================================");
-            println!("SHBT-SWARM MASTER GATE VERIFICATION MATRIX (144 GATES)");
-            println!("Primary Operational Mode: Kardashev Type III Galactic Synthesis (SHBT-OMEGA-312 / LOGOS-312)");
+            println!("SHBT-SWARM MASTER GATE VERIFICATION MATRIX (160 GATES)");
+            println!("Primary Operational Mode: Kardashev Type III Galactic Synthesis & Phase 6 Observer Ascension");
             println!("========================================================================");
 
             // Verify primary galactic synthesis digital twin invariants
@@ -22,7 +22,7 @@ fn main() -> std::process::ExitCode {
                 return std::process::ExitCode::FAILURE;
             }
 
-            let gates = evaluate_all_144_gates();
+            let gates = evaluate_all_160_gates();
             let mut failed = 0;
             for g in &gates {
                 let status_str = if g.passed { "PASS" } else { "FAIL" };

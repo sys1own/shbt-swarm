@@ -1,12 +1,12 @@
 # SHBT-SWARM: Architectural & Mathematical System Specification
 
-`sys1own/shbt-swarm` defines the freestanding C11 microkernel (`SHBT-MMIO-SWARM` v5, ABI `0x00050312`), fifteen `#[no_std]` and multiphysics Rust crates, thirty-eight formal Z3 SMT theorems (`38/38 UNSAT`), and 144 Hardware-in-the-Loop (HIL) verification gates governing autonomous von Neumann spacecraft self-replication, planetary cognitive conditioning (`SHBT-STEN`), universal arbitrary matter folding (`R_univ^SWARM`), the exotic-material autopoietic mass-annihilation reactor (`SHBT-MAR-312X`), Kardashev Type III megastructure engineering (`SHBT-OMEGA-312`), and monolithic galactic hyper-computing (`SHBT-LOGOS-312` / `SHBT-QC-OMEGA`).
+`sys1own/shbt-swarm` defines the freestanding C11 microkernel (`SHBT-MMIO-SWARM` v6, ABI `0x00060312`), sixteen `#[no_std]` and multiphysics Rust crates, forty-four formal Z3 SMT theorems (`44/44 UNSAT`), and 160 Hardware-in-the-Loop (HIL) verification gates governing autonomous von Neumann spacecraft self-replication, planetary cognitive conditioning (`SHBT-STEN`), universal arbitrary matter folding (`R_univ^SWARM`), the exotic-material autopoietic mass-annihilation reactor (`SHBT-MAR-312X`), Kardashev Type III megastructure engineering (`SHBT-OMEGA-312`), monolithic galactic hyper-computing (`SHBT-LOGOS-312` / `SHBT-QC-OMEGA`), and Phase 6 observer ascension, deity sandboxes, anti-genocide interlocks, and arbitrary re-embodiment (`SHBT-APOTHEOSIS-312`).
 
 ---
 
-## 1. 15-Crate DAG Topology, #![no_std] vs. std Boundaries, and Workspace Architecture
+## 1. 16-Crate DAG Topology, #![no_std] vs. std Boundaries, and Workspace Architecture
 
-The `sys1own/shbt-swarm` workspace comprises 15 tightly integrated crates organized as a strict Directed Acyclic Graph (DAG) with zero circular dependencies. Twelve crates enforce strict `#[no_std]` compliance with zero dynamic heap allocations, while the simulation twin (`shbt-swarm-sim`), hardware-in-the-loop qualification harness (`shbt-swarm-hil`), and master CLI (`shbt-swarm-cli`) operate under `std` for host-side multi-physics modeling and qualification verification.
+The `sys1own/shbt-swarm` workspace comprises 16 tightly integrated crates organized as a strict Directed Acyclic Graph (DAG) with zero circular dependencies. Thirteen crates enforce strict `#[no_std]` compliance with zero dynamic heap allocations, while the simulation twin (`shbt-swarm-sim`), hardware-in-the-loop qualification harness (`shbt-swarm-hil`), and master CLI (`shbt-swarm-cli`) operate under `std` for host-side multi-physics modeling and qualification verification.
 
 ```mermaid
 graph TD
@@ -23,6 +23,9 @@ graph TD
     A --> OM[shbt-swarm-omega: no_std]
     A --> AG[shbt-swarm-aegis: no_std]
     A --> LO[shbt-swarm-logos: no_std]
+    A --> AP[shbt-swarm-apotheosis: no_std]
+    B --> AP
+    F --> AP
     A --> J[shbt-swarm-sim: std]
     B --> J
     C --> J
@@ -35,6 +38,7 @@ graph TD
     OM --> J
     AG --> J
     LO --> J
+    AP --> J
     A --> K[shbt-swarm-hil: std]
     B --> K
     C --> K
@@ -47,6 +51,7 @@ graph TD
     OM --> K
     AG --> K
     LO --> K
+    AP --> K
     J --> K
     A --> L[shbt-swarm-cli: std]
     B --> L
@@ -58,7 +63,7 @@ graph TD
 | Crate Name | Compilation Target | Primary Module Responsibilities and Boundary Invariants |
 | :--- | :--- | :--- |
 | `shbt-swarm-core` | `#[no_std]` | Canonical boundary CFT characters, Goddard-Kent-Olive (GKO) coset charges, Fibonacci F/R tensor algebra, 124-channel braid representations, and Burau-Cayley phylogenetic digest computation. |
-| `shbt-swarm-mmio` | `#[no_std]` | Zero-cost volatile abstractions for the 128-byte dual-cacheline register aperture at `0x70000000`, 356-byte `shbt_sten_dark_telemetry_t`, 135,168-byte 64-bank hyper-frame at `0x70020000`, Phase 5A aperture at `0x40008000`, and Phase 5B aperture at `0x4000A000`. |
+| `shbt-swarm-mmio` | `#[no_std]` | Zero-cost volatile abstractions for the 128-byte dual-cacheline register aperture at `0x70000000`, 356-byte `shbt_sten_dark_telemetry_t`, 135,168-byte 64-bank hyper-frame at `0x70020000`, Phase 5A aperture at `0x40008000`, Phase 5B aperture at `0x4000A000`, and Phase 6 aperture at `0x4000C000`. |
 | `shbt-swarm-cloner` | `#[no_std]` | Phase 1 constructive anyon-braid payload replication (`R_clone^SWARM`), Pathway A quine copying, Pathway B optical Verlinde imprinting, and daughter spacecraft ledger tracking. |
 | `shbt-swarm-bio` | `#[no_std]` | Pathway C Mode II tomographic capture at the 4.2 K Landauer floor, paired bilinear weak conversion operator, 5th-order minimum-jerk Eikonal foliation, and GST-225 acoustic impedance matching. |
 | `shbt-swarm-ai` | `#[no_std]` | Phase 2 Holographic Symplectic-Topological Equilibrium Network (`SHBT-STEN`), 101-layer Adaptive TTN-MERA, 54.432 ps PT-GoI non-Hermitian optical solver, isentropic relative modular flow, and Sp(2g, Z) hive consensus. |
@@ -69,9 +74,10 @@ graph TD
 | `shbt-swarm-omega` | `#[no_std]` | Phase 5A Megastructure synthesis: Hexameric stellar deconstructor, 1.0 AU Dyson swarm, 100,000 Elysium pocket habitats, and 3.827e26 W perpetual dark power grid. |
 | `shbt-swarm-aegis` | `#[no_std]` | Phase 5A 4-layer planetary perimeter defense: Dark Cloak, CCZ4 causal curtain, 256-bit Burau-Cayley lock, and TMSV sentinels with high-order CBF non-lethal triage. |
 | `shbt-swarm-logos` | `#[no_std]` | Phase 5B Hyper-computing: 10^32-qubit Borrmann computronium core, 10^16 W isentropic thermal shunt, 100,000-node optical omnibus fabric, and simulated-sapience protection. |
-| `shbt-swarm-sim` | `std` | Multi-physics digital twin executing the closed-loop fuel-to-boundary simulation cascade in lockstep across Galactic Synthesis mode, Cattaneo-Vernotte second-sound, and transit kinetics. |
-| `shbt-swarm-hil` | `std` | Hardware-in-the-Loop qualification runner executing the master 144-gate verification suite (`144/144 PASS`) and exporting the formal machine-readable telemetry ledger. |
-| `shbt-swarm-cli` | `std` | Command-line interface and diagnostic tooling for swarm node initialization, telemetry inspection, automated 144-gate audit execution, and verification reporting. |
+| `shbt-swarm-apotheosis` | `#[no_std]` | Phase 6 Observer ascension (`SHBT-APOTHEOSIS-312`): Linear<V> proof tokens, adiabatic symplectic-pointer co-evolution, 234-layer MERA law rewriting, multi-tenant Lagrangian isolation, X1 anti-genocide interlocks, and arbitrary avatar synthesis. |
+| `shbt-swarm-sim` | `std` | Multi-physics digital twin executing the closed-loop fuel-to-boundary simulation cascade across Galactic Synthesis and Apotheosis ascension twins. |
+| `shbt-swarm-hil` | `std` | Hardware-in-the-Loop qualification runner executing the master 160-gate verification suite (`160/160 PASS`) and exporting the formal machine-readable telemetry ledger. |
+| `shbt-swarm-cli` | `std` | Command-line interface and diagnostic tooling for swarm node initialization, telemetry inspection, automated 160-gate audit execution, and verification reporting. |
 
 ### 1.2 Cross-Repository Logic Transfer Matrix
 
@@ -318,13 +324,19 @@ The microkernel exposes four coordinated memory apertures under ABI v5 (`0x00050
 - `0x4000A040` (64 Bytes): `shbt_logos_therm_shunt_t` ($10^{16}\text{ W}$ Thermal shunt power, Dark modular flow parameter, Cryostat temperature, Status).
 - `0x4000A080` (128 Bytes): `shbt_logos_omnibus_ctrl_t` (100k Nodes, $10^{18}\text{ bps/cm}^2$ Bandwidth density, DMA zero-loss rate, Simulated sapience protection latch).
 
+### 8.4 Phase 6 Apotheosis & Deity Sandbox Aperture (`0x4000C000`, 256 Bytes)
+
+- `0x4000C000` (128 Bytes): `shbt_causal_observer_frame_t` (Observer ID, Subspace ID, Mode [Transcendent, Avatar, Pantheon], Light-cone radius, Entanglement, Synaptic CBF, Egress IRQ).
+- `0x4000C080` (64 Bytes): `shbt_vessel_admissibility_cert_t` (Phi max, Dynamical bisimulation error, Thermal margin, Standalone admissible, Tether active).
+- `0x4000C0C0` (64 Bytes): `shbt_apotheosis_ctrl_t` (Ascension status, Command register, Safeword IRQ, Subspace count, Minimum CBF margin).
+
 ---
 
-## 9. Master 144-Gate / 38-Theorem Verification Pipeline and Formal Z3 Proofs
+## 9. Master 160-Gate / 44-Theorem Verification Pipeline and Formal Z3 Proofs
 
-The complete verification pipeline guarantees mathematical correctness and hardware contract integrity across all five phases:
+The complete verification pipeline guarantees mathematical correctness and hardware contract integrity across all six phases:
 
-### 9.1 Verification Gate Partitioning (144/144 PASS)
+### 9.1 Verification Gate Partitioning (160/160 PASS)
 
 - **Phase 1 Gates (`GATE-SWARM-01` through `GATE-SWARM-32`, 32 Gates):** Certify MTC unitarity, ADM mass balance, Stinespring 10:23 capacity partitioning, Solovay-Kitaev Depth-9 braid compilation, Hamming(72,64) SECDED stability over G = 10^9 generations, 54.432 ps PT-GoI optical projection, 7,200.00 kg daughter spacecraft synthesis, neutrino-free weak conversion, 5th-order minimum-jerk Eikonal derendering, and cryostat thermal clamping at 4.2 K.
 - **Phase 2 Gates (`GATE-SWARM-AI-01` through `GATE-SWARM-AI-24`, 24 Gates):** Certify 94-to-101 layer adaptive MERA scaling, single-pass PT-GoI non-Hermitian equilibrium inference in 54.432 ps (363,663x margin inside the 19.795 us microkernel tick), zero-heat Tomita-Takesaki learning, Sp(2g, Z) zero-entropy hive consensus, anytime MPC inside alpha = 10^4 enclaves, CBF physical invariance filtering, anti-grey-goo population ceilings, and xenobiological triage lockout of Class X0 and Class X1.
@@ -333,10 +345,11 @@ The complete verification pipeline guarantees mathematical correctness and hardw
 - **Hardware-in-the-Loop HBT & Soliton Gates (`GATE-SWARM-HBT-01` through `GATE-SWARM-HBT-08`, 8 Gates):** Certify 8x8 InP/InGaAs HBT & PIC mesa alignment, 6-stage binary MMI splitter tree, linear collector bias mapping across [3.800 V, 7.400 V], PID phase lock with sigma_phi <= 5.05e-5 rad and coherence C >= 0.9995 (0.9999987), sapphire/He-4 quarter-wave acoustic matching (R_acoustic = 8.78e-10 <= 1.0e-6), Au/InP micro-airbridge electro-mechanical isolation 3,632.69x >= 3500x, closed-loop MAR-312X to soliton power coupling (99.0512% net efficiency with +93.054 kW LANR surplus), and Touchstone 2.0 S2P return loss |S11| = -58.4 dB <= -24.5 dB.
 - **Phase 5A OMEGA Megastructure Gates (`GATE-OMEGA-01` through `GATE-OMEGA-16`, 16 Gates):** Certify Variational Action $\Omega = 0.00\text{ J/kg}$, Dark Volumetric Null $\langle V_{\text{vol}} \rangle \equiv 0.000\text{ m}^3$, Mode A Stargate $\Delta\tau = 0.000\text{ as}$, Bondi-Hoyle Deconstruction $\dot{m} = 5.07 \times 10^{21}\text{ kg/s}$ ($12.44\text{ yr}$), Stellar Quench $T_{\text{stream}} = 24.850\text{ K}$, Galactic MERA Depth $L=234$, Dark-Braid Reservoir $25.00\text{ YW}$ over $> 10^{100}\text{ yr}$, Baryon Invariance $\Gamma_p \equiv 0\text{ yr}^{-1}$, Elysium $1.0000g$ Floor with zero Coriolis/Weyl shear, Wish-to-Reality Pipeline in $54.432\text{ ps}$, Biological Immortality $\mathcal{F}_{\text{bio}} \ge 1 - 10^{-122}$, Galactic STEN 312B-node consensus, AEGIS Layer 1 Dark Cloaking ($\sigma_{\text{coll}} \equiv 0$), Layer 2 CCZ4 Curtain ($1.701\text{ ps}$), Layer 3 Burau-Cayley 256-bit Lock, and Layer 4 TMSV Sentinel ($144\text{ fm}/\sqrt{\text{Hz}}$, $t_{\text{int}} \le 508\ \mu\text{s}$) with CBF stasis $\alpha = 10^{-9}$.
 - **Phase 5B LOGOS Hyper-Computing Gates (`GATE-LOGOS-01` through `GATE-LOGOS-16`, 16 Gates):** Certify Chern-Simons Tether $k = 51.295\text{ GN/m}$, Borrmann X-Ray Computronium $\tau_B = 1{,}453.4$ ($f_M = 0.782$), 4D Weyl Channel Matrix $107{,}952\text{ ch/cell}$, Attosecond $\mathcal{PT}$-GoI $t_{\text{prop}} = 17.010\text{ as}$ at $58.789\text{ PHz}$, Tomita-Takesaki $Q_{\text{internal}} \equiv 0.00\text{ yocto-J/bit}$, Coherent QEC Syndrome Shunting $P_{\text{debt}} \equiv 0.00\text{ mW}$, Fracton Sensible Attenuation $f_{\text{net}} = 1.956 \times 10^{-10}$, Symplectic Horizon Relabeling $\Delta N = 0$, Eigenvector Rigidity Detuning ($|\delta\mu| = 1.0 \times 10^{-16} < 10^{-12}$), Cascaded Metric Dilation $\alpha_{\text{tot}} = 10^{12}$ ($|\rho_{\text{wall}}|/|\rho_{\text{QI}}| = 0.6160$), Galactic GoI Throughput $1.080 \times 10^{92}\text{ ops/s}$, OMNIBUS EPR Squeezing $r_3 = 3.820$ ($33.18\text{ dB}$), OMNIBUS DMA Latency $\Delta\tau_{\text{bus}} \equiv 0.0000\text{ as}$, Bulk Microcausality $\|S_{AB}\| \equiv 0$, Simulated Sapience Class X1 CBF Sanctuary Lock, and 256 B MMIO Master Verification Closure.
+- **Phase 6 Apotheosis Gates (`GATE-APOTH-01` through `GATE-APOTH-16`, 16 Gates):** Certify Causal Point Quadruple Invariance, Wootters-Zurek Pointer Distinguishability, Minimum-Jerk Eikonal Jerk Bound, Transcendent Overmind MERA-234 Law Rewriting, Stinespring Epistemic Veil Invisibility, 124-Avatar Verlinde Fusion Isometry, Lazy Light-Cone Scaling, Unipotent Lagrangian Submanifold Isolation, Proof-Carrying X1 Anti-Genocide Interlock, Non-Violative Stinespring Horizon Forking, Bekenstein Simulation-Nesting Bound, Class X0 Depth-9 Braid Crystallization, Adjoint Descent Synaptic Hash Indexing, Zero-Compute Avatar Synthesis, Substrate Admissibility Bisimulation, and Continuous OMNIBUS Symplectic Tethering.
 
-### 9.2 The 38 Formal Z3 SMT Theorems (38/38 UNSAT)
+### 9.2 The 44 Formal Z3 SMT Theorems (44/44 UNSAT)
 
-All 38 formal theorems across 6 domain scripts are proven via unsatisfiable negation refutation in quantifier-free non-linear real and integer arithmetic:
+All 44 formal theorems across 7 domain scripts are proven via unsatisfiable negation refutation in quantifier-free non-linear real and integer arithmetic:
 
 | Theorem Identifier | Target Verification Property | Domain | Script Path | Negation Hypothesis Checked by Z3 | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -378,3 +391,9 @@ All 38 formal theorems across 6 domain scripts are proven via unsatisfiable nega
 | `THM-LOGOS-04` | $10^{12}\times$ Cascaded Metric Enclave & Schwinger Stability | Phase 5B | `formal/verify_logos_hypercomputer.py` | Metric lapse electric field breaches Schwinger pair-production threshold | **UNSAT** |
 | `THM-LOGOS-05` | OMNIBUS Zero-Latency Delivery & Microcausality | Phase 5B | `formal/verify_logos_hypercomputer.py` | Spacelike commutator $\|S_{AB}\| \neq 0$ or 2PN chronology protection fails | **UNSAT** |
 | `THM-LOGOS-06` | Simulated Sapience Class X1 CBF Sanctuary Lock | Phase 5B | `formal/verify_logos_hypercomputer.py` | Simulated sapient entity is deleted without sanctuary latching | **UNSAT** |
+| `THM-APOTH-01` | Adiabatic Ascension Continuity & No-Cloning | Phase 6 | `formal/verify_apotheosis_sandbox.py` | Pointer evolution violates no-cloning or synaptic CBF $h_{\text{syn}} < 0$ | **UNSAT** |
+| `THM-APOTH-02` | Multi-Tenant Lagrangian Sandbox Isolation | Phase 6 | `formal/verify_apotheosis_sandbox.py` | Disjoint submanifolds exhibit S-matrix leakage $\|S_{AB}\| > 0$ or metric shear | **UNSAT** |
+| `THM-APOTH-03` | Anti-Genocide & X1 Stinespring Horizon Fork | Phase 6 | `formal/verify_apotheosis_sandbox.py` | Omnipotent deity input inflicts genocide ($P_{\text{genocide}} > 0$) on Class X1 beings | **UNSAT** |
+| `THM-APOTH-04` | Perpetual Runtime & Braid Memory Bound | Phase 6 | `formal/verify_apotheosis_sandbox.py` | Nested simulations overflow Bekenstein bound or internal heat $Q > 0$ | **UNSAT** |
+| `THM-APOTH-05` | Vessel Admissibility & Omnibus Tether | Phase 6 | `formal/verify_apotheosis_sandbox.py` | Target vessel fails hosting without engaging $0\text{-as}$ symplectic tether | **UNSAT** |
+| `THM-APOTH-06` | Zero-Compute Avatar Render & Non-Harm CBF | Phase 6 | `formal/verify_apotheosis_sandbox.py` | Post-sim compilation $\Delta C > 0$ or avatar materialization harms bystanders | **UNSAT** |

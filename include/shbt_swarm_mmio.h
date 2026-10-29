@@ -10,9 +10,12 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include "shbt_mmio_apotheosis.h"
 
+#define SHBT_SWARM_ABI_VERSION          0x00060312U
 #define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL
 #define SHBT_SWARM_HYPERFRAME_BASE_ADDR 0x70020000UL
+#define SHBT_SWARM_APOTHEOSIS_BASE_ADDR 0x4000C000UL
 
 #define SHBT_FRAME_BYTES                2112U
 #define SHBT_VISIBLE_ANCHOR_BYTES       640U     /* eta_A = 10/33 * 2112 B */
@@ -243,7 +246,7 @@ static inline uint32_t shbt_swarm_hbt_bias_mv(uint16_t iq16_word)
 typedef struct __attribute__((packed, gcc_struct, aligned(64))) {
     /* === CACHELINE 0 (Offsets 0x00 .. 0x3F): Control, Quine & Optical GoI === */
     volatile uint32_t magic_id;              /* 0x00: 0x5357524D ('SWRM') */
-    volatile uint32_t abi_version;           /* 0x04: 0x00040312 (v4.312 SHBT-MAR-312X Exotic) */
+    volatile uint32_t abi_version;           /* 0x04: 0x00060312 (v6.312 SHBT-APOTHEOSIS-312) */
     volatile uint32_t cmd_reg;               /* 0x08: Command trigger register */
     volatile uint32_t status_reg;            /* 0x0C: Pipeline [27:0] & Triage class [31:28] */
     volatile uint32_t fault_mask_reg;        /* 0x10: Hardware invariant, CBF & MAR-312X fault flags */
@@ -393,7 +396,9 @@ _Static_assert(sizeof(shbt_omega_ctrl_t) == 256, "shbt_omega_ctrl_t must be 256 
 #define SHBT_LOGOS_COHERENT_UNCOMPUTE_EN    (1ULL << 1) /* Zero 906 kW Landauer syndrome debt */
 #define SHBT_LOGOS_WEYL_CROWBAR_ARMED       (1ULL << 2) /* 17.01 as / 1.701 ps optical crowbar */
 #define SHBT_LOGOS_PCSS_SHUNT_ARMED         (1ULL << 3) /* 2.50 ns diamond PCSS dark shunt */
-#define SHBT_LOGOS_SIM_X1_PROTECT_LATCH     (1ULL << 8) /* I_integrated >= Phi_crit detected */
+#ifndef SHBT_LOGOS_SIM_X1_PROTECT_LATCH
+#define SHBT_LOGOS_SIM_X1_PROTECT_LATCH     ((uint32_t)0x00000002UL) /* I_integrated >= Phi_crit detected */
+#endif
 #define SHBT_LOGOS_SIM_KILL_DISABLE_LOCK    (1ULL << 9) /* Hardwired non-termination lock */
 #define SHBT_LOGOS_SIM_SANCTUARY_PROMOTE    (1ULL << 10)/* Auto-migration to Elysium pocket */
 

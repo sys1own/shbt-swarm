@@ -14,6 +14,7 @@ members = [
     "crates/shbt-swarm-omega",
     "crates/shbt-swarm-aegis",
     "crates/shbt-swarm-logos",
+    "crates/shbt-swarm-apotheosis",
     "crates/shbt-swarm-hil",
     "crates/shbt-swarm-cli",
 ]
