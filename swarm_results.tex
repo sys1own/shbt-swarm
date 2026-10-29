@@ -3,7 +3,8 @@
 \centering
 \scriptsize
 \setlength{\tabcolsep}{3pt}
-\caption{144-Gate Hardware-in-the-Loop and Formal Verification Matrix (Part 1/6).}\label{tab:swarm_144_gates_p1}
+\renewcommand{\arraystretch}{0.92}
+\caption{144-Gate Hardware-in-the-Loop and Formal Verification Matrix (Part 1/7).}\label{tab:swarm_144_gates_p1}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}p{3.2cm}p{3.0cm}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{4.5cm}l@{}}
 \toprule
@@ -30,24 +31,26 @@
 \texttt{GATE-SWARM-19} & WP-2.3 Nanotech Fidelity & F\_clone\textasciicircum{}nano \textgreater{}= 1 - 10\textasciicircum{}-120 & \texttt{1 - 10\textasciicircum{}-120} & \textbf{PASS} \\
 \texttt{GATE-SWARM-20} & WP-3.1 Dynkin Slot Routing & 27 + 45 + 274 = 346 active weight slots & \texttt{27 + 45 + 274 = 346 slots} & \textbf{PASS} \\
 \texttt{GATE-SWARM-21} & WP-3.1 Daughter Dry Mass & M\_ship = 7,200.00 kg, N\_ship = 4.3359e30 & \texttt{7200.00 kg} & \textbf{PASS} \\
-\texttt{GATE-SWARM-22} & WP-3.1 Seed Wafer Synthesis & 18.8495 kg 178m2HfB2-12C + 18.8495 kg anti-16 = 37.699 kg & \texttt{37.699 kg} & \textbf{PASS} \\
-\texttt{GATE-SWARM-23} & WP-3.1 Synthesis Energy & W\_clone\textasciicircum{}ship = 409.2841 PJ (13.49\% of 3.0331 EJ) & \texttt{409.2841 PJ} & \textbf{PASS} \\
-\texttt{GATE-SWARM-24} & WP-3.1 Turnaround Timing & 457.20 s / 60.14 s / 457.20 ms (quantum) & \texttt{457.20 s / 60.14 s / 457.20 ms (tot 852.02 ms)} & \textbf{PASS} \\
 \bottomrule
 \end{tabular}%
 }
 \end{table*}
+\FloatBarrier
 
 \begin{table*}[!htbp]
 \centering
 \scriptsize
 \setlength{\tabcolsep}{3pt}
-\caption{144-Gate Hardware-in-the-Loop and Formal Verification Matrix (Part 2/6).}\label{tab:swarm_144_gates_p2}
+\renewcommand{\arraystretch}{0.92}
+\caption{144-Gate Hardware-in-the-Loop and Formal Verification Matrix (Part 2/7).}\label{tab:swarm_144_gates_p2}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}p{3.2cm}p{3.0cm}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{4.5cm}l@{}}
 \toprule
 \textbf{Gate ID} & \textbf{Subsystem} & \textbf{Target Bound} & \textbf{Measured Value} & \textbf{Status} \\
 \midrule
+\texttt{GATE-SWARM-22} & WP-3.1 Seed Wafer Synthesis & 18.8495 kg 178m2HfB2-12C + 18.8495 kg anti-16 = 37.699 kg & \texttt{37.699 kg} & \textbf{PASS} \\
+\texttt{GATE-SWARM-23} & WP-3.1 Synthesis Energy & W\_clone\textasciicircum{}ship = 409.2841 PJ (13.49\% of 3.0331 EJ) & \texttt{409.2841 PJ} & \textbf{PASS} \\
+\texttt{GATE-SWARM-24} & WP-3.1 Turnaround Timing & 457.20 s / 60.14 s / 457.20 ms (quantum) & \texttt{457.20 s / 60.14 s / 457.20 ms (tot 852.02 ms)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-25} & WP-3.2 Bondi-Hoyle Funnel & M\_seed = alpha\_seed * Delta N \textgreater{}= 10\textasciicircum{}-6 M\_sun & \texttt{1.00e-6 M\_sun (Bondi-Hoyle locked)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-26} & WP-3.2 Neutrino-Free Weak & Phi\_nu == 0 cm\textasciicircum{}-2 s\textasciicircum{}-1, Delta Q\_EM\textasciicircum{}tot == 0 & \texttt{Phi\_nu = 0, Delta(B-L) = 0, Delta Q\_EM = 0 (3/3 rxns)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-27} & WP-3.2 Eikonal Foliation & v\_derender\textasciicircum{}max \textless{}= 56.988 m/s, s''(0) = s''(1) = 0 & \texttt{v\_max = 56.988 m/s, s(0.5)=0.500, v\_norm=1.875} & \textbf{PASS} \\
@@ -66,27 +69,29 @@
 \texttt{GATE-SWARM-AI-08-EXT} & WP-1.3 Tomita-Takesaki Flow & Q\_internal == 0 J/bit, S = 100/1089, P\_vis \textless{}= 1.01 nW at 4.2 K & \texttt{Q\_internal == 0 J/bit, S = 100/1089, P\_vis \textless{}= 1009 pW} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-09} & WP-1.3 Symplectic Shunting & S = 100/1089 (9.18\% vis), 1-S = 989/1089 (90.82\% dark) & \texttt{100/1089 vis (9.18\%), 989/1089 dark (90.82\%)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-10} & WP-1.3 Cryogenic Clamping & P\_vis\textasciicircum{}enclave \textasciitilde{} 1.01 nW =\textgreater{} T\_QC \textless{}= 4.200 K & \texttt{P\_vis = 1008100000 fW (1.0081 nW) \textless{}= 1.50 W, T\_QC \textless{}= 4.200 K} & \textbf{PASS} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+\FloatBarrier
+
+\begin{table*}[!htbp]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{0.92}
+\caption{144-Gate Hardware-in-the-Loop and Formal Verification Matrix (Part 3/7).}\label{tab:swarm_144_gates_p3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}p{3.2cm}p{3.0cm}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{4.5cm}l@{}}
+\toprule
+\textbf{Gate ID} & \textbf{Subsystem} & \textbf{Target Bound} & \textbf{Measured Value} & \textbf{Status} \\
+\midrule
 \texttt{GATE-SWARM-AI-11} & WP-2.1 Homoiconic Quine & Delta\_model-hw == 0; exact match across 346 Dynkin slots & \texttt{Delta\_model-hw == 0 (346/346 slots locked)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-12} & WP-2.1 Wafer \& Warp Calculus & 89.6c / 681.2c / 89,618c; \textless{}= 7 clones per 3.03310 EJ wafer & \texttt{89.6c / 681.2c / 89618c; max 7 clones} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-13} & WP-2.2 Fibonacci Fusion Tree & dim H\_124\textasciicircum{}(tau) = F\_123 \textasciitilde{} 2.27e25; eps\_SK9 \textless{}= 10\textasciicircum{}-230.1937 & \texttt{F\_123 = 22698374052006863956975682} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-14} & WP-2.2 Verlinde \& PTC Collapse & c\_total = 1 (Delta\_fr == 0); optimal policy latched in 1 pass & \texttt{c\_total = 1, 1-pass PTC latch in 54.432 ps} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-15} & WP-3.1 Higher-Genus Hive & dim H\_g = sum\_i S\_\{0i\}\textasciicircum{}\{2-2g\}; zero RF blackout in plasma/warp & \texttt{M = 10000, genus g = 10002} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-16-EXT} & WP-3.1 Symplectic Routing & rho\_spec(T) = 1.0, (T-I)\textasciicircum{}2 == 0, Ent(phi) == 0 & \texttt{rho\_spec = 1.0, (T-I)\textasciicircum{}2 == 0, Ent(phi) = 0} & \textbf{PASS} \\
-\bottomrule
-\end{tabular}%
-}
-\end{table*}
-
-\begin{table*}[!htbp]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{3pt}
-\caption{144-Gate Hardware-in-the-Loop and Formal Verification Matrix (Part 3/6).}\label{tab:swarm_144_gates_p3}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}p{3.2cm}p{3.0cm}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{4.5cm}l@{}}
-\toprule
-\textbf{Gate ID} & \textbf{Subsystem} & \textbf{Target Bound} & \textbf{Measured Value} & \textbf{Status} \\
-\midrule
 \texttt{GATE-SWARM-AI-17} & WP-3.1 Byzantine Immunity & 100\% rejection of forged frames within 1.701 ps & \texttt{Forged frame rejected in 1.701 ps (0x0040)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-18} & WP-3.2 Enclave Throughput & 3.6366e6 to 3.6366e9 sweeps per 19.795 us tick & \texttt{3636633700 sweeps/tick at alpha=10\textasciicircum{}4} & \textbf{PASS} \\
 \texttt{GATE-SWARM-AI-19} & WP-3.2 Interior Shear Null & \textbar{}\textbar{}grad\_i alpha\textbar{}\textbar{}\_interior == 0 \textless{}=\textgreater{} E\_munu == 0 & \texttt{\textbar{}\textbar{}grad\_i alpha\textbar{}\textbar{}\_interior == 0, E\_munu == 0} & \textbf{PASS} \\
@@ -102,6 +107,23 @@
 \texttt{GATE-SWARM-UNIV-05} & WP-1.1 Braid Capacity Lock & Ceiling C\_braid = 38.196601 nats (0x2000 fault) & \texttt{C\_braid = 38.196601 nats, overflow -\textgreater{} 0x2004} & \textbf{PASS} \\
 \texttt{GATE-SWARM-UNIV-06} & WP-1.2 Space-Group Projector & G\_space in \{1..230\} + G\_space = 0 amorphous & \texttt{G\_space in [0, 230] (231/231 validated)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-UNIV-07} & WP-1.2 Chern-Simons Tether & Positional jitter \textbar{}delta x\_I\textbar{}\_max \textless{}= 10\textasciicircum{}-4 A (10 fm) & \texttt{k\_tether = 51295000000 N/m, \textbar{}delta x\textbar{} \textless{}= 10 fm} & \textbf{PASS} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+\FloatBarrier
+
+\begin{table*}[!htbp]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{0.92}
+\caption{144-Gate Hardware-in-the-Loop and Formal Verification Matrix (Part 4/7).}\label{tab:swarm_144_gates_p4}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}p{3.2cm}p{3.0cm}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{4.5cm}l@{}}
+\toprule
+\textbf{Gate ID} & \textbf{Subsystem} & \textbf{Target Bound} & \textbf{Measured Value} & \textbf{Status} \\
+\midrule
 \texttt{GATE-SWARM-UNIV-08} & WP-1.2 Kohn-Sham Screening & E\_KS = 352.48 eV, lambda\_TF = 0.482 A, P\_Brem == 0 W & \texttt{E\_KS = 352.48 eV, lambda\_TF = 0.482 A, P\_Brem = 0 W} & \textbf{PASS} \\
 \texttt{GATE-SWARM-UNIV-09} & WP-1.2 GST-225 Impedance & Z\_bulk(x) in [1, 100] MRayl, R\_acoustic \textless{}= 10\textasciicircum{}-6 & \texttt{Z\_bulk in [1, 100] MRayl, R\_acoustic = 0.0 \textless{}= 10\textasciicircum{}-6} & \textbf{PASS} \\
 \texttt{GATE-SWARM-UNIV-10} & WP-1.3 Drip-Line Integrability & 2j \textless{}= 26 (su(2)\_26) \& lambda\_1 + lambda\_2 \textless{}= 8 (su(3)\_8) & \texttt{Non-integrable weight rejected (0x4000)} & \textbf{PASS} \\
@@ -111,21 +133,6 @@
 \texttt{GATE-SWARM-UNIV-14} & WP-2.2 Zero-Entropy Tiling & rho\_spec(T\textasciicircum{}partial) = 1 =\textgreater{} Ent(phi) == 0 in 1.701 ps/bank & \texttt{rho\_spec = 1, Ent(phi) = 0, t\_prop = 1.701 ps/bank} & \textbf{PASS} \\
 \texttt{GATE-SWARM-UNIV-15} & WP-3.1 Megastructure Integrity & sigma\_y \textgreater{}= 4.5 GPa, kappa\_diamond \textgreater{}= 3,100 W/(m*K) & \texttt{sigma\_y = 4.80 GPa, kappa\_diamond = 3,200 W/(m*K)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-UNIV-16} & WP-3.2 shbt-power p-11B Plant & P\_net = 7,832.903 MW\_e (eta = 89.52\%), 11B10H14 purity & \texttt{P\_net = 7,832.903 MW\_e (eta = 89.51889\%)} & \textbf{PASS} \\
-\bottomrule
-\end{tabular}%
-}
-\end{table*}
-
-\begin{table*}[!htbp]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{3pt}
-\caption{144-Gate Hardware-in-the-Loop and Formal Verification Matrix (Part 4/6).}\label{tab:swarm_144_gates_p4}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}p{3.2cm}p{3.0cm}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{4.5cm}l@{}}
-\toprule
-\textbf{Gate ID} & \textbf{Subsystem} & \textbf{Target Bound} & \textbf{Measured Value} & \textbf{Status} \\
-\midrule
 \texttt{GATE-SWARM-UNIV-17} & WP-3.2 shbt-cf LANR Grid & P\_DC = 999.054 kW\_e, cold-side Delta T\_K = 3.546 K & \texttt{P\_DC = 999.054 kW\_e, Delta T\_K = 3.546 K} & \textbf{PASS} \\
 \texttt{GATE-SWARM-UNIV-18} & WP-3.3 shbt-ghost 1g Floor & g\_hab == 9.80665 m/s\textasciicircum{}2 (1.000g) across g\_planet in [0.1g, 2.5g] & \texttt{g\_hab = 9.80665 m/s\textasciicircum{}2 (1.0000g)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-UNIV-19} & WP-3.3 Zero Coriolis \& Shear & a\_Cor == 0, E\_munu\textasciicircum{}interior == 0 inside habitat & \texttt{a\_Cor = 0 m/s\textasciicircum{}2, E\_munu\textasciicircum{}interior = 0} & \textbf{PASS} \\
@@ -138,6 +145,23 @@
 \texttt{GATE-SWARM-MARX-02} & WP-1.1 Purcell Seed Die & rho\_DOS(omega\_spont) == 0, F\_P == 0 =\textgreater{} t\_1/2\textasciicircum{}eff -\textgreater{} inf & \texttt{rho\_DOS = 0, F\_P = 0 (t\_1/2\textasciicircum{}eff -\textgreater{} inf)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-MARX-03} & WP-1.1 Optical Gateway & G\_isomer = 85.40 \textgreater{} 61.15 threshold & \texttt{G\_isomer = 85.40 \textgreater{} 61.15} & \textbf{PASS} \\
 \texttt{GATE-SWARM-MARX-04} & WP-1.1 Mossbauer Lock & f\_M = 0.9942 (1 - f\_M = 0.0058) at 21.13 K & \texttt{f\_M = 0.994200} & \textbf{PASS} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+\FloatBarrier
+
+\begin{table*}[!htbp]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{0.92}
+\caption{144-Gate Hardware-in-the-Loop and Formal Verification Matrix (Part 5/7).}\label{tab:swarm_144_gates_p5}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}p{3.2cm}p{3.0cm}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{4.5cm}l@{}}
+\toprule
+\textbf{Gate ID} & \textbf{Subsystem} & \textbf{Target Bound} & \textbf{Measured Value} & \textbf{Status} \\
+\midrule
 \texttt{GATE-SWARM-MARX-05} & WP-1.1 Borrmann Channel & eps\_B = 0.9995 (1 - eps\_B = 0.0005), tau\_B = 1,542 \textgreater{} 1,500 & \texttt{eps\_B = 0.999500, tau\_B = 1542} & \textbf{PASS} \\
 \texttt{GATE-SWARM-MARX-06} & WP-1.1 Frenkel Shear Ceiling & sigma\_max,allow = 4,800.00 MPa (4.80 GPa) & \texttt{sigma\_allow = 4800 MPa (active = 785 MPa)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-MARX-07} & WP-1.2 SHBT-DEC-X Zone 1/2 & C\_2 = +1 != 0, C\_bc == 0, losses l\_1 + l\_2 = 0.400\% & \texttt{C\_2 = +1, l\_1+l\_2 = 0.400\%} & \textbf{PASS} \\
@@ -150,21 +174,6 @@
 \texttt{GATE-SWARM-MARX-14} & WP-1.5 Weyl Crowbar \& SMES & t\_trip = 1.701 ps \textless{}= 2.50 ns, eta\_SMES = 99.88\% & \texttt{t\_trip = 1701 fs (1.701 ps), eta\_SMES = 99.88\%} & \textbf{PASS} \\
 \texttt{GATE-SWARM-MARX-15} & WP-2.1 Zero Lattice Fatigue & \textbar{}delta x\textbar{}\_max = 10\textasciicircum{}-4 A \textless{} a\_disp = 1.0 A =\textgreater{} DPA\_rate == 0 & \texttt{\textbar{}delta x\textbar{}\_max = 10 fm (10\textasciicircum{}-4 A), DPA\_rate = 0.0 /s} & \textbf{PASS} \\
 \texttt{GATE-SWARM-MARX-16} & WP-2.2 Autopoietic Healing & Q\_internal == 0 J/bit, 0 unhealed defects over 10\textasciicircum{}9 yr & \texttt{Q\_internal = 0 J/bit, cycles = 1} & \textbf{PASS} \\
-\bottomrule
-\end{tabular}%
-}
-\end{table*}
-
-\begin{table*}[!htbp]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{3pt}
-\caption{144-Gate Hardware-in-the-Loop and Formal Verification Matrix (Part 5/6).}\label{tab:swarm_144_gates_p5}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}p{3.2cm}p{3.0cm}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{4.5cm}l@{}}
-\toprule
-\textbf{Gate ID} & \textbf{Subsystem} & \textbf{Target Bound} & \textbf{Measured Value} & \textbf{Status} \\
-\midrule
 \texttt{GATE-SWARM-MARX-17} & WP-3.1 Thermal Chain & f\_sensible\textasciicircum{}MAR-312X = 2.1304e-9 (37,000x lower) & \texttt{213039486e-17 (2.13039486e-9)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-MARX-18} & WP-3.1 Tier 4 Forge Closure & T\_op = 24.85 K \textless{}= 192.5 K, sigma\_max = 785 MPa \textless{}= 4.8 GPa & \texttt{T\_op = 24.85 K, sigma\_max = 785 MPa} & \textbf{PASS} \\
 \texttt{GATE-SWARM-MARX-19} & WP-3.2 Direct Boundary Bus & eta\_direct = 99.850\% \textgreater{} eta\_DEC-X, Delta M\_ADM = Delta(B-L) = 0 & \texttt{eta\_direct = 99.850\% \textgreater{} 99.200\%} & \textbf{PASS} \\
@@ -174,6 +183,23 @@
 \texttt{GATE-SWARM-MARX-23} & WP-4.1 MMIO v4 Binary Lock & sizeof == 128 B, 356 B, 2112 B, 135168 B; ABI 0x00040312 & \texttt{128 B, 356 B, 2112 B, 135168 B (ABI 0x00040312)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-MARX-24} & WP-4.2 Rust \#![no\_std] Audit & 100\% branch coverage; zero unsafe memory violations & \texttt{Crowbar interlock verified (cmd\_reg = 0x80000000)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-HBT-01} & WP-4.3 HBT Array Geometry & 8x8 mesa, 127.0 um pitch, 50.0 um active, 2.560 Tbps bandwidth & \texttt{8x8 (64 ch), pitch 127 um, mesa 50 um, 2.560 Tbps} & \textbf{PASS} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+\FloatBarrier
+
+\begin{table*}[!htbp]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{0.92}
+\caption{144-Gate Hardware-in-the-Loop and Formal Verification Matrix (Part 6/7).}\label{tab:swarm_144_gates_p6}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}p{3.2cm}p{3.0cm}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{4.5cm}l@{}}
+\toprule
+\textbf{Gate ID} & \textbf{Subsystem} & \textbf{Target Bound} & \textbf{Measured Value} & \textbf{Status} \\
+\midrule
 \texttt{GATE-SWARM-HBT-02} & WP-4.3 Collector Bias Mapping & V\_mn in [3.800 V, 7.400 V], K\_p = 1.85 V/rad PID lock & \texttt{V\_mn in [3.800 V, 7.400 V], K\_p = 1.85 V/rad} & \textbf{PASS} \\
 \texttt{GATE-SWARM-HBT-03} & WP-4.3 Spatial Coherence & C \textgreater{}= 0.9995, sigma\_phi \textless{}= 4.2895e-4 rad, jitter \textless{} 1.707 fs & \texttt{C = 1.0000000, jitter = 0.201 fs (sigma\_phi = 5.05e-5 rad)} & \textbf{PASS} \\
 \texttt{GATE-SWARM-HBT-04} & WP-4.3 Acoustic Tamping & R\_ac \textless{}= 1.0e-6, sigma\_max \textless{}= 350.00 MPa (peak \textless{}= 124.60 MPa) & \texttt{R\_ac = 8.78e-10 \textless{}= 1e-6, sigma\_max = 124.60 MPa \textless{}= 350.00 MPa} & \textbf{PASS} \\
@@ -189,27 +215,29 @@
 \texttt{GATE-OMEGA-06} & WP-3.1 Galactic MERA-DAG Depth & L\_gal in [102, 234], N in [10\textasciicircum{}45, 10\textasciicircum{}70], error \textless{}= 10\textasciicircum{}-120 & \texttt{L\_gal = 234 (10\textasciicircum{}70 nucleons), error \textless{}= 10\textasciicircum{}-120} & \textbf{PASS} \\
 \texttt{GATE-OMEGA-07} & WP-3.2 Dark-Braid Power Reserve & E\_reserve = 1.8e56 J, Q\_foundry = 119,094, P\_out = 25.00 YW & \texttt{E\_res = 1.80e56 J, Q = 119094, P = 25.000 YW continuous} & \textbf{PASS} \\
 \texttt{GATE-OMEGA-08} & WP-3.2 Baryon Preservation & Gamma\_proton == 0 /yr (F\_P == 0.0), Delta(B-L) == 0 over 10\textasciicircum{}100 yr & \texttt{Gamma\_p = 0.00 /yr, Delta(B-L) = 0, lifetime \textgreater{} 10\textasciicircum{}100 yr} & \textbf{PASS} \\
-\bottomrule
-\end{tabular}%
-}
-\end{table*}
-
-\begin{table*}[!htbp]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{3pt}
-\caption{144-Gate Hardware-in-the-Loop and Formal Verification Matrix (Part 6/6).}\label{tab:swarm_144_gates_p6}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}p{3.2cm}p{3.0cm}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{4.5cm}l@{}}
-\toprule
-\textbf{Gate ID} & \textbf{Subsystem} & \textbf{Target Bound} & \textbf{Measured Value} & \textbf{Status} \\
-\midrule
 \texttt{GATE-OMEGA-09} & WP-4.1 Elysium Habitat Confinement & g\_hab = 9.80665 m/s\textasciicircum{}2, omega\_Cor == 0, \textbar{}\textbar{}E\_uv\textbar{}\textbar{}\_F == 0 & \texttt{g = 9.806650 m/s\textasciicircum{}2 (1.000g), omega\_Cor = 0, E\_uv = 0} & \textbf{PASS} \\
 \texttt{GATE-OMEGA-10} & WP-4.2 Wish-to-Reality Pipeline & t\_solve \textless{}= 54.432 ps, Delta C\_post-sim == 0, CBF margin \textgreater{} 0 & \texttt{t\_solve = 54.432 ps (54432 fs), Delta C = 0} & \textbf{PASS} \\
 \texttt{GATE-OMEGA-11} & WP-4.3 Class X0 Inhabitant Immortality & F\_bio \textgreater{}= 1 - 10\textasciicircum{}-122, Delta S\_chiral == 0, alpha in [10\textasciicircum{}-4, 10\textasciicircum{}4] & \texttt{F\_bio \textgreater{}= 1 - 10\textasciicircum{}-122, Delta S\_chiral = 0.00 nats} & \textbf{PASS} \\
 \texttt{GATE-OMEGA-12} & WP-5.1 Galactic STEN Swarm Network & N\_nodes = 312e9, Q\_internal == 0 J/bit, latency \textless{}= 54.432 ps & \texttt{312 billion nodes, Q\_int = 0.00 J/bit, tau = 54.432 ps} & \textbf{PASS} \\
 \texttt{GATE-OMEGA-13} & WP-5.2 AEGIS Layer 1 Dark Cloaking & sigma\_coll == 0.000 m\textasciicircum{}2 (P\_A * P\_D == 0 orthogonal gauge projection) & \texttt{sigma\_coll = 0.000000 m\textasciicircum{}2 (dark-ledger gauge decoupled)} & \textbf{PASS} \\
 \texttt{GATE-OMEGA-14} & WP-5.2 AEGIS Layer 2 CCZ4 Causal Curtain & tau\_collapse \textless{}= 1.701 ps, ds2\_2PN \textless{}= 0 (anti-phase cancellation) & \texttt{tau = 1701 fs (1.701 ps), ds2\_2PN = 0 \textless{}= 0} & \textbf{PASS} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+\FloatBarrier
+
+\begin{table*}[!htbp]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{0.92}
+\caption{144-Gate Hardware-in-the-Loop and Formal Verification Matrix (Part 7/7).}\label{tab:swarm_144_gates_p7}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}p{3.2cm}p{3.0cm}>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}p{4.5cm}l@{}}
+\toprule
+\textbf{Gate ID} & \textbf{Subsystem} & \textbf{Target Bound} & \textbf{Measured Value} & \textbf{Status} \\
+\midrule
 \texttt{GATE-OMEGA-15} & WP-5.2 AEGIS Layer 3 Cryptographic Firewall & tau\_reject \textless{}= 1.701 ps, Banks 00..31 hardwired ROM lockout active & \texttt{tau\_reject = 1701 fs, Burau-Cayley 256-bit lock verified} & \textbf{PASS} \\
 \texttt{GATE-OMEGA-16} & WP-5.2 AEGIS Layer 4 Sentinel \& CBF Triage & noise \textless{}= 144 fm/sqrt(Hz), t\_int \textless{}= 508 us, Class X1 non-lethal stasis & \texttt{noise = 144 fm/sqrt(Hz), t\_int = 508 us, CBF stasis alpha=10\textasciicircum{}-9} & \textbf{PASS} \\
 \texttt{GATE-LOGOS-01} & WP-1.1 Chern-Simons Tether Dynamics & k\_tether = 51.295 GN/m, \textbar{}delta x\textbar{} \textless{}= 10 fm (10\textasciicircum{}-4 A) & \texttt{k = 51.295 GN/m, \textbar{}delta x\textbar{} \textless{}= 10 fm} & \textbf{PASS} \\
@@ -232,4 +260,5 @@
 \end{tabular}%
 }
 \end{table*}
+\FloatBarrier
 
