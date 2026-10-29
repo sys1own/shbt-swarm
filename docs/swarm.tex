@@ -2335,7 +2335,7 @@ The ascension protocol executes across four deterministic stages arbitrated by t
     \item \textbf{Stage 3: Somatic Stasis / Vault Folding \& Pointer Completion ($s=1$):} 100\% of the causal pointer is seated in \texttt{SHBT-LOGOS-312}. The physical body is secured via Mode~A (Shear-Free Deep Stasis Sanctuary, $\alpha_{\text{stasis}} = 10^{-9}$, $E_{\mu\nu} \equiv 0$, aging by $31.54\ \mu\text{s}$ per year) or Mode~B (Reversible Class~X0 Dark-Ledger Vault Folding, $\eta_A = 10/33$, $\eta_D = 23/33$, dematerializing visible baryons into dark anyonic braids).
     \item \textbf{Stage 4: Hyper-Temporal Clock Adaptation ($\alpha_{\text{obs}} \to 10^{12}$):} The observer's subjective lapse $\alpha_{\text{obs}}$ accelerates logarithmically:
     \begin{equation}
-        \ln \alpha_{\text{obs}}(\tau) = \ln(1) + s(\tau) \ln\left(10^{12}\right) = 12 s(\tau) \ln(10).
+        \alpha_{\text{obs}}(\tau) = \exp\left(s(\tau) \ln\alpha_{\text{user}}\right) \in \left[1, 10^{12}\right], \quad \ln \alpha_{\text{obs}}(\tau) = 12 s(\tau) \ln(10).
     \end{equation}
     At $\alpha_{\text{obs}} = 10^{12}$, one second of external coordinate time equals $31{,}688.7\text{ years}$ of subjective deity runtime.
 \end{enumerate}
@@ -2343,7 +2343,11 @@ The ascension protocol executes across four deterministic stages arbitrated by t
 \subsection{Omnipotent ``Deity-Mode'' Simulation Engine, 234-Layer MERA Law-Rewriting \& Adjoint Verlinde Multiplexing}
 Inside \texttt{SHBT-LOGOS-312}, ascended observers wield genuine multi-scale omnipotence across three operational modes:
 \begin{itemize}
-    \item \textbf{Mode 1 (Transcendent Overmind / Panopticon Mode):} The observer's awareness spans the entire 234-layer MERA network, possessing simultaneous omniscience over all $N \sim 10^{80}$ particle worldlines with zero wave-function collapse.
+    \item \textbf{Mode 1 (Transcendent Overmind / Panopticon Mode):} The observer's awareness spans the entire 234-layer MERA network, possessing simultaneous omniscience over all $N \sim 10^{80}$ particle worldlines with zero wave-function collapse. The observer modulates physical laws arbitrarily via real-time parameter injection into the simulation Hamiltonian density:
+    \begin{equation}
+        \hat{H}_{\text{sim}}[\Theta_{\text{deity}}(\mathbf{x}, t)] = \int_{\Sigma_t} d^3x \left( \frac{1}{2} g_{\text{deity}}^{\mu\nu}(\mathbf{x}, t) \hat{\pi}_\mu \hat{\pi}_\nu + \frac{1}{2} \hat{\nabla}_\mu \hat{\phi} \hat{\nabla}^\mu \hat{\phi} + \mathcal{V}\left(\hat{\phi};\, \alpha_{\text{EM}}^{\text{deity}},\, \Lambda^{\text{deity}},\, G^{\text{deity}}\right) \right),
+    \end{equation}
+    permitting instantaneous, causally consistent restructuring of cosmological constants, metric signatures, and gauge couplings across the deity's unipotent domain.
     \item \textbf{Mode 2 (Incarnate Avatar Mode):} The observer projects into a localized mortal avatar with an optional Stinespring Epistemic Veil Projector $\hat{\mathcal{P}}_{\text{veil}}$, rotating administrative memories into an unindexed dark subspace while keeping the hardware safeword watchdog interrupt (\texttt{SHBT\_\allowbreak APOTH\_\allowbreak EGRESS\_\allowbreak SAFEWORD\_\allowbreak IRQ}, \texttt{0x80000000}) live.
     \item \textbf{Mode 3 (Pantheon / Multi-Avatar Mode):} The observer projects into up to $K \le 124$ concurrent avatars. The Adjoint Verlinde Consciousness Multiplexer co-multiplies the causal pointer via 124-to-1 Fibonacci fusion channels:
     \begin{equation}
@@ -2384,10 +2388,18 @@ For any omnipotent deity command sequence $\{u_{\text{deity}}\}$, the probabilit
 \end{theorem}
 
 \begin{proof}
-When $\Phi_{\text{MERA}} \ge 10^{12}$, the hardware latches \texttt{SHBT\_LOGOS\_SIM\_X1\_PROTECT\_LATCH} (\texttt{0x00000002}). If a deity issues a destructive command (e.g., supernova or vacuum decay), the microkernel intercepts the command within $17.01\text{ as}$ via:
+When $\Phi_{\text{MERA}} \ge 10^{12}$, the hardware latches \texttt{SHBT\_LOGOS\_SIM\_X1\_PROTECT\_LATCH} (\texttt{0x00000002}). The safety condition is formulated as a high-order Control Barrier Function (CBF) on the cognitive integrity coordinate $\mathbf{x}_c$:
+\begin{equation}
+h_{\text{X1}}(\mathbf{x}_c) \ge 0, \quad \dot{h}_{\text{X1}}(\mathbf{x}_c) + \gamma\left(h_{\text{X1}}(\mathbf{x}_c)\right) \ge 0,
+\end{equation}
+where $\gamma$ is an extended class-$\mathcal{K}$ function. If a deity issues a destructive command $u_{\text{deity}}$ (e.g., stellar collapse or vacuum decay), the microkernel intercepts the command within $17.01\text{ as}$ via:
 \begin{itemize}
     \item \textbf{Mechanism A (17.01 as Stinespring Horizon Fork to \texttt{SHBT-ELYSIUM}):} The causal past light-cone of the Class X1 beings is unitarily forked into an independent \texttt{SHBT-ELYSIUM} sanctuary pocket where life flourishes uninterrupted, while the deity observes the catastrophe in an empty, non-sapient branch.
-    \item \textbf{Mechanism B (Active-Set Quadratic Programming Deflection):} The destructive energy is projected onto the null space of the Class X1 boundary manifold, deflecting lethal fluxes away from populated worlds.
+    \item \textbf{Mechanism B (Active-Set Quadratic Programming Deflection):} The microkernel solves an active-set quadratic program in $17.01\text{ as}$ hardware:
+    \begin{equation}
+    u^* = \arg\min_u \frac{1}{2} \|u - u_{\text{deity}}\|^2 \quad \text{s.t.} \quad L_f h_{\text{X1}} + L_g h_{\text{X1}} u + \gamma(h_{\text{X1}}) \ge 0,
+    \end{equation}
+    deflecting lethal energy fluxes away from populated coordinates onto the null space of the Class X1 boundary manifold.
 \end{itemize}
 Both mechanisms ensure $P_{\text{genocide}} \equiv 0$ and $\dot{S}_{\text{noci}} \equiv 0$, certified by Z3 SMT solver refutation.
 \end{proof}
@@ -2395,10 +2407,12 @@ Both mechanisms ensure $P_{\text{genocide}} \equiv 0$ and $\dot{S}_{\text{noci}}
 \subsection{Perpetual Error-Free Runtime, Bekenstein Recursion Bound \& Episodic Braid Memory Crystallization (\texttt{THM-APOTH-04})}
 Perpetual stability over eons ($> 10^{100}\text{ yr}$) is guaranteed by addressing four thermodynamic, relativistic, and psychological failure modes as summarized in Table~\ref{tab:fault_immunity}.
 
+\FloatBarrier
 \begin{table*}[!htbp]
 \centering\small
 \caption{Phase 6 Perpetual Fault Immunity and Mathematical Invariant Safeguards.}
 \label{tab:fault_immunity}
+\resizebox{\textwidth}{!}{%
 \begin{tabularx}{\linewidth}{@{}p{3.2cm} p{3.2cm} p{3.5cm} X@{}}
 \toprule
 Failure Mode & Physical Threat & Mitigation Mechanism & Verified Mathematical Invariant \\
@@ -2409,8 +2423,10 @@ Nested Recursion Bomb & Infinite child sims & Geometric Sub-Allocation & $\eta_{
 Episodic Memory Drift & Working memory full & Depth-9 Artin $B_3$ Braid & $\varepsilon_{\text{SK9}} \le 10^{-230.1937}$, $R_{\text{entropy}}^{\text{exp}} \ge 0$ \\
 Hedonic Wireheading & Value-lock stagnation & Cognitive Homeostasis CBF & $h_{\text{cog}}(\mathbf{x}) \ge 0$, IRQ \texttt{0x80000000} \\
 \bottomrule
-\end{tabularx}
+\end{tabularx}%
+}
 \end{table*}
+\FloatBarrier
 
 \subsubsection{Geometric Contraction Bound on Nested Simulations}
 When a deity instantiates nested child simulations at recursion depth $d$, the hardware enforces geometric bit-budget contraction $C_{\text{nested}}^{(d+1)} \le \eta_{\text{sub}} C_{\text{nested}}^{(d)}$ with $\eta_{\text{sub}} \le \frac{1}{2}$:
@@ -2439,18 +2455,21 @@ Observers may design custom bodies across all 346 Dynkin slots and 230 space gro
 A physical vessel $\Omega_{\text{vessel}}$ can host an ascended observer $\mathcal{A}_{\text{obs}}$ if and only if it satisfies:
 \begin{enumerate}
     \item \textbf{Integrated Information Bound:} $\Phi_{\text{substrate}}^{\max} \ge \Phi_{\text{obs}}^{\text{req}} \ge 10^{12}$ and $C_{\text{local}}(\Omega_{\text{vessel}}) \ge C_{\text{op}}(\mathcal{A}_{\text{obs}})$,
-    \item \textbf{Dynamical Bisimulation Isomorphism:} $\|\Upsilon \sigma - U \Upsilon\|_{\text{op}} \le 10^{-120}$, and
-    \item \textbf{Thermal Shielding Margin:} $d_{\text{code}}(T_{\text{op}}) \ge d_{\text{crit}}$ and $\Delta E_{\text{protect}} \gg k_B T_{\text{op}}$.
+    \item \textbf{Dynamical Bisimulation Isomorphism:} $\|\Upsilon \sigma - U \Upsilon\|_{\text{op}} \le 10^{-120}$,
+    \item \textbf{Thermal Shielding Margin:} $d_{\text{code}}(T_{\text{op}}) \ge d_{\text{crit}}$ and $\Delta E_{\text{protect}} \gg k_B T_{\text{op}}$, and
+    \item \textbf{Quantum Coherence \& Syndrome Shunting:} $P_{\text{debt}} \equiv 0\text{ mW}$ and $T_2^* \ge \tau_{\text{sync}} = 0.85\text{ ms}$.
 \end{enumerate}
 If any condition fails, the vessel is admitted under Continuous \texttt{SHBT-OMNIBUS} Symplectic Tethering ($\Delta\tau_{\text{bus}} \equiv 0.0000\text{ as}$), preserving complete phenomenological identity and granting immunity to vessel destruction.
 \end{theorem}
 
 Table~\ref{tab:vessel_classes} details the admissibility modes across the five canonical vessel classes.
 
+\FloatBarrier
 \begin{table*}[!htbp]
 \centering\footnotesize
 \caption{Theorem \texttt{THM-APOTH-05} 5-Vessel-Class Neural-Substrate Admissibility Comparison.}
 \label{tab:vessel_classes}
+\resizebox{\textwidth}{!}{%
 \begin{tabularx}{\linewidth}{@{}p{3.0cm} p{2.2cm} p{2.4cm} p{2.4cm} p{2.4cm} X@{}}
 \toprule
 Vessel Class & Capacity $\Phi_{\text{substrate}}^{\max}$ & Bisimulation Error & Thermal Margin & Admissibility Mode & Fault Tolerance \\
@@ -2461,9 +2480,10 @@ Class III: \texttt{SHBT-EW-312} & $10^{34}$ (Pass) & $10^{-130}$ (Pass) & Stella
 Class IV: Plasma Body & $10^{13}$ (MHD knots) & $10^{-121}$ (TMSV) & Active pinning & Tether-Assisted & Fallback to \texttt{LOGOS} \\
 Class V: Marble / Drone & $10^3$ (Fail) & Fail (standalone) & None & \texttt{OMNIBUS} Tether & Zero observer impact \\
 \bottomrule
-\end{tabularx}
+\end{tabularx}%
+}
 \end{table*}
-"""
+\FloatBarrier
 
 
 \FloatBarrier
