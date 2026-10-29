@@ -254,7 +254,7 @@ pub fn s11_return_loss_db(z0: f64) -> f64 {
         -240.0
     } else {
         // Log10 approximation using ln
-        20.0 * (natural_log(gamma) / 2.302585092994046)
+        20.0 * (natural_log(gamma) / core::f64::consts::LN_10)
     }
 }
 
@@ -266,11 +266,11 @@ fn natural_log(x: f64) -> f64 {
     let mut val = x;
     let mut k = 0;
     while val > 2.0 {
-        val /= 2.718281828459045;
+        val /= core::f64::consts::E;
         k += 1;
     }
     while val < 0.5 {
-        val *= 2.718281828459045;
+        val *= core::f64::consts::E;
         k -= 1;
     }
     let y = (val - 1.0) / (val + 1.0);

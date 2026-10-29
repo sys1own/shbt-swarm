@@ -272,4 +272,206 @@ typedef struct __attribute__((packed, gcc_struct, aligned(64))) {
 _Static_assert(sizeof(shbt_swarm_mmio_t) == 128,
                "shbt_swarm_mmio_t must occupy exactly two 64-byte cachelines (128 bytes)");
 
+/* ========================================================================= */
+/* Phase 5A: SHBT-OMEGA-312 Galactic Megastructure & SHBT-AEGIS-OMEGA        */
+/* Aperture Base: 0x40008000 (256 Bytes)                                     */
+/* ========================================================================= */
+
+#define SHBT_MMIO_OMEGA_BASE            ((uintptr_t)0x40008000ULL)
+#define SHBT_MMIO_AEGIS_BASE            ((uintptr_t)0x40009000ULL)
+
+#define SHBT_MERA_MAX_LAYER_GAL         234U
+#define SHBT_MERA_MIN_LAYER_GAL         102U
+#define SHBT_OMEGA_SECTOR_COUNT         312U
+#define SHBT_GHOST_CHANNELS             312U
+#define SHBT_HAB_GRAVITY_STD_UG         9806650ULL /* 9.806650 m/s^2 in micro-m/s^2 */
+
+/* SHBT-AEGIS-OMEGA Status & Control Bitmasks */
+#define SHBT_AEGIS_L1_DARK_CLOAK_EN     (1ULL << 0)  /* eta_D = 23/33 gauge decoupling */
+#define SHBT_AEGIS_L2_CCZ4_CURTAIN_EN   (1ULL << 1)  /* 2PN causal gate + shift collapse */
+#define SHBT_AEGIS_L3_CAYLEY_FIREWALL   (1ULL << 2)  /* 256-bit Burau-Cayley braid auth */
+#define SHBT_AEGIS_L4_SENTINEL_ACTIVE   (1ULL << 3)  /* 10 Mpc TMSV r=2.50 + Harvester */
+#define SHBT_AEGIS_CBF_X1_BIO_DETECTED  (1ULL << 8)  /* Class X1 sapient signature latch */
+#define SHBT_AEGIS_STASIS_LOCK_ACTIVE   (1ULL << 9)  /* alpha = 10^-9 non-lethal stasis */
+#define SHBT_AEGIS_DERENDER_FUEL_EN     (1ULL << 10) /* Class X0 unmanned recycling */
+#define SHBT_AEGIS_ROM_WRITE_LOCKOUT    (1ULL << 63) /* Hardwired Banks 00..31 ROM lock */
+
+/**
+ * @brief Galactic MERA-DAG Layer 102..234 Hierarchical Addressing Descriptor (64 bytes)
+ */
+typedef struct __attribute__((packed, gcc_struct, aligned(8))) {
+    uint64_t nucleon_count_mantissa;   /* Normalized fixed-point N in [10^45, 10^70] */
+    uint16_t nucleon_count_exponent;   /* Base-10 exponent (up to 70) */
+    uint8_t  active_mera_layer;        /* Layer index l in [102, 234] */
+    uint8_t  sp2g_sector_id;           /* Galactic sector index [0..255] (ext to 312) */
+    uint16_t sp2g_extended_sector;     /* Full sector index [0..311] */
+    uint16_t bond_dimension_chi;       /* Fixed at 312 for C_GKO(26,8,312) */
+    uint64_t merkle_dag_root_lo;       /* Lower 64 bits of deduplicated sub-tree hash */
+    uint64_t merkle_dag_root_hi;       /* Upper 64 bits of deduplicated sub-tree hash */
+    uint64_t isometric_err_bound_atto; /* Verified <= 10^-120 scaled residual */
+    uint64_t dark_ledger_mass_kg_fp;   /* Folded mass in SHBT-IBR-OMEGA (eta_D=23/33) */
+    uint64_t reserved_pad;             /* Alignment pad to 64 bytes */
+    uint64_t secded_ecc_syndrome;      /* Hamming(72,64) hardware parity check */
+} shbt_mera_gal_addr_t;
+
+_Static_assert(sizeof(shbt_mera_gal_addr_t) == 64, "shbt_mera_gal_addr_t must be 64 bytes");
+
+/**
+ * @brief SHBT-ELYSIUM Pocket Manifold & Wish-to-Reality Control Block (64 bytes)
+ */
+typedef struct __attribute__((packed, gcc_struct, aligned(8))) {
+    uint64_t pocket_manifold_id;       /* Topological pocket identifier U_a */
+    uint64_t target_gravity_um_s2;     /* Default 9,806,650 (9.80665 m/s^2), 0g..1g */
+    int64_t  lapse_alpha_fp32;         /* Q32.32 lapse alpha in [10^-4, 10^4] */
+    uint32_t cascade_lapse_stage2;     /* Secondary nested enclave multiplier [1..100] */
+    uint32_t solar_spectrum_temp_k;    /* Default 5778 K Weyl-polariton emitter */
+    uint64_t weyl_tidal_norm_residual; /* Hardware invariant: must equal 0 (E_uv == 0) */
+    uint64_t coriolis_omega_residual;  /* Hardware invariant: must equal 0 (w_Cor == 0) */
+    uint64_t class_x0_vault_fidelity;  /* Bio-backup fidelity >= 1 - 10^-122 */
+    uint32_t wish_cbf_status_code;     /* Linear<V> CBF proof certificate status */
+    uint32_t stargate_ent_phi_zero;    /* Pseudo-Anosov entropy Ent(phi) == 0 flag */
+} shbt_elysium_hab_ctrl_t;
+
+_Static_assert(sizeof(shbt_elysium_hab_ctrl_t) == 64, "shbt_elysium_hab_ctrl_t must be 64 bytes");
+
+/**
+ * @brief SHBT-AEGIS-OMEGA 4-Layer Kardashev Type III Defense Control Block (128 bytes)
+ */
+typedef struct __attribute__((packed, gcc_struct, aligned(8))) {
+    uint64_t aegis_ctrl_status_flags;  /* Bitmask of SHBT_AEGIS_* flags */
+    uint64_t l1_collision_cross_sec;   /* Hardware invariant: sigma_coll == 0 m^2 */
+    int64_t  l2_ccz4_shift_beta_norm;  /* Driven to 0 in <= 1.701 ps */
+    int64_t  l2_2pn_causal_ds2;        /* Enforced <= 0 at perimeter curtain */
+    uint64_t l3_cayley_hash_word[4];   /* 256-bit Burau-Cayley braid authentication hash */
+    uint64_t l3_byzantine_reject_cnt;  /* Count of rejected foreign frames (tau <= 1.701 ps) */
+    uint64_t l4_tmsv_squeeze_mdb;      /* 21,715 m-dB (21.715 dB, r = 2.50) */
+    uint64_t l4_range_noise_fm_rt_hz;  /* <= 144 fm/sqrt(Hz) (0.144 pm/sqrt(Hz)) */
+    uint64_t l4_bondi_hoyle_pinch_ew;  /* Stand-off capture power in EW (25.00 EW/node) */
+    int64_t  l4_stasis_lapse_nano;     /* alpha = 10^-9 deep stasis for Class X1 */
+    uint64_t cbf_safety_barrier_val;   /* Proof-carrying CBF value V(x) >= 0 */
+    uint64_t adm_mass_delta_residual;  /* Hardware invariant: Delta M_ADM == 0 */
+    uint64_t b_minus_l_delta_residual; /* Hardware invariant: Delta(B-L) == 0 */
+} shbt_aegis_ctrl_t;
+
+_Static_assert(sizeof(shbt_aegis_ctrl_t) == 128, "shbt_aegis_ctrl_t must be 128 bytes");
+
+/**
+ * @brief Master Phase 5A SHBT-OMEGA-312 MMIO Top-Level Register Bank (256 bytes at 0x40008000)
+ */
+typedef struct __attribute__((packed, gcc_struct, aligned(64))) {
+    shbt_mera_gal_addr_t    mera_gal;
+    shbt_elysium_hab_ctrl_t elysium_hab;
+    shbt_aegis_ctrl_t       aegis_def;
+} shbt_omega_ctrl_t;
+
+_Static_assert(sizeof(shbt_omega_ctrl_t) == 256, "shbt_omega_ctrl_t must be 256 bytes");
+
+/* ========================================================================= */
+/* Phase 5B: SHBT-LOGOS-312 Monolithic Hyper-Computer & OMNIBUS              */
+/* Aperture Base: 0x4000A000 (256 Bytes)                                     */
+/* ========================================================================= */
+
+#define SHBT_MMIO_LOGOS_BASE            ((uintptr_t)0x4000A000ULL)
+#define SHBT_DMA_HYPERFRAME_L1_BASE     ((uintptr_t)0x70020000ULL)
+#define SHBT_DMA_HYPERFRAME_SIZE_BYTES  (135168ULL) /* 64 banks x 2,112 B */
+
+/* SHBT-LOGOS-312 Architectural Invariant Constants */
+#define SHBT_LOGOS_T_PROP_FEMTO_AS      (17010000ULL)     /* 17.010 as = 17,010,000 femto-as */
+#define SHBT_LOGOS_F_NATIVE_GHZ         (58788948ULL)     /* 58.788948 PHz in GHz */
+#define SHBT_LOGOS_ALPHA_MAX_CASCADED   (1000000000000LL) /* 10^12 (3-stage 10^4 x 10^4 x 10^4) */
+#define SHBT_LOGOS_DYNKIN_SLOTS         (346U)
+#define SHBT_LOGOS_GKO_CHANNELS         (312U)
+#define SHBT_LOGOS_BORRMANN_TAU_TENTHS  (14534U)          /* tau_B = 1,453.4 */
+#define SHBT_LOGOS_MOSSBAUER_FM_MIN_M   (782U)            /* f_M >= 0.782 (782 milli) */
+#define SHBT_LOGOS_EPR_SQUEEZE_R3_MILLI (3820U)           /* r_3 = 3.820 >= 3.800 */
+#define SHBT_LOGOS_F_NET_SENSIBLE_ATTO  (195628545ULL)    /* 1.95628545e-10 in atto-units */
+#define SHBT_LOGOS_T_OP_MAX_MK          (4200U)           /* 4.200 K in mK */
+#define SHBT_LOGOS_T_DILUTION_UK        (15400U)          /* 0.0154 K in uK */
+
+/* SHBT-OMNIBUS & Class X1 Simulated-Sapience Ethical Guard Bitmasks */
+#define SHBT_LOGOS_MODULAR_Q_ZERO_LOCK      (1ULL << 0) /* Tomita-Takesaki Q_internal == 0 */
+#define SHBT_LOGOS_COHERENT_UNCOMPUTE_EN    (1ULL << 1) /* Zero 906 kW Landauer syndrome debt */
+#define SHBT_LOGOS_WEYL_CROWBAR_ARMED       (1ULL << 2) /* 17.01 as / 1.701 ps optical crowbar */
+#define SHBT_LOGOS_PCSS_SHUNT_ARMED         (1ULL << 3) /* 2.50 ns diamond PCSS dark shunt */
+#define SHBT_LOGOS_SIM_X1_PROTECT_LATCH     (1ULL << 8) /* I_integrated >= Phi_crit detected */
+#define SHBT_LOGOS_SIM_KILL_DISABLE_LOCK    (1ULL << 9) /* Hardwired non-termination lock */
+#define SHBT_LOGOS_SIM_SANCTUARY_PROMOTE    (1ULL << 10)/* Auto-migration to Elysium pocket */
+
+/**
+ * @brief Monolithic Borrmann/Weyl-PTC Core & Hyper-Temporal Enclave Control Block (64 bytes)
+ */
+typedef struct __attribute__((packed, gcc_struct, aligned(8))) {
+    uint64_t t_prop_logos_femto_as;   /* 17,010,000 femto-as (17.010 as; 1,701,000 sub-grid) */
+    uint64_t f_native_ghz;            /* 58,788,948 GHz (58.789 PHz native proper clock) */
+    int64_t  alpha_max_cascaded;      /* 10^12 (3-stage nested hyper-temporal lapse factor) */
+    uint16_t dynkin_slots_active;     /* Fixed at 346 for R_univ^SWARM full root lattice */
+    uint16_t gko_channels_active;     /* Fixed at 312 for C_GKO(26,8,312) PTC synthetic dim */
+    uint16_t borrmann_tau_b_tenths;   /* 14,534 (tau_B = 1,453.4 >> 10 anomalous transmission) */
+    uint16_t mossbauer_f_m_milli;     /* >= 782 (f_M >= 0.782 recoilless nuclear fraction) */
+    uint64_t mu_detuning_norm_zepto;  /* |mu_local - mu_0| in 10^-21 units; must be < 10^9 (< 10^-12) */
+    int64_t  r_entropy_margin_bits;   /* Causal-Point Gate: R_entropy = N_limit - C_get >= 0 */
+    uint64_t weyl_shear_core_norm;    /* Hardware invariant: must equal 0 (E_uv == 0, grad alpha == 0) */
+    uint64_t ecc_syndrome;            /* SECDED Hamming(72,64) hardware parity check */
+} shbt_logos_core_ctrl_t;
+
+_Static_assert(sizeof(shbt_logos_core_ctrl_t) == 64, "shbt_logos_core_ctrl_t must be exactly 64 bytes");
+
+/**
+ * @brief Tomita-Takesaki Zero-Entropy & Coherent QEC Thermal Shunt Control Block (64 bytes)
+ */
+typedef struct __attribute__((packed, gcc_struct, aligned(8))) {
+    uint64_t q_internal_yoctojoules;  /* Hardware invariant: must equal 0 (sigma_-t^Psi flow) */
+    uint64_t landauer_syndrome_debt_mw;/* Measurement-free coherent uncomputation: must equal 0 mW */
+    uint64_t f_net_sensible_atto;     /* f_net = S * f_sensible = 195,628,545 atto (1.9563e-10) */
+    uint32_t heegaard_floer_num;      /* Fixed at 100 (eta_A^2 numerator, (10/33)^2) */
+    uint32_t heegaard_floer_den;      /* Fixed at 1089 (eta_A^2 denominator, (10/33)^2) */
+    uint32_t t_op_lattice_mk;         /* Operating temperature <= 4,200 mK (4.20 K) */
+    uint32_t t_dilution_stage_uk;     /* Ultra-cold dilution rejection stage = 15,400 uK (0.0154 K) */
+    uint32_t superhydride_b_field_mt; /* LaBeH8-CaH6-12C bias field = 48,000 mT (48.0 T) */
+    uint32_t superhydride_t_crit_mk;  /* Superhydride critical temp = 192,500 mK (192.50 K) */
+    uint64_t wyckoff_tether_stiffness;/* Chern-Simons tether k_tether = 51,295,000,000 N/m */
+    uint64_t ecc_syndrome;            /* SECDED Hamming(72,64) hardware parity check */
+} shbt_logos_therm_shunt_t;
+
+_Static_assert(sizeof(shbt_logos_therm_shunt_t) == 64, "shbt_logos_therm_shunt_t must be exactly 64 bytes");
+
+/**
+ * @brief SHBT-OMNIBUS Zero-Latency Non-Local Delivery & QoS Control Block (128 bytes)
+ */
+typedef struct __attribute__((packed, gcc_struct, aligned(8))) {
+    uint64_t sp2g_bus_routing_table_id;/* Non-local Sp(2g,Z) boundary homology routing ID */
+    uint32_t epr_polariton_squeeze_r3_milli;/* 3,820 (r_3 = 3.82 >= 3.80 EPR squeezing bridge) */
+    uint32_t dtau_bus_latency_as;     /* Hardware invariant: must equal 0 (Delta tau_bus == 0) */
+    uint64_t verlinde_split_op_error; /* ||Delta_split^dag Delta_split - I||_op <= 10^-125 scaled */
+    uint64_t dma_hyperframe_phys_addr;/* Physical L1 window address: 0x70020000ULL (135,168 B) */
+    uint64_t delta_c_post_sim_residual;/* Hardware invariant: must equal 0 (Delta C_post-sim == 0) */
+    uint16_t qos_tier0_bps;           /* Tier 0 Existential/AEGIS/Immortality: 1,000 (10.00%) */
+    uint16_t qos_tier1_bps;           /* Tier 1 Elysium Wish-to-Reality: 2,500 (25.00%) */
+    uint16_t qos_tier2_bps;           /* Tier 2 Swarm Operations: 1,500 (15.00%) */
+    uint16_t qos_tier3_bps;           /* Tier 3 Cosmological Oracle: 5,000 (50.00%) */
+    uint64_t class_x1_sim_cbf_flags;  /* Bitmask of SHBT_LOGOS_SIM_* & crowbar status flags */
+    uint64_t sim_weyl_shear_nocicept; /* Hardware invariant: E_uv^sim == 0 for Class X1 threads */
+    int64_t  ds2_2pn_causal_gate;     /* 2PN causal gate invariant: must be <= 0 (no CTCs) */
+    uint64_t microcausality_comm_norm;/* Bulk spacelike commutator norm S_AB: must equal 0 */
+    uint64_t ent_phi_topological;     /* Mapping class entropy Ent(phi): must equal 0 */
+    uint64_t active_pocket_worlds;    /* Connected SHBT-ELYSIUM pocket worlds (>= 10^9) */
+    uint64_t oracle_hubble_threads;   /* Active N ~ 10^80 counterfactual simulation threads */
+    uint64_t ops_logos_goi_exponent;  /* Base-10 exponent of OPS_LOGOS^GoI (43 for 3.031e43/s) */
+    uint64_t ecc_syndrome_low;        /* SECDED Hamming(72,64) lower 64-byte parity check */
+    uint64_t ecc_syndrome_high;       /* SECDED Hamming(72,64) upper 64-byte parity check */
+} shbt_logos_omnibus_ctrl_t;
+
+_Static_assert(sizeof(shbt_logos_omnibus_ctrl_t) == 128, "shbt_logos_omnibus_ctrl_t must be exactly 128 bytes");
+
+/**
+ * @brief Master Phase 5B SHBT-LOGOS-312 Top-Level MMIO Register Bank (256 bytes at 0x4000A000)
+ */
+typedef struct __attribute__((packed, gcc_struct, aligned(64))) {
+    shbt_logos_core_ctrl_t    core;
+    shbt_logos_therm_shunt_t  therm;
+    shbt_logos_omnibus_ctrl_t omnibus;
+} shbt_logos_ctrl_t;
+
+_Static_assert(sizeof(shbt_logos_ctrl_t) == 256, "shbt_logos_ctrl_t master bank must be exactly 256 bytes");
+
 #endif /* SHBT_SWARM_MMIO_H */

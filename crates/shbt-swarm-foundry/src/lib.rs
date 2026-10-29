@@ -174,6 +174,19 @@ pub const REPRESENTATIVE_MATERIALS: [MaterialSynthesisDescriptor; 9] = [
     },
 ];
 
+/// Phase 5B Monolithic 230-Space-Group Borrmann Computronium Descriptor (`SHBT-LOGOS-CORE`).
+pub const BORRMANN_COMPUTRONIUM: MaterialSynthesisDescriptor = MaterialSynthesisDescriptor {
+    name: "Monolithic Borrmann 230-Space-Group Computronium (SHBT-LOGOS-CORE)",
+    space_group_id: 227,
+    secondary_space_group_id: 230,
+    dynkin_slot_range_a: (1, 346),
+    dynkin_slot_range_b: (1, 312),
+    dark_fraction_eta_b_ppm: 696_970, // 23/33 dark braid
+    delta_h_vis_micro_nats: 3_031_000,
+    delta_h_braid_per_ch_pico_nats: -24_443_548,
+    net_framing_mod_1_micro_nats: 0,
+};
+
 /// WP-1.1: Dynamic Sugawara Conformal Weight Shift & 124-Channel Fibonacci Compensator.
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub struct DynamicSugawaraCompensator {

@@ -1,5 +1,5 @@
 # Root Makefile for sys1own/shbt-swarm
-# Builds & verifies the C11 microkernel, 11 Rust crates, 20 Z3 SMT theorems, 104 HIL gates, and LaTeX PDF.
+# Builds & verifies the C11 microkernel, Rust crates, 38 Z3 SMT theorems, 144 HIL gates, and LaTeX PDF.
 
 PYTHON ?= python3
 CC     ?= gcc
@@ -17,6 +17,8 @@ z3-proofs:
 	$(PYTHON) formal/verify_swarm_ai_safety.py
 	$(PYTHON) formal/verify_universal_synthesis.py
 	$(PYTHON) formal/verify_mar312x_reactor.py
+	$(PYTHON) formal/verify_omega_megastructures.py
+	$(PYTHON) formal/verify_logos_hypercomputer.py
 
 rust-test:
 	cargo check --workspace --all-targets

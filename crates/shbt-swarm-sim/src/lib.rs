@@ -7,7 +7,10 @@
 //! (`M = 1, 1000, 10000, 100000, 510000`), and Phase 4 MAR-312X multi-physics digital twin.
 
 pub mod reactor_twin;
+pub mod galactic_twin;
+
 pub use reactor_twin::*;
+pub use galactic_twin::*;
 
 /// Maximum de-render front velocity in m/s (`56.988 m/s`).
 pub const MAX_DERENDER_VELOCITY_MPS: f64 = 56.988;

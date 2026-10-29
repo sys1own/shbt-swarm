@@ -61,8 +61,8 @@ pub fn exp_f64(x: f64) -> f64 {
     if x > 60.0 {
         return 1.144e26;
     }
-    let inv_ln2 = 1.4426950408889634;
-    let ln2 = 0.6931471805599453;
+    let inv_ln2 = core::f64::consts::LOG2_E;
+    let ln2 = core::f64::consts::LN_2;
     let k = (x * inv_ln2 + (if x >= 0.0 { 0.5 } else { -0.5 })) as i32;
     let r = x - (k as f64) * ln2;
 

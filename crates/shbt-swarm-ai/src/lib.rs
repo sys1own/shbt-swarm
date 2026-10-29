@@ -6,6 +6,9 @@
 
 pub mod pt_goi_solver;
 pub mod modular_learning;
+pub mod logos_core;
+
+pub use logos_core::*;
 
 pub use pt_goi_solver::{
     FixedQ32, GoIError, GoIExecutionReport, PolaritonVector, PtGoiSolver,

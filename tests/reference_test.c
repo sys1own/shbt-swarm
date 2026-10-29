@@ -20,6 +20,20 @@ int main(void) {
     assert(sizeof(shbt_unified_stinespring_frame_t) == 2112U);
     assert(sizeof(shbt_unified_stinespring_hyperframe_t) == 135168U);
     assert(sizeof(shbt_swarm_mmio_t) == 128U);
+    assert(sizeof(shbt_mera_gal_addr_t) == 64U);
+    assert(sizeof(shbt_elysium_hab_ctrl_t) == 64U);
+    assert(sizeof(shbt_aegis_ctrl_t) == 128U);
+    assert(sizeof(shbt_omega_ctrl_t) == 256U);
+    assert(sizeof(shbt_logos_core_ctrl_t) == 64U);
+    assert(sizeof(shbt_logos_therm_shunt_t) == 64U);
+    assert(sizeof(shbt_logos_omnibus_ctrl_t) == 128U);
+    assert(sizeof(shbt_logos_ctrl_t) == 256U);
+
+    /* Verify Phase 5B control bit definitions */
+    assert(SHBT_LOGOS_MODULAR_Q_ZERO_LOCK == (1ULL << 0));
+    assert(SHBT_LOGOS_COHERENT_UNCOMPUTE_EN == (1ULL << 1));
+    assert(SHBT_LOGOS_SIM_X1_PROTECT_LATCH == (1ULL << 8));
+    assert(SHBT_LOGOS_SIM_KILL_DISABLE_LOCK == (1ULL << 9));
 
     assert(offsetof(shbt_sten_dark_telemetry_t, v_terra_lyapunov_q32) == 0x00U);
     assert(offsetof(shbt_sten_dark_telemetry_t, delta_h_vis_q32) == 0x28U);
