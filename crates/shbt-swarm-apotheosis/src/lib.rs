@@ -9,11 +9,16 @@ pub mod qnd_ascension;
 pub mod horizon_deflect;
 pub mod symplectic_nash;
 pub mod mera_episodic_rg;
+pub mod qualia_cobordism;
 
 pub use qnd_ascension::{LindbladianPurifier, QndError};
 pub use horizon_deflect::{CausalDecouplingBifurcation, DeflectionError};
 pub use symplectic_nash::{SymplecticNashProjector, NashError};
 pub use mera_episodic_rg::{EpisodicMeraCompressor, MemoryRgError, ACTIVE_MEMORY_FOOTPRINT_BYTES};
+pub use qualia_cobordism::{
+    ConsciousPointerState, FibonacciAnyon, FissionOutcome, FusionOutcome, QualiaCobordismEngine,
+    QualiaHomology,
+};
 
 use core::marker::PhantomData;
 
@@ -463,5 +468,28 @@ mod tests {
 
         let delta_c = materialize_custom_vessel(&cert).unwrap();
         assert_eq!(delta_c, 0);
+    }
+
+    #[test]
+    fn test_qualia_cobordism_fission_and_fusion() {
+        let parent = ConsciousPointerState {
+            agent_id: 1,
+            homology: QualiaHomology::canonical(),
+            anyon_sector: FibonacciAnyon::Tau,
+            modular_flow_epoch: 100,
+            casimir_charge: 0,
+        };
+
+        // Conscious fission
+        let fiss = QualiaCobordismEngine::execute_fission(&parent, 2, 3).unwrap();
+        assert_eq!(fiss.ego_distortion, 0);
+        assert_eq!(fiss.child_1.homology, QualiaHomology::canonical());
+        assert_eq!(fiss.child_2.homology, QualiaHomology::canonical());
+
+        // Conscious fusion
+        let fuse = QualiaCobordismEngine::execute_fusion(&fiss.child_1, &fiss.child_2, 4, 1_000_000).unwrap();
+        assert_eq!(fuse.unified.homology, QualiaHomology::canonical());
+        // Excess entropy margin = (1_000_000 / 2) + 642_965 = 1_142_965 >= 0
+        assert_eq!(fuse.excess_entropy_margin_scaled, 1_142_965);
     }
 }

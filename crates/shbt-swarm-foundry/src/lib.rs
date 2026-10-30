@@ -8,6 +8,7 @@
 pub mod dynkin_router;
 pub mod lattice_projector;
 pub mod transmutation;
+pub mod amorphous_gauge;
 
 pub use dynkin_router::{
     BoundaryState346, DynamicFramingCompensator as DynFramingCompensator, DynkinRouter346,
@@ -32,6 +33,10 @@ pub use transmutation::{
     DarkLedgerMapping, EikonalLayerState, GeodesicCertification, IsotopeCoordinate,
     ACTION_MIN_THRESHOLD, HBAR_C_MEV_FM, MAX_ALLOWED_BRANCHING, MAX_BREMSSTRAHLUNG_WATTS,
     M_NUCLEON_MEV, V_MAX_KINEMATIC_LIMIT,
+};
+
+pub use amorphous_gauge::{
+    AmorphousBfGaugeEngine, AmorphousConfig, AmorphousTopologicalState, PairDistributionFunction,
 };
 
 /// Exact Q32.32 fixed-point representation of C_braid = 100 / phi^2 = 38.19660112501052 nats.
@@ -378,5 +383,18 @@ mod tests {
     fn test_superoperator_composition() {
         let res = UniversalMatterCloner::evaluate_superoperator_composition(10.0, 227);
         assert!(res.is_ok());
+    }
+
+    #[test]
+    fn test_amorphous_bf_gauge_engine() {
+        let config = AmorphousConfig::default();
+        let engine = AmorphousBfGaugeEngine::new(config);
+        let pdf = PairDistributionFunction::default();
+        let state = engine.evaluate_condensate(&pdf, 0.0);
+
+        assert!(state.delta_h_vis > 0.0);
+        assert!((state.framing_defect).abs() <= 1e-14);
+        assert_eq!(state.electric_weyl_norm, 0.0);
+        assert!(state.framing_closed);
     }
 }

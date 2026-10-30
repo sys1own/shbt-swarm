@@ -70,6 +70,14 @@
 #define SHBT_SWARM_CMD_UNIV_SYNTH_OPCODE        0x0010U /* Phase 3 Subsystem Opcode (0x0010) */
 #define SHBT_SWARM_CMD_DIRECT_RENDER_OPCODE     0x0020U /* Phase 3 Subsystem Opcode (0x0020) */
 #define SHBT_SWARM_CMD_MERA_DAG_OPCODE          0x0030U /* Phase 3 Subsystem Opcode (0x0030) */
+/* First-Principles Subsystem Command Opcodes */
+#define SHBT_OMEGA_CMD_SIPHON_SMBH_START       0x00000040U
+#define SHBT_OMEGA_CMD_HALO_VIRIAL_CLAMP       0x00000080U
+#define SHBT_FOUNDRY_CMD_AMORPHOUS_BF_ENGAGE   0x00000100U
+#define SHBT_LOGOS_CMD_DCE_SUPPRESSION_LOCK    0x00000200U
+#define SHBT_SHIELD_CMD_POSET_SHEAF_SYNC       0x00000400U
+#define SHBT_APOTH_CMD_EXEC_COBORDISM_FISS     0x00000800U
+#define SHBT_APOTH_CMD_EXEC_COBORDISM_FUSE     0x00001000U
 
 /* Phase 1 + Phase 2 + Phase 3 + Phase 4 Fault Bitmasks for fault_mask_reg (0x10) */
 #define SHBT_SWARM_FAULT_NONE                           0x00000000U
@@ -105,6 +113,13 @@
 #define SHBT_SWARM_FAULT_FORGE_SHEAR_EXCEEDED           0x00100000U /* Phase 4: sigma_max > 4,800.00 MPa */
 #define SHBT_SWARM_FAULT_HBT_PHASE_JITTER     0x00200000U /* sigma_phi > 5.05e-5 rad or C < 0.9995 */
 #define SHBT_SWARM_FAULT_ACOUSTIC_REFLECTANCE 0x00400000U /* R_acoustic > 1e-6 or sigma_max > 350 MPa */
+/* Subsystem First-Principles Invariant Fault Bitmasks */
+#define SHBT_SWARM_FAULT_SMBH_AREA_DECREASE    0x00020000U
+#define SHBT_SWARM_FAULT_HALO_VIRIAL_UNBIND    0x00040000U
+#define SHBT_SWARM_FAULT_AMORPHOUS_WEYL_SPIKE  0x00080000U
+#define SHBT_SWARM_FAULT_DCE_PARAMETRIC_TRIP   0x00100000U
+#define SHBT_SWARM_FAULT_POSET_COCYCLE_OBSTR   0x00200000U
+#define SHBT_SWARM_FAULT_QUALIA_DISTORTION     0x00400000U
 
 /* Xenobiological Triage Classification Bitmasks (Encoded in status_reg [31:28]) */
 #define SHBT_SWARM_TRIAGE_SHIFT         28U
@@ -300,6 +315,23 @@ _Static_assert(sizeof(shbt_swarm_mmio_t) == 128,
 #define SHBT_OMEGA_FAULT_RADIATION_PRESSURE 0x00000020U /* Rosseland opacity quench failure */
 #define SHBT_OMEGA_FAULT_CORE_COLLAPSE_RISK 0x00000040U /* Gamma_1 < 4/3 stability breach */
 
+/* Phase 5A Extended MMIO Registers (Aperture Base: 0x40008060, 32 Bytes) */
+#define SHBT_OMEGA_REG_SMBH_HORIZON_AREA      0x00008060U
+#define SHBT_OMEGA_REG_HALO_VIRIAL_DISP       0x00008068U
+#define SHBT_OMEGA_REG_SMBH_ERGOSPHERE_SPIN   0x00008070U
+#define SHBT_OMEGA_REG_SMBH_SIPHON_STATUS     0x00008074U
+#define SHBT_OMEGA_REG_RESERVED_EXT           0x00008078U
+
+typedef struct __attribute__((packed, gcc_struct, aligned(8))) {
+    uint64_t smbh_horizon_area_fp;        /* 0x00 (0x40008060): Hawking horizon area A_H in m^2 (fixed point) */
+    uint64_t halo_virial_dispersion_fp;   /* 0x08 (0x40008068): Virial dispersion sigma_r^2 (fixed point) */
+    uint32_t smbh_ergosphere_spin_reg;    /* 0x10 (0x40008070): Dimensionless Kerr spin a* (Q0.32) */
+    uint32_t smbh_siphon_status_latch;    /* 0x14 (0x40008074): Hexameric siphon interlock status */
+    uint64_t reserved_omega_ext;          /* 0x18 (0x40008078): Reserved alignment pad (total 32 bytes) */
+} shbt_omega_ext_ctrl_t;
+
+_Static_assert(sizeof(shbt_omega_ext_ctrl_t) == 32, "shbt_omega_ext_ctrl_t must be 32 bytes");
+
 /* SHBT-AEGIS-OMEGA Status & Control Bitmasks */
 #define SHBT_AEGIS_L1_DARK_CLOAK_EN     (1ULL << 0)  /* eta_D = 23/33 gauge decoupling */
 #define SHBT_AEGIS_L2_CCZ4_CURTAIN_EN   (1ULL << 1)  /* 2PN causal gate + shift collapse */
@@ -412,6 +444,21 @@ _Static_assert(sizeof(shbt_omega_ctrl_t) == 256, "shbt_omega_ctrl_t must be 256 
 #define SHBT_LOGOS_CMD_FRACTON_SHUNT_ENGAGE 0x00000002U /* Enable non-Klemens LO phonon absorption */
 #define SHBT_LOGOS_FAULT_HOT_PHONON_TRIP    0x00000040U /* Optical phonon bottleneck detected */
 #define SHBT_LOGOS_FAULT_TIDAL_FRACTURE     0x00000080U /* Extrinsic curvature discontinuity */
+
+/* Phase 5B Extended MMIO Registers (Aperture Base: 0x4000A060, 32 Bytes) */
+#define SHBT_LOGOS_REG_DCE_VACUUM_PHOTON_FLUX 0x0000A060U
+#define SHBT_LOGOS_REG_DCE_NODAL_CANCELLATION 0x0000A068U
+#define SHBT_LOGOS_REG_DCE_KAGAN_AFANASEV     0x0000A06CU
+#define SHBT_LOGOS_REG_RESERVED_EXT           0x0000A070U
+
+typedef struct __attribute__((packed, gcc_struct, aligned(8))) {
+    uint64_t dce_vacuum_photon_flux_fp;   /* 0x00 (0x4000A060): Squeezed DCE photon production rate (fixed point) */
+    uint32_t dce_nodal_cancellation_reg;  /* 0x08 (0x4000A068): Borrmann nodal pinning cancellation (Q0.32) */
+    uint32_t dce_kagan_afanasev_latch;    /* 0x0C (0x4000A06C): Kagan-Afanas'ev suppression latch */
+    uint64_t reserved_logos_ext[2];       /* 0x10 (0x4000A070): Reserved alignment pad (total 32 bytes) */
+} shbt_logos_ext_ctrl_t;
+
+_Static_assert(sizeof(shbt_logos_ext_ctrl_t) == 32, "shbt_logos_ext_ctrl_t must be 32 bytes");
 
 /* SHBT-OMNIBUS & Class X1 Simulated-Sapience Ethical Guard Bitmasks */
 #define SHBT_LOGOS_MODULAR_Q_ZERO_LOCK      (1ULL << 0) /* Tomita-Takesaki Q_internal == 0 */

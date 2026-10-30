@@ -1,6 +1,6 @@
 # SHBT-SWARM: Architectural & Mathematical System Specification
 
-`sys1own/shbt-swarm` defines the freestanding C11 microkernel (`SHBT-MMIO-SWARM` v6, ABI `0x00060312`), sixteen `#[no_std]` and multiphysics Rust crates, fifty-one formal Z3 SMT theorems (`51/51 UNSAT`), and 184 Hardware-in-the-Loop (HIL) verification gates governing autonomous von Neumann spacecraft self-replication, planetary cognitive conditioning (`SHBT-STEN`), universal arbitrary matter folding (`R_univ^SWARM`), the exotic-material autopoietic mass-annihilation reactor (`SHBT-MAR-312X`), Kardashev Type III megastructure engineering (`SHBT-OMEGA-312`), monolithic galactic hyper-computing (`SHBT-LOGOS-312` / `SHBT-QC-OMEGA`), and Phase 6 observer ascension, deity sandboxes, anti-genocide interlocks, and arbitrary re-embodiment (`SHBT-APOTHEOSIS-312`).
+`sys1own/shbt-swarm` defines the freestanding C11 microkernel (`SHBT-MMIO-SWARM` v6, ABI `0x00060312`), sixteen `#[no_std]` and multiphysics Rust crates, fifty-seven formal Z3 SMT theorems (`57/57 UNSAT`), and 208 Hardware-in-the-Loop (HIL) verification gates governing autonomous von Neumann spacecraft self-replication, planetary cognitive conditioning (`SHBT-STEN`), universal arbitrary matter folding (`R_univ^SWARM`), the exotic-material autopoietic mass-annihilation reactor (`SHBT-MAR-312X`), Kardashev Type III megastructure engineering (`SHBT-OMEGA-312`), monolithic galactic hyper-computing (`SHBT-LOGOS-312` / `SHBT-QC-OMEGA`), and Phase 6 observer ascension, deity sandboxes, anti-genocide interlocks, and arbitrary re-embodiment (`SHBT-APOTHEOSIS-312`).
 
 ---
 
@@ -63,7 +63,7 @@ graph TD
 | Crate Name | Compilation Target | Primary Module Responsibilities and Boundary Invariants |
 | :--- | :--- | :--- |
 | `shbt-swarm-core` | `#[no_std]` | Canonical boundary CFT characters, Goddard-Kent-Olive (GKO) coset charges, Fibonacci F/R tensor algebra, 124-channel braid representations, and Burau-Cayley phylogenetic digest computation. |
-| `shbt-swarm-mmio` | `#[no_std]` | Zero-cost volatile abstractions for the 128-byte dual-cacheline register aperture at `0x70000000`, 356-byte `shbt_sten_dark_telemetry_t`, 135,168-byte 64-bank hyper-frame at `0x70020000`, Phase 5A aperture at `0x40008000`, Phase 5B aperture at `0x4000A000`, and Phase 6 aperture at `0x4000C000`. |
+| `shbt-swarm-mmio` | `#[no_std]` | Zero-cost volatile abstractions for the 128-byte dual-cacheline register aperture at `0x70000000`, 356-byte `shbt_sten_dark_telemetry_t`, 135,168-byte 64-bank hyper-frame at `0x70020000`, Phase 5A aperture at `0x40008000` / `0x40008060`, Phase 5B aperture at `0x4000A000` / `0x4000A060`, and Phase 6 aperture at `0x4000C000` / `0x4000C060`. |
 | `shbt-swarm-cloner` | `#[no_std]` | Phase 1 constructive anyon-braid payload replication (`R_clone^SWARM`), Pathway A quine copying, Pathway B optical Verlinde imprinting, and daughter spacecraft ledger tracking. |
 | `shbt-swarm-bio` | `#[no_std]` | Pathway C Mode II tomographic capture at the 4.2 K Landauer floor, paired bilinear weak conversion operator, 5th-order minimum-jerk Eikonal foliation, and GST-225 acoustic impedance matching. |
 | `shbt-swarm-ai` | `#[no_std]` | Phase 2 Holographic Symplectic-Topological Equilibrium Network (`SHBT-STEN`), 101-layer Adaptive TTN-MERA, 54.432 ps PT-GoI non-Hermitian optical solver, isentropic relative modular flow, and Sp(2g, Z) hive consensus. |
@@ -76,8 +76,8 @@ graph TD
 | `shbt-swarm-logos` | `#[no_std]` | Phase 5B Hyper-computing: 10^32-qubit Borrmann computronium core, 10^16 W isentropic thermal shunt, 100,000-node optical omnibus fabric, and simulated-sapience protection. |
 | `shbt-swarm-apotheosis` | `#[no_std]` | Phase 6 Observer ascension (`SHBT-APOTHEOSIS-312`): Linear<V> proof tokens, adiabatic symplectic-pointer co-evolution, 234-layer MERA law rewriting, multi-tenant Lagrangian isolation, X1 anti-genocide interlocks, and arbitrary avatar synthesis. |
 | `shbt-swarm-sim` | `std` | Multi-physics digital twin executing the closed-loop fuel-to-boundary simulation cascade across Galactic Synthesis and Apotheosis ascension twins. |
-| `shbt-swarm-hil` | `std` | Hardware-in-the-Loop qualification runner executing the master 184-gate verification suite (`184/184 PASS`) and exporting the formal machine-readable telemetry ledger. |
-| `shbt-swarm-cli` | `std` | Command-line interface and diagnostic tooling for swarm node initialization, telemetry inspection, automated 184-gate audit execution, and verification reporting. |
+| `shbt-swarm-hil` | `std` | Hardware-in-the-Loop qualification runner executing the master 208-gate verification suite (`208/208 PASS`) and exporting the formal machine-readable telemetry ledger. |
+| `shbt-swarm-cli` | `std` | Command-line interface and diagnostic tooling for swarm node initialization, telemetry inspection, automated 208-gate audit execution, and verification reporting. |
 
 ### 1.2 Cross-Repository Logic Transfer Matrix
 
@@ -317,12 +317,14 @@ The microkernel exposes four coordinated memory apertures under ABI v5 (`0x00050
 - `0x40008000` (64 Bytes): `shbt_mera_gal_addr_t` (64-bit Hierarchical MERA Addressing: 8-bit Cluster, 16-bit Sector, 16-bit Node, 8-bit Core, 16-bit Offset, 64-bit reserved padding).
 - `0x40008040` (64 Bytes): `shbt_elysium_hab_ctrl_t` (Habitats count, Population, Gravity $g_{\text{hab}} = 9.806650\text{ m/s}^2$, Atmospheric pressure, Radiative screening).
 - `0x40008080` (128 Bytes): `shbt_aegis_ctrl_t` (4 Defense Layer enable bits, Burau-Cayley lock, TMSV squeezing $r=2.50$, CBF non-lethal triage status).
+- `0x40008060` (32 Bytes): `shbt_omega_ext_ctrl_t` (SMBH Siphon Hexameric funnels, Area Non-Decrease $dA_H \ge 0$, Hernquist Halo Virial Clamping array $\nabla_i T^{00}_{\text{counter}}$).
 
 ### 8.3 Phase 5B LOGOS Hyper-Computer Aperture (`0x4000A000`, 256 Bytes)
 
 - `0x4000A000` (64 Bytes): `shbt_logos_core_ctrl_t` ($10^{32}$ Qubits, $10^{48}$ BitOps, Solovay-Kitaev Depth-9, Borrmann mode enable, Coherence factor).
 - `0x4000A040` (64 Bytes): `shbt_logos_therm_shunt_t` ($10^{16}\text{ W}$ Thermal shunt power, Dark modular flow parameter, Cryostat temperature, Status).
 - `0x4000A080` (128 Bytes): `shbt_logos_omnibus_ctrl_t` (100k Nodes, $10^{18}\text{ bps/cm}^2$ Bandwidth density, DMA zero-loss rate, Simulated sapience protection latch).
+- `0x4000A060` (32 Bytes): `shbt_logos_ext_ctrl_t` (Attosecond DCE Borrmann suppression lock, Kagan-Afanas'ev nodal boundary, $Q_{\text{DCE}} \le 10^{-50}\text{ W}$).
 
 ### 8.4 Phase 6 Apotheosis & Deity Sandbox Aperture (`0x4000C000`, 256 Bytes)
 
@@ -332,11 +334,11 @@ The microkernel exposes four coordinated memory apertures under ABI v5 (`0x00050
 
 ---
 
-## 9. Master 184-Gate / 51-Theorem Verification Pipeline and Formal Z3 Proofs
+## 9. Master 208-Gate / 57-Theorem Verification Pipeline and Formal Z3 Proofs
 
 The complete verification pipeline guarantees mathematical correctness and hardware contract integrity across all six phases:
 
-### 9.1 Verification Gate Partitioning (184/184 PASS)
+### 9.1 Verification Gate Partitioning (208/208 PASS)
 
 - **Phase 1 Gates (`GATE-SWARM-01` through `GATE-SWARM-32`, 32 Gates):** Certify MTC unitarity, ADM mass balance, Stinespring 10:23 capacity partitioning, Solovay-Kitaev Depth-9 braid compilation, Hamming(72,64) SECDED stability over G = 10^9 generations, 54.432 ps PT-GoI optical projection, 7,200.00 kg daughter spacecraft synthesis, neutrino-free weak conversion, 5th-order minimum-jerk Eikonal derendering, and cryostat thermal clamping at 4.2 K.
 - **Phase 2 Gates (`GATE-SWARM-AI-01` through `GATE-SWARM-AI-24`, 24 Gates):** Certify 94-to-101 layer adaptive MERA scaling, single-pass PT-GoI non-Hermitian equilibrium inference in 54.432 ps (363,663x margin inside the 19.795 us microkernel tick), zero-heat Tomita-Takesaki learning, Sp(2g, Z) zero-entropy hive consensus, anytime MPC inside alpha = 10^4 enclaves, CBF physical invariance filtering, anti-grey-goo population ceilings, and xenobiological triage lockout of Class X0 and Class X1.
@@ -349,10 +351,13 @@ The complete verification pipeline guarantees mathematical correctness and hardw
 - **Phase 5A Extended Gates (`GATE-161` through `GATE-168`, 8 Gates):** Certify Gordon Metric Opacity Quenching ($Q(S) \le 10^{-12}$), Corridor Rosseland Opacity ($\kappa_{\text{eff}} = 1.4379 \times 10^{-13}\text{ m}^2/\text{kg}$), Inward Accretion Siphon ($a_{\text{net}} = -274.00\text{ m/s}^2 < 0$), Stellar Core Adiabatic Stability ($\Gamma_1 \ge 1.3833$), Radial Pulsation Positivity ($\omega_0^2 > 0$), 346 Dynkin Slot Dynamo Braking, Vanishing Boundary Torque Invariant ($\tau_{\text{boundary}} \equiv 0$), and Topological Winding Conversion ($w \in \pi_3(\mathrm{SU}(2))$).
 - **Phase 5B Extended Gates (`GATE-169` through `GATE-176`, 8 Gates):** Certify $^{57}\text{Fe}$-Diamond Laue $(2,2,0)$ Diffraction ($\theta_B = 19.940^\circ$), Lamb-Mössbauer Factor ($f_{\text{LM}} = 0.7820$), Nodal Pinning Anomalous Absorption ($\mu_{\text{anom}}/\mu_0 \le 10^{-6}$), 12-Layer Fracton Localization ($d_s = 1.050 < 4/3$), Sub-Femtosecond LO-Phonon Capture ($\tau_{\text{capture}} = 1.428\text{ fs} \le 1.701\text{ fs}$), Core Thermal Stability ($\Delta T \le 0.050\text{ K}$), Israel-Darmois 5th-Order Minimum-Jerk Junction ($\Delta K_{ij} = 0, S_{ab} = 0$), and Conformal CCZ4 Zero Tidal Shear ($\sigma_{\text{tidal}} \equiv 0$).
 - **Phase 6 Extended Gates (`GATE-177` through `GATE-184`, 8 Gates):** Certify Wetware Lindblad Pointer Purification ($\tau_{\text{sync}} = 24.57\text{ fs}$ at $310.15\text{ K}$), QND Ego Observable Invariance ($[H_{\text{sys}}, \mathcal{O}_{\text{ego}}] = 0$), Zero Subjective Entropy Generation ($dS_{\text{sub}}/d\tau \equiv 0$), Causal Decoupling Horizon Bifurcation ($g_{00}^{\text{sim}} \le 0 \implies \mathcal{M}_{\text{Elysium}}$), Geodesic Heegaard Handle Surgery ($a^\mu = 0, \dot{S}_{\text{noci}} = 0, \Phi > 0$), Multi-Deity Symplectic Nash Projection ($|W(\gamma)| = 1, \rho_{AB} = 0$), Scale-Invariant Kolmogorov Complexity ($dK/d(\ln\Lambda) = 0$), and 132 KiB MERA Memory Clamping ($135{,}168\text{ Bytes}$).
+- **Phase 5A Extended Gates (`GATE-185` through `GATE-192`, 8 Gates):** Certify Supermassive Black Hole Ergosphere Siphoning ($dA_H \ge 0$, $dM_{\text{irr}} \ge 0$), Hexameric Bondi-Hoyle Standoff Accretion ($E_{\text{rot}} \le 0.29289 M c^2$), Retrograde Wavepacket Injection, Hernquist DM Halo Integration, 64-Shell Radial Dispersion Virial Clamping ($|\Delta\sigma_r^2 / \sigma_r^2| \le 10^{-6}$), Synthetic CCZ4 Counter-Tensor Gradient Balancing, and Flat Rotation Curve Preservation.
+- **Phase 5/Foundry Extended Gates (`GATE-193` through `GATE-200`, 8 Gates):** Certify Topological Non-Abelian $SO(3)$ $BF$ Defect Gauge Invariance ($\mathcal{G}_{\text{space}} = 0$), Continuous Pair Distribution Function Sugawara Conformal Shift, 124-Braid Framing Cancellation ($\Delta_{\text{fr}} \equiv 0$), Amorphous Electric Weyl Nullification ($E_{\mu\nu} \equiv 0$), Borrmann Attosecond $(2,2,0)$ Laue Standing Wave Pinning ($E(\mathbf{R}_I) \equiv 0$), $4.2\text{ K}$ Debye-Waller Convolution, Bogoliubov Mode Mixing Suppression ($\sum |\beta_{kj}|^2 \le 10^{-120}$), and Parasitic DCE Heat Extinction ($Q_{\text{DCE}} \le 10^{-50}\text{ W}$).
+- **Phase 6 Extended Gates (`GATE-201` through `GATE-208`, 8 Gates):** Certify Causal Diamond Poset Sheaf Restriction Morphisms ($N^2 = (T - I)^2 \equiv 0$), Symplectic Transition Operator Invariance ($T^T \Omega T = \Omega$), Asynchronous \v{C}ech 1-Cocycle Obstruction Vanishing across $\Delta\alpha = 10^4$ ($\check{H}^1(P, \mathcal{F}) \equiv 0$), Consensus Spectral Radius Unity ($\rho_{\text{spec}} \equiv 1.0$), Holographic Qualia Homology Preservation ($b = [1, 2, 0]$), Scale-Invariant RG Fixed Point, Fibonacci Anyon Topological Entanglement Entropy ($S_{\text{topo}} = 0.642965\text{ nats}$), and Unipotent Mind Cobordism Fission & Fusion ($\Delta\mathcal{F}_{\text{ego}} \equiv 0$, $R_{\text{entropy}}^{\text{exp}} \ge 0$).
 
-### 9.2 The 51 Formal Z3 SMT Theorems (51/51 UNSAT)
+### 9.2 The 57 Formal Z3 SMT Theorems (57/57 UNSAT)
 
-All 51 formal theorems across 8 domain scripts are proven via unsatisfiable negation refutation in quantifier-free non-linear real and integer arithmetic:
+All 57 formal theorems across 11 domain scripts are proven via unsatisfiable negation refutation in quantifier-free non-linear real and integer arithmetic:
 
 | Theorem Identifier | Target Verification Property | Domain | Script Path | Negation Hypothesis Checked by Z3 | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -407,3 +412,9 @@ All 51 formal theorems across 8 domain scripts are proven via unsatisfiable nega
 | `THM-APOTH-06-EXT` | QND Pointer Purification & Identity Conservation | Phase 6 | `formal/verify_apotheosis_omega.py` | $[H_{\text{sys}}, \mathcal{O}_{\text{ego}}] \neq 0$, entropy $\dot{S} > 0$, or fidelity $\mathcal{F} < 1 - 10^{-122}$ | **UNSAT** |
 | `THM-APOTH-07-EXT` | Causal Decoupling Horizon Invariance | Phase 6 | `formal/verify_apotheosis_omega.py` | Deflected worldline acceleration $a^\mu \neq 0$, pain $\dot{S}_{\text{noci}} > 0$, or $\Phi \le 0$ | **UNSAT** |
 | `THM-APOTH-08-EXT` | Multi-Deity Symplectic Consensus & Memory | Phase 6 | `formal/verify_apotheosis_omega.py` | Wilson phase $|W| \neq 1$, leakage $\rho_{AB} \neq 0$, or memory $> 135{,}168\text{ B}$ | **UNSAT** |
+| `THM-OMEGA-08-EXT` | SMBH Siphon Horizon Area Non-Decrease | Phase 5A | `formal/verify_omega_smbh_halo.py` | Area loss $dA_H < 0$ or irreducible mass decrease $dM_{\text{irr}} < 0$ | **UNSAT** |
+| `THM-OMEGA-09-EXT` | Galactic Halo Virial Clamping Invariant | Phase 5A | `formal/verify_omega_smbh_halo.py` | Radial dispersion residual $|\Delta\sigma_r^2 / \sigma_r^2| > 10^{-6}$ under baryonic deconstruction | **UNSAT** |
+| `THM-FOUNDRY-06-EXT` | Amorphous BF Defect Gauge Invariance | Phase 3/Foundry | `formal/verify_amorphous_dce.py` | Spatial curvature $\mathcal{G}_{\text{space}} \neq 0$ or uncompensated framing defect $\Delta_{\text{fr}} \neq 0$ | **UNSAT** |
+| `THM-LOGOS-07-EXT` | Borrmann Attosecond DCE Vacuum Suppression | Phase 5B | `formal/verify_amorphous_dce.py` | Field at Wyckoff site $|E(\mathbf{R}_I)| > 10^{-15}\text{ V/m}$ or Casimir power $Q_{\text{DCE}} > 10^{-50}\text{ W}$ | **UNSAT** |
+| `THM-SHIELD-07-EXT` | Asynchronous Poset Sheaf Cohomology Obstruction | Phase 2/Shield | `formal/verify_sheaf_qualia.py` | Non-vanishing \v{C}ech 1-cocycle obstruction $\check{H}^1(P, \mathcal{F}) \neq 0$ or non-symplectic shear | **UNSAT** |
+| `THM-APOTH-09-EXT` | Holographic Qualia Functor & Mind Cobordism | Phase 6 | `formal/verify_sheaf_qualia.py` | Ego distortion $\Delta\mathcal{F}_{\text{ego}} > 0$ or negative excess entropy margin $R_{\text{entropy}}^{\text{exp}} < 0$ | **UNSAT** |

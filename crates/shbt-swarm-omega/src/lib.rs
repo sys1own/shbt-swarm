@@ -6,9 +6,13 @@
 
 pub mod stellar_deconstruct;
 pub mod dynamo_brake;
+pub mod smbh_siphon;
+pub mod halo_clamp;
 
 pub use stellar_deconstruct::{EddingtonBypassEngine, DeconstructionError};
 pub use dynamo_brake::{DynkinBrakingRouter, DynamoError};
+pub use smbh_siphon::{KerrBlackHole, HexamericSiphonSystem, SiphonError};
+pub use halo_clamp::{HernquistDMHalo, GalacticVirialClampEngine, VirialClampError};
 
 /// Architectural constants for Phase 5 SHBT-OMEGA-312
 pub const MERA_BASE_LAYER: u8 = 94;
@@ -238,5 +242,42 @@ mod tests {
         let grid = PerpetualDarkPowerGrid::canonical();
         assert_eq!(grid.fraction_galactic_mass, 0.01);
         assert!(grid.compute_burn_lifetime_years() >= 1.0e100);
+    }
+
+    #[test]
+    fn test_smbh_siphon_engine_and_area_non_decrease() {
+        let mass = 4.154e6 * 1.98847e30; // Sgr A* mass in kg (~4.154e6 M_sun)
+        let spin = 0.90;
+        let mut siphon = HexamericSiphonSystem::new(mass, spin).unwrap();
+
+        let a_init = siphon.black_hole.horizon_area();
+        let m_irr_init = siphon.black_hole.irreducible_mass();
+        let max_extract = siphon.black_hole.max_extractable_rotational_energy();
+        assert!(max_extract > 0.0);
+        assert!(max_extract <= mass * (1.0 - 1.0 / core::f64::consts::SQRT_2) * 299_792_458.0 * 299_792_458.0);
+
+        // Infinitesimal infalling negative energy and retrograde angular momentum
+        let dm = -100.0; // kg
+        let omega_h = siphon.black_hole.horizon_angular_velocity();
+        let dj = (dm * 299_792_458.0 * 299_792_458.0 / omega_h) * 1.05; // effective_flux > 0
+
+        let harvested = siphon.execute_siphon_step(dm, dj).unwrap();
+        assert!(harvested > 0.0);
+        assert!(siphon.black_hole.horizon_area() + 1e-12 * a_init >= a_init);
+        assert!(siphon.black_hole.irreducible_mass() + 1e-12 * m_irr_init >= m_irr_init);
+    }
+
+    #[test]
+    fn test_galactic_virial_clamp_engine() {
+        let halo_mass = 1.0e12 * 1.98847e30; // 1e12 M_sun in kg
+        let halo_scale = 15.0 * 3.085677581e19; // 15 kpc
+        let baryon_mass = 1.0e9 * 1.98847e30; // 1e9 M_sun in kg
+        let baryon_scale = 3.0 * 3.085677581e19; // 3 kpc
+
+        let mut clamp_engine = GalacticVirialClampEngine::new(halo_mass, halo_scale, baryon_mass, baryon_scale).unwrap();
+
+        // Harvest 10% of baryonic mass into dark ledger
+        let harvest_fraction = clamp_engine.harvest_and_clamp(0.10 * baryon_mass).unwrap();
+        assert!((harvest_fraction - 0.10).abs() < 1e-9);
     }
 }

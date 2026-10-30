@@ -1,14 +1,32 @@
 //! `crates/shbt-swarm-sim/src/galactic_multiphysics.rs`
 //! Galactic Multi-Physics Digital Twin Loop integrating:
-//! - Phase 5A: EddingtonBypassEngine & DynkinBrakingRouter
-//! - Phase 5B: DarwinEwaldVonLaueSolver, FractonThermalSink, & IsraelDarmoisJunctionEngine
-//! - Phase 6: LindbladianPurifier, CausalDecouplingBifurcation, SymplecticNashProjector, & EpisodicMeraCompressor
+//! - Phase 5A: EddingtonBypassEngine, DynkinBrakingRouter, HexamericSiphonSystem, & GalacticVirialClampEngine
+//! - Phase 5B: DarwinEwaldVonLaueSolver, FractonThermalSink, IsraelDarmoisJunctionEngine, & BorrmannDceSuppressor
+//! - Phase 5/Foundry: AmorphousBfGaugeEngine
+//! - Phase 2/Shield: PosetSheafEngine
+//! - Phase 6: LindbladianPurifier, CausalDecouplingBifurcation, SymplecticNashProjector,
+//!   EpisodicMeraCompressor, & QualiaCobordismEngine
+//!
+//! Evaluates synchronous step at native clock tau_0 = 17.01 attoseconds accelerated by alpha = 10^12.
 
-use shbt_swarm_omega::{EddingtonBypassEngine, DynkinBrakingRouter};
-use shbt_swarm_logos::{DarwinEwaldVonLaueSolver, FractonThermalSink, IsraelDarmoisJunctionEngine};
-use shbt_swarm_apotheosis::{
-    LindbladianPurifier, CausalDecouplingBifurcation, SymplecticNashProjector, EpisodicMeraCompressor
+use shbt_swarm_omega::{
+    EddingtonBypassEngine, DynkinBrakingRouter, HexamericSiphonSystem, GalacticVirialClampEngine,
 };
+use shbt_swarm_logos::{
+    DarwinEwaldVonLaueSolver, FractonThermalSink, IsraelDarmoisJunctionEngine,
+    BorrmannDceSuppressor, DiamondLattice57Fe,
+};
+use shbt_swarm_foundry::{AmorphousBfGaugeEngine, AmorphousConfig, PairDistributionFunction};
+use shbt_swarm_shield::{PosetSheafEngine, CausalDiamond, SymplecticShear4x4};
+use shbt_swarm_apotheosis::{
+    LindbladianPurifier, CausalDecouplingBifurcation, SymplecticNashProjector,
+    EpisodicMeraCompressor, ConsciousPointerState, FibonacciAnyon, QualiaCobordismEngine,
+    QualiaHomology,
+};
+
+pub const ATTOSECOND_CLOCK_NATIVE: f64 = 17.01e-18; // 17.01 as
+pub const LAPSE_ALPHA_CASCADED: f64 = 1.0e12;       // 10^12 lapse acceleration
+pub const DT_EFFECTIVE_STEP: f64 = ATTOSECOND_CLOCK_NATIVE * LAPSE_ALPHA_CASCADED; // 1.701e-5 s
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct GalacticMultiphysicsState {
@@ -21,11 +39,21 @@ pub struct GalacticMultiphysicsState {
     pub causal_decoupling_phi: f64,
     pub nash_wilson_phase_norm: f64,
     pub active_memory_footprint_bytes: usize,
+    // First-Principles Extended Mechanics
+    pub smbh_harvested_energy_joules: f64,
+    pub smbh_area_non_decrease_verified: bool,
+    pub halo_virial_harvest_fraction: f64,
+    pub amorphous_framing_closed: bool,
+    pub amorphous_weyl_norm: f64,
+    pub dce_zero_entropy_preserved: bool,
+    pub dce_q_watts: f64,
+    pub poset_sheaf_consensus_verified: bool,
+    pub qualia_cobordism_excess_entropy: u64,
     pub all_engines_stable: bool,
 }
 
-/// Executes a single synchronous multi-physics simulation step across
-/// stellar deconstruction, computronium dynamics, and deity sandbox continuity.
+/// Executes a single synchronous multi-physics simulation step across all 6 developmental phases
+/// and newly grounded first-principles mechanics.
 pub fn step_galactic_multiphysics_twin() -> Result<GalacticMultiphysicsState, &'static str> {
     // 1. Phase 5A Stellar Deconstruction & Non-Abelian Braking
     let eddington = EddingtonBypassEngine::new(1.0, 5.07e21, 0.40, 0.10, 274.0);
@@ -37,6 +65,30 @@ pub fn step_galactic_multiphysics_twin() -> Result<GalacticMultiphysicsState, &'
     let q_thermal = dynamo
         .verify_dynamo_quench()
         .map_err(|_| "Dynkin dynamo braking torque breach")?;
+
+    // Phase 5A Extended: SMBH Ergosphere Siphoning (dA_H >= 0)
+    let sgr_a_mass = 4.154e6 * 1.98847e30; // ~4.154e6 M_sun in kg
+    let mut siphon = HexamericSiphonSystem::new(sgr_a_mass, 0.90)
+        .map_err(|_| "Failed to initialize HexamericSiphonSystem")?;
+    let a_init = siphon.black_hole.horizon_area();
+    let dm = -100.0;
+    let omega_h = siphon.black_hole.horizon_angular_velocity();
+    let dj = (dm * 299_792_458.0 * 299_792_458.0 / omega_h) * 1.05;
+    let smbh_energy = siphon
+        .execute_siphon_step(dm, dj)
+        .map_err(|_| "SMBH ergosphere siphon area decrease violation")?;
+    let smbh_area_ok = siphon.black_hole.horizon_area() + 1e-12 * a_init >= a_init;
+
+    // Phase 5A Extended: Hernquist Galactic DM Halo Virial Clamping via CCZ4
+    let halo_mass = 1.0e12 * 1.98847e30;
+    let halo_scale = 15.0 * 3.085677581e19;
+    let baryon_mass = 1.0e9 * 1.98847e30;
+    let baryon_scale = 3.0 * 3.085677581e19;
+    let mut clamp_engine = GalacticVirialClampEngine::new(halo_mass, halo_scale, baryon_mass, baryon_scale)
+        .map_err(|_| "Failed to initialize GalacticVirialClampEngine")?;
+    let halo_fraction = clamp_engine
+        .harvest_and_clamp(0.05 * baryon_mass)
+        .map_err(|_| "Galactic halo virial clamp equilibrium broken")?;
 
     // 2. Phase 5B Computronium Polariton, Fracton, & Lapse Junction
     let polariton = DarwinEwaldVonLaueSolver::canonical_4k();
@@ -53,6 +105,34 @@ pub fn step_galactic_multiphysics_twin() -> Result<GalacticMultiphysicsState, &'
     let tidal_stress = israel
         .verify_junction_continuity()
         .map_err(|_| "Israel-Darmois lapse junction discontinuity")?;
+
+    // Phase 5B Extended: Computronium 57Fe-Diamond Borrmann DCE Suppressor
+    let dce_suppressor = BorrmannDceSuppressor::new(DiamondLattice57Fe::default());
+    let dce_report = dce_suppressor.execute_suppression_audit();
+    if !dce_report.zero_entropy_preserved {
+        return Err("DCE vacuum photon suppression failed zero entropy preservation");
+    }
+
+    // Phase 5/Foundry Extended: Non-Abelian SO(3) BF Defect Gauge Engine
+    let amorphous_engine = AmorphousBfGaugeEngine::new(AmorphousConfig::default());
+    let pdf = PairDistributionFunction::default();
+    let amorphous_state = amorphous_engine.evaluate_condensate(&pdf, 0.0);
+    if !amorphous_state.framing_closed {
+        return Err("Amorphous BF gauge framing defect non-closure");
+    }
+
+    // Phase 2/Shield Extended: Asynchronous Poset Sheaf Consensus Engine
+    let mut sheaf_engine = PosetSheafEngine::<64, 128>::new();
+    let d0 = CausalDiamond { diamond_id: 0, lapse_scaled_tau: 1000, spatial_cell_id: 1 };
+    let d1 = CausalDiamond { diamond_id: 1, lapse_scaled_tau: 2000, spatial_cell_id: 1 };
+    let idx0 = sheaf_engine.add_diamond(d0, [42, 0, 0, 0]).map_err(|_| "Sheaf node capacity full")?;
+    let idx1 = sheaf_engine.add_diamond(d1, [42, 0, 0, 0]).map_err(|_| "Sheaf node capacity full")?;
+    let shear = SymplecticShear4x4::identity();
+    sheaf_engine.add_causal_relation(idx0, idx1, shear).map_err(|_| "Invalid symplectic shear relation")?;
+    let sheaf_ok = sheaf_engine.verify_global_section() && sheaf_engine.verify_h1_obstruction_vanishing();
+    if !sheaf_ok {
+        return Err("Poset sheaf Cech H^1 obstruction non-zero");
+    }
 
     // 3. Phase 6 Observer Ascension, Horizon Deflection, Nash, & MERA Memory
     let purifier = LindbladianPurifier::canonical();
@@ -75,6 +155,19 @@ pub fn step_galactic_multiphysics_twin() -> Result<GalacticMultiphysicsState, &'
         .verify_memory_bound()
         .map_err(|_| "Episodic MERA memory footprint overflow")?;
 
+    // Phase 6 Extended: Holographic Qualia Functor & Unipotent Lagrangian Cobordisms
+    let parent_ego = ConsciousPointerState {
+        agent_id: 101,
+        homology: QualiaHomology::canonical(),
+        anyon_sector: FibonacciAnyon::Tau,
+        modular_flow_epoch: 1,
+        casimir_charge: 0,
+    };
+    let fission = QualiaCobordismEngine::execute_fission(&parent_ego, 102, 103)
+        .map_err(|_| "Qualia fission ego distortion non-zero")?;
+    let fusion = QualiaCobordismEngine::execute_fusion(&fission.child_1, &fission.child_2, 104, 500_000)
+        .map_err(|_| "Qualia fusion memory trauma / negative entropy margin")?;
+
     Ok(GalacticMultiphysicsState {
         stellar_adiabatic_gamma: gamma_1,
         dynamo_dissipation_watts: q_thermal,
@@ -85,6 +178,15 @@ pub fn step_galactic_multiphysics_twin() -> Result<GalacticMultiphysicsState, &'
         causal_decoupling_phi: phi_x1,
         nash_wilson_phase_norm: phase_norm,
         active_memory_footprint_bytes: mem_bytes,
+        smbh_harvested_energy_joules: smbh_energy,
+        smbh_area_non_decrease_verified: smbh_area_ok,
+        halo_virial_harvest_fraction: halo_fraction,
+        amorphous_framing_closed: amorphous_state.framing_closed,
+        amorphous_weyl_norm: amorphous_state.electric_weyl_norm,
+        dce_zero_entropy_preserved: dce_report.zero_entropy_preserved,
+        dce_q_watts: dce_report.q_dce_watts,
+        poset_sheaf_consensus_verified: sheaf_ok,
+        qualia_cobordism_excess_entropy: fusion.excess_entropy_margin_scaled,
         all_engines_stable: true,
     })
 }
@@ -106,5 +208,15 @@ mod tests {
         assert!(state.causal_decoupling_phi >= 12.0);
         assert_eq!(state.nash_wilson_phase_norm, 1.0);
         assert_eq!(state.active_memory_footprint_bytes, 135_168);
+        // Assert first-principles invariants
+        assert!(state.smbh_harvested_energy_joules > 0.0);
+        assert!(state.smbh_area_non_decrease_verified);
+        assert!((state.halo_virial_harvest_fraction - 0.05).abs() < 1e-9);
+        assert!(state.amorphous_framing_closed);
+        assert_eq!(state.amorphous_weyl_norm, 0.0);
+        assert!(state.dce_zero_entropy_preserved);
+        assert!(state.dce_q_watts <= 1e-50);
+        assert!(state.poset_sheaf_consensus_verified);
+        assert!(state.qualia_cobordism_excess_entropy >= 642_965);
     }
 }

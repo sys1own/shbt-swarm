@@ -6,7 +6,9 @@
 #![forbid(unsafe_op_in_unsafe_fn)]
 
 pub mod hocbf_engine;
+pub mod poset_sheaf;
 pub use hocbf_engine::{BarrierConfig, HocbfEngine, LinearConstraint, PhysicalState, QpFilterResult};
+pub use poset_sheaf::{CausalDiamond, PosetSheafEngine, SymplecticShear4x4, HOMOLOGY_RANK};
 
 pub const C_CRIT_SAPIENT_Q16: u64 = 1_000_000 << 16; // C_crit^sapient = 10^6 nat-layers
 pub const W_SYNTH_REGOLITH_KJ_PER_UG: u64 = 56_845;  // 56.845009 TJ/kg
@@ -270,5 +272,25 @@ mod tests {
                 energy_saved_tj_per_kg_milli: 56_420
             }
         );
+    }
+
+    #[test]
+    fn test_poset_sheaf_consensus_engine() {
+        let mut engine = PosetSheafEngine::<8, 16>::new();
+        let d0 = CausalDiamond { diamond_id: 0, lapse_scaled_tau: 1000, spatial_cell_id: 1 };
+        let d1 = CausalDiamond { diamond_id: 1, lapse_scaled_tau: 2000, spatial_cell_id: 1 };
+
+        let idx0 = engine.add_diamond(d0, [10, 0, 0, 0]).unwrap();
+        let idx1 = engine.add_diamond(d1, [10, 0, 0, 0]).unwrap();
+
+        // Parabolic integer shear S = 0 => T = I (unipotent, symplectic, rho = 1)
+        let shear = SymplecticShear4x4::identity();
+        assert!(shear.is_unipotent());
+        assert!(shear.is_symplectic());
+        assert!(shear.verify_spectral_radius_unity());
+
+        engine.add_causal_relation(idx0, idx1, shear).unwrap();
+        assert!(engine.verify_global_section());
+        assert!(engine.verify_h1_obstruction_vanishing());
     }
 }

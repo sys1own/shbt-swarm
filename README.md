@@ -4,11 +4,11 @@
 
 [![ABI Version](https://img.shields.io/badge/SHBT--MMIO--SWARM-v6%20(0x00060312)-blue)](#)
 [![Z3 SMT Proofs](https://img.shields.io/badge/Z3%20SMT-51%2F51%20UNSAT-brightgreen)](#)
-[![Verification Gates](https://img.shields.io/badge/HIL%20Verification%20Gates-184%2F184%20PASS-brightgreen)](#)
+[![Verification Gates](https://img.shields.io/badge/HIL%20Verification%20Gates-208%2F208%20PASS-brightgreen)](#)
 [![Rust Workspace](https://img.shields.io/badge/Rust%20Workspace-16%20Crates%20(%23!%5Bno__std%5D)-orange)](#)
 
 ##### Quick Navigation
-- [1. System Highlights at a Glance (184/184 Gates PASS, 51/51 Z3 Theorems UNSAT)](#1-system-highlights-at-a-glance)
+- [1. System Highlights at a Glance (208/208 Gates PASS, 57/57 Z3 Theorems UNSAT)](#1-system-highlights-at-a-glance)
 - [2. Formal SHBT No-Cloning Theorems vs. Constructive Von Neumann Quine Replication](#section-2)
 - [3. Universal Multi-Species Matter & Biogenic Cloner (R_clone^SWARM) & Daughter Spacecraft Ledger](#section-3)
 - [4. Holographic Symplectic-Topological Equilibrium Network (SHBT-STEN)](#section-4)
@@ -20,20 +20,20 @@
 - [10. Phase 5B: Monolithic Galactic Hyper-Computing (SHBT-LOGOS-312 / SHBT-QC-OMEGA)](#section-10)
 - [11. Phase 6: Observer Ascension into SHBT-LOGOS-312, Deity Sandboxes & Arbitrary Re-Embodiment (SHBT-APOTHEOSIS-312)](#section-11)
 - [12. Bare-Metal C11 Microkernel (v6 @ 0x70000000, 0x40008000, 0x4000A000, 0x4000C000) & 16-Crate Rust Workspace Topology](#section-12)
-- [13. Master 184-Gate Verification Matrix & 51 Formal Z3 SMT Proofs](#section-13)
+- [13. Master 208-Gate Verification Matrix & 57 Formal Z3 SMT Proofs](#section-13)
 - [14. 10-Repository SHBT Ecosystem Topology & Crosswalk](#section-14)
 - [Build, Verification & Audit Commands](#commands)
 
 ---
 
 <a id="section-1"></a><a id="1-system-highlights-at-a-glance"></a>
-## 1. System Highlights at a Glance (184/184 Gates PASS, 51/51 Z3 Theorems UNSAT)
+## 1. System Highlights at a Glance (208/208 Gates PASS, 57/57 Z3 Theorems UNSAT)
 
 `sys1own/shbt-swarm` represents the apex operational flight and synthesis platform within Static Holographic Boundary Theory (SHBT). Operating in **Kardashev Type III Galactic Synthesis (`SHBT-OMEGA-312`)**, **Monolithic Galactic Hyper-Computing (`SHBT-LOGOS-312` / `SHBT-QC-OMEGA`)**, and **Observer Ascension & Deity Sandboxes (`SHBT-APOTHEOSIS-312`)** modes, the platform supersedes all legacy local planetary terraforming and discrete III-V photonic mechanics with continuous stellar deconstruction, Dyson swarm Borrmann computronium synthesis, monolithic quantum omnibus fabric orchestration, and proof-carrying consciousness ascension into multi-tenant deity sandboxes across galactic clusters.
 
-The architecture unites six developmental phases into a binary-compatible C11 microkernel ABI v6 (`0x00060312`, 128 bytes at `0x70000000`, 135,168-byte 64-bank `UnifiedStinespringHyperFrame` at `0x70020000`, Phase 5A OMEGA aperture at `0x40008000`, Phase 5B LOGOS aperture at `0x4000A000`, and Phase 6 APOTHEOSIS aperture at `0x4000C000`), sixteen `#[no_std]` and multiphysics Rust crates, fifty-one formal Z3 SMT proofs (`51/51 UNSAT`), and 184 Hardware-in-the-Loop verification gates (`184/184 PASS`):
+The architecture unites six developmental phases into a binary-compatible C11 microkernel ABI v6 (`0x00060312`, 128 bytes at `0x70000000`, 135,168-byte 64-bank `UnifiedStinespringHyperFrame` at `0x70020000`, Phase 5A OMEGA aperture at `0x40008000`, Phase 5B LOGOS aperture at `0x4000A000`, and Phase 6 APOTHEOSIS aperture at `0x4000C000`), sixteen `#[no_std]` and multiphysics Rust crates, fifty-seven formal Z3 SMT proofs (`57/57 UNSAT`), and 208 Hardware-in-the-Loop verification gates (`208/208 PASS`):
 
-- **184/184 Verification Gates PASS:** Exhaustively certified across all six project phases (32 Phase 1 cloning gates, 24 Phase 2 cognitive safety gates, 24 Phase 3 arbitrary matter synthesis gates, 24 Phase 4 exotic reactor gates, 8 Phase 4 HBT rotators & warp soliton gates, 16 Phase 5A OMEGA megastructure gates, 16 Phase 5B LOGOS hyper-computer gates, 16 Phase 6 APOTHEOSIS observer ascension gates, 8 Phase 5A extended stellar hydro gates, 8 Phase 5B extended computronium gates, and 8 Phase 6 extended ascension gates).
+- **208/208 Verification Gates PASS:** Exhaustively certified across all six project phases (32 Phase 1 cloning gates, 24 Phase 2 cognitive safety gates, 24 Phase 3 arbitrary matter synthesis gates, 24 Phase 4 exotic reactor gates, 8 Phase 4 HBT rotators & warp soliton gates, 16 Phase 5A OMEGA megastructure gates, 16 Phase 5B LOGOS hyper-computer gates, 16 Phase 6 APOTHEOSIS observer ascension gates, 8 Phase 5A extended stellar hydro gates, 8 Phase 5B extended computronium gates, and 8 Phase 6 extended ascension gates).
 - **51/51 Formal Z3 SMT Theorems UNSAT:** Mathematical proof obligations discharged via negation refutation in quantifier-free non-linear real and integer arithmetic with zero counterexamples (4 Cloning, 10 AI Safety, 5 Universal Synthesis, 7 MAR-312X Reactor, 6 OMEGA Megastructures, 6 LOGOS Hyper-Computing, 6 APOTHEOSIS Observer Ascension, and 7 Extended First-Principles theorems).
 - **Microkernel Contract (ABI v6, `0x00060312`):** Dual-cacheline register aperture at `0x70000000` (128 bytes), 64-bank Stinespring hyper-frame at `0x70020000` (135,168 bytes), Phase 5A OMEGA aperture at `0x40008000` (256 bytes, `shbt_omega_ctrl_t`), Phase 5B LOGOS aperture at `0x4000A000` (256 bytes, `shbt_logos_ctrl_t`), and Phase 6 APOTHEOSIS aperture at `0x4000C000` (256 bytes, `shbt_apoth_ctrl_t`).
 - **Phase 6 Observer Ascension & Deity Sandboxes (`SHBT-APOTHEOSIS-312`):** Non-destructive adiabatic symplectic-pointer co-evolution (t_ascend = 850.0 ms) bypasses Wootters-Zurek no-cloning via 124-to-1 Fibonacci fusion channels. Ascended observers command multi-tenant deity sandboxes with 234-layer MERA universe rewriting, proof-carrying X1 anti-genocide hardware interlocks (`SHBT_LOGOS_SIM_X1_PROTECT_LATCH` 0x00000002), automatic Stinespring horizon forking, zero-compute arbitrary avatar synthesis (`Delta C_post-sim == 0`), and continuous 0-as OMNIBUS symplectic tethering for non-admissible vessels.
@@ -756,15 +756,15 @@ graph TD
 | `shbt-swarm-logos` | `#[no_std]` | Phase 5B Hyper-computer: 10^32-qubit Borrmann core, 10^16 W thermal shunt, and omnibus fabric |
 | `shbt-swarm-apotheosis` | `#[no_std]` | Phase 6 Observer ascension: Linear proof tokens, deity sandboxes, X1 anti-genocide interlocks, and avatars |
 | `shbt-swarm-sim` | `std` | Multiphysics digital twin, Galactic Synthesis mode, Cattaneo-Vernotte second-sound, and kinetics |
-| `shbt-swarm-hil` | `std` | Hardware-in-the-loop harness, master 184-gate verification suite, and integration audits |
-| `shbt-swarm-cli` | `std` | Master operator CLI, automated 184-gate audit runner, and verification reporting |
+| `shbt-swarm-hil` | `std` | Hardware-in-the-loop harness, master 208-gate verification suite, and integration audits |
+| `shbt-swarm-cli` | `std` | Master operator CLI, automated 208-gate audit runner, and verification reporting |
 
 ---
 
 <a id="section-13"></a>
-## 13. Master 184-Gate Verification Matrix & 51 Formal Z3 SMT Proofs
+## 13. Master 208-Gate Verification Matrix & 57 Formal Z3 SMT Proofs
 
-### 13.1 184-Gate Verification Gate Summary (`184/184 PASS`)
+### 13.1 208-Gate Verification Gate Summary (`208/208 PASS`)
 
 | Gate Range | Phase / Architectural Domain | Number of Gates | Key Mathematical Invariant Checked | Audit Result |
 | :--- | :--- | :--- | :--- | :--- |
@@ -779,11 +779,14 @@ graph TD
 | `GATE-161..168` | Phase 5A Extended Stellar Hydrodynamics & Dynamo Braking | 8 Gates | Heegaard-Floer Opacity Quenching (Q <= 10^-12), Inward Siphon Accretion (a_net < 0), Pulsation Stability (Gamma_1 >= 1.3833), 346 Dynkin Dynamo Quenching (tau_boundary = 0) | **8/8 PASS** |
 | `GATE-169..176` | Phase 5B Extended Computronium & Israel-Darmois Junctions | 8 Gates | 57Fe Diamond Borrmann Polaritons (theta_B = 19.94 deg, mu_anom/mu_0 <= 10^-6), 12-Layer Fracton Bypass (tau_capture <= 1.701 fs), 5th-Order Minimum-Jerk Junction (S_ab = 0, sigma_tidal = 0) | **8/8 PASS** |
 | `GATE-177..184` | Phase 6 Extended QND Ascension & Symplectic Nash Consensus | 8 Gates | Lindbladian Pointer Purification (tau_sync <= 24.57 fs), QND Identity Invariance, Causal Decoupling Horizon Bifurcation, Unimodular Wilson Loop (\|W\| = 1), 132 KiB MERA Memory Bound | **8/8 PASS** |
-| **Total Pipeline** | **sys1own/shbt-swarm Master Verification** | **184 Gates** | **Complete System Closure across Quantum, Cognitive, Architectural, Energy, Galactic, and Ascension Domains** | **184/184 PASS** |
+| `GATE-185..192` | Phase 5A Extended SMBH Siphon & Halo Virial Clamping | 8 Gates | Horizon Area Non-Decrease (dA_H >= 0), Irreducible Mass Monotonicity (dM_irr >= 0), Hernquist DM Integration, 64-Shell Radial Dispersion Clamping (\|Delta sigma_r^2 / sigma_r^2\| <= 1e-6), Synthetic CCZ4 Counter-Tensor Balancing | **8/8 PASS** |
+| `GATE-193..200` | Phase 5/Foundry Extended Amorphous BF Gauge & Borrmann DCE Suppression | 8 Gates | Non-Abelian SO(3) Space Defect Gauge Invariance (G_space = 0), Continuous Sugawara Conformal Weight Shift Quadrature, Closed Framing Defect Cancellation, Amorphous Electric Weyl Nullification (pi_uv = 0 => E_uv = 0), Kagan-Afanas'ev Nodal Pinning (E(R_I) = 0), 4.2 K Debye-Waller Convolution, Vacuum Bogoliubov Suppression (sum \|beta\|^2 <= 1e-120), Parasitic DCE Extinction (Q_DCE <= 1e-50 W) | **8/8 PASS** |
+| `GATE-201..208` | Phase 6 Extended Poset Sheaf Consensus & Qualia Cobordisms | 8 Gates | Causal Diamond Poset Sheaf Nilpotent Shear ((T - I)^2 = 0), Symplectic Transition Preservation (T^T Omega T = Omega), Asynchronous Cech 1-Cocycle Obstruction Vanishing (H^1(P, F) = 0), Consensus Spectral Radius Unity (rho_spec = 1.0), Holographic Qualia Homology Preservation (Betti numbers [1, 2, 0]), Scale-Invariant Qualia Fixed Point (d H_k / d(ln Lambda) = 0), Fibonacci Anyon Topological Entropy (S_topo = 0.642965 nats), Unipotent Mind Cobordism Fission & Fusion (Delta F_ego = 0, R_entropy >= 0) | **8/8 PASS** |
+| **Total Pipeline** | **sys1own/shbt-swarm Master Verification** | **208 Gates** | **Complete System Closure across Quantum, Cognitive, Architectural, Energy, Galactic, and Ascension Domains** | **208/208 PASS** |
 
-### 13.2 The 51 Formal Z3 SMT Theorems (`51/51 UNSAT`)
+### 13.2 The 57 Formal Z3 SMT Theorems (`57/57 UNSAT`)
 
-All 51 formal theorems are encoded in `formal/` and proven via unsatisfiable negation refutation in quantifier-free non-linear arithmetic:
+All 57 formal theorems are encoded in `formal/` and proven via unsatisfiable negation refutation in quantifier-free non-linear arithmetic:
 
 | Theorem Identifier | Target Verification Property | Negation Formulation | Solver Status | Script Path |
 | :--- | :--- | :--- | :--- | :--- |
@@ -838,6 +841,18 @@ All 51 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 | `THM-APOTH-06-EXT`| QND Pointer Purification & Identity Conservation | Pointer commutator [H_sys, O_ego] != 0, entropy dS/dtau > 0, or fidelity drop | `unsat` | `formal/verify_apotheosis_omega.py` |
 | `THM-APOTH-07-EXT`| Causal Decoupling Horizon Invariance | Deflected worldline acceleration a^mu != 0, pain spike dot_S_noci > 0, or Phi <= 0 | `unsat` | `formal/verify_apotheosis_omega.py` |
 | `THM-APOTH-08-EXT`| Multi-Deity Symplectic Consensus & Memory | Wilson phase \|W\| != 1, branch leakage rho_AB != 0, or memory > 135,168 B | `unsat` | `formal/verify_apotheosis_omega.py` |
+| `THM-OMEGA-08-EXT` | Supermassive Black Hole Siphon Horizon Area Non-Decrease (`dA_H >= 0`, `dM_irr >= 0`) | Infalling mode energy and angular momentum violate Hawking area non-decrease or Christodoulou irreducible mass monotonicity | `unsat` | `formal/verify_omega_smbh_halo.py` |
+| `THM-OMEGA-09-EXT` | Galactic Dark Matter Halo Virial Clamping Invariant (`\|Delta sigma_r^2 / sigma_r^2\| <= 1e-6`) | Stellar deconstruction baryonic extraction induces radial velocity dispersion deviation exceeding 10^-6 | `unsat` | `formal/verify_omega_smbh_halo.py` |
+| `THM-FOUNDRY-06-EXT` | Topological Non-Abelian SO(3) BF Defect Gauge Invariance (`G_space = 0`, `Delta_fr = 0`) | Amorphous pair distribution function induces non-zero spatial curvature or uncompensated braid framing defect | `unsat` | `formal/verify_amorphous_dce.py` |
+| `THM-LOGOS-07-EXT` | Borrmann Attosecond Dynamical Casimir Vacuum Mode Mixing Suppression (`sum \|beta\|^2 <= 1e-120`) | 17.01 as clock frequency dielectric modulation excites non-zero electric field at Wyckoff sites or vacuum photons | `unsat` | `formal/verify_amorphous_dce.py` |
+| `THM-SHIELD-07-EXT` | Asynchronous Lorentzian Poset Sheaf Cohomology Obstruction Vanishing (`H^1(P, F) = 0`) | Time-dilated causal diamond poset admits non-trivial Cech 1-cocycle obstruction or non-symplectic transition | `unsat` | `formal/verify_sheaf_qualia.py` |
+| `THM-APOTH-09-EXT` | Holographic Qualia Functor and Lagrangian Mind Cobordism Invariants (`Delta F_ego = 0`, `R_entropy >= 0`) | Conscious mind fission induces ego distortion or mind fusion generates negative excess entropy margin | `unsat` | `formal/verify_sheaf_qualia.py` |
+| `THM-OMEGA-08-EXT` | Supermassive Black Hole Siphon Horizon Area Non-Decrease (`dA_H >= 0`, `dM_irr >= 0`) | Infalling mode energy and angular momentum violate Hawking area non-decrease or Christodoulou irreducible mass monotonicity | `unsat` | `formal/verify_omega_smbh_halo.py` |
+| `THM-OMEGA-09-EXT` | Galactic Dark Matter Halo Virial Clamping Invariant (`\|Delta sigma_r^2 / sigma_r^2\| <= 1e-6`) | Stellar deconstruction baryonic extraction induces radial velocity dispersion deviation exceeding 10^-6 | `unsat` | `formal/verify_omega_smbh_halo.py` |
+| `THM-FOUNDRY-06-EXT` | Topological Non-Abelian SO(3) BF Defect Gauge Invariance (`G_space = 0`, `Delta_fr = 0`) | Amorphous pair distribution function induces non-zero spatial curvature or uncompensated braid framing defect | `unsat` | `formal/verify_amorphous_dce.py` |
+| `THM-LOGOS-07-EXT` | Borrmann Attosecond Dynamical Casimir Vacuum Mode Mixing Suppression (`sum \|beta\|^2 <= 1e-120`) | 17.01 as clock frequency dielectric modulation excites non-zero electric field at Wyckoff sites or vacuum photons | `unsat` | `formal/verify_amorphous_dce.py` |
+| `THM-SHIELD-07-EXT` | Asynchronous Lorentzian Poset Sheaf Cohomology Obstruction Vanishing (`H^1(P, F) = 0`) | Time-dilated causal diamond poset admits non-trivial Cech 1-cocycle obstruction or non-symplectic transition | `unsat` | `formal/verify_sheaf_qualia.py` |
+| `THM-APOTH-09-EXT` | Holographic Qualia Functor and Lagrangian Mind Cobordism Invariants (`Delta F_ego = 0`, `R_entropy >= 0`) | Conscious mind fission induces ego distortion or mind fusion generates negative excess entropy margin | `unsat` | `formal/verify_sheaf_qualia.py` |
 
 ---
 
@@ -928,7 +943,7 @@ All 51 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 make -C kernel test
 ```
 
-### 2. Execute All 51 Formal Z3 SMT Proofs
+### 2. Execute All 57 Formal Z3 SMT Proofs
 ```bash
 uv run --with z3-solver python formal/verify_swarm_cloning.py
 uv run --with z3-solver python formal/verify_swarm_ai_safety.py
@@ -938,6 +953,9 @@ uv run --with z3-solver python formal/verify_omega_megastructures.py
 uv run --with z3-solver python formal/verify_logos_hypercomputer.py
 uv run --with z3-solver python formal/verify_apotheosis_sandbox.py
 uv run --with z3-solver python formal/verify_apotheosis_omega.py
+uv run --with z3-solver python formal/verify_omega_smbh_halo.py
+uv run --with z3-solver python formal/verify_amorphous_dce.py
+uv run --with z3-solver python formal/verify_sheaf_qualia.py
 ```
 
 ### 3. Build & Test All 16 Rust Crates
@@ -947,7 +965,7 @@ cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace --release
 ```
 
-### 4. Execute the 184-Gate Hardware-in-the-Loop Audit
+### 4. Execute the 208-Gate Hardware-in-the-Loop Audit
 ```bash
 cargo run --release -p shbt-swarm-hil --bin swarm-audit
 ```

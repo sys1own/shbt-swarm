@@ -233,6 +233,70 @@ pub struct ShbtApotheosisCtrl {
     pub vessel: ShbtVesselAdmissibilityCert,
 }
 
+/// Extended MMIO registers and structure for Phase 5A (0x40008060, 32 bytes).
+#[repr(C, align(8))]
+#[derive(Debug, Clone, Copy, Default)]
+pub struct ShbtOmegaExtCtrl {
+    pub smbh_horizon_area_fp: u64,
+    pub halo_virial_dispersion_fp: u64,
+    pub smbh_ergosphere_spin_reg: u32,
+    pub smbh_siphon_status_latch: u32,
+    pub reserved_omega_ext: u64,
+}
+
+/// Extended MMIO registers and structure for Phase 5B (0x4000A060, 32 bytes).
+#[repr(C, align(8))]
+#[derive(Debug, Clone, Copy, Default)]
+pub struct ShbtLogosExtCtrl {
+    pub dce_vacuum_photon_flux_fp: u64,
+    pub dce_nodal_cancellation_reg: u32,
+    pub dce_kagan_afanasev_latch: u32,
+    pub reserved_logos_ext: [u64; 2],
+}
+
+/// Extended MMIO registers and structure for Phase 6 (0x4000C060, 32 bytes).
+#[repr(C, align(8))]
+#[derive(Debug, Clone, Copy, Default)]
+pub struct ShbtApothExtCtrl {
+    pub qualia_betti_signature: u64,
+    pub poset_sheaf_holonomy_latch: u32,
+    pub cobordism_op_reg: u32,
+    pub qualia_entropy_margin_fp: u64,
+    pub reserved_apoth_ext: u64,
+}
+
+pub const SHBT_OMEGA_REG_SMBH_HORIZON_AREA: u32 = 0x0000_8060;
+pub const SHBT_OMEGA_REG_HALO_VIRIAL_DISP: u32 = 0x0000_8068;
+pub const SHBT_OMEGA_REG_SMBH_ERGOSPHERE_SPIN: u32 = 0x0000_8070;
+pub const SHBT_OMEGA_REG_SMBH_SIPHON_STATUS: u32 = 0x0000_8074;
+pub const SHBT_OMEGA_REG_RESERVED_EXT: u32 = 0x0000_8078;
+
+pub const SHBT_LOGOS_REG_DCE_VACUUM_PHOTON_FLUX: u32 = 0x0000_A060;
+pub const SHBT_LOGOS_REG_DCE_NODAL_CANCELLATION: u32 = 0x0000_A068;
+pub const SHBT_LOGOS_REG_DCE_KAGAN_AFANASEV: u32 = 0x0000_A06C;
+pub const SHBT_LOGOS_REG_RESERVED_EXT: u32 = 0x0000_A070;
+
+pub const SHBT_APOTH_REG_QUALIA_BETTI_SIGNATURE: u32 = 0x0000_C060;
+pub const SHBT_APOTH_REG_POSET_SHEAF_HOLONOMY: u32 = 0x0000_C068;
+pub const SHBT_APOTH_REG_COBORDISM_OP: u32 = 0x0000_C06C;
+pub const SHBT_APOTH_REG_QUALIA_ENTROPY_MARGIN: u32 = 0x0000_C070;
+pub const SHBT_APOTH_REG_RESERVED_EXT: u32 = 0x0000_C078;
+
+pub const SHBT_OMEGA_CMD_SIPHON_SMBH_START: u32 = 0x0000_0040;
+pub const SHBT_OMEGA_CMD_HALO_VIRIAL_CLAMP: u32 = 0x0000_0080;
+pub const SHBT_FOUNDRY_CMD_AMORPHOUS_BF_ENGAGE: u32 = 0x0000_0100;
+pub const SHBT_LOGOS_CMD_DCE_SUPPRESSION_LOCK: u32 = 0x0000_0200;
+pub const SHBT_SHIELD_CMD_POSET_SHEAF_SYNC: u32 = 0x0000_0400;
+pub const SHBT_APOTH_CMD_EXEC_COBORDISM_FISS: u32 = 0x0000_0800;
+pub const SHBT_APOTH_CMD_EXEC_COBORDISM_FUSE: u32 = 0x0000_1000;
+
+pub const SHBT_SWARM_FAULT_SMBH_AREA_DECREASE: u32 = 0x0002_0000;
+pub const SHBT_SWARM_FAULT_HALO_VIRIAL_UNBIND: u32 = 0x0004_0000;
+pub const SHBT_SWARM_FAULT_AMORPHOUS_WEYL_SPIKE: u32 = 0x0008_0000;
+pub const SHBT_SWARM_FAULT_DCE_PARAMETRIC_TRIP: u32 = 0x0010_0000;
+pub const SHBT_SWARM_FAULT_POSET_COCYCLE_OBSTR: u32 = 0x0020_0000;
+pub const SHBT_SWARM_FAULT_QUALIA_DISTORTION: u32 = 0x0040_0000;
+
 /// Volatile MMIO controller for the Phase 6 Apotheosis aperture at 0x4000C000.
 pub struct ApotheosisMmioController {
     ctrl_ptr: *mut ShbtApotheosisCtrl,

@@ -29,6 +29,23 @@ extern "C" {
 #define SHBT_APOTH_REG_HORIZON_DEFLECT_STAT 0x0000C038U /* Causal decoupling status & metrics */
 #define SHBT_APOTH_REG_MULTI_DEITY_COMMUT   0x0000C03CU /* Multi-tenant intent commutator norm */
 
+/* Phase 6 Extended MMIO Registers (Aperture Base: 0x4000C060, 32 Bytes) */
+#define SHBT_APOTH_REG_QUALIA_BETTI_SIGNATURE 0x0000C060U
+#define SHBT_APOTH_REG_POSET_SHEAF_HOLONOMY   0x0000C068U
+#define SHBT_APOTH_REG_COBORDISM_OP           0x0000C06CU
+#define SHBT_APOTH_REG_QUALIA_ENTROPY_MARGIN  0x0000C070U
+#define SHBT_APOTH_REG_RESERVED_EXT           0x0000C078U
+
+typedef struct __attribute__((packed, gcc_struct, aligned(8))) {
+    uint64_t qualia_betti_signature;      /* 0x00 (0x4000C060): Causal cone Betti numbers [b0, b1, b2] */
+    uint32_t poset_sheaf_holonomy_latch;  /* 0x08 (0x4000C068): Cech H^1 obstruction vanishing latch */
+    uint32_t cobordism_op_reg;            /* 0x0C (0x4000C06C): Fission/Fusion Lagrangian cobordism opcode */
+    uint64_t qualia_entropy_margin_fp;    /* 0x10 (0x4000C070): Excess entropy margin R_entropy (fixed point) */
+    uint64_t reserved_apoth_ext;          /* 0x18 (0x4000C078): Reserved alignment pad (total 32 bytes) */
+} shbt_apoth_ext_ctrl_t;
+
+_Static_assert(sizeof(shbt_apoth_ext_ctrl_t) == 32, "shbt_apoth_ext_ctrl_t must be 32 bytes");
+
 /* =========================================================================
  * Apotheosis Hardware Command Opcodes (ctrl_cmd)
  * ========================================================================= */
@@ -44,6 +61,8 @@ extern "C" {
 #define SHBT_APOTH_CMD_ZERO_COMP_RENDER  ((uint32_t)0x00000020UL) /* 0x0020 */
 #define SHBT_APOTH_CMD_SYNTH_AVATAR      ((uint32_t)0x00000040UL)
 #define SHBT_APOTH_CMD_BRAID_CRYSTALLIZE ((uint32_t)0x00000080UL)
+#define SHBT_APOTH_CMD_EXEC_COBORDISM_FISS 0x00000800U
+#define SHBT_APOTH_CMD_EXEC_COBORDISM_FUSE 0x00001000U
 
 /* =========================================================================
  * Hardware Protection Latches & Airgap Flags (sandbox_status_latch)

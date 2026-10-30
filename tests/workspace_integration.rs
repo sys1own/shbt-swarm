@@ -3,6 +3,7 @@
 
 use shbt_swarm_hil::{
     evaluate_all_112_gates, evaluate_all_144_gates, evaluate_all_160_gates, evaluate_all_184_gates,
+    evaluate_all_208_gates,
 };
 
 #[test]
@@ -48,6 +49,19 @@ fn integration_verify_all_160_gates() {
 fn integration_verify_all_184_gates() {
     let gates = evaluate_all_184_gates();
     assert_eq!(gates.len(), 184);
+    for gate in &gates {
+        assert!(
+            gate.passed,
+            "Integration gate {} failed with value: {}",
+            gate.gate_id, gate.measured_value
+        );
+    }
+}
+
+#[test]
+fn integration_verify_all_208_gates() {
+    let gates = evaluate_all_208_gates();
+    assert_eq!(gates.len(), 208);
     for gate in &gates {
         assert!(
             gate.passed,

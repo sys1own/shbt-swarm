@@ -32,6 +32,9 @@ int main(void) {
     assert(sizeof(shbt_causal_observer_frame_t) == 128U);
     assert(sizeof(shbt_vessel_admissibility_cert_t) == 64U);
     assert(sizeof(shbt_apotheosis_ctrl_t) == 256U);
+    assert(sizeof(shbt_omega_ext_ctrl_t) == 32U);
+    assert(sizeof(shbt_logos_ext_ctrl_t) == 32U);
+    assert(sizeof(shbt_apoth_ext_ctrl_t) == 32U);
 
     /* Verify Phase 5B & Phase 6 ABI & control definitions */
     assert(SHBT_SWARM_ABI_VERSION == 0x00060312U);
@@ -80,6 +83,41 @@ int main(void) {
     assert(SHBT_APOTH_CMD_MERA_MEM_COMPRESS == 0x00000004U);
     assert(SHBT_APOTH_FAULT_QND_COLLAPSE == 0x00000040U);
     assert(SHBT_APOTH_FAULT_P_ZOMBIE_COLLAPSE == 0x00000080U);
+
+    /* Verify Extended Phase 5A, 5B, 6 MMIO Apertures (0x40008060, 0x4000A060, 0x4000C060) */
+    assert(SHBT_OMEGA_REG_SMBH_HORIZON_AREA == 0x00008060U);
+    assert(SHBT_OMEGA_REG_HALO_VIRIAL_DISP == 0x00008068U);
+    assert(SHBT_OMEGA_REG_SMBH_ERGOSPHERE_SPIN == 0x00008070U);
+    assert(SHBT_OMEGA_REG_SMBH_SIPHON_STATUS == 0x00008074U);
+    assert(SHBT_OMEGA_REG_RESERVED_EXT == 0x00008078U);
+
+    assert(SHBT_LOGOS_REG_DCE_VACUUM_PHOTON_FLUX == 0x0000A060U);
+    assert(SHBT_LOGOS_REG_DCE_NODAL_CANCELLATION == 0x0000A068U);
+    assert(SHBT_LOGOS_REG_DCE_KAGAN_AFANASEV == 0x0000A06CU);
+    assert(SHBT_LOGOS_REG_RESERVED_EXT == 0x0000A070U);
+
+    assert(SHBT_APOTH_REG_QUALIA_BETTI_SIGNATURE == 0x0000C060U);
+    assert(SHBT_APOTH_REG_POSET_SHEAF_HOLONOMY == 0x0000C068U);
+    assert(SHBT_APOTH_REG_COBORDISM_OP == 0x0000C06CU);
+    assert(SHBT_APOTH_REG_QUALIA_ENTROPY_MARGIN == 0x0000C070U);
+    assert(SHBT_APOTH_REG_RESERVED_EXT == 0x0000C078U);
+
+    /* Verify Extended First-Principles Commands */
+    assert(SHBT_OMEGA_CMD_SIPHON_SMBH_START == 0x00000040U);
+    assert(SHBT_OMEGA_CMD_HALO_VIRIAL_CLAMP == 0x00000080U);
+    assert(SHBT_FOUNDRY_CMD_AMORPHOUS_BF_ENGAGE == 0x00000100U);
+    assert(SHBT_LOGOS_CMD_DCE_SUPPRESSION_LOCK == 0x00000200U);
+    assert(SHBT_SHIELD_CMD_POSET_SHEAF_SYNC == 0x00000400U);
+    assert(SHBT_APOTH_CMD_EXEC_COBORDISM_FISS == 0x00000800U);
+    assert(SHBT_APOTH_CMD_EXEC_COBORDISM_FUSE == 0x00001000U);
+
+    /* Verify Extended First-Principles Faults */
+    assert(SHBT_SWARM_FAULT_SMBH_AREA_DECREASE == 0x00020000U);
+    assert(SHBT_SWARM_FAULT_HALO_VIRIAL_UNBIND == 0x00040000U);
+    assert(SHBT_SWARM_FAULT_AMORPHOUS_WEYL_SPIKE == 0x00080000U);
+    assert(SHBT_SWARM_FAULT_DCE_PARAMETRIC_TRIP == 0x00100000U);
+    assert(SHBT_SWARM_FAULT_POSET_COCYCLE_OBSTR == 0x00200000U);
+    assert(SHBT_SWARM_FAULT_QUALIA_DISTORTION == 0x00400000U);
 
     assert(offsetof(shbt_sten_dark_telemetry_t, v_terra_lyapunov_q32) == 0x00U);
     assert(offsetof(shbt_sten_dark_telemetry_t, delta_h_vis_q32) == 0x28U);

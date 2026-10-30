@@ -7,10 +7,12 @@
 pub mod borrmann_polariton;
 pub mod fracton_thermal;
 pub mod israel_junction;
+pub mod dce_suppress;
 
 pub use borrmann_polariton::{DarwinEwaldVonLaueSolver, PolaritonError};
 pub use fracton_thermal::{FractonThermalSink, FractonError};
 pub use israel_junction::{IsraelDarmoisJunctionEngine, JunctionError};
+pub use dce_suppress::{BorrmannDceSuppressor, DceSuppressionReport, DiamondLattice57Fe, Vector3D};
 
 /// Normative architectural constants for Phase 5B SHBT-LOGOS-312
 pub const T_PROP_LOGOS_FEMTO_AS: u64 = 17_010_000;    // 17.010 as (1.7010e-17 s)
@@ -311,5 +313,17 @@ mod tests {
             omnibus.dispatch_omnibus_frame(150, 100, 0, false),
             Err(LogosError::ClassX1SentientThreadUnprotected)
         );
+    }
+
+    #[test]
+    fn test_borrmann_dce_suppressor() {
+        let lattice = DiamondLattice57Fe::default();
+        let suppressor = BorrmannDceSuppressor::new(lattice);
+        let report = suppressor.execute_suppression_audit();
+
+        assert!(report.max_node_field <= 1e-15);
+        assert!(report.sum_beta_sq <= 1e-120);
+        assert!(report.q_dce_watts <= 1e-50);
+        assert!(report.zero_entropy_preserved);
     }
 }
