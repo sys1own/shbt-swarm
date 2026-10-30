@@ -76,8 +76,8 @@ graph TD
 | `shbt-swarm-logos` | `#[no_std]` | Phase 5B Hyper-computing: 10^32-qubit Borrmann computronium core, 10^16 W isentropic thermal shunt, 100,000-node optical omnibus fabric, and simulated-sapience protection. |
 | `shbt-swarm-apotheosis` | `#[no_std]` | Phase 6 Observer ascension (`SHBT-APOTHEOSIS-312`): Linear<V> proof tokens, adiabatic symplectic-pointer co-evolution, 234-layer MERA law rewriting, multi-tenant Lagrangian isolation, X1 anti-genocide interlocks, and arbitrary avatar synthesis. |
 | `shbt-swarm-sim` | `std` | Multi-physics digital twin executing the closed-loop fuel-to-boundary simulation cascade across Galactic Synthesis and Apotheosis ascension twins. |
-| `shbt-swarm-hil` | `std` | Hardware-in-the-Loop qualification runner executing the master 160-gate verification suite (`160/160 PASS`) and exporting the formal machine-readable telemetry ledger. |
-| `shbt-swarm-cli` | `std` | Command-line interface and diagnostic tooling for swarm node initialization, telemetry inspection, automated 160-gate audit execution, and verification reporting. |
+| `shbt-swarm-hil` | `std` | Hardware-in-the-Loop qualification runner executing the master 184-gate verification suite (`184/184 PASS`) and exporting the formal machine-readable telemetry ledger. |
+| `shbt-swarm-cli` | `std` | Command-line interface and diagnostic tooling for swarm node initialization, telemetry inspection, automated 184-gate audit execution, and verification reporting. |
 
 ### 1.2 Cross-Repository Logic Transfer Matrix
 
@@ -332,11 +332,11 @@ The microkernel exposes four coordinated memory apertures under ABI v5 (`0x00050
 
 ---
 
-## 9. Master 160-Gate / 44-Theorem Verification Pipeline and Formal Z3 Proofs
+## 9. Master 184-Gate / 51-Theorem Verification Pipeline and Formal Z3 Proofs
 
 The complete verification pipeline guarantees mathematical correctness and hardware contract integrity across all six phases:
 
-### 9.1 Verification Gate Partitioning (160/160 PASS)
+### 9.1 Verification Gate Partitioning (184/184 PASS)
 
 - **Phase 1 Gates (`GATE-SWARM-01` through `GATE-SWARM-32`, 32 Gates):** Certify MTC unitarity, ADM mass balance, Stinespring 10:23 capacity partitioning, Solovay-Kitaev Depth-9 braid compilation, Hamming(72,64) SECDED stability over G = 10^9 generations, 54.432 ps PT-GoI optical projection, 7,200.00 kg daughter spacecraft synthesis, neutrino-free weak conversion, 5th-order minimum-jerk Eikonal derendering, and cryostat thermal clamping at 4.2 K.
 - **Phase 2 Gates (`GATE-SWARM-AI-01` through `GATE-SWARM-AI-24`, 24 Gates):** Certify 94-to-101 layer adaptive MERA scaling, single-pass PT-GoI non-Hermitian equilibrium inference in 54.432 ps (363,663x margin inside the 19.795 us microkernel tick), zero-heat Tomita-Takesaki learning, Sp(2g, Z) zero-entropy hive consensus, anytime MPC inside alpha = 10^4 enclaves, CBF physical invariance filtering, anti-grey-goo population ceilings, and xenobiological triage lockout of Class X0 and Class X1.

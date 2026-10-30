@@ -53,8 +53,8 @@
 #define SHBT_SWARM_CMD_AP_MPC_ENCLAVE           0x00000800U /* Phase 2: Alpha > 1 Pareto re-optimization */
 #define SHBT_SWARM_CMD_XENO_ASSIMILATE          0x00001000U /* Phase 2: Class X2 non-ionizing recycling */
 /* Extended Opcodes */
-#define SHBT_SWARM_CMD_HOCBF_EVAL_FILTER           0x00002000U /* Execute r=2 QP barrier filter */
-#define SHBT_SWARM_CMD_CRYOPHONON_SHUNT_ENGAGE     0x00004000U /* Engage Diamond-GaN S=100/1089 shunt */
+#define SHBT_SWARM_CMD_HOCBF_EVAL_FILTER           0x00200000U /* Execute r=2 QP barrier filter */
+#define SHBT_SWARM_CMD_CRYOPHONON_SHUNT_ENGAGE     0x00400000U /* Engage Diamond-GaN S=100/1089 shunt */
 #define SHBT_SWARM_CMD_EXEC_UNIV_SYNTH          0x00002000U /* Phase 3: R_univ^SWARM arbitrary matter */
 #define SHBT_SWARM_CMD_ZERO_COMP_DIRECT_RENDER  0x00004000U /* Phase 3: Delta C_post-sim = 0 render */
 #define SHBT_SWARM_CMD_MERA_DAG_INSTANCE        0x00008000U /* Phase 3: Sp(2g,Z) MERA-DAG tiling */

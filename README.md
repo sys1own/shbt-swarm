@@ -304,7 +304,7 @@ The Direct Boundary Bus couples mass-annihilation energy directly into the bound
 
 ---
 
-<a id="section-9"></a>
+<a id="section-8-6"></a>
 
 ### 8.6 Monolithic 8x8 InP/InGaAs HBT & InP/InGaAsP PIC Boundary Character Rotator Array
 
