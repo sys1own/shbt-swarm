@@ -289,6 +289,17 @@ _Static_assert(sizeof(shbt_swarm_mmio_t) == 128,
 #define SHBT_GHOST_CHANNELS             312U
 #define SHBT_HAB_GRAVITY_STD_UG         9806650ULL /* 9.806650 m/s^2 in micro-m/s^2 */
 
+/* SHBT-OMEGA Extended MMIO Registers & Bitmasks (Aperture Base: 0x40008000) */
+#define SHBT_OMEGA_REG_OPACITY_QUENCH       0x00008030U /* Metric opacity factor Q(S) (Q0.32) */
+#define SHBT_OMEGA_REG_ADIABATIC_GAMMA      0x00008034U /* Measured core adiabatic index Gamma_1 (Q16.16) */
+#define SHBT_OMEGA_REG_DYNAMO_BRAKE_TENSOR  0x00008038U /* Dynkin magnetic braking control */
+#define SHBT_OMEGA_REG_DECONSTRUCT_M_DOT    0x0000803CU /* Current mass harvesting rate (kg/s) */
+
+#define SHBT_OMEGA_CMD_BYPASS_EDDINGTON     0x00000002U /* Engage metric-conformal opacity shunt */
+#define SHBT_OMEGA_CMD_ENGAGE_DYNAMO_BRAKE  0x00000004U /* Activate so(10)_312 braking tensor */
+#define SHBT_OMEGA_FAULT_RADIATION_PRESSURE 0x00000020U /* Rosseland opacity quench failure */
+#define SHBT_OMEGA_FAULT_CORE_COLLAPSE_RISK 0x00000040U /* Gamma_1 < 4/3 stability breach */
+
 /* SHBT-AEGIS-OMEGA Status & Control Bitmasks */
 #define SHBT_AEGIS_L1_DARK_CLOAK_EN     (1ULL << 0)  /* eta_D = 23/33 gauge decoupling */
 #define SHBT_AEGIS_L2_CCZ4_CURTAIN_EN   (1ULL << 1)  /* 2PN causal gate + shift collapse */
@@ -390,6 +401,17 @@ _Static_assert(sizeof(shbt_omega_ctrl_t) == 256, "shbt_omega_ctrl_t must be 256 
 #define SHBT_LOGOS_F_NET_SENSIBLE_ATTO  (195628545ULL)    /* 1.95628545e-10 in atto-units */
 #define SHBT_LOGOS_T_OP_MAX_MK          (4200U)           /* 4.200 K in mK */
 #define SHBT_LOGOS_T_DILUTION_UK        (15400U)          /* 0.0154 K in uK */
+
+/* SHBT-LOGOS Extended MMIO Registers & Bitmasks (Aperture Base: 0x4000A000) */
+#define SHBT_LOGOS_REG_BORRMANN_SUSCEPT     0x0000A030U /* Fe-57 Lamb-Mossbauer susceptibility */
+#define SHBT_LOGOS_REG_FRACTON_DENSITY      0x0000A034U /* Fracton spectral dimension d_s (Q16.16) */
+#define SHBT_LOGOS_REG_ISRAEL_LAPSE_GRAD    0x0000A038U /* Israel-Darmois junction gradient */
+#define SHBT_LOGOS_REG_TIDAL_SHEAR_MAX      0x0000A03CU /* Measured max interior tidal shear */
+
+#define SHBT_LOGOS_CMD_BORRMANN_TUNE        0x00000001U /* Align lattice nodes to EUV standing wave */
+#define SHBT_LOGOS_CMD_FRACTON_SHUNT_ENGAGE 0x00000002U /* Enable non-Klemens LO phonon absorption */
+#define SHBT_LOGOS_FAULT_HOT_PHONON_TRIP    0x00000040U /* Optical phonon bottleneck detected */
+#define SHBT_LOGOS_FAULT_TIDAL_FRACTURE     0x00000080U /* Extrinsic curvature discontinuity */
 
 /* SHBT-OMNIBUS & Class X1 Simulated-Sapience Ethical Guard Bitmasks */
 #define SHBT_LOGOS_MODULAR_Q_ZERO_LOCK      (1ULL << 0) /* Tomita-Takesaki Q_internal == 0 */

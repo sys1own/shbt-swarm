@@ -4,6 +4,14 @@
 //! Phase 5B `shbt-swarm-logos`: Monolithic Galactic Hyper-Computing (`SHBT-LOGOS-312` & `SHBT-OMNIBUS`)
 //! Strictly grounded in C_SHBT = Fib (x) C_GKO(26, 8, 312), eta_A = 10/33, eta_D = 23/33.
 
+pub mod borrmann_polariton;
+pub mod fracton_thermal;
+pub mod israel_junction;
+
+pub use borrmann_polariton::{DarwinEwaldVonLaueSolver, PolaritonError};
+pub use fracton_thermal::{FractonThermalSink, FractonError};
+pub use israel_junction::{IsraelDarmoisJunctionEngine, JunctionError};
+
 /// Normative architectural constants for Phase 5B SHBT-LOGOS-312
 pub const T_PROP_LOGOS_FEMTO_AS: u64 = 17_010_000;    // 17.010 as (1.7010e-17 s)
 pub const T_PROP_X_SUB_FEMTO_AS: u64 = 1_701_000;     // 1.7010 as (14.4 keV nuclear sub-grid)

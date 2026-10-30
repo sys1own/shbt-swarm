@@ -5,6 +5,16 @@
 //! Multi-Tenant Deity Sandboxes, Class X1 Anti-Genocide Stinespring Interlocks,
 //! Perpetual Runtime Stability, and Arbitrary Vessel Re-Embodiment Mechanics.
 
+pub mod qnd_ascension;
+pub mod horizon_deflect;
+pub mod symplectic_nash;
+pub mod mera_episodic_rg;
+
+pub use qnd_ascension::{LindbladianPurifier, QndError};
+pub use horizon_deflect::{CausalDecouplingBifurcation, DeflectionError};
+pub use symplectic_nash::{SymplecticNashProjector, NashError};
+pub use mera_episodic_rg::{EpisodicMeraCompressor, MemoryRgError, ACTIVE_MEMORY_FOOTPRINT_BYTES};
+
 use core::marker::PhantomData;
 
 /// WZW/GKO Coset Branching Tuple C_GKO(26, 8, 312).

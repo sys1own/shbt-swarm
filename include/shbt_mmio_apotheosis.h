@@ -22,12 +22,23 @@ extern "C" {
 #define SHBT_OMNIBUS_HYPERFRAME_DMA_BASE ((uintptr_t)0x70020000UL)
 
 /* =========================================================================
+ * Apotheosis Extended MMIO Registers (Aperture Base: 0x4000C000)
+ * ========================================================================= */
+#define SHBT_APOTH_REG_QND_EGO_COMMUTATOR   0x0000C030U /* Measured ||[H_ascend, O_ego]|| */
+#define SHBT_APOTH_REG_LIND_PURIFY_RATE     0x0000C034U /* Stinespring ancilla extraction rate */
+#define SHBT_APOTH_REG_HORIZON_DEFLECT_STAT 0x0000C038U /* Causal decoupling status & metrics */
+#define SHBT_APOTH_REG_MULTI_DEITY_COMMUT   0x0000C03CU /* Multi-tenant intent commutator norm */
+
+/* =========================================================================
  * Apotheosis Hardware Command Opcodes (ctrl_cmd)
  * ========================================================================= */
 #define SHBT_APOTH_CMD_NOP               ((uint32_t)0x00000000UL)
 #define SHBT_APOTH_CMD_ASCEND            ((uint32_t)0x00000001UL)
+#define SHBT_APOTH_CMD_QND_HANDSHAKE     0x00000001U /* Engage non-demolition ego transfer */
 #define SHBT_APOTH_CMD_DESCEND_SOMATIC   ((uint32_t)0x00000002UL)
+#define SHBT_APOTH_CMD_HORIZON_DEFLECT_ARM 0x00000002U /* Arm asymptotic causal decoupling */
 #define SHBT_APOTH_CMD_DEITY_LAW_REWRITE ((uint32_t)0x00000004UL)
+#define SHBT_APOTH_CMD_MERA_MEM_COMPRESS 0x00000004U /* Trigger episodic MERA RG compression */
 #define SHBT_APOTH_CMD_VERLINDE_MULTIPLEX ((uint32_t)0x00000008UL)
 #define SHBT_APOTH_CMD_SANDBOX_FORK_X1   ((uint32_t)0x00000010UL)
 #define SHBT_APOTH_CMD_ZERO_COMP_RENDER  ((uint32_t)0x00000020UL) /* 0x0020 */
@@ -54,6 +65,8 @@ extern "C" {
 #define SHBT_APOTH_FAULT_GENOCIDE_INTERDICT     ((uint32_t)0x00000008UL)
 #define SHBT_APOTH_FAULT_BEKENSTEIN_NEST_LIMIT  ((uint32_t)0x00000010UL)
 #define SHBT_APOTH_FAULT_SUBSTRATE_INADMISSIBLE ((uint32_t)0x00000020UL)
+#define SHBT_APOTH_FAULT_QND_COLLAPSE           0x00000040U /* Wavefunction collapse / ego breach */
+#define SHBT_APOTH_FAULT_P_ZOMBIE_COLLAPSE      0x00000080U /* Causal depth mismatch in sandbox */
 #define SHBT_APOTH_EGRESS_SAFEWORD_IRQ          ((uint32_t)0x80000000UL)
 
 /**

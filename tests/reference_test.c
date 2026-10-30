@@ -9,6 +9,7 @@
 #include <string.h>
 #include <assert.h>
 #include "../include/shbt_swarm_mmio.h"
+#include "../include/shbt_mmio_apotheosis.h"
 #include "../kernel/include/shbt_ecc.h"
 
 static shbt_unified_stinespring_hyperframe_t g_test_hyperframe;
@@ -50,6 +51,35 @@ int main(void) {
     assert(SHBT_LOGOS_COHERENT_UNCOMPUTE_EN == (1ULL << 1));
     assert(SHBT_LOGOS_SIM_X1_PROTECT_LATCH == 0x00000002UL);
     assert(SHBT_LOGOS_SIM_KILL_DISABLE_LOCK == (1ULL << 9));
+
+    /* Verify Phase 5A, 5B, 6 Extended MMIO Registers, Commands & Faults */
+    assert(SHBT_OMEGA_REG_OPACITY_QUENCH == 0x00008030U);
+    assert(SHBT_OMEGA_REG_ADIABATIC_GAMMA == 0x00008034U);
+    assert(SHBT_OMEGA_REG_DYNAMO_BRAKE_TENSOR == 0x00008038U);
+    assert(SHBT_OMEGA_REG_DECONSTRUCT_M_DOT == 0x0000803CU);
+    assert(SHBT_OMEGA_CMD_BYPASS_EDDINGTON == 0x00000002U);
+    assert(SHBT_OMEGA_CMD_ENGAGE_DYNAMO_BRAKE == 0x00000004U);
+    assert(SHBT_OMEGA_FAULT_RADIATION_PRESSURE == 0x00000020U);
+    assert(SHBT_OMEGA_FAULT_CORE_COLLAPSE_RISK == 0x00000040U);
+
+    assert(SHBT_LOGOS_REG_BORRMANN_SUSCEPT == 0x0000A030U);
+    assert(SHBT_LOGOS_REG_FRACTON_DENSITY == 0x0000A034U);
+    assert(SHBT_LOGOS_REG_ISRAEL_LAPSE_GRAD == 0x0000A038U);
+    assert(SHBT_LOGOS_REG_TIDAL_SHEAR_MAX == 0x0000A03CU);
+    assert(SHBT_LOGOS_CMD_BORRMANN_TUNE == 0x00000001U);
+    assert(SHBT_LOGOS_CMD_FRACTON_SHUNT_ENGAGE == 0x00000002U);
+    assert(SHBT_LOGOS_FAULT_HOT_PHONON_TRIP == 0x00000040U);
+    assert(SHBT_LOGOS_FAULT_TIDAL_FRACTURE == 0x00000080U);
+
+    assert(SHBT_APOTH_REG_QND_EGO_COMMUTATOR == 0x0000C030U);
+    assert(SHBT_APOTH_REG_LIND_PURIFY_RATE == 0x0000C034U);
+    assert(SHBT_APOTH_REG_HORIZON_DEFLECT_STAT == 0x0000C038U);
+    assert(SHBT_APOTH_REG_MULTI_DEITY_COMMUT == 0x0000C03CU);
+    assert(SHBT_APOTH_CMD_QND_HANDSHAKE == 0x00000001U);
+    assert(SHBT_APOTH_CMD_HORIZON_DEFLECT_ARM == 0x00000002U);
+    assert(SHBT_APOTH_CMD_MERA_MEM_COMPRESS == 0x00000004U);
+    assert(SHBT_APOTH_FAULT_QND_COLLAPSE == 0x00000040U);
+    assert(SHBT_APOTH_FAULT_P_ZOMBIE_COLLAPSE == 0x00000080U);
 
     assert(offsetof(shbt_sten_dark_telemetry_t, v_terra_lyapunov_q32) == 0x00U);
     assert(offsetof(shbt_sten_dark_telemetry_t, delta_h_vis_q32) == 0x28U);

@@ -4,6 +4,12 @@
 //! Phase 5A `shbt-swarm-omega`: Kardashev Type III Galactic Synthesis & Megastructure Core
 //! Strictly grounded in C_SHBT = Fib (x) C_GKO(26, 8, 312), eta_A = 10/33, eta_D = 23/33.
 
+pub mod stellar_deconstruct;
+pub mod dynamo_brake;
+
+pub use stellar_deconstruct::{EddingtonBypassEngine, DeconstructionError};
+pub use dynamo_brake::{DynkinBrakingRouter, DynamoError};
+
 /// Architectural constants for Phase 5 SHBT-OMEGA-312
 pub const MERA_BASE_LAYER: u8 = 94;
 pub const MERA_GAL_MIN_LAYER: u8 = 102;
