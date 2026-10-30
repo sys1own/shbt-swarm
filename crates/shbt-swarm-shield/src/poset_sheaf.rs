@@ -4,6 +4,7 @@
 //! integer symplectic shears in Sp(2g, Z), ensuring H^1 = 0 and spectral radius unity.
 
 #![forbid(unsafe_code)]
+#![allow(clippy::needless_range_loop, clippy::new_without_default, clippy::result_unit_err)]
 
 /// Number of degrees of freedom in the boundary homology (2g for genus g = 2).
 pub const HOMOLOGY_RANK: usize = 4;

@@ -1,5 +1,6 @@
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
+#![allow(clippy::unusual_byte_groupings, clippy::bool_assert_comparison)]
 
 //! `shbt-swarm-apotheosis`: Phase 6 Observer Ascension into `SHBT-LOGOS-312`,
 //! Multi-Tenant Deity Sandboxes, Class X1 Anti-Genocide Stinespring Interlocks,

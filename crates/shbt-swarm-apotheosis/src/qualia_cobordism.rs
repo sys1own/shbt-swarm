@@ -4,6 +4,7 @@
 //! Modular Tensor Category Fib \boxtimes GKO(26, 8, 312).
 
 #![forbid(unsafe_code)]
+#![allow(clippy::result_unit_err)]
 
 pub const S_TOPO_SCALED: u64 = 642_965;
 

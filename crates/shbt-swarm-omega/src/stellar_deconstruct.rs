@@ -17,9 +17,11 @@ pub const S_SHUNT_DEN: u64 = 1089;
 
 /// Exact Gordon metric quenching factor Q(S) = S^12 = (100/1089)^12 ~ 3.5947231e-13 <= 1e-12
 pub const Q_S_QUENCHING_BOUND: f64 = 1.0e-12;
+#[allow(clippy::excessive_precision)]
 pub const Q_S_EXACT: f64 = 3.5947231464972986e-13;
 
 /// Affine deconstruction quenching factor Q_affine(S) = exp(-K * S) = exp(-312 * 100/1089) ~ 3.6095e-13 <= 1e-12
+#[allow(clippy::excessive_precision)]
 pub const Q_AFFINE_EXACT: f64 = 3.60949216172584e-13;
 
 /// Nominal mass harvesting rate threshold (5.07e21 kg/s)
