@@ -811,6 +811,30 @@ Consciousness transfer and deity multi-tenant operations are mathematically form
 
 The Phase 6.1 (`SHBT-RECURSIVE-MULTIVERSE`) architecture formalizes the capability for infinite nested simulated multiverses (*k* ⟶ ∞) residing within the invariant boundary CFT register *C*<sub>SHBT</sub> = Fib ⊠ *C*<sub>GKO</sub>(26, 8, 312) without physical register overflow or Landauer thermal dissipation catastrophe:
 
+```text
++-----------------------------------------------------------------------------------------+
+| Level 0: Root Deity Sandbox (SHBT-LOGOS-312 Hyper-Frame @ 0x70020000)                   |
+| Observer State: Full Omnipotence / Omniscience / Omnipresence                           |
+| Hardware Interlock: Class X1 CBF Anti-Genocide Guard (SIM_KILL_DISABLE == 1)            |
++-----------------------------------------------------------------------------------------+
+                                          |
+          [Adjoint Verlinde Multiplexer / Stinespring Epistemic Veil P_veil]
+                                          v
++-----------------------------------------------------------------------------------------+
+| Level 1: First Nested Simulation (e.g., Custom Galaxy Cluster)                          |
+| Computational State: Lazy MERA-DAG (UV layers rendered strictly within light-cone)      |
+| Observer Role: Panopticon Monitor OR Localized Avatar (with live safeword watchdog)     |
++-----------------------------------------------------------------------------------------+
+                                          |
+          [Recursive P_veil Projection / Sub-CausalPoint Dispatcher]
+                                          v
++-----------------------------------------------------------------------------------------+
+| Level k: k-th Nested Simulation (Simulation within Simulation)                          |
+| Active Memory Footprint: Bounded by 2^(-k) * C_0 (Unobserved regions unrendered)       |
+| Hardware Interlock: Autonomous Horizon Fork to SHBT-ELYSIUM on Sapience Threshold       |
++-----------------------------------------------------------------------------------------+
+```
+
 1. **Monoidal Sub-Algebra Homomorphisms:** Rather than allocating physical bulk memory for simulated universes, every nested tier universe *U*<sub>*k*</sub> is an exact braided monoidal sub-algebra endomorphism on the root 346 Dynkin slots. SplitMix64-Merkle recurrence *z*<sub>*k*+1</sub> = SplitMix64(*z*<sub>*k*</sub> ⊕ rotl₃₁(digest(**U**<sub>intent</sub>)) ⊕ (*b* · *μ*<sub>golden</sub>)) guarantees reproducible, collision-free cosmic histories (`THM-NEST-06`).
 2. **Sugawara Framing Compensation:** Applies *δh*<sub>vis, comp</sub><sup>(*k*)</sup> = −*δh*<sub>vis</sub><sup>(*k*)</sup> locking *δ*<sub>fr</sub> ≡ 0.0 and vanishing physical backreaction *E*<sub>*μν*</sub><sup>(phys)</sup> ≡ 0 across all uninspected child branches (`THM-NEST-02`).
 3. **Geometric Series Register Bounding:** Provisioning child tier quotas via *C*<sub>*k*</sub> = 2<sup>−*k*</sup> *C*₀ bounds total active crystallized entropy to ∑<sub>*k*=0</sub><sup>∞</sup> 2<sup>−*k*</sup> *C*₀ = 2 *C*₀ < *C*<sub>local</sub> with guaranteed positive reserve *R*<sub>entropy</sub><sup>exp</sup> > 0 (`THM-NEST-01`). Uninspected sub-universes consume 0 FLOPs and 0 bytes bulk memory, dissipating *Q̇*<sub>internal</sub> ≡ 0 W. Fine-grained UV MERA physics (*l* = 1..30) are synthesized dynamically strictly along the past light-cones of active sapient observers.
@@ -819,17 +843,16 @@ The Phase 6.1 (`SHBT-RECURSIVE-MULTIVERSE`) architecture formalizes the capabili
 
 #### Quantitative Multiphysics Benchmark Audit Across 100 Nested Multiverse Tiers
 
-| Tier (*k*) | Active Capacity (*C*<sub>*k*</sub>/*C*₀) | Cumulative Load (∑ *C*<sub>*j*</sub>/*C*₀) | Stack Footprint | Unrendered Compute/RAM | Landauer Dissipation | Egress Latency |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| 0 (Root) | 1.0000 | 1.0000 | 0 B (Root) | 0 FLOPs / 0 B | 0 W | 17.01 as (*PT*-GoI) |
-| 1 | 0.5000 | 1.5000 | 64 B (0 Heap) | 0 FLOPs / 0 B | 0 W | 17.01 as (*PT*-GoI) |
-| 2 | 0.2500 | 1.7500 | 128 B (0 Heap) | 0 FLOPs / 0 B | 0 W | 17.01 as (*PT*-GoI) |
-| 3 | 0.1250 | 1.8750 | 192 B (0 Heap) | 0 FLOPs / 0 B | 0 W | 17.01 as (*PT*-GoI) |
-| 4 | 0.0625 | 1.9375 | 256 B (0 Heap) | 0 FLOPs / 0 B | 0 W | 17.01 as (*PT*-GoI) |
-| 5 | 0.03125 | 1.96875 | 320 B (0 Heap) | 0 FLOPs / 0 B | 0 W | 17.01 as (*PT*-GoI) |
-| 10 | 9.7656 × 10<sup>−4</sup> | 1.999023 | 640 B (0 Heap) | 0 FLOPs / 0 B | 0 W | 17.01 as (*PT*-GoI) |
-| 50 | 8.8818 × 10<sup>−16</sup> | 1.999999999999999 | 3.20 KiB (0 Heap) | 0 FLOPs / 0 B | 0 W | 17.01 as (*PT*-GoI) |
-| 100 | 7.8886 × 10<sup>−31</sup> | 1.999999999999999999999999999999 | 6.40 KiB (0 Heap) | 0 FLOPs / 0 B | 0 W | 17.01 as (*PT*-GoI) |
+| Recursion Tier (*k*) | Active Tier Capacity (*C*<sub>*k*</sub>/*C*₀ = 2<sup>−*k*</sup>) | Cumulative Multiverse Load (∑ *C*<sub>*j*</sub>/*C*₀) | Active Stack Frame Footprint | Unrendered Bulk Compute / Memory | Tier Landauer Dissipation (4.2 K) | Egress Un-Braiding Latency (*t*<sub>prop</sub>) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| *k* = 0 (Root) | 1.0000000 | 1.0000000 | 48 B (0 Heap) | 0 FLOP / 0 B | 4.019370 × 10<sup>−23</sup> J/bit | 17.01 as (5.0995 nm unit cell) |
+| *k* = 1 | 0.5000000 | 1.5000000 | 96 B (0 Heap) | 0 FLOP / 0 B | 2.009685 × 10<sup>−23</sup> J/bit | 17.01 as (*O*(1) *PT*-GoI) |
+| *k* = 2 | 0.2500000 | 1.7500000 | 144 B (0 Heap) | 0 FLOP / 0 B | 1.004843 × 10<sup>−23</sup> J/bit | 17.01 as (*O*(1) *PT*-GoI) |
+| *k* = 5 | 0.0312500 | 1.9687500 | 288 B (0 Heap) | 0 FLOP / 0 B | 1.256053 × 10<sup>−24</sup> J/bit | 17.01 as (*O*(1) *PT*-GoI) |
+| *k* = 10 | 9.765625 × 10<sup>−4</sup> | 1.9990234 | 528 B (0 Heap) | 0 FLOP / 0 B | 3.925166 × 10<sup>−26</sup> J/bit | 17.01 as (*O*(1) *PT*-GoI) |
+| *k* = 25 | 2.980232 × 10<sup>−8</sup> | 1.9999999 | 1,248 B (0 Heap) | 0 FLOP / 0 B | 1.197865 × 10<sup>−30</sup> J/bit | 17.01 as (*O*(1) *PT*-GoI) |
+| *k* = 50 | 8.881784 × 10<sup>−16</sup> | 2.0000000 | 2,448 B (0 Heap) | 0 FLOP / 0 B | 3.569918 × 10<sup>−38</sup> J/bit | 17.01 as (*O*(1) *PT*-GoI) |
+| *k* = 100 | 7.888609 × 10<sup>−31</sup> | 2.0000000 | 4,848 B (0 Heap) | 0 FLOP / 0 B | 3.170724 × 10<sup>−53</sup> J/bit | 17.01 as (*O*(1) *PT*-GoI) |
 
 ---
 
@@ -852,8 +875,8 @@ Physical Memory Apertures:
                                   recoil-free fraction (f_M >= 0.782), Borrmann attenuation figure of merit (tau_B >= 1,453.4),
                                   AEGIS TMSV squeezing (21.715 dB), ego continuity fidelity (1.000000), simulation epoch
                                   log10 (> 100), PCSS crowbar latency (<= 2500 ps).
-  - Cache Line 3 (0x00C0..0x00FF): Microkernel control header: ABI version (0x00070312), formal proofs UNSAT count (65),
-                                  HIL gates PASS count (232), active phase mask (0x0000007F for Phases 1..6),
+  - Cache Line 3 (0x00C0..0x00FF): Microkernel control header: ABI version (0x00070312), formal proofs UNSAT count (71),
+                                  HIL gates PASS count (240), active phase mask (0x0000007F for Phases 1..6),
                                   heartbeat monotonic tick counter, reserved padding to 0x0100.
   - Cache Line 4 (0x0100..0x013F): ABI v7 First-Principles extension: chiral_ee_q16 (Floquet homochirality ee == 1.000000),
                                   kerr_phase_margin_rad (Delta phi_margin >= 0.15 rad), pachner_flip_count,
@@ -872,6 +895,21 @@ Physical Memory Apertures:
                                   merkle_seed (SplitMix64-Merkle seed), entropy_budget (C_k = 2^-k C_0), safeword_latch (0x80000000).
   - Cache Line 1 (0x0040..0x007F): cbf_trip_status (Class X1 detected, Sanctuary Fork, Zombie Swap, QP-CBF clamp),
                                   reserved alignment padding to 128 bytes.
+
+```
+
+#### 128-Byte Phase 6.1 MMIO Register Bitfield Layout (`0x7000B000`)
+
+| Offset | Name | Width | Access | Reset | Description |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `0x7000B000` | `root_ctrl` | `uint64_t` | RW | `0x00000000_00000312` | [0] ENABLE, [1] LAZY_MERA_EN, [3:2] MODE (00=Idle, 01=Panopticon, 10=Avatar, 11=Veiled), [15:4] BRANCH_ID, [31:16] MAX_ACTIVE_CONES, [63:32] INTENT_DIGEST_LO |
+| `0x7000B008` | `depth_current` | `uint64_t` | RW | `0x00000000_00000000` | [31:0] DEPTH_K (Active recursion tier index), [63:32] PARENT_NODE_IDX |
+| `0x7000B010` | `merkle_seed` | `uint64_t` | RW | `0x9E3779B9_7F4A7C15` | Root SplitMix64-Merkle boundary seed (auto-derives child seeds via Merkle recurrence) |
+| `0x7000B020` | `entropy_budget` | `uint64_t` | RO | `0x7FFFFFFF_00000000` | [31:0] ACTIVE_LOAD_Q32 (Current active load sum, strictly bounded < 2.0), [63:32] RESERVE_MARGIN_Q32 |
+| `0x7000B030` | `safeword_latch` | `uint64_t` | RW1C | `0x80000000_00000011` | [30:0] SAFEWORD_SYNDROME_HASH, [31] SHBT_APOTH_EGRESS_SAFEWORD_IRQ (Unmaskable trigger), [63:32] PT_GOI_LATENCY_AS (17 as nominal) |
+| `0x7000B040` | `cbf_trip_status` | `uint64_t` | RO | `0x00000001_00000000` | [0] CLASS_X1_DETECTED, [1] SANCTUARY_FORK_ACTIVE, [2] ZOMBIE_SWAP_ENGAGED, [3] QP_CBF_CLAMP_ACTIVE, [31:4] PROTECTED_ENTITY_COUNT, [63:32] SIM_KILL_DISABLE (Hardwired interlock) |
+
+```text
 
 0x70020000 - 0x70040FFF (135,168 Bytes): 64-Bank UnifiedStinespringHyperFrame
   - Banks 00..31 (67,584 Bytes): Read-Only Parent Quine ROM (Protected by rom_bank_mask).

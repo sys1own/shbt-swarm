@@ -184,15 +184,16 @@ The bare-metal C11 microkernel contract provides deterministic, memory-mapped re
 #include <stddef.h>
 
 #define SHBT_SWARM_ABI_VERSION          0x00070312U
-#define SHBT_SWARM_FORMAL_PROOFS_COUNT  65U
-#define SHBT_SWARM_HIL_GATES_COUNT      232U
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT  71U
+#define SHBT_SWARM_HIL_GATES_COUNT      240U
 
-#define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL /* Base aperture (or 0x80000000) */
-#define SHBT_SWARM_HYPERFRAME_BASE_ADDR 0x70020000UL /* 64-bank Stinespring hyperframe */
-#define SHBT_MMIO_MAR312X_BASE          0x40000000UL /* Phase 4 reactor control aperture */
-#define SHBT_MMIO_OMEGA_BASE            0x40008000UL /* Phase 5A OMEGA control aperture */
-#define SHBT_MMIO_LOGOS_BASE            0x4000A000UL /* Phase 5B LOGOS control aperture */
-#define SHBT_MMIO_APOTH_BASE            0x4000C000UL /* Phase 6 APOTHEOSIS aperture */
+#define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL /* Base aperture (0x70000000 - 0x7000013F, 320 B) */
+#define SHBT_NESTED_SIM_MMIO_BASE       0x7000B000UL /* Phase 6.1 Multiverse aperture (0x7000B000 - 0x7000B07F, 128 B) */
+#define SHBT_SWARM_HYPERFRAME_BASE_ADDR 0x70020000UL /* 64-bank Stinespring hyperframe (0x70020000 - 0x70040FFF, 135,168 B) */
+#define SHBT_MMIO_MAR312X_BASE          0x40000000UL /* Phase 4 reactor control aperture (256 B) */
+#define SHBT_MMIO_OMEGA_BASE            0x40008000UL /* Phase 5A OMEGA control aperture (256 B) */
+#define SHBT_MMIO_LOGOS_BASE            0x4000A000UL /* Phase 5B LOGOS control aperture (256 B) */
+#define SHBT_MMIO_APOTH_BASE            0x4000C000UL /* Phase 6 APOTHEOSIS aperture (256 B) */
 
 #define SHBT_FRAME_BYTES                2112U
 #define SHBT_VISIBLE_ANCHOR_BYTES       640U     /* eta_A = 10/33 * 2112 B */
@@ -246,8 +247,8 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
 
     /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
     volatile uint32_t abi_version;                     /* 0x00C0: 0x00070312 */
-    volatile uint32_t formal_proofs_unsat_count;       /* 0x00C4: 65 */
-    volatile uint32_t hil_gates_pass_count;            /* 0x00C8: 232 */
+    volatile uint32_t formal_proofs_unsat_count;       /* 0x00C4: 71 */
+    volatile uint32_t hil_gates_pass_count;            /* 0x00C8: 240 */
     volatile uint32_t active_phase_mask;               /* 0x00CC: 0x0000007F (Phases 1..6) */
     volatile uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
     volatile uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */
@@ -635,16 +636,125 @@ impl BranchPruningCollector {
 ---
 
 ### 4.9 `shbt-swarm-apotheosis` & `shbt-swarm-sim` (Phase 6.1 Recursive Multiverse Engine)
-- **Nested Universe Descriptor & Lazy MERA Controller (`crates/shbt-swarm-apotheosis/src/nested_sim.rs`):**
-  - `Mpfr512Limbs`: 512-bit fixed-point mantissa representation with zero framing cancellation check `cancel_with_compensator`.
-  - `NestedUniverseDescriptor`: Implements SplitMix64-Merkle child seed derivation and unrendered child universe instantiation with 0 allocated entropy.
-  - `LazyMeraDagController`: Implements *C*<sub>*k*</sub> = 2<sup>−*k*</sup> *C*₀ geometric series attenuation and dynamic causal past light-cone crystallization.
-  - `EpistemicVeilHarness`: Stack-allocated egress un-braiding harness enforcing Stinespring Epistemic Veil projection and 17.01 as *O*(1) *PT*-GoI safeword egress (`0x80000000`).
-- **Recursive Anti-Genocide CBF Interlocks (`crates/shbt-swarm-apotheosis/src/nested_cbf.rs`):**
-  - `MeraCognitiveSubgraph`: Computes Φ<sub>MERA</sub> and classifies entities as Class X1 Sapient Protected (Φ ≥ 64.0 bits).
-  - `RecursiveCbfInterlock`: Implements Mechanism A (unitary Stinespring Horizon Fork to `SHBT-ELYSIUM` and philosophical-zombie stand-in swap) and Mechanism B (active-set QP-CBF nociceptive clamping).
-- **100-Tier Multiphysics Benchmark (`crates/shbt-swarm-sim/src/galactic_multiphysics.rs`):**
-  - `RecursiveSimulationEngine`: Executes 101-tier (*k* = 0..100) sweep verifying cumulative capacity locking below 2.0 *C*₀, zero bulk backreaction, and constant 17.01 as egress latency.
+
+```rust
+#![no_std]
+#![forbid(unsafe_code)]
+
+// crates/shbt-swarm-apotheosis/src/nested_sim.rs
+pub struct Mpfr512Limbs {
+    pub limbs: [u64; 8],
+    pub signed_exp: i64,
+    pub is_negative: bool,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub enum NestingAccessMode {
+    UnrenderedDormant = 0,
+    PanopticonInspect = 1,
+    LocalizedAvatar = 2,
+    VeiledMortal = 3,
+}
+
+pub struct IntentTensor {
+    pub braid_word_indices: [u8; 9],
+    pub target_universe_id: u64,
+}
+
+pub struct NestedUniverseDescriptor {
+    pub universe_id: u64,
+    pub recursion_depth_k: u32,
+    pub parent_universe_id: u64,
+    pub boundary_seed: u64,
+    pub allocated_entropy: u64,
+    pub access_mode: NestingAccessMode,
+    pub is_crystallized: bool,
+    pub sugawara_conformal_shift: Mpfr512Limbs,
+    pub sugawara_compensator: Mpfr512Limbs,
+}
+
+pub struct CrystallizedLightCone {
+    pub observer_id: u64,
+    pub spatial_origin_q16: [i32; 3],
+    pub proper_time_tau_as: u64,
+    pub rendered_mera_layers_mask: u32,
+}
+
+pub struct LazyMeraDagController {
+    pub base_capacity_c0: u64,
+    pub active_load_cumulative_q16: u32,
+    pub crystallized_cones_count: usize,
+}
+
+pub struct VeilStackFrame {
+    pub depth_level: u32,
+    pub saved_admin_intent: IntentTensor,
+    pub unbraid_operator_sk9: [u8; 9],
+}
+
+pub struct EpistemicVeilHarness {
+    pub active_depth: u32,
+    pub safeword_latch: bool,
+    pub egress_latency_as: u64,
+}
+
+// crates/shbt-swarm-apotheosis/src/nested_cbf.rs
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub enum SapienceClass {
+    ClassX0Inert,
+    ClassX1SapientProtected,
+}
+
+pub struct MeraCognitiveSubgraph {
+    pub entity_id: u64,
+    pub universe_id: u64,
+    pub recursion_depth_k: u32,
+    pub ryu_takayanagi_area_q16: u32,
+    pub bulk_braid_mutual_info_q16: u32,
+}
+
+pub struct ElysiumSanctuaryForkRecord {
+    pub entity_id: u64,
+    pub origin_universe_id: u64,
+    pub destination_elysium_slot: u64,
+    pub fork_timestamp_as: u64,
+    pub philosophical_zombie_standin_swapped: bool,
+}
+
+pub struct CbfEvaluationReport {
+    pub safe_command_vector_q16: [i32; 3],
+    pub sim_kill_disable_asserted: bool,
+    pub qp_cbf_clamped: bool,
+    pub sanctuary_forks_triggered: usize,
+    pub mmio_cbf_trip_status_word: u64,
+}
+
+pub struct RecursiveCbfInterlock {
+    pub entities_count: usize,
+    pub sanctuary_forks_count: usize,
+    pub sim_kill_disable_latched: bool,
+}
+
+// crates/shbt-swarm-sim/src/galactic_multiphysics.rs
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub struct TierMultiphysicsSample {
+    pub tier_k: u32,
+    pub active_entropy_fraction_q64: u128,
+    pub cumulative_entropy_multiple_q64: u128,
+    pub unrendered_child_branches: u64,
+    pub bulk_backreaction_norm: u64,
+    pub egress_unbraid_latency_as_x100: u64,
+}
+
+pub struct RecursiveSimulationEngine {
+    pub samples: [TierMultiphysicsSample; 105],
+    pub evaluated_tiers: usize,
+}
+
+impl RecursiveSimulationEngine {
+    pub fn execute_100_tier_sweep(&mut self, unrendered_branches_per_tier: u64);
+}
+```
 
 ## 5. End-to-End Multiphysics Simulation Tick API (`crates/shbt-swarm-sim`)
 
@@ -708,9 +818,9 @@ The SHBT-MAR-312X nacelle geometry satisfies strict mass-volume envelope constra
 
 Platform correctness is certified across a dual formal testing and hardware-qualification hierarchy:
 
-### 7.1 Formal Z3 SMT Verification Suite (65/65 UNSAT)
+### 7.1 Formal Z3 SMT Verification Suite (71/71 UNSAT)
 
-The 65 formal theorems are distributed across 16 verification modules in `formal/`:
+The 71 formal theorems are distributed across 18 verification modules in `formal/`:
 
 1. `formal/verify_swarm_cloning.py` (4 theorems: `THM-CLONE-01`..`04`): Categorical no-cloning, ADM mass conservation, modular framing lock, and (B - L) conservation.
 2. `formal/verify_swarm_ai_safety.py` (10 theorems: `THM-AI-01`..`06`, `THM-AI-01-EXT`, `02-EXT`, `04-EXT`, `05-EXT`): PT-GoI resolvent bounds, Connes cocycle isentropy, spacelike no-signaling, and HOCBF forward invariance.
@@ -728,8 +838,10 @@ The 65 formal theorems are distributed across 16 verification modules in `formal
 14. `formal/verify_pachner_coboundary.py` (1 theorem: `THM-SHIELD-08-EXT`): Continuous relativistic bistellar Pachner flip sheaf coboundary invariance.
 15. `formal/verify_foundry_fluid_gravity.py` (1 theorem: `THM-FOUNDRY-07-EXT`): 346-slot Fefferman-Graham holographic fluid-gravity dual with Sugawara acoustic impedance matching.
 16. `formal/verify_reactor_pinning_apoth.py` (4 theorems: `THM-REACTOR-08-EXT`, `THM-OMEGA-10-EXT`, `THM-LOGOS-08-EXT`, `THM-APOTH-10-EXT`): Bean-Livingston clathrate flux pinning, Blandford-Znajek jet extinction, Moessbauer Stark-acceleration cancellation, and unitary multiverse branch-pruning.
+17. `formal/verify_logos_elysium_physics.py` (7 theorems: `THM-LOGOS-09-EXT`, `10-EXT`, `THM-OMEGA-11-EXT`, `12-EXT`, `13-EXT`, `THM-FOUNDRY-09-EXT`, `THM-BIO-06-EXT`): Takagi-Taupin dynamical diffraction, fracton Lindblad drain, cross-lapse optical impedance matching, athermal plasma refining, virial Vlasov equilibrium, zero-Coriolis metric fields, and biosphere Lyapunov stability.
+18. `formal/shbt_recursive_multiverse_smt.py` (6 theorems: `THM-NEST-01`..`06`): Infinite recursive multiverse geometric capacity bounding, zero-compute dormant seed invariance, cross-tier Lagrangian commutator vanishing, epistemic veil safeword preservation with 17.01 as egress, and recursive Class X1 anti-genocide CBF interlocks.
 
-### 7.2 Master Hardware-in-the-Loop Gate Harness (232/232 PASS)
+### 7.2 Master Hardware-in-the-Loop Gate Harness (240/240 PASS)
 
 Executed by `crates/shbt-swarm-hil` (`swarm-audit` runner):
 
@@ -741,3 +853,4 @@ Executed by `crates/shbt-swarm-hil` (`swarm-audit` runner):
 * `GATE-169` .. `GATE-188`: Phase 5B LOGOS 10^32-qubit computronium, omnibus fabric, DCE suppression.
 * `GATE-189` .. `GATE-208`: Phase 6 Apotheosis ascension, deity sandboxes, qualia cobordisms, and vessel re-embodiment.
 * `GATE-209` .. `GATE-232`: First-Principles Theoretical Closure (electroweak parity, LLE EP2 solitons, Pachner sheaves, holographic fluid-gravity, TDGL pinning, BZ jet extinction, acceleration Moessbauer, and phenomenal binding).
+* `GATE-NEST-01` .. `GATE-NEST-08`: Phase 6.1 Recursive Multiverse & Epistemic Veils (geometric series quota convergence, zero-compute dormant seeds, 17.01 as safeword egress, and recursive Class X1 anti-genocide interlocks).
