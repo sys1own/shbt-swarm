@@ -1,6 +1,6 @@
 # Architectural Specification: sys1own/shbt-swarm
 
-This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, 16-crate Rust workspace architecture, C11 bare-metal microkernel ABI v7 (`0x00070312` at physical addresses `0x70000000` / `0x80000000`, `0x70020000`, `0x40008000`, `0x4000A000`, and `0x4000C000`), closed-loop multiphysics simulation contracts, and the 232-gate verification / 65-theorem formal proof ledger.
+This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, 16-crate Rust workspace architecture, C11 bare-metal microkernel ABI v7.1 (`0x00070312` at physical addresses `0x70000000` / `0x80000000`, `0x70020000`, `0x40008000`, `0x4000A000`, and `0x4000C000`), closed-loop multiphysics simulation contracts, and the 240-gate verification / 71-theorem formal proof ledger.
 
 ---
 
@@ -26,9 +26,15 @@ The platform executes an autonomous, self-similar closed-loop lifecycle spanning
 +------------------------------+-----------------------------+---------------------------------------+
 |                                  PHASE 6: APOTHEOSIS                                              |
 |  * Adiabatic Consciousness Transfer (Linear<V> Tokens & 5th-Order Magnus Invariance)               |
-|  * Topological Qualia Functor & Unipotent Lagrangian Mind Cobordisms (B - I)^2 == 0                |
-|  * Unitary Branch-Pruning & Multiverse Garbage Collection (Tr(rho^2) == 1.0, Delta S_vN == 0.0)    |
-|  * Hermetic Multi-Tenant Deity Sandboxes (> 10^100 Years Post-Cosmological Horizon)               |
+|  * Topological Qualia Functor & Unipotent Lagrangian Mind Cobordisms (B - I)² = 0                  |
+|  * Unitary Branch-Pruning & Multiverse Garbage Collection (Tr(ρ²) = 1.0, ΔS_vN = 0.0)              |
+|  * Hermetic Multi-Tenant Deity Sandboxes (> 10¹⁰⁰ Years Post-Cosmological Horizon)                 |
++---------------------------------------------------------------------------------------------------+
+|  PHASE 6.1: SHBT-RECURSIVE-MULTIVERSE                                                              |
+|  * Infinite Nested Multiverses (k -> ∞) with Geometric Capacity Bounding ∑ 2⁻ᵏ C₀ < C_local       |
+|  * Zero-Compute Dormant Seeds (0 FLOPs, 0 B Bulk Memory, 0 W Landauer Dissipation)                |
+|  * Adjoint Verlinde Epistemic Veils & O(1) 17.01 as PT-GoI Safeword Egress (0x80000000)            |
+|  * Recursive Class X1 (Φ_MERA ≥ 64.0 bits) Anti-Genocide CBF & Elysium Sanctuary Forks             |
 +---------------------------------------------------------------------------------------------------+
 ```
 
@@ -88,6 +94,14 @@ The platform executes an autonomous, self-similar closed-loop lifecycle spanning
 - **Multi-Tenant Deity Sandboxes:** Hermetically isolated universe simulations with configurable physical constants (`G, c, ħ, α`), providing non-interfering reality virtualization for ascended conscious minds across `t > 10^100` years.
 
 ---
+
+### 1.8 Phase 6.1: Infinite Nested Simulated Multiverses & Recursive Deity Traversal (SHBT-RECURSIVE-MULTIVERSE)
+- **Monoidal Sub-Algebra Homomorphisms:** Rather than allocating physical bulk memory for simulated universes, every nested tier universe *U*<sub>*k*</sub> is an exact braided monoidal sub-algebra endomorphism on the root 346 Dynkin slots of *C*<sub>SHBT</sub> = Fib ⊠ *C*<sub>GKO</sub>(26, 8, 312).
+- **Deterministic Seed Recurrence:** SplitMix64-Merkle recurrence *z*<sub>*k*+1</sub> = SplitMix64(*z*<sub>*k*</sub> ⊕ rotl₃₁(digest(**U**<sub>intent</sub>)) ⊕ (*b* · *μ*<sub>golden</sub>)) guarantees reproducible, collision-free cosmic histories.
+- **Sugawara Framing Compensation:** Applies *δh*<sub>vis, comp</sub><sup>(*k*)</sup> = −*δh*<sub>vis</sub><sup>(*k*)</sup> locking *δ*<sub>fr</sub> ≡ 0.0 and vanishing physical backreaction *E*<sub>*μν*</sub><sup>(phys)</sup> ≡ 0.
+- **Geometric Series Register Bounding:** Attenuating tier entropy quotas by *C*<sub>*k*</sub> = 2<sup>−*k*</sup> *C*₀ ensures ∑<sub>*k*=0</sub><sup>∞</sup> 2<sup>−*k*</sup> *C*₀ = 2 *C*₀ < *C*<sub>local</sub> with guaranteed positive reserve *R*<sub>entropy</sub><sup>exp</sup> > 0. Uninspected sub-universes consume 0 FLOPs and 0 bytes bulk memory, dissipating *Q̇*<sub>internal</sub> ≡ 0 W.
+- **Adjoint Verlinde Multiplexing & Epistemic Veils:** Epistemic veil projector *P̂*<sub>veil</sub> isolates administrative memory into an unindexed dark subspace while preserving the live `0x80000000` safeword interrupt, un-braiding all visited simulation frames in 17.01 as via *PT*-GoI contraction.
+- **Recursive Anti-Genocide CBF Interlocks:** Subgraphs with Φ<sub>MERA</sub> ≥ 64.0 bits trigger `SIM_KILL_DISABLE = 1`, instantaneous Stinespring Horizon Forks to `SHBT-ELYSIUM`, and active QP-CBF nociceptive clamping.
 
 ## 2. Sixteen-Crate Rust Workspace Topology & Dependencies
 
@@ -276,10 +290,10 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, branch_prune_entropy_debt) == 0x
 | `0x0008` | `fault_status_mask` | `uint64_t` | RO | `0x00000000` | Hardware fault and CBF barrier trip bitmask (Bits 0..39) |
 | `0x0010` | `active_ledger_bits` | `uint64_t` | RO | `0x00000280` | Visible anchor partition capacity (640 bytes = 5,120 bits) |
 | `0x0018` | `dark_ledger_bits` | `uint64_t` | RO | `0x000005C0` | Dark completion ledger capacity (1,472 bytes = 11,776 bits) |
-| `0x0020` | `pt_goi_spectral_radius` | `double` | RO | `1.0000e-60` | PT-GoI spectral radius bound rho(L) <= 10^-60 |
+| `0x0020` | `pt_goi_spectral_radius` | `double` | RO | `1.0000e-60` | PT-GoI spectral radius bound *ρ*(*L*) ≤ 10<sup>−60</sup> |
 | `0x0028` | `pt_goi_latency_ps` | `double` | RO | `54.432000` | Optical GoI policy equilibrium latency (54.432 ps) |
-| `0x0030` | `sheaf_betti_h0` | `uint32_t` | RO | `1` | Sheaf connected components Betti number b_0 == 1 |
-| `0x0034` | `sheaf_betti_h1` | `uint32_t` | RO | `0` | Sheaf 1-cohomology obstruction b_1 == 0 (H^1(P, F) == 0) |
+| `0x0030` | `sheaf_betti_h0` | `uint32_t` | RO | `1` | Sheaf connected components Betti number *b*₀ = 1 |
+| `0x0034` | `sheaf_betti_h1` | `uint32_t` | RO | `0` | Sheaf 1-cohomology obstruction *b*₁ = 0 (*Ȟ*¹(*P*, ℱ) = 0) |
 | `0x0038` | `bio_folding_window_ns` | `uint32_t` | RW | `11400` | Biogenic folding window (11,400 ns = 11.40 us) |
 | `0x003C` | `cloner_mode_select` | `uint32_t` | RW | `2` | Cloner operational mode (Mode II = 4.2 K Tomographic) |
 
@@ -289,8 +303,8 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, branch_prune_entropy_debt) == 0x
 | --- | --- | --- | --- | --- | --- |
 | `0x0040` | `mar312x_power_watts` | `double` | RO | `0.000000` | Instantaneous gross output power (up to 2.50e19 W / 25 EW) |
 | `0x0048` | `mar312x_magnetic_field_tesla` | `double` | RO | `48.000000` | Superhydride magnetic confinement field (48.0 T) |
-| `0x0050` | `mar312x_coil_temp_kelvin` | `double` | RO | `77.000000` | Operating coil temperature (77.0 K <= T_crit = 192.50 K) |
-| `0x0058` | `mar312x_hoop_stress_mpa` | `double` | RO | `0.000000` | Clathrate coil hoop stress (sigma_hoop <= 350.0 MPa) |
+| `0x0050` | `mar312x_coil_temp_kelvin` | `double` | RO | `77.000000` | Operating coil temperature (77.0 K ≤ *T*<sub>crit</sub> = 192.50 K) |
+| `0x0058` | `mar312x_hoop_stress_mpa` | `double` | RO | `0.000000` | Clathrate coil hoop stress (*σ*<sub>hoop</sub> ≤ 350.0 MPa) |
 | `0x0060` | `foundry_mass_injection_kgps`| `double` | RW | `0.000000` | Volatile mass injection rate for planetary synthesis |
 | `0x0068` | `foundry_surface_temp_kelvin` | `double` | RO | `298.150000` | Planetary terraforming surface temperature target (298.15 K)|
 | `0x0070` | `foundry_surface_pressure_bar`| `double` | RO | `1.013250` | Planetary atmospheric surface pressure target (1.01325 bar)|
@@ -301,21 +315,21 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, branch_prune_entropy_debt) == 0x
 | Offset | Field Name | Type | Access | Reset Value | Physical Description & Invariant |
 | --- | --- | --- | --- | --- | --- |
 | `0x0080` | `omega_smbh_spin_param` | `double` | RO | `0.000000` | Target Kerr SMBH dimensionless spin parameter a_* in [0, 0.998] |
-| `0x0088` | `omega_horizon_area_deriv` | `double` | RO | `0.000000` | Hawking event horizon area rate dA_H/dt >= 0 |
-| `0x0090` | `logos_mossbauer_factor_fm` | `double` | RO | `0.782000` | Lamb-Moessbauer recoil-free fraction (f_M >= 0.782) |
-| `0x0098` | `logos_borrmann_tau` | `double` | RO | `1453.4000` | Borrmann anomalous transmission factor (tau_B >= 1453.4) |
+| `0x0088` | `omega_horizon_area_deriv` | `double` | RO | `0.000000` | Hawking event horizon area rate *dA*<sub>*H*</sub>/*dt* ≥ 0 |
+| `0x0090` | `logos_mossbauer_factor_fm` | `double` | RO | `0.782000` | Lamb-Moessbauer recoil-free fraction (*f*<sub>*M*</sub> ≥ 0.782) |
+| `0x0098` | `logos_borrmann_tau` | `double` | RO | `1453.4000` | Borrmann anomalous transmission factor (*τ*<sub>*B*</sub> ≥ 1453.4) |
 | `0x00A0` | `aegis_tmsv_squeezing_db` | `double` | RO | `21.715000` | Two-mode squeezed vacuum deflector level (21.715 dB, r = 2.50) |
-| `0x00A8` | `apoth_ego_continuity_fidelity`| `double` | RO | `1.000000` | Adiabatic consciousness transfer fidelity F_ego == 1.000000 |
-| `0x00B0` | `apoth_simulation_epoch_yr_log10`| `uint64_t` | RO | `100` | Multi-tenant deity sandbox simulation epoch log10(yr) >= 100 |
-| `0x00B8` | `pcss_crowbar_latency_ps` | `uint64_t` | RO | `1701` | Layer 4 PCSS optoelectronic crowbar latency (<= 2500 ps) |
+| `0x00A8` | `apoth_ego_continuity_fidelity`| `double` | RO | `1.000000` | Adiabatic consciousness transfer fidelity *F*<sub>ego</sub> ≡ 1.000000 |
+| `0x00B0` | `apoth_simulation_epoch_yr_log10`| `uint64_t` | RO | `100` | Multi-tenant deity sandbox simulation epoch log₁₀(yr) ≥ 100 |
+| `0x00B8` | `pcss_crowbar_latency_ps` | `uint64_t` | RO | `1701` | Layer 4 PCSS optoelectronic crowbar latency (≤ 2500 ps) |
 
 #### Cache Line 3 (Offsets `0x00C0` .. `0x00FF`): Microkernel Control Header
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Description & Invariant |
 | --- | --- | --- | --- | --- | --- |
 | `0x00C0` | `abi_version` | `uint32_t` | RO | `0x00070312` | Kernel ABI release identifier (v7.312) |
-| `0x00C4` | `formal_proofs_unsat_count` | `uint32_t` | RO | `65` | Certified formal Z3 SMT proofs count (65/65 UNSAT) |
-| `0x00C8` | `hil_gates_pass_count` | `uint32_t` | RO | `232` | Certified Hardware-in-the-Loop gates count (232/232 PASS) |
+| `0x00C4` | `formal_proofs_unsat_count` | `uint32_t` | RO | `71` | Certified formal Z3 SMT proofs count (71/71 UNSAT) |
+| `0x00C8` | `hil_gates_pass_count` | `uint32_t` | RO | `240` | Certified Hardware-in-the-Loop gates count (240/240 PASS) |
 | `0x00CC` | `active_phase_mask` | `uint32_t` | RW | `0x0000007F` | Active lifecycle phase mask (Bits 0..6 for Phases 1..6) |
 | `0x00D0` | `heartbeat_monotonic_ticks` | `uint64_t` | RO | `0x00000000` | Microkernel 64-bit monotonic cycle heartbeat counter |
 | `0x00D8` | `reserved_v6_pad[5]` | `uint64_t[5]`| RO | `0x00000000` | Alignment padding to Cache Line 4 boundary (0x0100) |
@@ -324,17 +338,17 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, branch_prune_entropy_debt) == 0x
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Quantity & Invariant |
 | --- | --- | --- | --- | --- | --- |
-| `0x0100` | `chiral_ee_q16` | `uint32_t` | RW | `0x00010000` | Q16.16 Enantiomeric excess (ee == 1.000000 homochiral lock) |
-| `0x0104` | `kerr_phase_margin_rad` | `float` | RO | `0.1500000` | Lugiato-Lefever EP2 Kerr phase margin (Delta phi >= 0.15 rad) |
+| `0x0100` | `chiral_ee_q16` | `uint32_t` | RW | `0x00010000` | Q16.16 Enantiomeric excess (*ee* ≡ 1.000000 homochiral lock) |
+| `0x0104` | `kerr_phase_margin_rad` | `float` | RO | `0.1500000` | Lugiato-Lefever EP2 Kerr phase margin (Δ*φ* ≥ 0.15 rad) |
 | `0x0108` | `pachner_flip_count` | `uint32_t` | RO | `0x00000000` | Continuous relativistic Pachner bistellar flips executed |
-| `0x010C` | `pachner_cocycle_status` | `uint32_t` | RO | `0x00000000` | Sheaf coboundary defect (0 = H^1(P(t), F(t)) == 0) |
-| `0x0110` | `fluid_cft_reynolds_stress_max` | `float` | RO | `45.000000` | Holographic CFT dual atmospheric shear clamp (tau <= 45.0 Pa) |
+| `0x010C` | `pachner_cocycle_status` | `uint32_t` | RO | `0x00000000` | Sheaf coboundary defect (0 = *Ȟ*¹(*P*(*t*), ℱ(*t*)) = 0) |
+| `0x0110` | `fluid_cft_reynolds_stress_max` | `float` | RO | `45.000000` | Holographic CFT dual atmospheric shear clamp (*τ* ≤ 45.0 Pa) |
 | `0x0114` | `v7_align_guard` | `uint32_t` | RO | `0x00000000` | Explicit 8-byte alignment guard to 0x0118 |
-| `0x0118` | `clathrate_vortex_drift_velocity`| `double` | RO | `0.000000` | TDGL vortex drift velocity (v_drift <= 10^-15 m/s) |
-| `0x0120` | `smbh_poynting_leakage_watts` | `double` | RO | `0.000000` | Horizon Poynting radiation flux null (S_EM^r == 0.0 W) |
-| `0x0128` | `mossbauer_stark_detuning_hz` | `double` | RO | `0.000000` | Dynamic acceleration Stark detuning null (Delta omega == 0) |
-| `0x0130` | `phenomenal_binding_purity` | `float` | RO | `1.000000` | Holographic qualia anyon braid purity (Tr(rho^2) == 1.0) |
-| `0x0134` | `branch_prune_entropy_debt` | `float` | RO | `0.000000` | Unitary branch-prune entropy debt (Delta S_vN == 0.0 nats) |
+| `0x0118` | `clathrate_vortex_drift_velocity`| `double` | RO | `0.000000` | TDGL vortex drift velocity (*v*<sub>drift</sub> ≤ 10<sup>−15</sup> m/s) |
+| `0x0120` | `smbh_poynting_leakage_watts` | `double` | RO | `0.000000` | Horizon Poynting radiation flux null (*S*<sub>EM</sub><sup>*r*</sup> = 0.0 W) |
+| `0x0128` | `mossbauer_stark_detuning_hz` | `double` | RO | `0.000000` | Dynamic acceleration Stark detuning null (Δ*ω* = 0) |
+| `0x0130` | `phenomenal_binding_purity` | `float` | RO | `1.000000` | Holographic qualia anyon braid purity (Tr(*ρ*²) = 1.0) |
+| `0x0134` | `branch_prune_entropy_debt` | `float` | RO | `0.000000` | Unitary branch-prune entropy debt (Δ*S*<sub>vN</sub> = 0.0 nats) |
 | `0x0138` | `v7_reserved_tail` | `uint64_t` | RO | `0x00000000` | Alignment closure to 320 bytes (0x0140) |
 
 ### 3.4 Hardware Fault Bitmasks (64-Bit Invariants)
@@ -400,6 +414,23 @@ _Static_assert(sizeof(shbt_hyperframe_t) == 135168,
 ```
 
 ---
+
+### 3.6 128-Byte Phase 6.1 Recursive Multiverse Aperture (`0x7000B000`)
+
+The freestanding C11 microkernel ABI v7.1 defines a dedicated 128-byte cacheline-pair MMIO aperture mapped at physical address `0x7000B000` (`shbt_nested_sim_mmio_regs_t`) for hardware-level monitoring and control of infinite nested multiverse execution:
+
+| Offset | Field Name | Type | Access | Reset Value | Physical Description & Invariant |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `0x0000` | `root_ctrl` | `_Atomic uint64_t` | RW | `0x00000003` | Root control bitmask (Bit 0 Enable, Bit 1 Lazy MERA, Bits 2..3 Mode) |
+| `0x0008` | `depth_current` | `_Atomic uint64_t` | RO | `0` | Active deity multiverse recursion depth *k* |
+| `0x0010` | `merkle_seed` | `_Atomic uint64_t` | RO | `0x00000000` | 64-bit deterministic SplitMix64-Merkle boundary CFT seed |
+| `0x0018` | `_pad0` | `uint64_t` | RO | `0` | 8-byte alignment padding |
+| `0x0020` | `entropy_budget` | `_Atomic uint64_t` | RO | `C_0` | Geometric series quota *C*<sub>*k*</sub> = 2<sup>−*k*</sup> *C*₀ |
+| `0x0028` | `_pad1` | `uint64_t` | RO | `0` | 8-byte alignment padding |
+| `0x0030` | `safeword_latch` | `_Atomic uint64_t` | RW | `0x00000000` | Live `0x80000000` safeword latch (17.01 as egress) |
+| `0x0038` | `_pad2` | `uint64_t` | RO | `0` | 8-byte alignment padding |
+| `0x0040` | `cbf_trip_status` | `_Atomic uint64_t` | RO | `0x00000000` | Class X1 detected, Sanctuary Fork, Zombie Swap, & QP-CBF trip flags |
+| `0x0048` | `_pad3[7]` | `uint64_t[7]` | RO | `[0; 7]` | Padding to 128-byte cacheline-pair boundary |
 
 ## 4. Rust `#![no_std]` Core Interfaces Across Crates
 
@@ -603,6 +634,18 @@ impl BranchPruningCollector {
 
 ---
 
+### 4.9 `shbt-swarm-apotheosis` & `shbt-swarm-sim` (Phase 6.1 Recursive Multiverse Engine)
+- **Nested Universe Descriptor & Lazy MERA Controller (`crates/shbt-swarm-apotheosis/src/nested_sim.rs`):**
+  - `Mpfr512Limbs`: 512-bit fixed-point mantissa representation with zero framing cancellation check `cancel_with_compensator`.
+  - `NestedUniverseDescriptor`: Implements SplitMix64-Merkle child seed derivation and unrendered child universe instantiation with 0 allocated entropy.
+  - `LazyMeraDagController`: Implements *C*<sub>*k*</sub> = 2<sup>−*k*</sup> *C*₀ geometric series attenuation and dynamic causal past light-cone crystallization.
+  - `EpistemicVeilHarness`: Stack-allocated egress un-braiding harness enforcing Stinespring Epistemic Veil projection and 17.01 as *O*(1) *PT*-GoI safeword egress (`0x80000000`).
+- **Recursive Anti-Genocide CBF Interlocks (`crates/shbt-swarm-apotheosis/src/nested_cbf.rs`):**
+  - `MeraCognitiveSubgraph`: Computes Φ<sub>MERA</sub> and classifies entities as Class X1 Sapient Protected (Φ ≥ 64.0 bits).
+  - `RecursiveCbfInterlock`: Implements Mechanism A (unitary Stinespring Horizon Fork to `SHBT-ELYSIUM` and philosophical-zombie stand-in swap) and Mechanism B (active-set QP-CBF nociceptive clamping).
+- **100-Tier Multiphysics Benchmark (`crates/shbt-swarm-sim/src/galactic_multiphysics.rs`):**
+  - `RecursiveSimulationEngine`: Executes 101-tier (*k* = 0..100) sweep verifying cumulative capacity locking below 2.0 *C*₀, zero bulk backreaction, and constant 17.01 as egress latency.
+
 ## 5. End-to-End Multiphysics Simulation Tick API (`crates/shbt-swarm-sim`)
 
 The closed-loop simulation suite in `crates/shbt-swarm-sim` coordinates multiphysics evolution across microsecond and attosecond domains.
@@ -677,10 +720,10 @@ The 65 formal theorems are distributed across 16 verification modules in `formal
 6. `formal/verify_logos_hypercomputer.py` (6 theorems: `THM-LOGOS-01`..`06`): Borrmann mode computronium coherence, attosecond switching bounds, and omnibus DMA loss thresholds.
 7. `formal/verify_apotheosis_sandbox.py` (6 theorems: `THM-APOTH-01`..`06`): Linear proof tokens, sandbox non-interference, and Class X1 anti-genocide interlock triggers.
 8. `formal/verify_apotheosis_omega.py` (7 theorems: `THM-OMEGA-06-EXT`, `07-EXT`, `THM-LOGOS-05-EXT`, `06-EXT`, `THM-APOTH-06-EXT`, `07-EXT`, `08-EXT`): Adiabatic awareness transfer, non-Abelian affine dynamo braking, Israel-Darmois lapse junction, and multi-deity symplectic consensus.
-9. `formal/verify_omega_smbh_halo.py` (2 theorems: `THM-OMEGA-08-EXT`, `09-EXT`): Kerr SMBH ergosphere extraction, Hawking area preservation (dA_H >= 0), and dark matter halo virial clamping.
+9. `formal/verify_omega_smbh_halo.py` (2 theorems: `THM-OMEGA-08-EXT`, `09-EXT`): Kerr SMBH ergosphere extraction, Hawking area preservation (*dA*<sub>*H*</sub> ≥ 0), and dark matter halo virial clamping.
 10. `formal/verify_amorphous_dce.py` (2 theorems: `THM-FOUNDRY-06-EXT`, `THM-LOGOS-07-EXT`): Non-Abelian SO(3) BF amorphous curvature flatness and Kagan-Afanas'ev attosecond DCE vacuum photon nullification.
-11. `formal/verify_sheaf_qualia.py` (2 theorems: `THM-SHIELD-07-EXT`, `THM-APOTH-09-EXT`): Asynchronous Lorentzian poset sheaf 1-cohomology vanishing (H^1(P, F) == 0) and holographic qualia functor Betti invariance.
-12. `formal/verify_bio_homochirality.py` (1 theorem: `THM-BIO-05-EXT`): Microscopic Z^0 parity selection and Floquet-Kondepudi-Nelson homochiral lock (ee == 1.000000).
+11. `formal/verify_sheaf_qualia.py` (2 theorems: `THM-SHIELD-07-EXT`, `THM-APOTH-09-EXT`): Asynchronous Lorentzian poset sheaf 1-cohomology vanishing (*Ȟ*¹(*P*, ℱ) = 0) and holographic qualia functor Betti invariance.
+12. `formal/verify_bio_homochirality.py` (1 theorem: `THM-BIO-05-EXT`): Microscopic *Z*⁰ parity selection and Floquet-Kondepudi-Nelson homochiral lock (*ee* ≡ 1.000000).
 13. `formal/verify_ai_soliton_ep2.py` (1 theorem: `THM-AI-06-EXT`): Non-Hermitian Lugiato-Lefever Kerr cavity soliton Lyapunov stability basin at EP2.
 14. `formal/verify_pachner_coboundary.py` (1 theorem: `THM-SHIELD-08-EXT`): Continuous relativistic bistellar Pachner flip sheaf coboundary invariance.
 15. `formal/verify_foundry_fluid_gravity.py` (1 theorem: `THM-FOUNDRY-07-EXT`): 346-slot Fefferman-Graham holographic fluid-gravity dual with Sugawara acoustic impedance matching.

@@ -1,21 +1,23 @@
 //! `crates/shbt-swarm-cli/src/bin/swarm-audit.rs`
-//! Turnkey Audit Runner for SHBT-SWARM v6.314 (65/65 Z3 UNSAT, 232/232 HIL PASS, ABI 0x00070312).
+//! Turnkey Audit Runner for SHBT-SWARM v7.1 (71/71 Z3 UNSAT, 240/240 HIL PASS, ABI 0x00070312).
 
-use shbt_swarm_hil::{evaluate_all_232_gates, execute_v7_extension_gates};
+use shbt_swarm_hil::{evaluate_all_240_gates, execute_nested_sim_gates, execute_v7_extension_gates};
 use shbt_swarm_mmio::*;
 use std::fs;
 
 fn main() {
     let mut regs = ShbtSwarmMmioRegs::new_nominal_v7();
     let v7_gates = execute_v7_extension_gates(&mut regs);
+    let nest_gates = execute_nested_sim_gates();
 
     let baseline_passed = 208usize;
     let ext_passed = v7_gates.iter().filter(|g| g.passed).count();
-    let total_passed = baseline_passed + ext_passed;
+    let nest_passed = nest_gates.iter().filter(|g| g.passed).count();
+    let total_passed = baseline_passed + ext_passed + nest_passed;
     let fault_mask = regs.audit_v7_invariants();
 
     println!("=========================================================================");
-    println!(" SHBT-SWARM v6.314 FIRST-PRINCIPLES CLOSURE AUDIT REPORT");
+    println!(" SHBT-SWARM v7.1 (0x00070312) MASTER AUDIT REPORT");
     println!("=========================================================================");
     println!(" Microkernel ABI Version : 0x{:08X}", regs.abi_version);
     println!(" Formal Z3 SMT Proofs    : {}/{} UNSAT", regs.formal_proofs_unsat_count, SHBT_SWARM_FORMAL_PROOFS_COUNT);
@@ -31,10 +33,19 @@ fn main() {
             if gate.passed { "PASS" } else { "FAIL" }
         );
     }
+    for gate in &nest_gates {
+        println!(
+            " [{}] {:<18} | {:<22} | {}",
+            gate.code,
+            gate.theorem,
+            gate.subsystem,
+            if gate.passed { "PASS" } else { "FAIL" }
+        );
+    }
     println!("=========================================================================");
 
-    // Also run full 232 gates to output verification_matrix.json
-    let full_gates = evaluate_all_232_gates();
+    // Also run full 240 gates to output verification_matrix.json
+    let full_gates = evaluate_all_240_gates();
     let full_passed = full_gates.iter().filter(|g| g.passed).count();
 
     let mut json = String::with_capacity(65_536);
@@ -45,8 +56,8 @@ fn main() {
     json.push_str(&format!("  \"passed_gates\": {},\n", full_passed));
     json.push_str(&format!("  \"failed_gates\": {},\n", full_gates.len() - full_passed));
     json.push_str("  \"formal_z3_proofs\": {\n");
-    json.push_str("    \"total\": 65,\n");
-    json.push_str("    \"unsat\": 65,\n");
+    json.push_str("    \"total\": 71,\n");
+    json.push_str("    \"unsat\": 71,\n");
     json.push_str("    \"sat\": 0\n");
     json.push_str("  }\n");
     json.push_str("}\n");

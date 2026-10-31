@@ -15,6 +15,8 @@ pub mod horizon_deflect;
 pub mod symplectic_nash;
 pub mod mera_episodic_rg;
 pub mod qualia_cobordism;
+pub mod nested_sim;
+pub mod nested_cbf;
 
 pub use qnd_ascension::{LindbladianPurifier, QndError};
 pub use horizon_deflect::{CausalDecouplingBifurcation, DeflectionError};
@@ -23,6 +25,14 @@ pub use mera_episodic_rg::{EpisodicMeraCompressor, MemoryRgError, ACTIVE_MEMORY_
 pub use qualia_cobordism::{
     ConsciousPointerState, FibonacciAnyon, FissionOutcome, FusionOutcome, QualiaCobordismEngine,
     QualiaHomology,
+};
+pub use nested_sim::{
+    CrystallizedLightCone, EpistemicVeilHarness, IntentTensor, LazyMeraDagController,
+    Mpfr512Limbs, NestedUniverseDescriptor, NestingAccessMode, VeilStackFrame,
+};
+pub use nested_cbf::{
+    CbfEvaluationReport, ElysiumSanctuaryForkRecord, MeraCognitiveSubgraph, RecursiveCbfInterlock,
+    SapienceClass, NOCICEPTIVE_MAX_Q16, PHI_MERA_CRIT_Q16,
 };
 
 use core::marker::PhantomData;

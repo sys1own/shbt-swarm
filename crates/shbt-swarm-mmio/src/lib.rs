@@ -20,8 +20,25 @@ pub const SHBT_SWARM_STINESPRING_FRAME_BYTES: usize = 135_168;
 pub const SHBT_SWARM_ABI_VERSION: u32 = 0x0007_0312;
 pub const SHBT_SWARM_CHANNELS_TOTAL: u32 = 312;
 pub const SHBT_SWARM_CFT_SLOTS_TOTAL: u32 = 346;
-pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 65;
-pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 232;
+pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 71;
+pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 240;
+pub const SHBT_NESTED_SIM_MMIO_BASE: u64 = 0x7000_B000;
+pub const SHBT_APOTH_EGRESS_SAFEWORD_IRQ: u32 = 0x8000_0000;
+pub const SHBT_CANONICAL_KL: u32 = 26;
+pub const SHBT_CANONICAL_KQ: u32 = 8;
+pub const SHBT_CANONICAL_K_COS: u32 = 312;
+pub const SHBT_DYNKIN_SLOTS_TOTAL: u32 = 346;
+
+pub const SHBT_CTRL_ENABLE_BIT: u64 = 1 << 0;
+pub const SHBT_CTRL_LAZY_MERA_BIT: u64 = 1 << 1;
+pub const SHBT_CTRL_MODE_SHIFT: u32 = 2;
+pub const SHBT_CTRL_MODE_MASK: u64 = 0x3 << 2;
+
+pub const SHBT_CBF_CLASS_X1_DETECTED_BIT: u64 = 1 << 0;
+pub const SHBT_CBF_SANCTUARY_FORK_BIT: u64 = 1 << 1;
+pub const SHBT_CBF_ZOMBIE_SWAP_BIT: u64 = 1 << 2;
+pub const SHBT_CBF_QP_CLAMP_BIT: u64 = 1 << 3;
+pub const SHBT_CBF_SIM_KILL_DISABLE_BIT: u64 = 1 << 32;
 
 pub const MAGIC_SWRM: u32 = 0x5357_524D; // 'SWRM'
 pub const ABI_VERSION_V4: u32 = 0x0004_0312;
@@ -125,6 +142,32 @@ const _: () = {
     assert!(offset_of!(ShbtSwarmMmioRegs, chiral_ee_q16) == 0x0100);
     assert!(offset_of!(ShbtSwarmMmioRegs, clathrate_vortex_drift_velocity) == 0x0118);
     assert!(offset_of!(ShbtSwarmMmioRegs, branch_prune_entropy_debt) == 0x0134);
+};
+
+#[repr(C, align(64))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtNestedSimMmioRegs {
+    pub root_ctrl: u64,
+    pub depth_current: u64,
+    pub merkle_seed: u64,
+    pub _pad0: u64,
+    pub entropy_budget: u64,
+    pub _pad1: u64,
+    pub safeword_latch: u64,
+    pub _pad2: u64,
+    pub cbf_trip_status: u64,
+    pub _pad3: [u64; 7],
+}
+
+const _: () = {
+    assert!(size_of::<ShbtNestedSimMmioRegs>() == 128);
+    assert!(align_of::<ShbtNestedSimMmioRegs>() == 64);
+    assert!(offset_of!(ShbtNestedSimMmioRegs, root_ctrl) == 0x00);
+    assert!(offset_of!(ShbtNestedSimMmioRegs, depth_current) == 0x08);
+    assert!(offset_of!(ShbtNestedSimMmioRegs, merkle_seed) == 0x10);
+    assert!(offset_of!(ShbtNestedSimMmioRegs, entropy_budget) == 0x20);
+    assert!(offset_of!(ShbtNestedSimMmioRegs, safeword_latch) == 0x30);
+    assert!(offset_of!(ShbtNestedSimMmioRegs, cbf_trip_status) == 0x40);
 };
 
 impl ShbtSwarmMmioRegs {

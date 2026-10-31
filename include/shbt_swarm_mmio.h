@@ -11,10 +11,11 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "shbt_mmio_apotheosis.h"
+#include "shbt_nested_sim_abi.h"
 
 #define SHBT_SWARM_ABI_VERSION          0x00070312U
-#define SHBT_SWARM_FORMAL_PROOFS_COUNT  65U
-#define SHBT_SWARM_HIL_GATES_COUNT      232U
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT  71U
+#define SHBT_SWARM_HIL_GATES_COUNT      240U
 #define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL
 #define SHBT_SWARM_HYPERFRAME_BASE_ADDR 0x70020000UL
 #define SHBT_SWARM_APOTHEOSIS_BASE_ADDR 0x4000C000UL

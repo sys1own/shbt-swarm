@@ -10,6 +10,7 @@
 #include <assert.h>
 #include "../include/shbt_swarm_mmio.h"
 #include "../include/shbt_mmio_apotheosis.h"
+#include "../include/shbt_nested_sim_abi.h"
 #include "../kernel/include/shbt_ecc.h"
 
 static shbt_unified_stinespring_hyperframe_t g_test_hyperframe;
@@ -22,6 +23,7 @@ int main(void) {
     assert(sizeof(shbt_unified_stinespring_hyperframe_t) == 135168U);
     assert(sizeof(shbt_swarm_mmio_t) == 128U);
     assert(sizeof(shbt_swarm_mmio_regs_t) == 320U);
+    assert(sizeof(shbt_nested_sim_mmio_regs_t) == 128U);
     assert(offsetof(shbt_swarm_mmio_regs_t, abi_version) == 0x00C0U);
     assert(offsetof(shbt_swarm_mmio_regs_t, chiral_ee_q16) == 0x0100U);
     assert(offsetof(shbt_swarm_mmio_regs_t, clathrate_vortex_drift_velocity) == 0x0118U);
@@ -43,8 +45,9 @@ int main(void) {
 
     /* Verify Phase 5B & Phase 6 ABI & control definitions */
     assert(SHBT_SWARM_ABI_VERSION == 0x00070312U);
-    assert(SHBT_SWARM_FORMAL_PROOFS_COUNT == 65U);
-    assert(SHBT_SWARM_HIL_GATES_COUNT == 232U);
+    assert(SHBT_SWARM_FORMAL_PROOFS_COUNT == 71U);
+    assert(SHBT_SWARM_HIL_GATES_COUNT == 240U);
+    assert(SHBT_NESTED_SIM_MMIO_BASE == 0x7000B000ULL);
     assert(SHBT_APOTH_MMIO_BASE == 0x4000C000UL);
     assert(SHBT_OMNIBUS_HYPERFRAME_DMA_BASE == 0x70020000UL);
     assert(SHBT_APOTH_EGRESS_SAFEWORD_IRQ == 0x80000000UL);
