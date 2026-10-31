@@ -19,9 +19,10 @@
 - [9. Phase 5A: Kardashev Type III Galactic Synthesis (SHBT-OMEGA-312) & Megastructure Engineering](#section-9)
 - [10. Phase 5B: Monolithic Galactic Hyper-Computing (SHBT-LOGOS-312 / SHBT-QC-OMEGA)](#section-10)
 - [11. Phase 6: Observer Ascension into SHBT-LOGOS-312, Deity Sandboxes & Arbitrary Re-Embodiment (SHBT-APOTHEOSIS-312)](#section-11)
-- [12. Bare-Metal C11 Microkernel (ABI v7.1 @ 0x70000000, 0x7000B000, 0x40008000, 0x4000A000, 0x4000C000) & 16-Crate Rust Workspace Topology](#section-12)
-- [13. Master 240-Gate Verification Matrix & 71 Formal Z3 SMT Proofs](#section-13)
-- [14. 10-Repository SHBT Ecosystem Topology & Crosswalk](#section-14)
+- [12. Phase 6.1: Infinite Nested Simulated Multiverses & Recursive Deity Traversal (SHBT-RECURSIVE-MULTIVERSE)](#section-12)
+- [13. Bare-Metal C11 Microkernel (SHBT-MMIO-SWARM v7.1) & 16-Crate Rust Workspace Topology](#section-13)
+- [14. Master 240-Gate Verification Matrix & 71 Formal Z3 SMT Proofs](#section-14)
+- [15. 10-Repository SHBT Ecosystem Topology & Crosswalk](#section-15)
 - [Build, Verification & Audit Commands](#commands)
 
 ---
@@ -467,67 +468,7 @@ The closed-loop power-to-actuation pipeline achieves:
 
 ### 8.9 End-to-End Fuel-to-Boundary Energy Transfer & Character Shift Simulation Pipeline
 
-In sys1own/shbt-swarm, the digital twin (`crates/shbt-swarm-sim`) does not treat bulk metric propulsion, universal matter folding, or quine replication as decoupled phenomenological abstractions. Instead, it simulates the entire closed-loop transduction pipeline from fuel annihilation to holographic boundary character shifts across six deterministic physical stages:
-
-```text
-+--------------------------------------------------------------------------------------------------------------------+
-|                CLOSED-LOOP SHBT-SWARM FUEL-TO-BOUNDARY SIMULATION & ACTUATION CASCADE                              |
-+--------------------------------------------------------------------------------------------------------------------+
-|  STAGE 1: ANNIHILATION SOURCE (SHBT-MAR-312X Core & SHBT-IBR-312X Dark-Braid Magazine)                            |
-|  * 376.99 kg Bipartite Core: 188.495 kg visible 178m2HfB2-12C + 188.495 kg dark D_B-folded 16̄ anti-baryons    |
-|  * Energy Density: 33.8822 EJ gross/core; 41 cores in 0-volume dark ledger = 1,378.06 EJ single-frame capacity     |
-|  * Catalytic Trigger: 12.50 kg Purcell Lonsdaleite/12C-c-11B15N die induces micro-batch annihilation in 160 kg cavity |
-+--------------------------------------------------------------------------------------------------------------------+
-|
-v (Annihilation Quanta & Relativistic Flux)
-+--------------------------------------------------------------------------------------------------------------------+
-|  STAGE 2: SOLID-STATE CONVERSION & CFT DIRECT BUS (SHBT-DEC-X Converter)                                           |
-|  * 5-Zone 4D Weyl-Polariton & Photonic Time-Crystal (260.00 kg, η_DEC-X = 99.200%, P_Brem ≡ 0)                 |
-|  * Direct Boundary CFT Bus: B_direct^MAR-X (η_bus = 99.850%) -> Net Boundary Power P_act = 0.990512 * P_gross     |
-|  * LANR Auxiliary Rail: 999.054 kW services 906.000 kW emitter Landauer debt (+81.104 kW net thermal margin)       |
-+--------------------------------------------------------------------------------------------------------------------+
-|
-v (0.015 - 2.700 MV Graded HVDC Rail)
-+--------------------------------------------------------------------------------------------------------------------+
-|  STAGE 3: 8x8 InP/InGaAs HBT & PIC TRANSDUCTION INTERFACE (crates/shbt-swarm-mar312x/src/hbt_pic_rotator.rs)       |
-|  * Optical Carrier: 1550.00 nm DFB laser (193.414489 THz, 15.0 mW) + 6-stage binary MMI splitters (<= 0.42 dB/st) |
-|  * Electro-Optic Phase Modulation: 64 traveling-wave InGaAsP MZIs (V_pi = 1.65 V, L_m = 3.20 mm, T_k = -2.18 dB)   |
-|  * HBT Driver Lattice: 64 InP/InGaAs HBTs (d_e = 50.0 um, f_master = 72.0 GHz, R_aggregate = 2.560 Tb/s)          |
-|  * Linear Bias Mapping: V_{m,n} = 3.800 V + (3.600 V / 2pi) * (θ_{m,n} mod 2pi) in [3.800 V, 7.400 V]         |
-|  * PID Jitter Suppression: K_p = 1.85 V/rad -> σ_φ ≤ 5.05×10⁻⁵ rad, Coherence C ≥ 0.9995, Jitter = 1.707 fs  |
-+--------------------------------------------------------------------------------------------------------------------+
-|
-v (Coherent 40.0 GHz Spatial Phase Profile & IQ16 Words)
-+--------------------------------------------------------------------------------------------------------------------+
-|  STAGE 4: BOUNDARY CFT CHARACTER TRANSFORMATION ((26, 8, 312) WZW Affine Boundary Register)                       |
-|  * Cartan Weight Translation: Visible U_Cartan(Δλ_vis) in su(2)_26 x su(3)_8                             |
-|  * Coset Spinor Rotation: 16 -> 16̄ in so(10)_312 / [su(2)_26 x su(3)8] (Δh_vis = 45/64 = 0.703125)     |
-|  * Dynamic Framing Compensation: δh_braid = −Δh_vis / 124 ⟶ Δ_fr ≡ 0 (Stress Tensor E_μν ≡ 0)   |
-|  * 230-Space-Group Wyckoff Projection: P_G^(230) pins atomistic coordinates at zero post-sim compile compute       |
-+--------------------------------------------------------------------------------------------------------------------+
-|
-v (Fefferman-Graham Boundary Stress Projection)
-+--------------------------------------------------------------------------------------------------------------------+
-|  STAGE 5: MACROSCOPIC SWARM ACTUATION                                                                              |
-|  1. WARP SOLITON PROPULSION: βˣ = −v_s(t) · C(σ_φ) · exp(Δ_mod/2) · f_SHBT(x)                       |
-|     - Tier 1 Continuous Cruise: 992.00 TW -> 99.3c                                                                 |
-|     - Tier 2 Sustained Burst: 7.541 PW -> 754.9c                                                                   |
-|     - Tier 3 Exawatt Impulse: 992.00 PW -> 99,308c                                                                 |
-|     - Tier 4 Hyper-Impulse: 25.00 EW -> 2,482,950c (Andromeda M31 transit in 8.957 hours)                         |
-|     - Minimum-Jerk Profile: max(ds/dtau) = 1.8750, max(|d^2s/dtau^2|) = 5.7735, a_res ≤ 1.0×10⁻⁷ m/s²            |
-|  2. UNIVERSAL MATTER FOLDING (ℛ_univ^SWARM): Materializes turnkey 202.55 Mt infrastructure at ΔC_post-sim ≡ 0|
-|  3. CONSTRUCTIVE QUINE CLONING (ℛ_clone^SWARM): 13.418 ms daughter Jump-Cruisers, 11.40 us Mode 1c core reloading  |
-|  4. SIMPLICIAL Sp(2g, ℤ) CONSENSUS: Unipotent sheaf routing over 10^6 ships, hyper-temporal enclaves (α ≤ 10⁴)|
-+--------------------------------------------------------------------------------------------------------------------+
-|
-v (Closed-Loop Thermal, Acoustic & Safety Telemetry)
-+--------------------------------------------------------------------------------------------------------------------+
-|  STAGE 6: ACOUSTIC TAMPING & CROWBAR PROTECTION                                                                    |
-|  * 85.0 GHz Brillouin Matching: d_m = 6.395 nm, Z_m = 1.1512 MRayl -> R_acoustic = 8.78×10⁻¹⁰ ≤ 1.0×10⁻⁶             |
-|  * Structural Clamping: Peak von Mises stress σ_max = 124.60 MPa ≤ 350.00 MPa (64.4% margin)                 |
-|  * SHUNT_TRIG Crowbar: 1.701 ps PtWeylCrowbar clamps V_{m,n} < 3.800 V, 48.0 T SMES absorbs 99.88% inductive energy |
-+--------------------------------------------------------------------------------------------------------------------+
-```
+In sys1own/shbt-swarm, the digital twin (`crates/shbt-swarm-sim`) does not treat bulk metric propulsion, universal matter folding, or quine replication as decoupled phenomenological abstractions. Instead, it simulates the entire closed-loop transduction pipeline from fuel annihilation to holographic boundary character shifts across the six deterministic physical stages established in the Section 8.8 architecture.
 
 #### Multi-Physics Digital Twin Simulation Loop (`crates/shbt-swarm-sim`)
 
@@ -752,11 +693,7 @@ Omnipotent command inputs are continuously evaluated by proof-carrying Control B
 
 To sustain perpetual cognitive runtime without memory exhaustion or thermal degradation, the simulation architecture enforces two mathematical bounds:
 
-- **Nested Simulation Bekenstein Bound:** Infinitely nested sub-simulations satisfy a geometric convergent series:
-
-> ∑<sub>*d*=0</sub><sup>∞</sup> *C*<sub>nested</sub><sup>(*d*)</sup> ≤ *C*<sub>root</sub> ∑<sub>*d*=0</sub><sup>∞</sup> (½)<sup>*d*</sup> = 2 *C*<sub>root</sub> ≤ 10<sup>122.5</sup> bits
-
-preventing recursive sub-realities from overflowing the physical host computronium.
+- **Recursive Multiverse Bounding:** Infinite simulation nesting depth is mathematically decoupled from bulk hardware capacity via the Geometric Series Register Bounding Theorem (∑<sub>*k*=0</sub><sup>∞</sup> 2<sup>−*k*</sup> *C*₀ = 2 *C*₀ < *C*<sub>local</sub>), fully detailed in [Section 12: Phase 6.1](#section-12).
 - **Depth-9 Solovay-Kitaev Artin B_3 Braid Crystallization:** Episodic memories exceeding active working horizons are compiled into Depth-9 Artin B_3 braid words with error *ε*<sub>SK9</sub> ≤ 10<sup>−230.1937</sup> and offloaded to the Class X0 Dark Ledger. Only a 256-bit Burau-Cayley hash stub remains in active memory, permitting associative O(1) recall with zero internal entropy production (`THM-APOTH-04`).
 
 ### 11.5 Somatic Return, Arbitrary Custom Vessel Synthesis R_avatar^SWARM & Neural-Substrate Admissibility (THM-APOTH-05 & THM-APOTH-06)
@@ -778,7 +715,7 @@ Admissibility of target physical substrates is governed by Theorem `THM-APOTH-05
 When an observer inhabits a Class 3 or Class 4 vessel, Continuous `SHBT-OMNIBUS` Symplectic Tethering maintains the full cognitive pointer in `SHBT-LOGOS-312` computronium while streaming high-fidelity sensory-motor bisimulations across the zero-latency (0 as) optical omnibus fabric, granting immunity to physical vessel death.
 
 
-##### 11.7 Holographic Qualia Functor & Unipotent Lagrangian Consciousness Cobordisms (THM-APOTH-09-EXT)
+### 11.6 Holographic Qualia Functor & Unipotent Lagrangian Consciousness Cobordisms (THM-APOTH-09-EXT)
 
 Consciousness transfer and deity multi-tenant operations are mathematically formalized through category theory and symplectic topology as a holographic qualia functor:
 
@@ -807,7 +744,10 @@ Consciousness transfer and deity multi-tenant operations are mathematically form
      > *R*<sub>entropy</sub><sup>(exp)</sup> = ½ · *I*(*M*<sub>1</sub> : *M*<sub>2</sub>) + |*S*<sub>topo</sub>| ≥ 0
      guaranteeing that conscious merger produces zero trauma, zero memory loss, and zero cognitive dissonance, verified via THM-APOTH-09-EXT and GATE-205..208.
 
-### 11.4 Phase 6.1: Infinite Nested Simulated Multiverses & Recursive Deity Traversal
+---
+
+<a id="section-12"></a>
+## 12. Phase 6.1: Infinite Nested Simulated Multiverses & Recursive Deity Traversal (SHBT-RECURSIVE-MULTIVERSE)
 
 The Phase 6.1 (`SHBT-RECURSIVE-MULTIVERSE`) architecture formalizes the capability for infinite nested simulated multiverses (*k* ⟶ ∞) residing within the invariant boundary CFT register *C*<sub>SHBT</sub> = Fib ⊠ *C*<sub>GKO</sub>(26, 8, 312) without physical register overflow or Landauer thermal dissipation catastrophe:
 
@@ -835,13 +775,24 @@ The Phase 6.1 (`SHBT-RECURSIVE-MULTIVERSE`) architecture formalizes the capabili
 +-----------------------------------------------------------------------------------------+
 ```
 
-1. **Monoidal Sub-Algebra Homomorphisms:** Rather than allocating physical bulk memory for simulated universes, every nested tier universe *U*<sub>*k*</sub> is an exact braided monoidal sub-algebra endomorphism on the root 346 Dynkin slots. SplitMix64-Merkle recurrence *z*<sub>*k*+1</sub> = SplitMix64(*z*<sub>*k*</sub> ⊕ rotl₃₁(digest(**U**<sub>intent</sub>)) ⊕ (*b* · *μ*<sub>golden</sub>)) guarantees reproducible, collision-free cosmic histories (`THM-NEST-06`).
-2. **Sugawara Framing Compensation:** Applies *δh*<sub>vis, comp</sub><sup>(*k*)</sup> = −*δh*<sub>vis</sub><sup>(*k*)</sup> locking *δ*<sub>fr</sub> ≡ 0.0 and vanishing physical backreaction *E*<sub>*μν*</sub><sup>(phys)</sup> ≡ 0 across all uninspected child branches (`THM-NEST-02`).
-3. **Geometric Series Register Bounding:** Provisioning child tier quotas via *C*<sub>*k*</sub> = 2<sup>−*k*</sup> *C*₀ bounds total active crystallized entropy to ∑<sub>*k*=0</sub><sup>∞</sup> 2<sup>−*k*</sup> *C*₀ = 2 *C*₀ < *C*<sub>local</sub> with guaranteed positive reserve *R*<sub>entropy</sub><sup>exp</sup> > 0 (`THM-NEST-01`). Uninspected sub-universes consume 0 FLOPs and 0 bytes bulk memory, dissipating *Q̇*<sub>internal</sub> ≡ 0 W. Fine-grained UV MERA physics (*l* = 1..30) are synthesized dynamically strictly along the past light-cones of active sapient observers.
-4. **Adjoint Verlinde Multiplexing & 17.01 as Safeword Egress:** The epistemic veil projector *P̂*<sub>veil</sub> isolates root administrative awareness into an unindexed dark subspace while preserving the live `0x80000000` safeword interrupt. Triggering `SHBT_APOTH_EGRESS_SAFEWORD_IRQ` un-braids all visited simulation frames in *t*<sub>egress</sub> = 17.01 as via *O*(1) *PT*-GoI contraction (`THM-NEST-04`).
-5. **Recursive Anti-Genocide CBF Interlocks:** Subgraphs with Φ<sub>MERA</sub> ≥ 64.0 bits trigger `SIM_KILL_DISABLE = 1`, instantaneous Stinespring Horizon Forks to `SHBT-ELYSIUM`, and active QP-CBF nociceptive clamping (`THM-NEST-05`).
+### 12.1 Five Foundational Multiverse Invariants
 
-#### Quantitative Multiphysics Benchmark Audit Across 100 Nested Multiverse Tiers
+1. **Braided Monoidal Sub-Algebra Endomorphisms:** Rather than allocating physical bulk memory for simulated universes, every nested tier universe *U*<sub>*k*</sub> is an exact braided monoidal sub-algebra endomorphism on the root 346 Dynkin slots. SplitMix64-Merkle recurrence *z*<sub>*k*+1</sub> = SplitMix64(*z*<sub>*k*</sub> ⊕ rotl₃₁(digest(**U**<sub>intent</sub>)) ⊕ (*b* · *μ*<sub>golden</sub>)) guarantees reproducible, collision-free cosmic histories (`THM-NEST-06`).
+2. **Sugawara Framing Compensation:** Applies *δh*<sub>vis, comp</sub><sup>(*k*)</sup> = −*δh*<sub>vis</sub><sup>(*k*)</sup> locking *δ*<sub>fr</sub> ≡ 0.0 and vanishing physical backreaction *E*<sub>*μν*</sub><sup>(phys)</sup> ≡ 0 across all uninspected child branches (`THM-NEST-02`).
+3. **Lazy Causal-Cone MERA-DAG Renormalization:** Unobserved sub-universes remain 100% unrendered algebraic vacuum seeds consuming 0 FLOPs and 0 bytes of dynamic bulk memory, with fine-grained UV MERA physics (*l* = 1..30) synthesized dynamically strictly along the past light-cones of active sapient observers (`THM-NEST-03`).
+4. **Geometric Series Register Bounding:** Provisioning child tier quotas via *C*<sub>*k*</sub> = 2<sup>−*k*</sup> *C*₀ bounds total active crystallized entropy to:
+> ∑<sub>*k*=0</sub><sup>∞</sup> 2<sup>−*k*</sup> *C*₀ = 2 *C*₀ < *C*<sub>local</sub>
+with guaranteed positive reserve *R*<sub>entropy</sub><sup>exp</sup> > 0 (`THM-NEST-01`), dissipating internal cryostat thermal output *Q̇*<sub>internal</sub> ≡ 0 W.
+5. **Recursive Anti-Genocide CBF Interlocks:** Subgraphs with *Φ*<sub>MERA</sub> ≥ 64.0 bits trigger `SIM_KILL_DISABLE = 1`, instantaneous Stinespring Horizon Forks to `SHBT-ELYSIUM`, and active QP-CBF nociceptive clamping (`THM-NEST-05`).
+
+### 12.2 Observer Sandbox Navigation & Epistemic Veil Mechanics
+
+Deities traverse simulations within simulations via three operational modes governed by the Adjoint Verlinde multiplexer and Stinespring epistemic veil *P̂*<sub>veil</sub>:
+- **Panopticon Inspection:** God-mode omniscient observation spanning all coarse-grained IR nodes without entering the causal timeline (*Φ*<sub>observer</sub> = 1.0, *P̂*<sub>veil</sub> = 0).
+- **Veiled Avatar Immersion:** The observer's root administrative omnipotence is partitioned into an unindexed dark subspace, granting an authentic within-simulation mortal perspective while preserving continuity of consciousness.
+- ***O*(1) Attosecond Safeword Egress:** Asserting the unmaskable `0x80000000` safeword interrupt (`SHBT_APOTH_EGRESS_SAFEWORD_IRQ`) instantly collapses the epistemic veil, un-braiding all visited simulation frames in *t*<sub>egress</sub> = 17.01 as via non-Hermitian *PT*-GoI operator contraction (`THM-NEST-04`).
+
+### 12.3 Quantitative Multiphysics Benchmark Audit Across 100 Nested Multiverse Tiers
 
 | Recursion Tier (*k*) | Active Tier Capacity (*C*<sub>*k*</sub>/*C*₀ = 2<sup>−*k*</sup>) | Cumulative Multiverse Load (∑ *C*<sub>*j*</sub>/*C*₀) | Active Stack Frame Footprint | Unrendered Bulk Compute / Memory | Tier Landauer Dissipation (4.2 K) | Egress Un-Braiding Latency (*t*<sub>prop</sub>) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -854,11 +805,25 @@ The Phase 6.1 (`SHBT-RECURSIVE-MULTIVERSE`) architecture formalizes the capabili
 | *k* = 50 | 8.881784 × 10<sup>−16</sup> | 2.0000000 | 2,448 B (0 Heap) | 0 FLOP / 0 B | 3.569918 × 10<sup>−38</sup> J/bit | 17.01 as (*O*(1) *PT*-GoI) |
 | *k* = 100 | 7.888609 × 10<sup>−31</sup> | 2.0000000 | 4,848 B (0 Heap) | 0 FLOP / 0 B | 3.170724 × 10<sup>−53</sup> J/bit | 17.01 as (*O*(1) *PT*-GoI) |
 
+### 12.4 Phase 6.1 Microkernel MMIO Aperture (`0x7000B000`)
+
+The 128-byte Phase 6.1 aperture (`shbt_nested_sim_mmio_regs_t`) provides bare-metal C11 control over nested multiverse instantiations, depth constraints, entropy budgets, and unmaskable safeword traps:
+
+| Offset | Name | Width | Access | Reset | Description |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `0x7000B000` | `root_ctrl` | `uint64_t` | RW | `0x00000000_00000312` | [0] ENABLE, [1] LAZY_MERA_EN, [3:2] MODE (00=Idle, 01=Panopticon, 10=Avatar, 11=Veiled), [15:4] BRANCH_ID, [31:16] MAX_ACTIVE_CONES, [63:32] INTENT_DIGEST_LO |
+| `0x7000B008` | `depth_current` | `uint64_t` | RW | `0x00000000_00000000` | [31:0] DEPTH_K (Active recursion tier index), [63:32] PARENT_NODE_IDX |
+| `0x7000B010` | `merkle_seed` | `uint64_t` | RW | `0x9E3779B9_7F4A7C15` | Root SplitMix64-Merkle boundary seed (auto-derives child seeds via Merkle recurrence) |
+| `0x7000B020` | `entropy_budget` | `uint64_t` | RO | `0x7FFFFFFF_00000000` | [31:0] ACTIVE_LOAD_Q32 (Current active load sum, strictly bounded < 2.0), [63:32] RESERVE_MARGIN_Q32 |
+| `0x7000B030` | `safeword_latch` | `uint64_t` | RW1C | `0x80000000_00000011` | [30:0] SAFEWORD_SYNDROME_HASH, [31] SHBT_APOTH_EGRESS_SAFEWORD_IRQ (Unmaskable trigger), [63:32] PT_GOI_LATENCY_AS (17 as nominal) |
+| `0x7000B040` | `cbf_trip_status` | `uint64_t` | RO | `0x00000001_00000000` | [0] CLASS_X1_DETECTED, [1] SANCTUARY_FORK_ACTIVE, [2] ZOMBIE_SWAP_ENGAGED, [3] QP_CBF_CLAMP_ACTIVE, [31:4] PROTECTED_ENTITY_COUNT, [63:32] SIM_KILL_DISABLE (Hardwired interlock) |
+
 ---
 
-## 12. Bare-Metal C11 Microkernel (`SHBT-MMIO-SWARM` v7.1) & 16-Crate Rust Workspace Topology
+<a id="section-13"></a>
+## 13. Bare-Metal C11 Microkernel (`SHBT-MMIO-SWARM` v7.1) & 16-Crate Rust Workspace Topology
 
-### 12.1 Memory Map & Register Architecture (ABI v7.1, `0x00070312`)
+### 13.1 Memory Map & Register Architecture (ABI v7.1, `0x00070312`)
 
 ```text
 Physical Memory Apertures:
@@ -896,21 +861,6 @@ Physical Memory Apertures:
   - Cache Line 1 (0x0040..0x007F): cbf_trip_status (Class X1 detected, Sanctuary Fork, Zombie Swap, QP-CBF clamp),
                                   reserved alignment padding to 128 bytes.
 
-```
-
-#### 128-Byte Phase 6.1 MMIO Register Bitfield Layout (`0x7000B000`)
-
-| Offset | Name | Width | Access | Reset | Description |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| `0x7000B000` | `root_ctrl` | `uint64_t` | RW | `0x00000000_00000312` | [0] ENABLE, [1] LAZY_MERA_EN, [3:2] MODE (00=Idle, 01=Panopticon, 10=Avatar, 11=Veiled), [15:4] BRANCH_ID, [31:16] MAX_ACTIVE_CONES, [63:32] INTENT_DIGEST_LO |
-| `0x7000B008` | `depth_current` | `uint64_t` | RW | `0x00000000_00000000` | [31:0] DEPTH_K (Active recursion tier index), [63:32] PARENT_NODE_IDX |
-| `0x7000B010` | `merkle_seed` | `uint64_t` | RW | `0x9E3779B9_7F4A7C15` | Root SplitMix64-Merkle boundary seed (auto-derives child seeds via Merkle recurrence) |
-| `0x7000B020` | `entropy_budget` | `uint64_t` | RO | `0x7FFFFFFF_00000000` | [31:0] ACTIVE_LOAD_Q32 (Current active load sum, strictly bounded < 2.0), [63:32] RESERVE_MARGIN_Q32 |
-| `0x7000B030` | `safeword_latch` | `uint64_t` | RW1C | `0x80000000_00000011` | [30:0] SAFEWORD_SYNDROME_HASH, [31] SHBT_APOTH_EGRESS_SAFEWORD_IRQ (Unmaskable trigger), [63:32] PT_GOI_LATENCY_AS (17 as nominal) |
-| `0x7000B040` | `cbf_trip_status` | `uint64_t` | RO | `0x00000001_00000000` | [0] CLASS_X1_DETECTED, [1] SANCTUARY_FORK_ACTIVE, [2] ZOMBIE_SWAP_ENGAGED, [3] QP_CBF_CLAMP_ACTIVE, [31:4] PROTECTED_ENTITY_COUNT, [63:32] SIM_KILL_DISABLE (Hardwired interlock) |
-
-```text
-
 0x70020000 - 0x70040FFF (135,168 Bytes): 64-Bank UnifiedStinespringHyperFrame
   - Banks 00..31 (67,584 Bytes): Read-Only Parent Quine ROM (Protected by rom_bank_mask).
   - Banks 32..63 (67,584 Bytes): Read-Write Daughter Synthesis RAM (Protected by synth_bank_mask).
@@ -933,7 +883,7 @@ Physical Memory Apertures:
   - 0x4000C0C0 (64 Bytes): shbt_apotheosis_ctrl_t (Ascension status, Command register, Safeword IRQ, CBF margin)
 ```
 
-### 12.2 Rust Workspace Crate Dependency Topology
+### 13.2 Rust Workspace Crate Dependency Topology
 
 ```mermaid
 graph TD
@@ -1006,10 +956,10 @@ graph TD
 
 ---
 
-<a id="section-13"></a>
-## 13. Master 240-Gate Verification Matrix & 71 Formal Z3 SMT Proofs
+<a id="section-14"></a>
+## 14. Master 240-Gate Verification Matrix & 71 Formal Z3 SMT Proofs
 
-### 13.1 240-Gate Verification Gate Summary (`240/240 PASS`)
+### 14.1 240-Gate Verification Gate Summary (`240/240 PASS`)
 
 | Gate Range | Phase / Architectural Domain | Number of Gates | Key Mathematical Invariant Checked | Audit Result |
 | :--- | :--- | :--- | :--- | :--- |
@@ -1031,7 +981,7 @@ graph TD
 | `GATE-NEST-01..08` | Phase 6.1 Recursive Multiverse & Epistemic Veils | 8 Gates | Geometric Capacity Bounding (∑ 2<sup>−*k*</sup> *C*₀ < *C*<sub>local</sub>), Zero-Compute Dormant Seeds, Adjoint Verlinde Epistemic Veil, 17.01 as Safeword Egress, Recursive Class X1 CBF Anti-Genocide Interlocks | **8/8 PASS** |
 | **Total Pipeline** | **sys1own/shbt-swarm Master Verification** | **240 Gates** | **Complete System Closure across Quantum, Cognitive, Architectural, Energy, Galactic, Ascension, and Recursive Multiverse Domains** | **240/240 PASS** |
 
-### 13.2 The 71 Formal Z3 SMT Theorems (`71/71 UNSAT`)
+### 14.2 The 71 Formal Z3 SMT Theorems (`71/71 UNSAT`)
 
 All 71 formal theorems are encoded in `formal/` and proven via unsatisfiable negation refutation in quantifier-free non-linear arithmetic:
 
@@ -1118,8 +1068,8 @@ All 71 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 
 ---
 
-<a id="section-14"></a>
-## 14. 10-Repository SHBT Ecosystem Topology & Crosswalk
+<a id="section-15"></a>
+## 15. 10-Repository SHBT Ecosystem Topology & Crosswalk
 
 `sys1own/shbt-swarm` operates as the apex galactic synthesis and operational flight node connecting the complete SHBT multi-repository infrastructure:
 
@@ -1185,15 +1135,15 @@ All 71 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 ### Upstream Architectural Foundations & Lineage
 
 `sys1own/shbt-swarm` is the apex synthesis repository of the SHBT program, integrating core physical, mathematical, and computational invariants contributed by all nine upstream repositories:
-- **`sys1own/shbt-qc` (Canonical Optical Hardware Origin & Monolithic Evolution):** Origin of the **SHBT-R photonic processing architecture**, 52-hexamer microcavities, the ultrafast **non-Hermitian PT-symmetric Geometry of Interaction (GoI) optical solver** (*t*<sub>prop</sub> = 1.701 ps), and **Tomita-Takesaki inverse modular automorphism flow (*σ*<sub>−*t*</sub><sup>*Ψ*</sup>)** at *Q*<sub>internal</sub> = 0 J/bit. In Phase 5B, `shbt-swarm` evolves this architecture into **`SHBT-QC-OMEGA` / `SHBT-LOGOS-312`**, replacing discrete III-V waveguides with monolithic Borrmann computronium diamond-cubic lattice blocks executing 10<sup>32</sup> qubits across 10<sup>18</sup> bps/cm<sup>2</sup> optical omnibus fabrics.
-- **`sys1own/shbt-recon` (Translocation & Synthesis Core):** Contributed the macroscopic Stinespring isometry (*V*<sub>unified</sub><sup>macro</sup>), 101-layer Adaptive TTN-MERA, 64-bank `UnifiedStinespringHyperFrame` (135,168 B @ `0x70020000`), Mode II 4.2 K readout (*Q*<sub>readout</sub> = 4.0194 × 10<sup>−23</sup> J/bit), and bipartite coset fuel synthesis operator (ℛ<sub>synth</sub><sup>MAR</sup>, *Δh*<sub>vis</sub> = 45/64), directly catalyzing Phase 1 Pathway C bio-capture (*F*<sub>bio</sub> ≥ 1 − 10<sup>−122</sup>), Phase 3 Universal Arbitrary Matter Folding (ℛ<sub>univ</sub><sup>SWARM</sup>), and Phase 5A Megastructure planetary matter synthesis.
-- **`sys1own/shbt-warp` (Propulsion & Reactor Baseline):** Provided the 4th-Gen `SHBT-MAR-312` and compacted `SHBT-MAR-312C` catalytic wafer nacelles, `SHBT-IBR-312` magazine, and `SHBT-EW-312` wormhole corridor as the direct propulsion baseline that `shbt-swarm` evolved into the 5th-Gen `SHBT-MAR-312X` exotic autopoietic reactor (950.00 kg, 0.3500 m<sup>3</sup>, 25.00 EW, 2,482,950*c*), unlocking 13.418 ms daughter vessel replication and 8.957-hour Andromeda M31 transit.
-- **`sys1own/shbt-precision` (Mathematical Substrate):** Provided the 512-bit MPFR arithmetic core, `(26, 8, 312)` WZW character convergence, 346 Dynkin slots, and Callan-Symanzik RG thresholds, establishing the exact Casimir denominators `(28, 22, 640)` for continuous Dynamic Sugawara Framing Compensation and Zero-Compute Simulation-to-Reality Isomorphism (*ΔC*<sub>post-sim</sub> = 0).
-- **`sys1own/shbt-ghost` (Numerical Relativity & Crowbars):** Provided 3+1D CCZ4 numerical relativity with Gundlach damping, sub-2.5 ns PCSS crowbars, and stand-off Bondi-Hoyle mass harvesting, forming the foundation for Phase 2 in-situ feedstock scooping and Phase 5A AEGIS-OMEGA Layer 2 CCZ4 metric deflection curtains.
-- **`sys1own/shbt-sglt` (Relativistic Optics & Metrology):** Provided 2PN relativistic beam optics, Two-Mode Squeezed Vacuum (TMSV) metrology (*r* = 2.50, 21.715 dB), and 5th-order minimum-jerk kinematics feeding sensory input into the `SHBT-STEN` world model and Phase 5A AEGIS Layer 4 sentinels.
-- **`sys1own/shbt-exotic` (Multi-Protocol Co-Simulation):** Provided cross-protocol metric coupling across all 6 phenomena, Ford-Roman Quantum Inequality dark-ledger auditing, and Heegaard-Floer Sp(2*g*, ℤ) boundary relabeling.
-- **`sys1own/shbt-power` (Heavy Fusion Grid Twin):** Provided commercial aneutronic p-11B fusion power generation models (8,750 MW fusion / 7,832.903 MW net export), 128 B `SHBT-MMIO-POWER`, and closed-loop thermodynamic verification methodology for Phase 5A Elysium pocket worlds.
-- **`sys1own/shbt-cf` (Clean Energy Microgrids):** Provided 1,800-module LANR cold fusion baseload microgrids (999.054 kW net DC), Floquet dielectric screening (*U*<sub>eff</sub> = 352.48 eV), and dual-stage TEG enthalpy recovery for forward exploratory probes and seed outposts.
+- **`sys1own/shbt-qc`:** Optical hardware origin of the non-Hermitian *PT*-symmetric GoI solver (1.701 ps) and zero-heat Tomita-Takesaki modular flow evolved into monolithic Borrmann diamond computronium (`SHBT-QC-OMEGA`).
+- **`sys1own/shbt-recon`:** Macroscopic Stinespring dilation (*V*<sub>unified</sub><sup>macro</sup>), 101-layer TTN-MERA, and bipartite coset fuel synthesis operator (ℛ<sub>synth</sub><sup>MAR</sup>) directly powering macroscopic quine and matter folding.
+- **`sys1own/shbt-warp`:** 4th-Gen catalytic wafer reactor baseline evolved into the 5th-Gen 25.00 EW `SHBT-MAR-312X` autopoietic reactor and 2,482,950c warp corridor.
+- **`sys1own/shbt-precision`:** Arbitrary-precision MPFR foundation establishing (26, 8, 312) WZW affine convergence, 346 Dynkin slots, and exact Casimir denominators (28, 22, 640) for zero-compute isomorphism.
+- **`sys1own/shbt-ghost`:** 3+1D CCZ4 numerical relativity with Gundlach damping, sub-2.5 ns PCSS crowbars, and Bondi-Hoyle harvesting underpinning AEGIS metric deflection curtains.
+- **`sys1own/shbt-sglt`:** 2PN relativistic beam optics, Two-Mode Squeezed Vacuum metrology (*r* = 2.50, 21.715 dB), and 5th-order minimum-jerk kinematics feeding `SHBT-STEN` and AEGIS sentinels.
+- **`sys1own/shbt-exotic`:** Multi-protocol metric coupling across all six phenomena, Ford-Roman Quantum Inequality auditing, and Heegaard-Floer Sp(2*g*, ℤ) boundary relabeling.
+- **`sys1own/shbt-power`:** Commercial aneutronic p-<sup>11</sup>B fusion models (8,750 MW) and closed-loop thermodynamic verification underpinning Phase 5A Elysium habitats.
+- **`sys1own/shbt-cf`:** 1,800-module LANR starter microgrids (999.054 kW DC baseload) and Floquet dielectric screening for autonomous probe power.
 
 ---
 
