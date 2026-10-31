@@ -4,6 +4,8 @@
 //! Phase 5A `shbt-swarm-omega`: Kardashev Type III Galactic Synthesis & Megastructure Core
 //! Strictly grounded in C_SHBT = Fib (x) C_GKO(26, 8, 312), eta_A = 10/33, eta_D = 23/33.
 
+pub mod blandford_znajek_null;
+pub use blandford_znajek_null::*;
 pub mod stellar_deconstruct;
 pub mod dynamo_brake;
 pub mod smbh_siphon;

@@ -5,6 +5,8 @@
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
+pub mod fluid_gravity_dual;
+pub use fluid_gravity_dual::*;
 pub mod dynkin_router;
 pub mod lattice_projector;
 pub mod transmutation;

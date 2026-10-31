@@ -6,6 +6,10 @@
 //! Multi-Tenant Deity Sandboxes, Class X1 Anti-Genocide Stinespring Interlocks,
 //! Perpetual Runtime Stability, and Arbitrary Vessel Re-Embodiment Mechanics.
 
+pub mod phenomenal_binding;
+pub mod branch_coalescence;
+pub use phenomenal_binding::*;
+pub use branch_coalescence::*;
 pub mod qnd_ascension;
 pub mod horizon_deflect;
 pub mod symplectic_nash;

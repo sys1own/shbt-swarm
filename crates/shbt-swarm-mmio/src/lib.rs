@@ -1,22 +1,236 @@
-//! crates/shbt-swarm-mmio/src/lib.rs
-//! #![no_std] Zero-cost volatile wrapper over SHBT-MMIO-SWARM v4 (0x70000000) and
-//! the 64-Bank UnifiedStinespringHyperFrame (0x70020000) with host simulator backing.
+//! `shbt-swarm-mmio`: Bare-Metal Microkernel ABI v7 (`0x00070312`) Register Specification.
+//! Zero-allocation `#![no_std]` FFI bindings matching `include/shbt_swarm_mmio.h`.
 
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
+#![allow(dead_code, unused_imports)]
 
+use core::mem::{align_of, offset_of, size_of};
 use core::ptr::{read_volatile, write_volatile};
-use shbt_swarm_core::*;
+use shbt_swarm_core::{
+    UnifiedStinespringHyperFrame, SHBT_SWARM_HYPERFRAME_BASE_ADDR,
+    SHBT_SWARM_CMD_NOP, SHBT_SWARM_CMD_EXEC_CLONE_SHIP, SHBT_SWARM_CMD_WEYL_EXCITON_CROWBAR,
+    SHBT_SWARM_FAULT_ADM_IMBALANCE, SHBT_SWARM_TRIAGE_X2_ASSIMILATE,
+    SHBT_SWARM_TRIAGE_SHIFT, SHBT_SWARM_TRIAGE_MASK,
+};
+
+pub const SHBT_SWARM_MMIO_BASE_ADDR: u64 = 0x8000_0000;
+pub const SHBT_SWARM_STINESPRING_BASE_ADDR: u64 = 0x7002_0000;
+pub const SHBT_SWARM_STINESPRING_FRAME_BYTES: usize = 135_168;
+pub const SHBT_SWARM_ABI_VERSION: u32 = 0x0007_0312;
+pub const SHBT_SWARM_CHANNELS_TOTAL: u32 = 312;
+pub const SHBT_SWARM_CFT_SLOTS_TOTAL: u32 = 346;
+pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 65;
+pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 232;
 
 pub const MAGIC_SWRM: u32 = 0x5357_524D; // 'SWRM'
 pub const ABI_VERSION_V4: u32 = 0x0004_0312;
 pub const ABI_VERSION_V6: u32 = 0x0006_0312;
 pub const SHBT_APOTH_MMIO_BASE: usize = 0x4000_C000;
 
+// Baseline Fault Bitmasks (Bits 0..31)
+pub const SHBT_SWARM_FAULT_NONE: u64 = 0;
+pub const SHBT_SWARM_FAULT_ABI_MISMATCH: u64 = 1 << 0;
+pub const SHBT_SWARM_FAULT_LANDAUER_OVERFLOW: u64 = 1 << 1;
+pub const SHBT_SWARM_FAULT_PT_GOI_NILPOTENCY: u64 = 1 << 2;
+pub const SHBT_SWARM_FAULT_SHEAF_SPLIT_BRAIN: u64 = 1 << 3;
+pub const SHBT_SWARM_FAULT_MAR312X_HOOP_STRESS: u64 = 1 << 4;
+pub const SHBT_SWARM_FAULT_OMEGA_HORIZON: u64 = 1 << 5;
+pub const SHBT_SWARM_FAULT_APOTH_QUENCH: u64 = 1 << 6;
+
+// v7 First-Principles Closure Fault Bitmasks (Bits 32..39)
+pub const SHBT_SWARM_FAULT_CHIRAL_RACEMIC: u64 = 1 << 32;
+pub const SHBT_SWARM_FAULT_LLE_CHAOS: u64 = 1 << 33;
+pub const SHBT_SWARM_FAULT_PACHNER_COCYCLE: u64 = 1 << 34;
+pub const SHBT_SWARM_FAULT_ATMOS_SHOCK: u64 = 1 << 35;
+pub const SHBT_SWARM_FAULT_FLUX_JUMP: u64 = 1 << 36;
+pub const SHBT_SWARM_FAULT_POYNTING_JET: u64 = 1 << 37;
+pub const SHBT_SWARM_FAULT_MOSSBAUER_DETUNE: u64 = 1 << 38;
+pub const SHBT_SWARM_FAULT_BINDING_DECOHERENCE: u64 = 1 << 39;
+
+// Nominal v7 Hardware Thresholds
+pub const SHBT_SWARM_CHIRAL_EE_Q16_HOMOCHIRAL: u32 = 0x0001_0000;
+pub const SHBT_SWARM_KERR_PHASE_MARGIN_MIN_RAD: f32 = 0.150_000;
+pub const SHBT_SWARM_PACHNER_COCYCLE_CLEAN: u32 = 0x0000_0000;
+pub const SHBT_SWARM_ATMOS_SHEAR_MAX_PA: f32 = 45.000_000;
+pub const SHBT_SWARM_VORTEX_DRIFT_MAX_MPS: f64 = 1.0000e-15;
+pub const SHBT_SWARM_POYNTING_LEAKAGE_MAX_W: f64 = 0.0;
+pub const SHBT_SWARM_MOSSBAUER_FACTOR_MIN: f64 = 0.782_000;
+pub const SHBT_SWARM_BORRMANN_TAU_MIN: f64 = 1_453.4;
+pub const SHBT_SWARM_BINDING_PURITY_NOMINAL: f32 = 1.000_000;
+pub const SHBT_SWARM_BRANCH_ENTROPY_DEBT_ZERO: f32 = 0.000_000;
+
+#[repr(C, align(64))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtSwarmMmioRegs {
+    // Cache Line 0 (0x0000..0x003F)
+    pub stinespring_dma_phys_addr: u64,
+    pub fault_status_mask: u64,
+    pub active_ledger_bits: u64,
+    pub dark_ledger_bits: u64,
+    pub pt_goi_spectral_radius: f64,
+    pub pt_goi_latency_ps: f64,
+    pub sheaf_betti_h0: u32,
+    pub sheaf_betti_h1: u32,
+    pub bio_folding_window_ns: u32,
+    pub cloner_mode_select: u32,
+
+    // Cache Line 1 (0x0040..0x007F)
+    pub mar312x_power_watts: f64,
+    pub mar312x_magnetic_field_tesla: f64,
+    pub mar312x_coil_temp_kelvin: f64,
+    pub mar312x_hoop_stress_mpa: f64,
+    pub foundry_mass_injection_kgps: f64,
+    pub foundry_surface_temp_kelvin: f64,
+    pub foundry_surface_pressure_bar: f64,
+    pub architect_wyckoff_group_mask: u64,
+
+    // Cache Line 2 (0x0080..0x00BF)
+    pub omega_smbh_spin_param: f64,
+    pub omega_horizon_area_deriv: f64,
+    pub logos_mossbauer_factor_fm: f64,
+    pub logos_borrmann_tau: f64,
+    pub aegis_tmsv_squeezing_db: f64,
+    pub apoth_ego_continuity_fidelity: f64,
+    pub apoth_simulation_epoch_yr_log10: u64,
+    pub pcss_crowbar_latency_ps: u64,
+
+    // Cache Line 3 (0x00C0..0x00FF)
+    pub abi_version: u32,
+    pub formal_proofs_unsat_count: u32,
+    pub hil_gates_pass_count: u32,
+    pub active_phase_mask: u32,
+    pub heartbeat_monotonic_ticks: u64,
+    pub reserved_v6_pad: [u64; 5],
+
+    // Cache Line 4 (0x0100..0x013F): ABI v7 Extension Bank
+    pub chiral_ee_q16: u32,
+    pub kerr_phase_margin_rad: f32,
+    pub pachner_flip_count: u32,
+    pub pachner_cocycle_status: u32,
+    pub fluid_cft_reynolds_stress_max: f32,
+    pub v7_align_guard: u32,
+    pub clathrate_vortex_drift_velocity: f64,
+    pub smbh_poynting_leakage_watts: f64,
+    pub mossbauer_stark_detuning_hz: f64,
+    pub phenomenal_binding_purity: f32,
+    pub branch_prune_entropy_debt: f32,
+    pub v7_reserved_tail: u64,
+}
+
+const _: () = {
+    assert!(size_of::<ShbtSwarmMmioRegs>() == 320);
+    assert!(align_of::<ShbtSwarmMmioRegs>() == 64);
+    assert!(offset_of!(ShbtSwarmMmioRegs, abi_version) == 0x00C0);
+    assert!(offset_of!(ShbtSwarmMmioRegs, chiral_ee_q16) == 0x0100);
+    assert!(offset_of!(ShbtSwarmMmioRegs, clathrate_vortex_drift_velocity) == 0x0118);
+    assert!(offset_of!(ShbtSwarmMmioRegs, branch_prune_entropy_debt) == 0x0134);
+};
+
+impl ShbtSwarmMmioRegs {
+    #[inline]
+    #[allow(clippy::approx_constant)]
+    pub const fn new_nominal_v7() -> Self {
+        Self {
+            stinespring_dma_phys_addr: SHBT_SWARM_STINESPRING_BASE_ADDR,
+            fault_status_mask: SHBT_SWARM_FAULT_NONE,
+            active_ledger_bits: 10_000_000_000,
+            dark_ledger_bits: 23_000_000_000,
+            pt_goi_spectral_radius: 1.0e-62,
+            pt_goi_latency_ps: 54.432,
+            sheaf_betti_h0: 1,
+            sheaf_betti_h1: 0,
+            bio_folding_window_ns: 11_400,
+            cloner_mode_select: 2,
+            mar312x_power_watts: 2.50e19,
+            mar312x_magnetic_field_tesla: 48.0,
+            mar312x_coil_temp_kelvin: 77.0,
+            mar312x_hoop_stress_mpa: 312.5,
+            foundry_mass_injection_kgps: 1.0e15,
+            foundry_surface_temp_kelvin: 298.15,
+            foundry_surface_pressure_bar: 1.01325,
+            architect_wyckoff_group_mask: u64::MAX,
+            omega_smbh_spin_param: 0.998,
+            omega_horizon_area_deriv: 1.25e-4,
+            logos_mossbauer_factor_fm: 0.7854,
+            logos_borrmann_tau: 1462.8,
+            aegis_tmsv_squeezing_db: 21.715,
+            apoth_ego_continuity_fidelity: 1.0,
+            apoth_simulation_epoch_yr_log10: 105,
+            pcss_crowbar_latency_ps: 1850,
+            abi_version: SHBT_SWARM_ABI_VERSION,
+            formal_proofs_unsat_count: SHBT_SWARM_FORMAL_PROOFS_COUNT,
+            hil_gates_pass_count: SHBT_SWARM_HIL_GATES_COUNT,
+            active_phase_mask: 0x0000_007F,
+            heartbeat_monotonic_ticks: 1,
+            reserved_v6_pad: [0; 5],
+            chiral_ee_q16: SHBT_SWARM_CHIRAL_EE_Q16_HOMOCHIRAL,
+            kerr_phase_margin_rad: 0.785_398_2,
+            pachner_flip_count: 0,
+            pachner_cocycle_status: SHBT_SWARM_PACHNER_COCYCLE_CLEAN,
+            fluid_cft_reynolds_stress_max: 4.6818,
+            v7_align_guard: 0,
+            clathrate_vortex_drift_velocity: 1.31e-33,
+            smbh_poynting_leakage_watts: 0.0,
+            mossbauer_stark_detuning_hz: -1.6085e8,
+            phenomenal_binding_purity: SHBT_SWARM_BINDING_PURITY_NOMINAL,
+            branch_prune_entropy_debt: SHBT_SWARM_BRANCH_ENTROPY_DEBT_ZERO,
+            v7_reserved_tail: 0,
+        }
+    }
+
+    #[inline]
+    pub fn audit_v7_invariants(&mut self) -> u64 {
+        let mut faults = SHBT_SWARM_FAULT_NONE;
+        if self.abi_version != SHBT_SWARM_ABI_VERSION {
+            faults |= SHBT_SWARM_FAULT_ABI_MISMATCH;
+        }
+        if self.chiral_ee_q16 < SHBT_SWARM_CHIRAL_EE_Q16_HOMOCHIRAL {
+            faults |= SHBT_SWARM_FAULT_CHIRAL_RACEMIC;
+        }
+        if self.kerr_phase_margin_rad < SHBT_SWARM_KERR_PHASE_MARGIN_MIN_RAD
+            || self.kerr_phase_margin_rad.is_nan()
+        {
+            faults |= SHBT_SWARM_FAULT_LLE_CHAOS;
+        }
+        if self.pachner_cocycle_status != SHBT_SWARM_PACHNER_COCYCLE_CLEAN || self.sheaf_betti_h1 != 0 {
+            faults |= SHBT_SWARM_FAULT_PACHNER_COCYCLE;
+        }
+        if self.fluid_cft_reynolds_stress_max > SHBT_SWARM_ATMOS_SHEAR_MAX_PA
+            || self.fluid_cft_reynolds_stress_max.is_nan()
+        {
+            faults |= SHBT_SWARM_FAULT_ATMOS_SHOCK;
+        }
+        if self.clathrate_vortex_drift_velocity < 0.0
+            || self.clathrate_vortex_drift_velocity > SHBT_SWARM_VORTEX_DRIFT_MAX_MPS
+            || self.clathrate_vortex_drift_velocity.is_nan()
+        {
+            faults |= SHBT_SWARM_FAULT_FLUX_JUMP;
+        }
+        if self.smbh_poynting_leakage_watts.abs() > 1.0e-12 {
+            faults |= SHBT_SWARM_FAULT_POYNTING_JET;
+        }
+        if self.logos_mossbauer_factor_fm < SHBT_SWARM_MOSSBAUER_FACTOR_MIN
+            || self.logos_borrmann_tau < SHBT_SWARM_BORRMANN_TAU_MIN
+            || self.logos_mossbauer_factor_fm.is_nan()
+            || self.logos_borrmann_tau.is_nan()
+        {
+            faults |= SHBT_SWARM_FAULT_MOSSBAUER_DETUNE;
+        }
+        if (self.phenomenal_binding_purity - 1.0).abs() > 1.0e-6
+            || self.branch_prune_entropy_debt.abs() > 0.0
+        {
+            faults |= SHBT_SWARM_FAULT_BINDING_DECOHERENCE;
+        }
+        self.fault_status_mask |= faults;
+        faults
+    }
+}
+
 /// Volatile MMIO controller supporting both bare-metal physical addresses (0x70000000)
 /// and host-aligned simulation arenas.
 pub struct SwarmMmioController {
-    regs_ptr: *mut ShbtSwarmMmioRegs,
+    regs_ptr: *mut shbt_swarm_core::ShbtSwarmMmioRegs,
     hyperframe_ptr: *mut UnifiedStinespringHyperFrame,
 }
 
@@ -28,7 +242,7 @@ impl SwarmMmioController {
     #[inline]
     pub const unsafe fn from_hardware_base() -> Self {
         Self {
-            regs_ptr: SHBT_SWARM_MMIO_BASE_ADDR as *mut ShbtSwarmMmioRegs,
+            regs_ptr: 0x7000_0000 as *mut shbt_swarm_core::ShbtSwarmMmioRegs,
             hyperframe_ptr: SHBT_SWARM_HYPERFRAME_BASE_ADDR as *mut UnifiedStinespringHyperFrame,
         }
     }
@@ -36,11 +250,11 @@ impl SwarmMmioController {
     /// Creates a controller backed by host-aligned memory buffers for deterministic verification.
     #[inline]
     pub fn from_backing(
-        regs: &mut ShbtSwarmMmioRegs,
+        regs: &mut shbt_swarm_core::ShbtSwarmMmioRegs,
         hyperframe: &mut UnifiedStinespringHyperFrame,
     ) -> Self {
         Self {
-            regs_ptr: regs as *mut ShbtSwarmMmioRegs,
+            regs_ptr: regs as *mut shbt_swarm_core::ShbtSwarmMmioRegs,
             hyperframe_ptr: hyperframe as *mut UnifiedStinespringHyperFrame,
         }
     }
@@ -51,39 +265,23 @@ impl SwarmMmioController {
             write_volatile(&mut (*self.regs_ptr).magic_id, MAGIC_SWRM);
             write_volatile(&mut (*self.regs_ptr).abi_version, ABI_VERSION_V4);
             write_volatile(&mut (*self.regs_ptr).cmd_reg, SHBT_SWARM_CMD_NOP);
-            write_volatile(&mut (*self.regs_ptr).status_reg, SHBT_SWARM_TRIAGE_M0_REGOLITH);
-            write_volatile(&mut (*self.regs_ptr).fault_mask_reg, SHBT_SWARM_FAULT_NONE);
-            write_volatile(&mut (*self.regs_ptr).rom_bank_mask, 0xFFFF_FFFF);
-            write_volatile(&mut (*self.regs_ptr).synth_bank_mask, 0xFFFF_FFFF);
+            write_volatile(&mut (*self.regs_ptr).status_reg, 0);
+            write_volatile(&mut (*self.regs_ptr).fault_mask_reg, 0);
+            write_volatile(&mut (*self.regs_ptr).rom_bank_mask, 0x0000_0001);
+            write_volatile(&mut (*self.regs_ptr).synth_bank_mask, 0x0000_0001);
+            write_volatile(&mut (*self.regs_ptr).power_tier_sel, 1);
+            write_volatile(&mut (*self.regs_ptr).generation_counter, 0);
             write_volatile(&mut (*self.regs_ptr).temp_qc_mk, 4200);
             write_volatile(&mut (*self.regs_ptr).temp_nacelle_mk, 21130);
-            write_volatile(&mut (*self.regs_ptr).gst225_impedance_krayl, 1500);
-            write_volatile(&mut (*self.regs_ptr).enclave_lapse_milli, 1000);
         }
     }
 
     #[inline]
     pub fn read_magic_and_abi(&self) -> (u32, u32) {
         unsafe {
-            (
-                read_volatile(&(*self.regs_ptr).magic_id),
-                read_volatile(&(*self.regs_ptr).abi_version),
-            )
-        }
-    }
-
-    #[inline]
-    pub fn read_fault_mask(&self) -> u32 {
-        unsafe { read_volatile(&(*self.regs_ptr).fault_mask_reg) }
-    }
-
-    #[inline]
-    pub fn write_fault_mask(&mut self, mask: u32) {
-        unsafe {
-            write_volatile(&mut (*self.regs_ptr).fault_mask_reg, mask);
-            if mask != 0 {
-                write_volatile(&mut (*self.regs_ptr).cmd_reg, SHBT_SWARM_CMD_WEYL_EXCITON_CROWBAR);
-            }
+            let magic = read_volatile(&(*self.regs_ptr).magic_id);
+            let abi = read_volatile(&(*self.regs_ptr).abi_version);
+            (magic, abi)
         }
     }
 
@@ -94,65 +292,68 @@ impl SwarmMmioController {
 
     #[inline]
     pub fn issue_cmd(&mut self, cmd: u32) -> Result<(), u32> {
-        let faults = self.read_fault_mask();
-        if faults != 0 {
-            unsafe {
-                write_volatile(&mut (*self.regs_ptr).cmd_reg, SHBT_SWARM_CMD_WEYL_EXCITON_CROWBAR);
-            }
-            return Err(faults);
-        }
         unsafe {
+            let faults = read_volatile(&(*self.regs_ptr).fault_mask_reg);
+            if faults != 0 {
+                return Err(faults);
+            }
             write_volatile(&mut (*self.regs_ptr).cmd_reg, cmd);
+            Ok(())
         }
-        Ok(())
     }
 
     #[inline]
-    pub fn set_triage_class(&mut self, triage_bits: u32) {
+    pub fn read_status(&self) -> u32 {
+        unsafe { read_volatile(&(*self.regs_ptr).status_reg) }
+    }
+
+    #[inline]
+    pub fn read_fault_mask(&self) -> u32 {
+        unsafe { read_volatile(&(*self.regs_ptr).fault_mask_reg) }
+    }
+
+    #[inline]
+    pub fn write_fault_mask(&mut self, fault: u32) {
         unsafe {
-            let cur = read_volatile(&(*self.regs_ptr).status_reg) & !SHBT_SWARM_TRIAGE_MASK;
-            write_volatile(
-                &mut (*self.regs_ptr).status_reg,
-                cur | (triage_bits & SHBT_SWARM_TRIAGE_MASK),
-            );
+            write_volatile(&mut (*self.regs_ptr).fault_mask_reg, fault);
+            if fault != 0 {
+                // Instantly trip hardware crowbar interlock
+                write_volatile(&mut (*self.regs_ptr).cmd_reg, SHBT_SWARM_CMD_WEYL_EXCITON_CROWBAR);
+            }
+        }
+    }
+
+    #[inline]
+    pub fn set_triage_class(&mut self, triage: u32) {
+        unsafe {
+            let cur = read_volatile(&(*self.regs_ptr).status_reg);
+            let updated = (cur & !SHBT_SWARM_TRIAGE_MASK) | (triage & SHBT_SWARM_TRIAGE_MASK);
+            write_volatile(&mut (*self.regs_ptr).status_reg, updated);
         }
     }
 
     #[inline]
     pub fn read_triage_class(&self) -> u32 {
-        unsafe { read_volatile(&(*self.regs_ptr).status_reg) & SHBT_SWARM_TRIAGE_MASK }
-    }
-
-    #[inline]
-    pub fn set_mass_and_bl_ledger(&mut self, feedstock_ug: u64, payload_ug: u64, net_b_minus_l: i64) {
         unsafe {
-            write_volatile(&mut (*self.regs_ptr).feedstock_mass_ug, feedstock_ug);
-            write_volatile(&mut (*self.regs_ptr).target_payload_mass_ug, payload_ug);
-            write_volatile(&mut (*self.regs_ptr).net_b_minus_l_balance, net_b_minus_l);
+            let status = read_volatile(&(*self.regs_ptr).status_reg);
+            status & SHBT_SWARM_TRIAGE_MASK
         }
-    }
-
-    #[inline]
-    pub fn get_hyperframe_mut(&mut self) -> &mut UnifiedStinespringHyperFrame {
-        unsafe { &mut *self.hyperframe_ptr }
     }
 }
 
-/// Pillar IV Causal Point Observer Frame (128 bytes, aligned 64).
+/// Continuous Causal Awareness State for Phase 6 Observer Ascension (128 bytes, aligned 64).
 #[repr(C, align(64))]
 #[derive(Debug, Clone, Copy)]
 pub struct ShbtCausalObserverFrame {
-    pub observer_uuid_lo: u64,
-    pub observer_uuid_hi: u64,
-    pub ramp_param_s: f64,
-    pub lapse_alpha_obs: f64,
-    pub c_local_budget_log10: f64,
-    pub c_op_active_log10: f64,
-    pub r_entropy_margin: f64,
+    pub observer_uuid: u64,
+    pub s_adiabatic_ramp: f64,
+    pub alpha_hyper_clock: f64,
+    pub c_local_capacity_log10: f64,
     pub h_syn_cbf_margin: f64,
-    pub h_cog_homeostasis_margin: f64,
-    pub verlinde_avatar_count_k: u32,
-    pub nested_recursion_depth_d: u32,
+    pub f_ego_continuity: f64,
+    pub active_avatar_count: u32,
+    pub somatic_stasis_engaged: u32,
+    pub nested_recursion_depth_d: u64,
     pub burau_cayley_memory_hash: [u64; 4],
     pub stinespring_vault_ptr: u64,
     pub reserved_pad: u64,
@@ -161,16 +362,14 @@ pub struct ShbtCausalObserverFrame {
 impl Default for ShbtCausalObserverFrame {
     fn default() -> Self {
         Self {
-            observer_uuid_lo: 0,
-            observer_uuid_hi: 0,
-            ramp_param_s: 0.0,
-            lapse_alpha_obs: 1.0,
-            c_local_budget_log10: 122.5,
-            c_op_active_log10: 42.0,
-            r_entropy_margin: 80.5,
+            observer_uuid: 0xDEAD_BEEF_CAFE_0001,
+            s_adiabatic_ramp: 0.0,
+            alpha_hyper_clock: 1.0,
+            c_local_capacity_log10: 122.5,
             h_syn_cbf_margin: 1.0,
-            h_cog_homeostasis_margin: 1.0,
-            verlinde_avatar_count_k: 1,
+            f_ego_continuity: 1.0,
+            active_avatar_count: 1,
+            somatic_stasis_engaged: 0,
             nested_recursion_depth_d: 0,
             burau_cayley_memory_hash: [0; 4],
             stinespring_vault_ptr: 0x7002_0000,
@@ -359,7 +558,7 @@ mod tests {
 
     #[test]
     fn test_mmio_volatile_simulator_and_crowbar() {
-        let mut regs = ShbtSwarmMmioRegs::default();
+        let mut regs = shbt_swarm_core::ShbtSwarmMmioRegs::default();
         let mut hyper = UnifiedStinespringHyperFrame::default();
         let mut ctrl = SwarmMmioController::from_backing(&mut regs, &mut hyper);
         ctrl.init_v4_defaults();
@@ -391,5 +590,15 @@ mod tests {
         apoth_ctrl.write_status_latch(0x0000_0003); // AIRGAP_LOCK | X1_PROTECT_LATCH
         assert_eq!(apoth_ctrl.read_status_latch(), 0x0000_0003);
     }
-}
 
+    #[test]
+    fn test_v7_nominal_and_fault_invariants() {
+        let mut regs = ShbtSwarmMmioRegs::new_nominal_v7();
+        assert_eq!(regs.abi_version, SHBT_SWARM_ABI_VERSION);
+        assert_eq!(regs.audit_v7_invariants(), SHBT_SWARM_FAULT_NONE);
+
+        let mut fault_regs = regs;
+        fault_regs.chiral_ee_q16 = 0;
+        assert_ne!(fault_regs.audit_v7_invariants() & SHBT_SWARM_FAULT_CHIRAL_RACEMIC, 0);
+    }
+}

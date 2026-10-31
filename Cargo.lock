@@ -44,6 +44,7 @@ name = "shbt-swarm-cli"
 version = "0.4.312"
 dependencies = [
  "shbt-swarm-hil",
+ "shbt-swarm-mmio",
  "shbt-swarm-sim",
 ]
 

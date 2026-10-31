@@ -4,6 +4,8 @@
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
+pub mod lugiato_ep2;
+pub use lugiato_ep2::*;
 pub mod pt_goi_solver;
 pub mod modular_learning;
 pub mod logos_core;

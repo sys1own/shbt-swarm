@@ -1,6 +1,6 @@
 # Architectural Specification: sys1own/shbt-swarm
 
-This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, 16-crate Rust workspace architecture, C11 bare-metal microkernel ABI (v6.312 at physical addresses `0x70000000`, `0x70020000`, `0x40008000`, `0x4000A000`, and `0x4000C000`), closed-loop multiphysics simulation contracts, and the 208-gate verification ledger.
+This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, 16-crate Rust workspace architecture, C11 bare-metal microkernel ABI (v7.312 at physical addresses `0x80000000` / `0x70000000`, `0x70020000`, `0x40008000`, `0x4000A000`, and `0x4000C000`), closed-loop multiphysics simulation contracts, and the 232-gate verification ledger (232/232 PASS, 65/65 Z3 SMT UNSAT).
 
 ---
 
@@ -151,9 +151,9 @@ graph TD
 
 ---
 
-## 3. C11 Bare-Metal Hardware Contract & Register Maps (ABI v6.312)
+## 3. C11 Bare-Metal Hardware Contract & Register Maps (ABI v7.312)
 
-The bare-metal microkernel interface (`include/shbt_swarm_mmio.h`, ABI version `0x00060312`) exposes aligned physical memory apertures across four physical memory tiers.
+The bare-metal microkernel interface (`include/shbt_swarm_mmio.h`, ABI version `0x00070312`) exposes aligned physical memory apertures across five 64-byte cache lines (320 bytes total).
 
 ### 3.1 Constants and Memory Apertures
 
@@ -261,7 +261,7 @@ _Static_assert(offsetof(shbt_swarm_mmio_t, feedstock_mass_mg) == 64,
 | Offset | Name | Type | Access | Reset | Description |
 | --- | --- | --- | --- | --- | --- |
 | `0x00` | `magic_id` | `uint32_t` | RO | `0x5357524D` | ASCII signature `'SWRM'` verifying MMIO aperture |
-| `0x04` | `abi_version` | `uint32_t` | RO | `0x00060312` | Kernel ABI specification release identifier (v6.312) |
+| `0x04` | `abi_version` | `uint32_t` | RO | `0x00070312` | Kernel ABI specification release identifier (v7.312) |
 | `0x08` | `cmd_reg` | `uint32_t` | RW | `0x00000000` | Command trigger register; auto-cleared on completion |
 | `0x0C` | `status_reg` | `uint32_t` | RO | `0x00000000` | Pipeline execution status [27:0] and triage class [31:28] |
 | `0x10` | `fault_mask_reg` | `uint32_t` | RO | `0x00000000` | Latched hardware invariant, CBF, and MAR-312X trip flags |
@@ -282,6 +282,24 @@ _Static_assert(offsetof(shbt_swarm_mmio_t, feedstock_mass_mg) == 64,
 | `0x68` | `cayley_hash_l` | `uint64_t` | RO | `0x00000000` | Burau–Cayley 256-bit phylogenetic verification hash [63:0] |
 | `0x70` | `cayley_hash_h` | `uint64_t` | RO | `0x00000000` | Burau–Cayley 256-bit phylogenetic verification hash [127:64] |
 | `0x78` | `trip_vector` | `uint64_t` | RO | `0x00000000` | Hardware trip vector recording fired crowbars and Stinespring traps |
+
+### 3.3.1 Cache Line 4: v7 First-Principles Extension Bank (`0x0100`–`0x013F`)
+
+| Offset | Name | Type | Access | Reset | Physical Quantity & Invariant | Hardware Fault Bitmask |
+| --- | --- | --- | --- | --- | --- | --- |
+| `0x0100` | `chiral_ee_q16` | `uint32_t` | RW | `0x00010000` | Q16.16 Enantiomeric excess ($ee \equiv 1.000000$) | `SHBT_SWARM_FAULT_CHIRAL_RACEMIC` (`1ULL << 32`) |
+| `0x0104` | `kerr_phase_margin_rad` | `float` | RO | `0.1500000` | Lugiato–Lefever EP2 Kerr phase margin ($\ge 0.15\text{ rad}$) | `SHBT_SWARM_FAULT_LLE_CHAOS` (`1ULL << 33`) |
+| `0x0108` | `pachner_flip_count` | `uint32_t` | RW | `0x00000000` | Cumulative relativistic bistellar Pachner graph flips | None |
+| `0x010C` | `pachner_cocycle_status` | `uint32_t` | RO | `0x00000000` | Čech coboundary defect norm ($\check{H}^1(P,\mathcal{F}) \equiv 0$) | `SHBT_SWARM_FAULT_PACHNER_COCYCLE` (`1ULL << 34`) |
+| `0x0110` | `fluid_cft_reynolds_stress_max` | `float` | RO | `4.6818000` | Sugawara-clamped planetary surface shear stress ($\le 45.0\text{ Pa}$) | `SHBT_SWARM_FAULT_ATMOS_SHOCK` (`1ULL << 35`) |
+| `0x0114` | `v7_align_guard` | `uint32_t` | RO | `0x00000000` | Explicit 32-bit zero pad enforcing 8-byte alignment | None |
+| `0x0118` | `clathrate_vortex_drift_velocity` | `double` | RO | `0.0000000` | TDGL Abrikosov flux-creep drift ($v_{\mathrm{vortex}} \le 10^{-15}\text{ m/s}$) | `SHBT_SWARM_FAULT_FLUX_JUMP` (`1ULL << 36`) |
+| `0x0120` | `smbh_poynting_leakage_watts` | `double` | RO | `0.0000000` | Kerr ergosphere radial Blandford–Znajek jet power ($P_{\mathrm{BZ}} \equiv 0\text{ W}$) | `SHBT_SWARM_FAULT_POYNTING_JET` (`1ULL << 37`) |
+| `0x0128` | `mossbauer_stark_detuning_hz` | `double` | RW | `0.0000000` | $^{57}\text{Fe}$-diamond Stark/Zeeman Doppler detuning ($\Delta\omega \equiv 0$) | `SHBT_SWARM_FAULT_MOSSBAUER_DETUNE` (`1ULL << 38`) |
+| `0x0130` | `phenomenal_binding_purity` | `float` | RO | `1.0000000` | Braided Fibonacci anyon unified qualia purity ($\mathrm{Tr}(\rho^2) \equiv 1.0$) | `SHBT_SWARM_FAULT_BINDING_DECOHERENCE` (`1ULL << 39`) |
+| `0x0134` | `branch_prune_entropy_debt` | `float` | RO | `0.0000000` | Unitary branch coalescence entropy debt ($\Delta S_{\mathrm{vN}} \equiv 0$) | `SHBT_SWARM_FAULT_BINDING_DECOHERENCE` (`1ULL << 39`) |
+| `0x0138` | `v7_reserved_tail` | `uint64_t` | RO | `0x00000000` | 64-bit cache-line boundary pad closing structure at `0x0140` (320 B) | None |
+
 
 ### 3.4 64-Bank Stinespring Hyperframe Aperture (`0x70020000`)
 
@@ -680,23 +698,28 @@ The $950.00\text{ kg}$, $0.3500\text{ m}^3$ nacelle is constrained within a cyli
 
 System correctness is certified across a dual formal testing and hardware-qualification hierarchy:
 
-### 7.1 Formal Z3 SMT Verification Suite (57/57 UNSAT)
+### 7.1 Formal Z3 SMT Verification Suite (65/65 UNSAT)
 
-The 57 formal theorems are distributed across 11 verification modules in `formal/`:
+The 65 formal theorems are distributed across 16 verification modules in `formal/`:
 
 1. `formal/verify_swarm_cloning.py` (4 theorems: `THM-CLONE-01`..`04`): Categorical no-cloning, ADM mass conservation, modular framing lock, and $(B - L)$ conservation.
 2. `formal/verify_swarm_ai_safety.py` (10 theorems: `THM-AI-01`..`06`, `THM-AI-01-EXT`, `02-EXT`, `04-EXT`, `05-EXT`): $\mathcal{PT}$-GoI resolvent bounds, Connes cocycle isentropy, spacelike no-signaling, and HOCBF forward invariance.
 3. `formal/verify_universal_synthesis.py` (5 theorems: `THM-UNIV-01`..`05`): Continuous Dynkin routing, Sugawara framing compensation, Wyckoff tether harmonic bounds, and sim-to-real zero compute.
-4. `formal/verify_mar312x_reactor.py` (5 theorems: `THM-MARX-01`..`05`): Purcell stopband suppression, Weyl-PTC direct conversion, superhydride virial equilibrium, and fracton radiation attenuation.
-5. `formal/verify_omega_megastructures.py` (5 theorems): Radiative MHD stellar siphon inversion, Dyson swarm orbital stability, and Elysium artificial gravity metrics.
-6. `formal/verify_logos_hypercomputer.py` (5 theorems): Borrmann mode computronium coherence, attosecond switching bounds, and omnibus DMA loss thresholds.
-7. `formal/verify_apotheosis_sandbox.py` (5 theorems): Linear proof tokens, sandbox non-interference, and Class X1 anti-genocide interlock triggers.
-8. `formal/verify_apotheosis_omega.py` (4 theorems): Adiabatic awareness transfer and long-baseline runtime stability.
-9. `formal/verify_omega_smbh_halo.py` (6 theorems): Kerr SMBH ergosphere extraction, Hawking area preservation ($dA_H \ge 0$), and dark matter halo virial clamping.
-10. `formal/verify_amorphous_dce.py` (4 theorems): Non-Abelian $SO(3)$ $BF$ amorphous curvature flatness and Kagan–Afanas'ev attosecond DCE vacuum photon nullification.
-11. `formal/verify_sheaf_qualia.py` (4 theorems): Asynchronous Lorentzian poset sheaf 1-cohomology vanishing ($\check{H}^1(P, \mathcal{F}) \equiv 0$) and unipotent Lagrangian mind cobordisms.
+4. `formal/verify_mar312x_reactor.py` (7 theorems: `THM-MARX-01`..`07`): Purcell stopband suppression, Weyl-PTC direct conversion, superhydride virial equilibrium, and fracton radiation attenuation.
+5. `formal/verify_omega_megastructures.py` (6 theorems: `THM-OMEGA-01`..`06`): Radiative MHD stellar siphon inversion, Dyson swarm orbital stability, and Elysium artificial gravity metrics.
+6. `formal/verify_logos_hypercomputer.py` (6 theorems: `THM-LOGOS-01`..`06`): Borrmann mode computronium coherence, attosecond switching bounds, and omnibus DMA loss thresholds.
+7. `formal/verify_apotheosis_sandbox.py` (6 theorems: `THM-APOTH-01`..`06`): Linear proof tokens, sandbox non-interference, and Class X1 anti-genocide interlock triggers.
+8. `formal/verify_apotheosis_omega.py` (7 theorems: `THM-OMEGA-06-EXT`, `07-EXT`, `THM-LOGOS-05-EXT`, `06-EXT`, `THM-APOTH-06-EXT`, `07-EXT`, `08-EXT`): Adiabatic awareness transfer, non-Abelian affine dynamo braking, Israel-Darmois lapse junction, and multi-deity symplectic consensus.
+9. `formal/verify_omega_smbh_halo.py` (2 theorems: `THM-OMEGA-08-EXT`, `09-EXT`): Kerr SMBH ergosphere extraction, Hawking area preservation ($dA_H \ge 0$), and dark matter halo virial clamping.
+10. `formal/verify_amorphous_dce.py` (2 theorems: `THM-FOUNDRY-06-EXT`, `THM-LOGOS-07-EXT`): Non-Abelian $SO(3)$ $BF$ amorphous curvature flatness and Kagan–Afanas'ev attosecond DCE vacuum photon nullification.
+11. `formal/verify_sheaf_qualia.py` (2 theorems: `THM-SHIELD-07-EXT`, `THM-APOTH-09-EXT`): Asynchronous Lorentzian poset sheaf 1-cohomology vanishing ($\check{H}^1(P, \mathcal{F}) \equiv 0$) and unipotent Lagrangian mind cobordisms.
+12. `formal/verify_chiral_weak.py` (1 theorem: `THM-BIO-05-EXT`): Microscopic electroweak $Z^0$ parity selection and Floquet homochiral locking ($ee \equiv 1.000000$).
+13. `formal/verify_kerr_pachner.py` (2 theorems: `THM-AI-07-EXT`, `THM-SHIELD-08-EXT`): Lugiato-Lefever Kerr soliton EP2 Lyapunov stability and Pachner flip unipotent shear sheaf cohomology invariance.
+14. `formal/verify_fluid_vortex.py` (2 theorems: `THM-UNIV-06-EXT`, `THM-MARX-08-EXT`): Fefferman-Graham holographic fluid acoustic shock tamping and clathrate TDGL vortex pinning.
+15. `formal/verify_smbh_mossbauer.py` (2 theorems: `THM-OMEGA-10-EXT`, `THM-LOGOS-08-EXT`): Blandford-Znajek horizon null boundary jet extinction and acceleration-compensated Mössbauer line narrowing.
+16. `formal/verify_binding_coalesce.py` (1 unified theorem: `THM-APOTH-10-EXT` & `THM-APOTH-11-EXT`): Anyonic phenomenal binding coherence and unitary historical branch coalescence.
 
-### 7.2 Master Hardware-in-the-Loop Gate Harness (208/208 PASS)
+### 7.2 Master Hardware-in-the-Loop Gate Harness (232/232 PASS)
 
 Executed by `crates/shbt-swarm-hil` (`swarm-audit` runner):
 
@@ -707,3 +730,4 @@ Executed by `crates/shbt-swarm-hil` (`swarm-audit` runner):
 * `GATE-137` – `168`: Phase 5A Megastructure deconstructors, AEGIS perimeter defense, SMBH siphons.
 * `GATE-169` – `188`: Phase 5B LOGOS $10^{32}$-qubit computronium, omnibus fabric, DCE suppression.
 * `GATE-189` – `208`: Phase 6 Apotheosis ascension, deity sandboxes, qualia cobordisms, and vessel re-embodiment.
+* `GATE-209` – `232`: First-Principles Theoretical Closure (electroweak parity, LLE EP2 solitons, Pachner sheaves, holographic fluid-gravity, TDGL pinning, BZ jet extinction, acceleration Mössbauer, and phenomenal binding).

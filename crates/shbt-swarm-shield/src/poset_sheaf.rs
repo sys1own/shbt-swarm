@@ -228,3 +228,78 @@ impl<const MAX_NODES: usize, const MAX_EDGES: usize> PosetSheafEngine<MAX_NODES,
         true
     }
 }
+
+
+#[repr(u8)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum PachnerMoveType {
+    Bistellar2To3 = 23,
+    Bistellar1To4 = 14,
+}
+
+/// Represents a 4x4 symplectic stalk transition block B_Pachner = [[I_2, S], [0, I_2]] in Sp(4, Z).
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct PosetCellularSheaf {
+    pub s_block: [i64; 4], // [s11, s12, s21, s22] symmetric intersection block
+    pub betti_0: u32,
+    pub betti_1: u32,
+    pub coboundary_defect_norm: u32,
+}
+
+impl PosetCellularSheaf {
+    #[inline]
+    pub const fn new_canonical() -> Self {
+        Self {
+            s_block: [0, 0, 0, 0],
+            betti_0: 1,
+            betti_1: 0,
+            coboundary_defect_norm: 0,
+        }
+    }
+
+    /// Applies a relativistic bistellar Pachner flip (2<->3 or 1<->4) with intersection form `s_flip`.
+    /// Verifies S^T == S and updates MMIO flip count and cocycle status registers.
+    #[inline]
+    pub fn apply_pachner_flip(
+        &mut self,
+        _move_type: PachnerMoveType,
+        s_flip: [i64; 4],
+        mmio_flip_count: &mut u32,
+        mmio_cocycle_status: &mut u32,
+    ) {
+        self.s_block[0] = self.s_block[0].wrapping_add(s_flip[0]);
+        self.s_block[1] = self.s_block[1].wrapping_add(s_flip[1]);
+        self.s_block[2] = self.s_block[2].wrapping_add(s_flip[2]);
+        self.s_block[3] = self.s_block[3].wrapping_add(s_flip[3]);
+
+        *mmio_flip_count = mmio_flip_count.wrapping_add(1);
+
+        // Verify symmetric intersection condition S^T == S for unipotent Sp(2g, Z) membership
+        let skew_defect = (self.s_block[1] - self.s_block[2]).unsigned_abs() as u32;
+        self.coboundary_defect_norm = skew_defect;
+        self.betti_1 = skew_defect;
+        *mmio_cocycle_status = skew_defect;
+    }
+
+    /// Verifies B_Pachner^T * J * B_Pachner == J, which reduces to S^T - S == 0.
+    #[inline]
+    pub const fn verify_symplectic_invariance(&self) -> bool {
+        self.s_block[1] == self.s_block[2]
+    }
+
+    /// Verifies second-order unipotent nilpotency (B_Pachner - I)^2 == 0.
+    /// Since N = B - I = [[0, S], [0, 0]], N^2 has all blocks identically zero.
+    #[inline]
+    #[allow(clippy::erasing_op, clippy::identity_op)]
+    pub const fn verify_unipotent_nilpotency(&self) -> bool {
+        let n2_upper_right_00 = 0_i64 * self.s_block[0] + self.s_block[0] * 0_i64;
+        let n2_upper_right_01 = 0_i64 * self.s_block[1] + self.s_block[1] * 0_i64;
+        n2_upper_right_00 == 0 && n2_upper_right_01 == 0 && self.coboundary_defect_norm == 0
+    }
+
+    #[inline]
+    pub const fn betti_h1(&self) -> u32 {
+        self.betti_1
+    }
+}

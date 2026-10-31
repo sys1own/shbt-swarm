@@ -5,6 +5,8 @@
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
+pub mod tdgl_pinning;
+pub use tdgl_pinning::*;
 pub mod purcell_seed;
 pub mod polariton_decx;
 pub mod superhydride_coils;

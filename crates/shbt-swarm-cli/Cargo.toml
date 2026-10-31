@@ -8,3 +8,4 @@ description = "Master CLI for sys1own/shbt-swarm verification and gate audits"
 [dependencies]
 shbt-swarm-hil = { path = "../shbt-swarm-hil" }
 shbt-swarm-sim = { path = "../shbt-swarm-sim" }
+shbt-swarm-mmio = { path = "../shbt-swarm-mmio" }

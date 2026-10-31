@@ -7,6 +7,8 @@
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
+pub mod chiral_electroweak;
+pub use chiral_electroweak::*;
 extern crate alloc;
 
 /// 4.2 K Landauer readout floor: Q_readout = k_B * 4.2 K * ln(2) = 4.01937e-23 J/bit.

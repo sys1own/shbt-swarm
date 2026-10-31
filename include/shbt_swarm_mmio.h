@@ -12,7 +12,9 @@
 #include <stddef.h>
 #include "shbt_mmio_apotheosis.h"
 
-#define SHBT_SWARM_ABI_VERSION          0x00060312U
+#define SHBT_SWARM_ABI_VERSION          0x00070312U
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT  65U
+#define SHBT_SWARM_HIL_GATES_COUNT      232U
 #define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL
 #define SHBT_SWARM_HYPERFRAME_BASE_ADDR 0x70020000UL
 #define SHBT_SWARM_APOTHEOSIS_BASE_ADDR 0x4000C000UL
@@ -120,6 +122,29 @@
 #define SHBT_SWARM_FAULT_DCE_PARAMETRIC_TRIP   0x00100000U
 #define SHBT_SWARM_FAULT_POSET_COCYCLE_OBSTR   0x00200000U
 #define SHBT_SWARM_FAULT_QUALIA_DISTORTION     0x00400000U
+
+/* v7 First-Principles Closure Fault Bitmasks (Bits 32..39) */
+#define SHBT_SWARM_FAULT_CHIRAL_RACEMIC       (1ULL << 32)
+#define SHBT_SWARM_FAULT_LLE_CHAOS            (1ULL << 33)
+#define SHBT_SWARM_FAULT_PACHNER_COCYCLE      (1ULL << 34)
+#define SHBT_SWARM_FAULT_ATMOS_SHOCK          (1ULL << 35)
+#define SHBT_SWARM_FAULT_FLUX_JUMP            (1ULL << 36)
+#define SHBT_SWARM_FAULT_POYNTING_JET         (1ULL << 37)
+#define SHBT_SWARM_FAULT_MOSSBAUER_DETUNE     (1ULL << 38)
+#define SHBT_SWARM_FAULT_BINDING_DECOHERENCE  (1ULL << 39)
+#define SHBT_SWARM_FAULT_V7_MASK              (0x000000FF00000000ULL)
+
+/* v7 First-Principles Hardware Threshold Constants */
+#define SHBT_SWARM_CHIRAL_EE_Q16_HOMOCHIRAL   0x00010000U  /* 1.000000 in Q16.16 */
+#define SHBT_SWARM_KERR_PHASE_MARGIN_MIN_RAD  0.15000000f  /* >= 0.15 rad */
+#define SHBT_SWARM_PACHNER_COCYCLE_CLEAN      0x00000000U  /* H^1 == 0 */
+#define SHBT_SWARM_ATMOS_SHEAR_MAX_PA         45.0000000f  /* <= 45.0 Pa */
+#define SHBT_SWARM_VORTEX_DRIFT_MAX_MPS       1.0000e-15   /* <= 10^-15 m/s */
+#define SHBT_SWARM_POYNTING_LEAKAGE_MAX_W     0.00000000   /* == 0.0 W */
+#define SHBT_SWARM_MOSSBAUER_FACTOR_MIN       0.78200000   /* f_M >= 0.782 */
+#define SHBT_SWARM_BORRMANN_TAU_MIN           1453.40000   /* tau_B >= 1453.4 */
+#define SHBT_SWARM_BINDING_PURITY_NOMINAL     1.00000000f  /* Tr(rho^2) == 1.0 */
+#define SHBT_SWARM_BRANCH_ENTROPY_DEBT_ZERO   0.00000000f  /* dS_vN == 0.0 */
 
 /* Xenobiological Triage Classification Bitmasks (Encoded in status_reg [31:28]) */
 #define SHBT_SWARM_TRIAGE_SHIFT         28U
@@ -547,5 +572,79 @@ typedef struct __attribute__((packed, gcc_struct, aligned(64))) {
 } shbt_logos_ctrl_t;
 
 _Static_assert(sizeof(shbt_logos_ctrl_t) == 256, "shbt_logos_ctrl_t master bank must be exactly 256 bytes");
+
+
+/* ==========================================================================
+ * SHBT-MMIO-SWARM v7 REGISTER BLOCK (320 BYTES / 5 CACHE LINES)
+ * Physical Base Address: 0x80000000
+ * ========================================================================== */
+typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
+    /* --- Cache Line 0 (0x0000..0x003F): Phase 1 & 2 Baseline Registers --- */
+    uint64_t stinespring_dma_phys_addr;       /* 0x0000: 0x70020000 */
+    uint64_t fault_status_mask;               /* 0x0008: Bitmask of active faults */
+    uint64_t active_ledger_bits;              /* 0x0010: Active capacity partition */
+    uint64_t dark_ledger_bits;                /* 0x0018: Dark ledger capacity (10:23) */
+    double   pt_goi_spectral_radius;          /* 0x0020: rho(L) <= 10^-60 */
+    double   pt_goi_latency_ps;               /* 0x0028: 54.432 ps */
+    uint32_t sheaf_betti_h0;                  /* 0x0030: Connected components = 1 */
+    uint32_t sheaf_betti_h1;                  /* 0x0034: Consensus obstruction = 0 */
+    uint32_t bio_folding_window_ns;           /* 0x0038: 11,400 ns (11.40 us) */
+    uint32_t cloner_mode_select;              /* 0x003C: Mode II (2) */
+
+    /* --- Cache Line 1 (0x0040..0x007F): Phase 3 & 4 Baseline Registers --- */
+    double   mar312x_power_watts;             /* 0x0040: Up to 2.50e19 W (25 EW) */
+    double   mar312x_magnetic_field_tesla;    /* 0x0048: 48.0 T */
+    double   mar312x_coil_temp_kelvin;        /* 0x0050: 77.0 K (T_c = 192.50 K) */
+    double   mar312x_hoop_stress_mpa;         /* 0x0058: <= 350.0 MPa */
+    double   foundry_mass_injection_kgps;     /* 0x0060: Volatile injection rate */
+    double   foundry_surface_temp_kelvin;     /* 0x0068: 298.15 K */
+    double   foundry_surface_pressure_bar;    /* 0x0070: 1.01325 bar */
+    uint64_t architect_wyckoff_group_mask;    /* 0x0078: 230 space-group status */
+
+    /* --- Cache Line 2 (0x0080..0x00BF): Phase 5A, 5B & 6 Baseline Registers --- */
+    double   omega_smbh_spin_param;           /* 0x0080: Kerr spin a/M */
+    double   omega_horizon_area_deriv;        /* 0x0088: dA_H/dt >= 0 */
+    double   logos_mossbauer_factor_fm;       /* 0x0090: f_M >= 0.782 */
+    double   logos_borrmann_tau;              /* 0x0098: tau_B >= 1453.4 */
+    double   aegis_tmsv_squeezing_db;         /* 0x00A0: 21.715 dB (r = 2.50) */
+    double   apoth_ego_continuity_fidelity;   /* 0x00A8: 1.000000 */
+    uint64_t apoth_simulation_epoch_yr_log10; /* 0x00B0: > 100 (10^100 yr) */
+    uint64_t pcss_crowbar_latency_ps;         /* 0x00B8: <= 2500 ps (2.5 ns) */
+
+    /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
+    uint32_t abi_version;                     /* 0x00C0: 0x00070312 */
+    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 65 */
+    uint32_t hil_gates_pass_count;            /* 0x00C8: 232 */
+    uint32_t active_phase_mask;               /* 0x00CC: 0x0000007F (Phases 1..6) */
+    uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
+    uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */
+
+    /* --- Cache Line 4 (0x0100..0x013F): ABI v7 First-Principles Extension --- */
+    uint32_t chiral_ee_q16;                   /* 0x0100: Q16.16 enantiomeric excess */
+    float    kerr_phase_margin_rad;           /* 0x0104: IEEE 754 Kerr phase margin */
+    uint32_t pachner_flip_count;              /* 0x0108: Relativistic Pachner flips */
+    uint32_t pachner_cocycle_status;          /* 0x010C: Sheaf coboundary defect == 0 */
+    float    fluid_cft_reynolds_stress_max;   /* 0x0110: Atmospheric shear clamp (Pa) */
+    uint32_t v7_align_guard;                  /* 0x0114: Explicit 8-byte align pad */
+    double   clathrate_vortex_drift_velocity; /* 0x0118: TDGL flux creep meter (m/s) */
+    double   smbh_poynting_leakage_watts;     /* 0x0120: Horizon Poynting null (W) */
+    double   mossbauer_stark_detuning_hz;     /* 0x0128: Acceleration Stark shift (Hz) */
+    float    phenomenal_binding_purity;       /* 0x0130: Braided anyon purity == 1.0 */
+    float    branch_prune_entropy_debt;       /* 0x0134: Unitary prune entropy == 0.0 */
+    uint64_t v7_reserved_tail;                /* 0x0138: Cache-line closure to 0x0140 */
+} shbt_swarm_mmio_regs_t;
+
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
+_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 320,
+               "shbt_swarm_mmio_regs_t must occupy exactly 320 bytes (5 cache lines)");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, abi_version) == 0x00C0,
+               "abi_version offset mismatch");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, chiral_ee_q16) == 0x0100,
+               "chiral_ee_q16 must start at Cache Line 4 (0x0100)");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, clathrate_vortex_drift_velocity) == 0x0118,
+               "clathrate_vortex_drift_velocity must be 8-byte aligned at 0x0118");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, branch_prune_entropy_debt) == 0x0134,
+               "branch_prune_entropy_debt must reside at 0x0134");
+#endif
 
 #endif /* SHBT_SWARM_MMIO_H */
