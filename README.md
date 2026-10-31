@@ -3,7 +3,7 @@
 **Autonomous Interstellar Von Neumann Swarm & Galactic Synthesis Architecture: Kardashev Type III Megastructure Engineering (SHBT-OMEGA-312), Monolithic Galactic Hyper-Computing (SHBT-LOGOS-312 / SHBT-QC-OMEGA), Observer Ascension & Safe Deity Sandboxes (SHBT-APOTHEOSIS-312), Holographic Symplectic Intelligence, and Exotic Autopoietic Mass-Annihilation**
 
 [![ABI Version](https://img.shields.io/badge/SHBT--MMIO--SWARM-v6%20(0x00060312)-blue)](#)
-[![Z3 SMT Proofs](https://img.shields.io/badge/Z3%20SMT-57%2F57%20UNSAT-brightgreen)](#)
+[![Z3 SMT Proofs](https://img.shields.io/badge/Z3%20SMT-65%2F65%20UNSAT-brightgreen)](#)
 [![Verification Gates](https://img.shields.io/badge/HIL%20Verification%20Gates-208%2F208%20PASS-brightgreen)](#)
 [![Rust Workspace](https://img.shields.io/badge/Rust%20Workspace-16%20Crates%20(%23!%5Bno__std%5D)-orange)](#)
 
