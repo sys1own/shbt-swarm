@@ -9,6 +9,8 @@
 
 pub mod chiral_electroweak;
 pub use chiral_electroweak::*;
+pub mod lyapunov_reactor;
+pub use lyapunov_reactor::*;
 extern crate alloc;
 
 /// 4.2 K Landauer readout floor: Q_readout = k_B * 4.2 K * ln(2) = 4.01937e-23 J/bit.

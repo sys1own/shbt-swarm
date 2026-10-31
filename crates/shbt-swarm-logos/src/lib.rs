@@ -10,11 +10,21 @@ pub mod borrmann_polariton;
 pub mod fracton_thermal;
 pub mod israel_junction;
 pub mod dce_suppress;
+pub mod takagi_taupin;
+pub mod fracton_drain;
 
 pub use borrmann_polariton::{DarwinEwaldVonLaueSolver, PolaritonError};
 pub use fracton_thermal::{FractonThermalSink, FractonError};
 pub use israel_junction::{IsraelDarmoisJunctionEngine, JunctionError};
 pub use dce_suppress::{BorrmannDceSuppressor, DceSuppressionReport, DiamondLattice57Fe, Vector3D};
+pub use takagi_taupin::*;
+pub use fracton_drain::{
+    step_rk4, simulate_to_steady_state, FractonDrainConfig, OpenQuantumState,
+    ACTIVE_MODE_VOLUME, DOS_FRACTON_RESONANCE, ETA_A, ETA_D, ETA_TOTAL,
+    E_LO_NOMINAL, FRACTON_ATTENUATION_SCALAR, G_EFF_NOMINAL, N_PHONON_STEADY_STATE_MAX,
+    OMEGA_LO_NOMINAL, S_RATIONAL_DEN, S_RATIONAL_NUM, S_SENSIBLE_RATIO,
+    TAU_CAPTURE_MAX_SECONDS, TAU_KLEMENS_BASELINE, ZETA_SP_ENHANCEMENT,
+};
 
 /// Normative architectural constants for Phase 5B SHBT-LOGOS-312
 pub const T_PROP_LOGOS_FEMTO_AS: u64 = 17_010_000;    // 17.010 as (1.7010e-17 s)

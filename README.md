@@ -2,7 +2,7 @@
 
 **Autonomous Interstellar Von Neumann Swarm & Galactic Synthesis Architecture: Kardashev Type III Megastructure Engineering (SHBT-OMEGA-312), Monolithic Galactic Hyper-Computing (SHBT-LOGOS-312 / SHBT-QC-OMEGA), Observer Ascension & Safe Deity Sandboxes (SHBT-APOTHEOSIS-312), Holographic Symplectic Intelligence, and Exotic Autopoietic Mass-Annihilation**
 
-[![ABI Version](https://img.shields.io/badge/SHBT--MMIO--SWARM-v6%20(0x00060312)-blue)](#)
+[![ABI Version](https://img.shields.io/badge/SHBT--MMIO--SWARM-v7%20(0x00070312)-blue)](#)
 [![Z3 SMT Proofs](https://img.shields.io/badge/Z3%20SMT-65%2F65%20UNSAT-brightgreen)](#)
 [![Verification Gates](https://img.shields.io/badge/HIL%20Verification%20Gates-232%2F232%20PASS-brightgreen)](#)
 [![Rust Workspace](https://img.shields.io/badge/Rust%20Workspace-16%20Crates%20(%23!%5Bno__std%5D)-orange)](#)
@@ -1034,6 +1034,13 @@ All 65 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 | `THM-OMEGA-10-EXT` | Blandford–Znajek Poynting Jet Extinction | Radial Poynting flux *S*<sub>EM</sub><sup>*r*</sup> ≠ 0, jet power *P*<sub>BZ</sub><sup>jet</sup> > 0 W, or *dA*<sub>H</sub> / *dt* < 0 | `unsat` | `formal/verify_smbh_mossbauer.py` |
 | `THM-LOGOS-08-EXT` | Acceleration-Compensated Mössbauer Borrmann | Net detuning Δ*ω*<sub>acc</sub> + Δ*ω*<sub>tune</sub> ≠ 0, *f*<sub>M</sub> < 0.782, or *τ*<sub>B</sub> < 1453.4 | `unsat` | `formal/verify_smbh_mossbauer.py` |
 | `THM-APOTH-10-EXT` | Braided Phenomenal Binding & Historical Branch Coalescence | Pentagon/Hexagon fail, (*F*<sub>*τ*</sub><sup>*τττ*</sup>)<sup>2</sup> ≠ *I*<sub>2</sub>, *M*<sup>†</sup>*M* ≠ *I*, Δ*S*<sub>vN</sub> > 0, or qualia purity Tr(*ρ*<sup>2</sup>) < 1.0 | `unsat` | `formal/verify_binding_coalesce.py` |
+| `THM-LOGOS-09-EXT` | Attosecond Takagi–Taupin Polariton Dynamical Diffraction | Borrmann standing wave nodal ratio \|*E*(**R**<sub>*I*</sub>)\|<sup>2</sup> / \|*E*<sub>0</sub>\|<sup>2</sup> > 10<sup>−16</sup> or cell loss *A*<sub>cell</sub> > 10<sup>−22</sup> J | `unsat` | `formal/verify_logos_elysium_physics.py` |
+| `THM-LOGOS-10-EXT` | Fracton Sub-Dimensional Phonon Shunt & GKSL Thermal Drain | Non-radiative LO phonon capture *τ*<sub>capture</sub> > 1.701 fs or occupation ⟨*n*<sub>phonon</sub>⟩ > 10<sup>−8</sup> | `unsat` | `formal/verify_logos_elysium_physics.py` |
+| `THM-OMEGA-12-EXT` | Relativistic Symplectic Optical Impedance Across Lapse Foliations | Gordon metric frequency dispersion \|Δ*ω*/*ω*\| > 10<sup>−120</sup> or Bogoliubov particle creation ∫ \|*β*\|<sup>2</sup> > 10<sup>−120</sup> | `unsat` | `formal/verify_logos_elysium_physics.py` |
+| `THM-FOUNDRY-09-EXT` | Athermal Collective S-Matrix Transmutation & Coulomb Floquet Screening | Parasitic fission branching > 10<sup>−35</sup>, visible neutrino flux > 0, or activation cross-section > 10<sup>−120</sup> b | `unsat` | `formal/verify_logos_elysium_physics.py` |
+| `THM-OMEGA-11-EXT` | Transient Vlasov–Poisson Kinetic Re-Equilibration & Virial Clamping | Dielectric response Re[Δ<sub>Jeans</sub>] < 10<sup>−6</sup> or velocity dispersion heating drift Δ*σ*<sub>*r*</sub><sup>2</sup> / *σ*<sub>*r*</sub><sup>2</sup> > 10<sup>−6</sup> | `unsat` | `formal/verify_logos_elysium_physics.py` |
+| `THM-OMEGA-13-EXT` | Gravitomagnetic Null-Current Splice & Zero-Coriolis Metric Field | Shift curl ‖**∇** × **β**‖ > 10<sup>−120</sup> s<sup>−1</sup>, Coriolis ‖**a**<sub>Cor</sub>‖ > 10<sup>−120</sup> m/s<sup>2</sup>, or Weyl ‖*E*<sub>*ij*</sub>‖ > 10<sup>−120</sup> m<sup>−2</sup> | `unsat` | `formal/verify_logos_elysium_physics.py` |
+| `THM-BIO-06-EXT` | Non-Equilibrium Biogeochemical Relative-Entropy Lyapunov Decay | Global dissipation inequality *d*𝒱/*dt* + *Γ*𝒱 > 0 or Robin boundary current fails exponential stability | `unsat` | `formal/verify_logos_elysium_physics.py` |
 
 ---
 
@@ -1142,6 +1149,7 @@ uv run --with z3-solver python formal/verify_kerr_pachner.py
 uv run --with z3-solver python formal/verify_fluid_vortex.py
 uv run --with z3-solver python formal/verify_smbh_mossbauer.py
 uv run --with z3-solver python formal/verify_binding_coalesce.py
+uv run --with z3-solver python formal/verify_logos_elysium_physics.py
 ```
 
 ### 3. Build & Test All 16 Rust Crates

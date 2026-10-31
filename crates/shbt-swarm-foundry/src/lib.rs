@@ -11,6 +11,8 @@ pub mod dynkin_router;
 pub mod lattice_projector;
 pub mod transmutation;
 pub mod amorphous_gauge;
+pub mod athermal_transmute;
+pub use athermal_transmute::*;
 
 pub use dynkin_router::{
     BoundaryState346, DynamicFramingCompensator as DynFramingCompensator, DynkinRouter346,

@@ -10,11 +10,21 @@ pub mod stellar_deconstruct;
 pub mod dynamo_brake;
 pub mod smbh_siphon;
 pub mod halo_clamp;
+pub mod cross_lapse_bus;
+pub mod virial_vlasov;
+pub mod elysium_metric;
 
 pub use stellar_deconstruct::{EddingtonBypassEngine, DeconstructionError};
 pub use dynamo_brake::{DynkinBrakingRouter, DynamoError};
 pub use smbh_siphon::{KerrBlackHole, HexamericSiphonSystem, SiphonError};
 pub use halo_clamp::{HernquistDMHalo, GalacticVirialClampEngine, VirialClampError};
+pub use cross_lapse_bus::*;
+pub use virial_vlasov::*;
+pub use elysium_metric::{
+    compute_coriolis_acceleration, evaluate_boundary_junction_stress, evaluate_christoffel_symbols,
+    evaluate_electric_weyl, evaluate_metric, evaluate_shift_curl, lapse_function, shift_vector,
+    ElysiumPointMetric, G_TARGET, I_00_COUNTER_TERM,
+};
 
 /// Architectural constants for Phase 5 SHBT-OMEGA-312
 pub const MERA_BASE_LAYER: u8 = 94;
