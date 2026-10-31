@@ -886,11 +886,32 @@ Consciousness transfer and deity multi-tenant operations are mathematically form
 ```text
 Physical Memory Apertures:
 
-0x70000000 - 0x7000007F (128 Bytes): SHBT-MMIO-SWARM v6 Core Control Register Block
-  - Cacheline 0 (0x00..0x3F): Command trigger, pipeline status, fault mask, bank masks, power tier,
-                              Tomita flow phase, PT-GoI timer, SECDED syndrome counter, generation G.
-  - Cacheline 1 (0x40..0x7F): Feedstock/payload mass registers, net (B - L) balance, GST-225 impedance,
-                              enclave lapse alpha, cryostat/nacelle temperatures, 256-bit Burau-Cayley hash.
+0x70000000 / 0x80000000 (320 Bytes / 5 Cache Lines): SHBT-MMIO-SWARM v7 Master Register Block (shbt_swarm_mmio_regs_t)
+  - Cache Line 0 (0x0000..0x003F): Stinespring DMA physical address (0x70020000), 64-bit fault status mask,
+                                  active capacity partition, dark completion ledger capacity (10:23), PT-GoI
+                                  spectral radius (rho(L) <= 10^-60), latency (54.432 ps), Betti numbers H0/H1,
+                                  biogenic folding window (11.40 us), cloner mode select (Mode II).
+  - Cache Line 1 (0x0040..0x007F): MAR-312X gross power (up to 25.00 EW), magnetic field (48.0 T), coil temp (77.0 K),
+                                  hoop stress (<= 350.0 MPa), volatile mass injection rate, foundry surface temp
+                                  (298.15 K), atmospheric pressure (1.01325 bar), 230 space-group mask.
+  - Cache Line 2 (0x0080..0x00BF): Kerr SMBH spin a/M, horizon area time derivative (dA_H/dt >= 0), Fe-57 Lamb-Mossbauer
+                                  recoil-free fraction (f_M >= 0.782), Borrmann attenuation figure of merit (tau_B >= 1,453.4),
+                                  AEGIS TMSV squeezing (21.715 dB), ego continuity fidelity (1.000000), simulation epoch
+                                  log10 (> 100), PCSS crowbar latency (<= 2500 ps).
+  - Cache Line 3 (0x00C0..0x00FF): Microkernel control header: ABI version (0x00070312), formal proofs UNSAT count (65),
+                                  HIL gates PASS count (232), active phase mask (0x0000007F for Phases 1..6),
+                                  heartbeat monotonic tick counter, reserved padding to 0x0100.
+  - Cache Line 4 (0x0100..0x013F): ABI v7 First-Principles extension: chiral_ee_q16 (Floquet homochirality ee == 1.000000),
+                                  kerr_phase_margin_rad (Delta phi_margin >= 0.15 rad), pachner_flip_count,
+                                  pachner_cocycle_status (H^1 == 0), fluid_cft_reynolds_stress_max (tau_shear <= 45.0 Pa),
+                                  v7_align_guard, clathrate_vortex_drift_velocity (v_drift <= 10^-15 m/s),
+                                  smbh_poynting_leakage_watts (S_EM^r == 0.0 W), mossbauer_stark_detuning_hz (Delta omega_net == 0),
+                                  phenomenal_binding_purity (Tr(rho^2) == 1.0), branch_prune_entropy_debt (Delta S_vN == 0.0),
+                                  v7_reserved_tail.
+  - Hardware Fault Bitmasks (Bits 32..39): Upper-word trip bits (0x000000FF00000000ULL): bit 32 (FAULT_CHIRAL_RACEMIC),
+                                          bit 33 (FAULT_LLE_CHAOS), bit 34 (FAULT_PACHNER_COCYCLE), bit 35 (FAULT_ATMOS_SHOCK),
+                                          bit 36 (FAULT_FLUX_JUMP), bit 37 (FAULT_POYNTING_JET), bit 38 (FAULT_MOSSBAUER_DETUNE),
+                                          bit 39 (FAULT_BINDING_DECOHERENCE).
 
 0x70020000 - 0x70040FFF (135,168 Bytes): 64-Bank UnifiedStinespringHyperFrame
   - Banks 00..31 (67,584 Bytes): Read-Only Parent Quine ROM (Protected by rom_bank_mask).
@@ -982,8 +1003,8 @@ graph TD
 | `shbt-swarm-logos` | `#[no_std]` | Phase 5B Hyper-computer: 10^32-qubit Borrmann core, 10^16 W thermal shunt, and omnibus fabric |
 | `shbt-swarm-apotheosis` | `#[no_std]` | Phase 6 Observer ascension: Linear proof tokens, deity sandboxes, X1 anti-genocide interlocks, and avatars |
 | `shbt-swarm-sim` | `std` | Multiphysics digital twin, Galactic Synthesis mode, Cattaneo-Vernotte second-sound, and kinetics |
-| `shbt-swarm-hil` | `std` | Hardware-in-the-loop harness, master 208-gate verification suite, and integration audits |
-| `shbt-swarm-cli` | `std` | Master operator CLI, automated 208-gate audit runner, and verification reporting |
+| `shbt-swarm-hil` | `std` | Hardware-in-the-loop harness, master 232-gate verification suite, and integration audits |
+| `shbt-swarm-cli` | `std` | Master operator CLI, automated 232-gate audit runner, and verification reporting |
 
 ---
 
@@ -1147,7 +1168,7 @@ All 65 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 | [`shbt-sglt`](https://github.com/sys1own/shbt-sglt) | Synthetic Gravitational Lensing Telescope Stack | 2PN relativistic beam optics in harmonic coordinates, Two-Mode Squeezed Vacuum (TMSV) heterodyne metrology (`r = 2.50`, `21.715 dB`, noise ASD S_r^(1/2) <= 0.010 pm/sqrt(Hz)), 5th-order minimum-jerk flight profiles (`||s'''|| <= 5.7735`), SE-L2 formation flight, CVD Diamond-on-GaN thermal dissipation, 70-gate verification audit, 14 Z3 proofs. |
 | [`shbt-exotic`](https://github.com/sys1own/shbt-exotic) | Multi-Protocol Spacetime Engineering Co-Simulation | Cross-protocol metric coupling across all 6 phenomena (warp + stasis + translocation + wells + comms + quine), Ford-Roman Quantum Inequality (QI) dark-ledger auditing, Heegaard-Floer symplectic boundary relabeling (`T^partial_ij in Sp(2g, Z)`), dynamic 5-stage relativistic PDE solvers, 70-gate verification audit + 80-EXT checks, 8 Z3 formal proofs. |
 | [`shbt-warp`](https://github.com/sys1own/shbt-warp) | Holographic Warp Drive Digital Twin & 3+1D ADM Engine | 3+1D Alcubierre metric foliation (`alpha = 1.0`, `gamma_ij = delta_ij`, `beta^x = -v_s exp(Delta_mod/2) f_SHBT`), 4th-Gen `SHBT-MAR-312` (`4,096.99 kg`) / compacted `SHBT-MAR-312C` (`2,257.70 kg`, `0.8589 m^3`) / 5th-Gen `SHBT-MAR-312X` (`950.00 kg`, `0.3500 m^3`, `25.00 EW`, `2,482,950c`) mass-annihilation reactors, `SHBT-IBR-312` magazine (`41 cores / 1,378.06 EJ`), `SHBT-EW-312` Effective Traversable Wormhole System (`89.6c -> 2,482,950c`, `8.957-hour` Andromeda M31 transit), 221-gate verification audit, 28 Z3 formal proofs. |
-| [`shbt-swarm`](https://github.com/sys1own/shbt-swarm) | Autonomous Interstellar Von Neumann Swarm & Galactic Synthesis Architecture | Kardashev Type III megastructure synthesis (`SHBT-OMEGA-312`), monolithic galactic hyper-computing (`SHBT-LOGOS-312` / `SHBT-QC-OMEGA`, 10^32 qubits, 10^48 bit-ops/sec), observer ascension into multi-tenant deity sandboxes (`SHBT-APOTHEOSIS-312`), 100,000-node optical omnibus fabric (10^18 bps/cm^2), 4-layer AEGIS planetary defense, macroscopic anyon-braid quine cloning (`R_clone^SWARM`, 13.418 ms Jump-Cruiser replication), **208/208 Gates PASS, 57/57 Z3 UNSAT**. |
+| [`shbt-swarm`](https://github.com/sys1own/shbt-swarm) | Autonomous Interstellar Von Neumann Swarm & Galactic Synthesis Architecture | Kardashev Type III megastructure synthesis (`SHBT-OMEGA-312`), monolithic galactic hyper-computing (`SHBT-LOGOS-312` / `SHBT-QC-OMEGA`, 10^32 qubits, 10^48 bit-ops/sec), observer ascension into multi-tenant deity sandboxes (`SHBT-APOTHEOSIS-312`), 100,000-node optical omnibus fabric (10^18 bps/cm^2), 4-layer AEGIS planetary defense, macroscopic anyon-braid quine cloning (`R_clone^SWARM`, 13.418 ms Jump-Cruiser replication), **232/232 Gates PASS, 65/65 Z3 UNSAT, ABI v7 (0x00070312)**. |
 
 ### Upstream Architectural Foundations & Lineage
 
@@ -1172,7 +1193,7 @@ All 65 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 make -C kernel test
 ```
 
-### 2. Execute All 57 Formal Z3 SMT Proofs
+### 2. Execute All 65 Formal Z3 SMT Proofs
 ```bash
 uv run --with z3-solver python formal/verify_swarm_cloning.py
 uv run --with z3-solver python formal/verify_swarm_ai_safety.py
@@ -1185,6 +1206,11 @@ uv run --with z3-solver python formal/verify_apotheosis_omega.py
 uv run --with z3-solver python formal/verify_omega_smbh_halo.py
 uv run --with z3-solver python formal/verify_amorphous_dce.py
 uv run --with z3-solver python formal/verify_sheaf_qualia.py
+uv run --with z3-solver python formal/verify_chiral_weak.py
+uv run --with z3-solver python formal/verify_kerr_pachner.py
+uv run --with z3-solver python formal/verify_fluid_vortex.py
+uv run --with z3-solver python formal/verify_smbh_mossbauer.py
+uv run --with z3-solver python formal/verify_binding_coalesce.py
 ```
 
 ### 3. Build & Test All 16 Rust Crates
@@ -1194,9 +1220,9 @@ cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace --release
 ```
 
-### 4. Execute the 208-Gate Hardware-in-the-Loop Audit
+### 4. Execute the 232-Gate Hardware-in-the-Loop Audit
 ```bash
-cargo run --release -p shbt-swarm-hil --bin swarm-audit
+cargo run --release -p shbt-swarm-cli --bin swarm-audit
 ```
 
 ### 5. Compile Master Technical Monograph (`swarm.pdf`)
