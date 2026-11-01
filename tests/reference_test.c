@@ -22,12 +22,16 @@ int main(void) {
     assert(sizeof(shbt_unified_stinespring_frame_t) == 2112U);
     assert(sizeof(shbt_unified_stinespring_hyperframe_t) == 135168U);
     assert(sizeof(shbt_swarm_mmio_t) == 128U);
-    assert(sizeof(shbt_swarm_mmio_regs_t) == 320U);
+    assert(sizeof(shbt_swarm_mmio_regs_t) == 512U);
     assert(sizeof(shbt_nested_sim_mmio_regs_t) == 128U);
     assert(offsetof(shbt_swarm_mmio_regs_t, abi_version) == 0x00C0U);
     assert(offsetof(shbt_swarm_mmio_regs_t, chiral_ee_q16) == 0x0100U);
     assert(offsetof(shbt_swarm_mmio_regs_t, clathrate_vortex_drift_velocity) == 0x0118U);
     assert(offsetof(shbt_swarm_mmio_regs_t, branch_prune_entropy_debt) == 0x0134U);
+    assert(offsetof(shbt_swarm_mmio_regs_t, eddington_damping_factor) == 0x01C0U);
+    assert(offsetof(shbt_swarm_mmio_regs_t, dark_ledger_anyon_braid_count) == 0x01E0U);
+    assert(sizeof(shbt_galactic_aperture_mmio_t) == 256U);
+    assert(sizeof(shbt_dense_matter_mmio_t) == 160U);
     assert(sizeof(shbt_mera_gal_addr_t) == 64U);
     assert(sizeof(shbt_elysium_hab_ctrl_t) == 64U);
     assert(sizeof(shbt_aegis_ctrl_t) == 128U);
@@ -44,9 +48,9 @@ int main(void) {
     assert(sizeof(shbt_apoth_ext_ctrl_t) == 32U);
 
     /* Verify Phase 5B & Phase 6 ABI & control definitions */
-    assert(SHBT_SWARM_ABI_VERSION == 0x00070312U);
-    assert(SHBT_SWARM_FORMAL_PROOFS_COUNT == 71U);
-    assert(SHBT_SWARM_HIL_GATES_COUNT == 240U);
+    assert(SHBT_SWARM_ABI_VERSION == 0x000A0312U);
+    assert(SHBT_SWARM_FORMAL_PROOFS_COUNT == 88U);
+    assert(SHBT_SWARM_HIL_GATES_COUNT == 304U);
     assert(SHBT_NESTED_SIM_MMIO_BASE == 0x7000B000ULL);
     assert(SHBT_APOTH_MMIO_BASE == 0x4000C000UL);
     assert(SHBT_OMNIBUS_HYPERFRAME_DMA_BASE == 0x70020000UL);

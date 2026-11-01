@@ -990,6 +990,266 @@ impl QuantumHocbfFilter {
 }
 ```
 
+### 4.10 `shbt-swarm-foundry::dense_transmute` (Athermal Dense Matter Transmutation & Decompression)
+
+```rust
+#![no_std]
+#![forbid(unsafe_code)]
+
+// crates/shbt-swarm-foundry/src/dense_transmute.rs
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum DenseTransmutationError {
+    AdiabaticIndexCollapse,
+    MassSiphonRateExceeded,
+    ColorScreeningFailure,
+    RadiativeLeakageDetected,
+    NeutrinoShuntingBreach,
+    ThermalSpikeOverheat,
+    LatticeProjectorDivergence,
+    YieldStressExceeded,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct FloquetColorScreening {
+    pub driving_frequency_mev: f64,
+    pub debye_mass_fm: f64,
+    pub screening_potential_ev: f64,
+    pub dynkin_phases: [f64; SU3_DYNKIN_SLOTS],
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct DegenerateAdiabatTracker {
+    pub central_density_kg_m3: f64,
+    pub central_pressure_pa: f64,
+    pub current_gamma_1: f64,
+    pub magnetic_field_tesla: f64,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct BogoliubovDarkShunt {
+    pub isospin_slots: usize,
+    pub b_minus_l_deficit: i64,
+    pub visible_neutrino_flux: f64,
+    pub activation_cross_section_barn: f64,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct BorrmannDiamondProjector {
+    pub lattice_constant_angstrom: f64,
+    pub peak_crystallization_temp_k: f64,
+    pub thermal_relaxation_time_s: f64,
+    pub defect_density_cm3: f64,
+}
+
+pub struct DenseMatterTransmutationEngine {
+    pub color_screening: FloquetColorScreening,
+    pub adiabat_tracker: DegenerateAdiabatTracker,
+    pub dark_shunter: BogoliubovDarkShunt,
+    pub diamond_projector: BorrmannDiamondProjector,
+}
+
+impl DenseMatterTransmutationEngine {
+    pub fn new() -> Self;
+    pub fn step_transmutation(
+        &mut self,
+        dt_sec: f64,
+        mass_siphon_rate_kg_s: f64,
+        target_space_group: u32,
+    ) -> Result<(), DenseTransmutationError>;
+    pub fn is_decompression_stable(&self) -> bool;
+}
+```
+
+### 4.11 `shbt-swarm-omega::smbh_siphon` (Kerr SMBH Ergosphere Energy Harvesting)
+
+```rust
+#![no_std]
+#![forbid(unsafe_code)]
+
+// crates/shbt-swarm-omega/src/smbh_siphon.rs
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct BoyerLindquistCoord {
+    pub r: f64,
+    pub theta: f64,
+    pub phi: f64,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SiphonError {
+    InvalidMass,
+    InvalidSpinParameter,
+    ErgospherePenetrationFailure,
+    AreaTheoremViolation,
+    BlandfordZnajekQuenchFailure,
+    LedgerCapacityExceeded,
+    SuperExtremalSpin,
+    UnphysicalFluxRate,
+    HorizonPenetrationViolation,
+    ThermodynamicAreaViolation,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct KerrBlackHole {
+    pub mass: f64,
+    pub spin_param: f64,
+    pub mass_kg: f64,
+    pub spin_dimless: f64,
+    pub initial_mass_kg: f64,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct HexamericHarvesterNode {
+    pub node_id: u8,
+    pub coord: BoyerLindquistCoord,
+    pub synthetic_shift_counter: f64,
+    pub active: bool,
+}
+
+pub struct SmbhSiphonController {
+    pub black_hole: KerrBlackHole,
+    pub nodes: [HexamericHarvesterNode; 6],
+    pub total_exergy_extracted_joules: f64,
+    pub dark_ledger_joules: f64,
+    pub baseload_grid_joules: f64,
+    pub anyon_braid_count: u128,
+    pub jet_quenched: bool,
+}
+
+pub struct HexamericSiphonSystem {
+    pub black_hole: KerrBlackHole,
+    pub node_radius: f64,
+    pub dark_ledger_reserve_joules: f64,
+    pub total_extracted_joules: f64,
+}
+
+impl SmbhSiphonController {
+    pub fn new(mass_kg: f64, spin_dimless: f64) -> Result<Self, SiphonError>;
+    pub fn step_harvest(&mut self, dt_sec: f64, target_extraction_rate_watts: f64) -> Result<(), SiphonError>;
+    pub fn quench_blandford_znajek_jet(&mut self, current_amps: f64, load_impedance_ohms: f64) -> Result<f64, SiphonError>;
+}
+```
+
+### 4.12 `shbt-swarm-omega::virial_vlasov` (Supercomoving Vlasov-Poisson Virial Clamping)
+
+```rust
+#![no_std]
+#![forbid(unsafe_code)]
+
+// crates/shbt-swarm-omega/src/virial_vlasov.rs
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum VirialVlasovError {
+    AccelerationCompensationExceeded { radius_kpc: f64, relative_error: f64 },
+    JeansInstabilityDetected { shell_idx: usize, determinant: f64 },
+    DispersionHeatingExceeded { shell_idx: usize, drift: f64 },
+    InvalidKineticState,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct AdmSectorHub {
+    pub position: [f64; 3],
+    pub mass: f64,
+    pub softening_sq: f64,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct RadialAuditShell {
+    pub r_inner: f64,
+    pub r_outer: f64,
+    pub r_mid: f64,
+    pub volume: f64,
+    pub baryon_mass_init: f64,
+    pub baryon_mass_curr: f64,
+    pub dm_mass_enc: f64,
+    pub sigma_r_init: f64,
+    pub sigma_r_curr: f64,
+    pub target_accel: f64,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct JeansAuditReport {
+    pub max_accel_error: f64,
+    pub min_jeans_determinant: f64,
+    pub max_dispersion_drift: f64,
+    pub total_harvested_mass: f64,
+}
+
+pub struct VirialVlasovController {
+    pub hubs: [AdmSectorHub; NUM_ADM_HUBS],
+    pub shells: [RadialAuditShell; NUM_RADIAL_SHELLS],
+    pub total_mass_extracted: f64,
+    pub scale_factor: f64,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct VirialStabilityMetrics {
+    pub radial_dispersion_drift: f64,
+    pub circular_velocity_drift: f64,
+    pub toomre_q_parameter: f64,
+    pub equilibrium_preserved: bool,
+}
+
+pub struct VirialVlasovEngine {
+    pub hubs: [AdmHubState; NUM_ADM_HUBS],
+    pub total_evacuated_baryon_msun: f64,
+    pub baseline_baryon_msun: f64,
+    pub current_scale_factor: f64,
+}
+
+impl VirialVlasovController {
+    pub fn new() -> Self;
+    pub fn step_harvest_and_clamp(&mut self, evacuated_baryon_msun: f64, dt_myr: f64) -> Result<JeansAuditReport, VirialVlasovError>;
+}
+```
+
+### 4.13 `shbt-swarm-omega::planetary_siphon` (GST-225 Flash Acoustic Deconstruction)
+
+```rust
+#![no_std]
+#![forbid(unsafe_code)]
+
+// crates/shbt-swarm-omega/src/planetary_siphon.rs
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PlanetaryLayer {
+    Atmosphere,
+    HydrosphereCrust,
+    SilicateMantle,
+    OuterLiquidCore,
+    InnerSolidCore,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct HexamericSeedNode {
+    pub seed_id: usize,
+    pub cartesian_offset_km: [f64; 3],
+    pub current_m_seed_kg: f64,
+    pub extraction_rate_kg_s: f64,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct GstAcousticMatcher {
+    pub crystalline_fraction: f64,
+    pub active_impedance_mrayl: f64,
+}
+
+pub struct PlanetarySiphonEngine {
+    pub hexameric_seeds: [HexamericSeedNode; 6],
+    pub matcher: GstAcousticMatcher,
+    pub remaining_planetary_mass_kg: f64,
+    pub initial_planetary_mass_kg: f64,
+    pub elapsed_time_sec: f64,
+}
+
+impl PlanetarySiphonEngine {
+    pub fn new(initial_mass_kg: f64) -> Self;
+    pub fn step_deconstruct(&mut self, dt_sec: f64) -> Result<f64, &'static str>;
+    pub fn is_acoustic_impedance_matched(&self) -> bool;
+}
+```
+
 ## 5. End-to-End Multiphysics Simulation Tick API (`crates/shbt-swarm-sim`)
 
 The closed-loop simulation suite in `crates/shbt-swarm-sim` coordinates multiphysics evolution across microsecond and attosecond domains.
@@ -1133,7 +1393,7 @@ Executed by `crates/shbt-swarm-hil` (`swarm-audit` runner):
 * `GATE-SWARM-257` .. `GATE-SWARM-264`: Non-linear GW memory recoil clamping and 312-hub quad-axial CCZ4 Gundlach damping.
 * `GATE-SWARM-265` .. `GATE-SWARM-272`: Continuous Fibonacci ribbon field theory, Knizhnik-Zamolodchikov continuous holonomy, and dynamic framing nullification.
 * `GATE-SWARM-273` .. `GATE-SWARM-280`: Relativistic QRF covariance, unipotent simplicial sheaf consensus, and superposed HOCBF Nagumo invariance.
-* `GATE-SWARM-281` .. `GATE-SWARM-288`: Kerr SMBH ergosphere harvesting, Penrose-Floer boundary CFT duality, Hawking area non-decrease, Blandford-Znajek jet quenching, and zero-volume dark ledger injection.
-* `GATE-SWARM-289` .. `GATE-SWARM-296`: Athermal dense matter transmutation, Floquet QGP screening, core adiabat conservation, Bogoliubov dark shunting, and Borrmann diamond projection.
+* `GATE-SWARM-281` .. `GATE-SWARM-288`: Athermal dense matter transmutation, Floquet QGP screening, core adiabat conservation, Bogoliubov dark shunting, and Borrmann diamond projection.
+* `GATE-SWARM-289` .. `GATE-SWARM-296`: Kerr SMBH ergosphere harvesting, Penrose-Floer boundary CFT duality, Hawking area non-decrease, Blandford-Znajek jet quenching, and zero-volume dark ledger injection.
 * `GATE-SWARM-297` .. `GATE-SWARM-304`: Universal envelope harvesting, metric opacity quenching, GST-225 flash acoustic matching, and 312 ADM hub supercomoving Vlasov-Poisson virial clamping.
 
