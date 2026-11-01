@@ -13,6 +13,11 @@ pub mod transmutation;
 pub mod amorphous_gauge;
 pub mod athermal_transmute;
 pub use athermal_transmute::*;
+pub mod dense_transmute;
+pub use dense_transmute::{
+    BogoliubovDarkShunt, BorrmannDiamondProjector, DegenerateAdiabatTracker,
+    DenseMatterTransmutationEngine, DenseTransmutationError, FloquetColorScreening,
+};
 
 pub use dynkin_router::{
     BoundaryState346, DynamicFramingCompensator as DynFramingCompensator, DynkinRouter346,

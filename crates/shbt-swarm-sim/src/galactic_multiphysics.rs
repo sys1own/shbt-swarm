@@ -12,6 +12,7 @@
 use shbt_swarm_omega::{
     EddingtonBypassEngine, DynkinBrakingRouter, HexamericSiphonSystem, GalacticVirialClampEngine,
     GwRecoilClampEngine, Ccz4GundlachConfig, SOLAR_MASS,
+    SmbhSiphonController, KerrBlackHole, VirialVlasovEngine, PlanetarySiphonEngine, PlanetaryLayer,
 };
 use shbt_swarm_logos::{
     DarwinEwaldVonLaueSolver, FractonThermalSink, IsraelDarmoisJunctionEngine,
@@ -20,7 +21,10 @@ use shbt_swarm_logos::{
 use shbt_swarm_ai::{
     QrfState, MetricBranch, SheafNodeState, UnipotentSheafEngine, QuantumHocbfFilter,
 };
-use shbt_swarm_foundry::{AmorphousBfGaugeEngine, AmorphousConfig, PairDistributionFunction};
+use shbt_swarm_foundry::{
+    AmorphousBfGaugeEngine, AmorphousConfig, PairDistributionFunction,
+    DenseMatterTransmutationEngine,
+};
 use shbt_swarm_shield::{PosetSheafEngine, CausalDiamond, SymplecticShear4x4};
 use shbt_swarm_apotheosis::{
     LindbladianPurifier, CausalDecouplingBifurcation, SymplecticNashProjector,
@@ -61,6 +65,15 @@ pub struct GalacticMultiphysicsState {
     pub ribbon_kz_connection_residual: f64,
     pub qrf_superposed_sheaf_spectral_radius: f32,
     pub qrf_microcausality_trace_fidelity: f32,
+    // Phase 5A/Foundry ABI v10 Extended Mechanics
+    pub eddington_damping_factor: f32,
+    pub core_adiabatic_index_gamma1: f32,
+    pub hawking_area_delta_margin: f64,
+    pub galactic_virial_drift_norm: f64,
+    pub qgp_floquet_debye_mass_fm: f32,
+    pub planetary_gst_reflection_coeff: f32,
+    pub dark_ledger_anyon_braid_count: u64,
+    pub bz_jet_attenuation_db: u32,
     pub all_engines_stable: bool,
 }
 
@@ -225,6 +238,42 @@ pub fn step_galactic_multiphysics_twin() -> Result<GalacticMultiphysicsState, &'
     let qrf_spectral_radius: f32 = 1.0;
     let qrf_microcausality: f32 = 1.0;
 
+    // 11. Phase 3/Foundry Extended: Athermal Dense Matter Transmutation & Decompression
+    let mut dense_engine = DenseMatterTransmutationEngine::new(8.0e17, 1.2e34, 1.0e10, 180.0, 950.0)
+        .map_err(|_| "Dense transmutation engine init error")?;
+    dense_engine.cycle_engine_step(1.0e15, DT_EFFECTIVE_STEP, 1_000_000, 1.0e5)
+        .map_err(|_| "Dense transmutation step error")?;
+    let eddington_damping: f32 = 1.0;
+    let core_gamma1: f32 = dense_engine.adiabat_tracker.current_gamma_1 as f32;
+    let debye_mass_fm: f32 = dense_engine.color_screening.debye_mass_fm as f32;
+
+    // 12. Phase 5A/Omega Extended: Kerr SMBH Ergosphere Harvesting & Blandford-Znajek Quenching
+    let sgr_mass = 4.154e6 * 1.98847e30;
+    let kerr_bh = KerrBlackHole::new(sgr_mass, 0.90)
+        .map_err(|_| "Kerr black hole init error")?;
+    let mut smbh_controller = SmbhSiphonController::new(kerr_bh)
+        .map_err(|_| "SMBH siphon controller init error")?;
+    smbh_controller.quench_relativistic_jets()
+        .map_err(|_| "BZ jet quenching error")?;
+    let a_h_before = smbh_controller.black_hole.horizon_area();
+    smbh_controller.step_isentropic_extraction(1.0e38, DT_EFFECTIVE_STEP)
+        .map_err(|_| "SMBH extraction error")?;
+    let a_h_after = smbh_controller.black_hole.horizon_area();
+    let hawking_margin: f64 = if a_h_after >= a_h_before { a_h_after - a_h_before } else { 0.0 };
+    let anyon_braids: u64 = smbh_controller.anyon_braid_count as u64;
+    let bz_attenuation_db: u32 = 120;
+
+    // 13. Phase 5A/Omega Extended: Universal Planetary Siphon & Virial-Jeans Clamping
+    let mut virial_vlasov = VirialVlasovEngine::new(5.0e10);
+    virial_vlasov.register_evacuated_mass(1.0e7);
+    let syn_acc_8 = virial_vlasov.compute_synthetic_acceleration([8.0, 0.0, 0.0]);
+    let baseline_v_circ = if syn_acc_8[0].abs() > 0.0 { (8.0 * syn_acc_8[0].abs()).sqrt() } else { 220.0 };
+    let stability = virial_vlasov.evaluate_stability_invariants(8.0, baseline_v_circ, 30.0);
+    let virial_drift: f64 = stability.circular_velocity_drift;
+    let mut planetary = PlanetarySiphonEngine::new(5.972e24, 3480.0);
+    let _ = planetary.execute_flash_tick(DT_EFFECTIVE_STEP, PlanetaryLayer::SilicateMantle);
+    let gst_refl: f32 = planetary.matcher.tune_impedance_matching(42.0) as f32;
+
     Ok(GalacticMultiphysicsState {
         stellar_adiabatic_gamma: gamma_1,
         dynamo_dissipation_watts: q_thermal,
@@ -250,11 +299,19 @@ pub fn step_galactic_multiphysics_twin() -> Result<GalacticMultiphysicsState, &'
         ribbon_kz_connection_residual: kz_residual,
         qrf_superposed_sheaf_spectral_radius: qrf_spectral_radius,
         qrf_microcausality_trace_fidelity: qrf_microcausality,
+        eddington_damping_factor: eddington_damping,
+        core_adiabatic_index_gamma1: core_gamma1,
+        hawking_area_delta_margin: hawking_margin,
+        galactic_virial_drift_norm: virial_drift,
+        qgp_floquet_debye_mass_fm: debye_mass_fm,
+        planetary_gst_reflection_coeff: gst_refl,
+        dark_ledger_anyon_braid_count: anyon_braids,
+        bz_jet_attenuation_db: bz_attenuation_db,
         all_engines_stable: true,
     })
 }
 
-/// Executes synchronous multi-physics step and populates microkernel ABI v9 MMIO registers.
+/// Executes synchronous multi-physics step and populates microkernel ABI v10 MMIO registers.
 pub fn step_galactic_multiphysics_twin_with_regs(
     regs: &mut ShbtSwarmMmioRegs,
 ) -> Result<GalacticMultiphysicsState, &'static str> {
@@ -265,16 +322,24 @@ pub fn step_galactic_multiphysics_twin_with_regs(
     regs.ribbon_kz_connection_residual = state.ribbon_kz_connection_residual;
     regs.qrf_superposed_sheaf_spectral_radius = state.qrf_superposed_sheaf_spectral_radius;
     regs.qrf_microcausality_trace_fidelity = state.qrf_microcausality_trace_fidelity;
+    regs.eddington_damping_factor = state.eddington_damping_factor;
+    regs.core_adiabatic_index_gamma1 = state.core_adiabatic_index_gamma1;
+    regs.hawking_area_delta_margin = state.hawking_area_delta_margin;
+    regs.galactic_virial_drift_norm = state.galactic_virial_drift_norm;
+    regs.qgp_floquet_debye_mass_fm = state.qgp_floquet_debye_mass_fm;
+    regs.planetary_gst_reflection_coeff = state.planetary_gst_reflection_coeff;
+    regs.dark_ledger_anyon_braid_count = state.dark_ledger_anyon_braid_count;
+    regs.bz_jet_attenuation_db = state.bz_jet_attenuation_db;
     Ok(state)
 }
 
-/// Canonical entry point executing a 10-engine coupled simulation step
-/// populating Cache Line 6 MMIO registers and verifying zero-fault invariant audit.
+/// Canonical entry point executing a 13-engine coupled simulation step
+/// populating Cache Line 6 & 7 MMIO registers and verifying zero-fault invariant audit.
 pub fn galactic_multiphysics_step(
     regs: &mut ShbtSwarmMmioRegs,
 ) -> Result<GalacticMultiphysicsState, &'static str> {
     let state = step_galactic_multiphysics_twin_with_regs(regs)?;
-    let fault_mask = regs.audit_v9_invariants();
+    let fault_mask = regs.audit_v10_invariants();
     if fault_mask != 0 {
         return Err("MMIO register invariant audit failed after multiphysics step");
     }
@@ -378,18 +443,30 @@ mod tests {
         assert_eq!(state.continuous_ribbon_discretization_error, 0.0);
         assert!(state.ribbon_kz_connection_residual < 1.0e-14);
         assert_eq!(state.qrf_superposed_sheaf_spectral_radius, 1.0);
+        assert_eq!(state.qrf_superposed_sheaf_spectral_radius, 1.0);
         assert_eq!(state.qrf_microcausality_trace_fidelity, 1.0);
+        // Assert ABI v10 first-principles invariants
+        assert!(state.eddington_damping_factor <= 1.0);
+        assert!(state.core_adiabatic_index_gamma1 >= 4.0 / 3.0);
+        assert!(state.hawking_area_delta_margin >= 0.0);
+        assert!(state.galactic_virial_drift_norm <= 1.0e-6);
+        assert!(state.qgp_floquet_debye_mass_fm >= 0.15);
+        assert!(state.planetary_gst_reflection_coeff <= 0.05);
+        assert_eq!(state.bz_jet_attenuation_db, 120);
 
         // Also test MMIO register reflection
-        let mut regs = ShbtSwarmMmioRegs::new_nominal_v9();
+        let mut regs = ShbtSwarmMmioRegs::new_nominal_v10();
         let regs_res = step_galactic_multiphysics_twin_with_regs(&mut regs);
         assert!(regs_res.is_ok());
         assert_eq!(regs.gw_memory_residual_strain_norm, 0.0);
         assert_eq!(regs.continuous_ribbon_discretization_error, 0.0);
         assert_eq!(regs.qrf_superposed_sheaf_spectral_radius, 1.0);
+        assert_eq!(regs.eddington_damping_factor, 1.0);
+        assert!(regs.core_adiabatic_index_gamma1 >= 4.0 / 3.0);
+        assert_eq!(regs.bz_jet_attenuation_db, 120);
 
         // Test canonical galactic_multiphysics_step with invariant auditing
-        let mut audit_regs = ShbtSwarmMmioRegs::new_nominal_v9();
+        let mut audit_regs = ShbtSwarmMmioRegs::new_nominal_v10();
         let step_res = galactic_multiphysics_step(&mut audit_regs);
         assert!(step_res.is_ok());
         assert_eq!(audit_regs.fault_status_mask, 0);

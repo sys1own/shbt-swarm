@@ -475,6 +475,194 @@ impl VirialVlasovController {
     }
 }
 
+/// Maximum allowable fractional drift in velocity dispersion and circular velocity
+pub const VIRIAL_DRIFT_TOLERANCE: f64 = 1.0e-6;
+
+/// Softening length for ADM hub point-potential evaluation (kpc)
+pub const HUB_SOFTENING_LENGTH_KPC: f64 = 0.050;
+
+/// Spatial coordinate in galactocentric cylindrical frame (r, theta, z)
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct GalactocentricCoord {
+    pub r_kpc: f64,
+    pub theta_rad: f64,
+    pub z_kpc: f64,
+}
+
+impl GalactocentricCoord {
+    #[inline]
+    pub fn to_cartesian(self) -> [f64; 3] {
+        let x = self.r_kpc * f64_cos(self.theta_rad);
+        let y = self.r_kpc * f64_sin(self.theta_rad);
+        let z = self.z_kpc;
+        [x, y, z]
+    }
+}
+
+/// State representation of an individual ADM potential hub
+#[derive(Clone, Copy, Debug)]
+pub struct AdmHubState {
+    pub position: GalactocentricCoord,
+    pub synthetic_mass_msun: f64,
+    pub target_flux_gradient: [f64; 3],
+}
+
+/// Martel-Shapiro supercomoving phase-space particle/macro-cell tracer
+#[derive(Clone, Copy, Debug)]
+pub struct SupercomovingParticle {
+    pub x_sc: [f64; 3],
+    pub p_sc: [f64; 3],
+    pub mass_tracer_msun: f64,
+}
+
+/// Virial and Jeans equilibrium metrics
+#[derive(Clone, Copy, Debug)]
+pub struct VirialStabilityMetrics {
+    pub radial_dispersion_drift: f64,
+    pub circular_velocity_drift: f64,
+    pub toomre_q_parameter: f64,
+    pub equilibrium_preserved: bool,
+}
+
+/// Primary Virial-Jeans Clamping Engine
+pub struct VirialVlasovEngine {
+    pub hubs: [AdmHubState; NUM_ADM_HUBS],
+    pub total_evacuated_baryon_msun: f64,
+    pub baseline_baryon_msun: f64,
+    pub current_scale_factor: f64,
+}
+
+impl VirialVlasovEngine {
+    /// Initialize the 312 ADM hubs distributed in concentric phyllotactic rings
+    pub fn new(baseline_baryon_msun: f64) -> Self {
+        let mut hubs = [AdmHubState {
+            position: GalactocentricCoord { r_kpc: 0.0, theta_rad: 0.0, z_kpc: 0.0 },
+            synthetic_mass_msun: 0.0,
+            target_flux_gradient: [0.0, 0.0, 0.0],
+        }; NUM_ADM_HUBS];
+
+        // Golden angle for phyllotactic multi-shell distribution
+        let golden_angle = PI * (3.0 - f64_sqrt(5.0));
+
+        for (i, hub) in hubs.iter_mut().enumerate() {
+            let frac = (i as f64 + 0.5) / (NUM_ADM_HUBS as f64);
+            // Non-linear radial distribution spanning 0.01 kpc to 50.0 kpc
+            let r = 0.01 * f64_powf(50.0 / 0.01, frac);
+            let theta = (i as f64) * golden_angle;
+            let z = 0.25 * f64_sin((i as f64) * 0.45) * (1.0 - frac);
+
+            *hub = AdmHubState {
+                position: GalactocentricCoord { r_kpc: r, theta_rad: theta, z_kpc: z },
+                synthetic_mass_msun: 0.0,
+                target_flux_gradient: [0.0, 0.0, 0.0],
+            };
+        }
+
+        Self {
+            hubs,
+            total_evacuated_baryon_msun: 0.0,
+            baseline_baryon_msun,
+            current_scale_factor: 1.0,
+        }
+    }
+
+    /// Dynamically update evacuated mass and redistribute synthetic mass across 312 hubs
+    pub fn register_evacuated_mass(&mut self, delta_mass_msun: f64) {
+        self.total_evacuated_baryon_msun += delta_mass_msun;
+        let per_hub_mass = self.total_evacuated_baryon_msun / (NUM_ADM_HUBS as f64);
+
+        for hub in self.hubs.iter_mut() {
+            hub.synthetic_mass_msun = per_hub_mass;
+        }
+    }
+
+    /// Compute synthetic gravitational potential gradient at an arbitrary position
+    #[inline]
+    pub fn compute_synthetic_acceleration(&self, pos: [f64; 3]) -> [f64; 3] {
+        let mut acc = [0.0, 0.0, 0.0];
+        let eps2 = HUB_SOFTENING_LENGTH_KPC * HUB_SOFTENING_LENGTH_KPC;
+
+        for hub in self.hubs.iter() {
+            let hub_pos = hub.position.to_cartesian();
+            let dx = hub_pos[0] - pos[0];
+            let dy = hub_pos[1] - pos[1];
+            let dz = hub_pos[2] - pos[2];
+            let r2 = dx * dx + dy * dy + dz * dz + eps2;
+            let r = f64_sqrt(r2);
+            let inv_r3 = 1.0 / (r2 * r);
+
+            let f = G_GALACTIC * hub.synthetic_mass_msun * inv_r3;
+            acc[0] += f * dx;
+            acc[1] += f * dy;
+            acc[2] += f * dz;
+        }
+
+        acc
+    }
+
+    /// Step supercomoving particle using Martel-Shapiro symplectic leapfrog
+    #[inline]
+    pub fn step_supercomoving_tracer(
+        &self,
+        particle: &mut SupercomovingParticle,
+        dt_supercomoving: f64,
+        dark_matter_accel_fn: fn([f64; 3]) -> [f64; 3],
+    ) {
+        let dm_acc = dark_matter_accel_fn(particle.x_sc);
+        let syn_acc = self.compute_synthetic_acceleration(particle.x_sc);
+
+        for i in 0..3 {
+            let total_acc = dm_acc[i] + syn_acc[i];
+            particle.p_sc[i] += 0.5 * dt_supercomoving * total_acc;
+        }
+
+        for i in 0..3 {
+            particle.x_sc[i] += dt_supercomoving * particle.p_sc[i];
+        }
+
+        let dm_acc_next = dark_matter_accel_fn(particle.x_sc);
+        let syn_acc_next = self.compute_synthetic_acceleration(particle.x_sc);
+
+        for i in 0..3 {
+            let total_acc_next = dm_acc_next[i] + syn_acc_next[i];
+            particle.p_sc[i] += 0.5 * dt_supercomoving * total_acc_next;
+        }
+    }
+
+    /// Evaluate Jeans dispersion and circular velocity drift invariants
+    pub fn evaluate_stability_invariants(
+        &self,
+        test_radius_kpc: f64,
+        baseline_v_circ: f64,
+        baseline_sigma_r: f64,
+    ) -> VirialStabilityMetrics {
+        let test_pos = [test_radius_kpc, 0.0, 0.0];
+        let syn_acc = self.compute_synthetic_acceleration(test_pos);
+        let radial_acc = f64_abs(syn_acc[0]);
+
+        let v_circ_synthetic = f64_sqrt(test_radius_kpc * radial_acc);
+        let current_v_circ = v_circ_synthetic;
+
+        let v_circ_drift = f64_abs(current_v_circ - baseline_v_circ) / baseline_v_circ;
+        let sigma_drift = f64_abs(v_circ_drift * 2.0);
+
+        let kappa = f64_sqrt(2.0) * (current_v_circ / test_radius_kpc);
+        let sigma_disk_eff = self.total_evacuated_baryon_msun / (2.0 * PI * test_radius_kpc * test_radius_kpc + 1.0);
+        let toomre_q = (baseline_sigma_r * kappa) / (3.36 * G_GALACTIC * sigma_disk_eff + 1e-12);
+
+        let equilibrium_preserved = (v_circ_drift <= VIRIAL_DRIFT_TOLERANCE)
+            && (sigma_drift <= VIRIAL_DRIFT_TOLERANCE)
+            && (toomre_q >= 1.0);
+
+        VirialStabilityMetrics {
+            radial_dispersion_drift: sigma_drift,
+            circular_velocity_drift: v_circ_drift,
+            toomre_q_parameter: toomre_q,
+            equilibrium_preserved,
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -520,5 +708,24 @@ mod tests {
               assert!(rep.max_accel_error <= ACCEL_TOLERANCE);
               assert!(rep.min_jeans_determinant >= JEANS_MARGIN_MIN);
               assert!(rep.max_dispersion_drift <= DISPERSION_DRIFT_MAX);
+          }
+
+          #[test]
+          fn test_virial_vlasov_engine_synthesis() {
+              let mut engine = VirialVlasovEngine::new(5.0e10);
+              assert_eq!(engine.hubs.len(), NUM_ADM_HUBS);
+              engine.register_evacuated_mass(1.0e9);
+              assert_eq!(engine.total_evacuated_baryon_msun, 1.0e9);
+
+              let acc = engine.compute_synthetic_acceleration([8.0, 0.0, 0.0]);
+              assert!(f64_abs(acc[0]) > 0.0);
+
+              let mut particle = SupercomovingParticle {
+                  x_sc: [8.0, 0.0, 0.0],
+                  p_sc: [0.0, 220.0, 0.0],
+                  mass_tracer_msun: 1.0,
+              };
+              engine.step_supercomoving_tracer(&mut particle, 0.001, |_| [0.0, 0.0, 0.0]);
+              assert!(particle.x_sc[0] > 0.0);
           }
       }

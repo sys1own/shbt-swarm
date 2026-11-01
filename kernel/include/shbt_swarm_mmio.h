@@ -13,12 +13,15 @@
 #include "shbt_mmio_apotheosis.h"
 #include "shbt_nested_sim_abi.h"
 
-#define SHBT_SWARM_ABI_VERSION          0x00090312U
-#define SHBT_SWARM_FORMAL_PROOFS_COUNT  81U
-#define SHBT_SWARM_HIL_GATES_COUNT      280U
+#define SHBT_SWARM_ABI_VERSION          0x000A0312U
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT  88U
+#define SHBT_SWARM_HIL_GATES_COUNT      304U
 #define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL
 #define SHBT_SWARM_HYPERFRAME_BASE_ADDR 0x70020000UL
 #define SHBT_SWARM_APOTHEOSIS_BASE_ADDR 0x4000C000UL
+#define SHBT_SWARM_HARVEST_APERTURE_BASE 0x4000E000UL
+#define SHBT_SWARM_FOUNDRY_DENSE_BASE   0x00007F8000040000ULL
+
 
 #define SHBT_FRAME_BYTES                2112U
 #define SHBT_VISIBLE_ANCHOR_BYTES       640U     /* eta_A = 10/33 * 2112 B */
@@ -147,6 +150,17 @@
 #define SHBT_SWARM_FAULT_SHEAF_SPECTRUM_DIV    (1ULL << 52)
 #define SHBT_SWARM_FAULT_METRIC_SUP_CAUSALITY  (1ULL << 53)
 #define SHBT_SWARM_FAULT_V9_MASK               (0x003F800000000000ULL)
+
+/* v10 Galactic Harvest & Dense Matter Invariant Fault Bitmasks (Bits 54..60) */
+#define SHBT_SWARM_FAULT_EDDINGTON_OVERPRESSURE     (1ULL << 54)
+#define SHBT_SWARM_FAULT_CORE_ADIABAT_COLLAPSE      (1ULL << 55)
+#define SHBT_SWARM_FAULT_HAWKING_AREA_DECREASE      (1ULL << 56)
+#define SHBT_SWARM_FAULT_HALO_VIRIAL_JEANS_DRIFT    (1ULL << 57)
+#define SHBT_SWARM_FAULT_FLOQUET_COLOR_UNLOCKED     (1ULL << 58)
+#define SHBT_SWARM_FAULT_PLANETARY_ACOUSTIC_BREACH  (1ULL << 59)
+#define SHBT_SWARM_FAULT_BZ_JET_LEAKAGE             (1ULL << 60)
+#define SHBT_SWARM_FAULT_V10_MASK                   (0x001FC00000000000ULL)
+
 
 /* v7 First-Principles Hardware Threshold Constants */
 #define SHBT_SWARM_CHIRAL_EE_Q16_HOMOCHIRAL   0x00010000U  /* 1.000000 in Q16.16 */
@@ -589,7 +603,7 @@ _Static_assert(sizeof(shbt_logos_ctrl_t) == 256, "shbt_logos_ctrl_t master bank 
 
 
 /* ==========================================================================
- * SHBT-MMIO-SWARM v9 REGISTER BLOCK (448 BYTES / 7 CACHE LINES)
+ * SHBT-MMIO-SWARM v10 REGISTER BLOCK (512 BYTES / 8 CACHE LINES)
  * Physical Base Address: 0x80000000
  * ========================================================================== */
 typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
@@ -626,10 +640,9 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     uint64_t pcss_crowbar_latency_ps;         /* 0x00B8: <= 2500 ps (2.5 ns) */
 
     /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
-    uint32_t abi_version;                     /* 0x00C0: 0x00090312 */
-    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 81 */
-    uint32_t hil_gates_pass_count;            /* 0x00C8: 280 */
-
+    uint32_t abi_version;                     /* 0x00C0: 0x000A0312 */
+    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 88 */
+    uint32_t hil_gates_pass_count;            /* 0x00C8: 304 */
     uint32_t active_phase_mask;               /* 0x00CC: 0x0000007F (Phases 1..6) */
     uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
     uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */
@@ -659,11 +672,22 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     float    qrf_superposed_sheaf_spectral_radius;    /* 0x01A0: == 1.000000 */
     float    qrf_microcausality_trace_fidelity;       /* 0x01A4: >= 0.999999 */
     uint64_t v9_reserved_tail[3];                     /* 0x01A8..0x01BF: 24 bytes pad */
+
+    /* === CACHELINE 7 (Offsets 0x01C0 .. 0x01FF): Galactic Synthesis & Multi-Reservoir Invariants (64 bytes) === */
+    float    eddington_damping_factor;        /* 0x01C0: kappa_eff / kappa_0 <= 1.0e-12 */
+    float    core_adiabatic_index_gamma1;     /* 0x01C4: Gamma_1 >= 4/3 + 1.0e-6 */
+    double   hawking_area_delta_margin;       /* 0x01C8: dA_H / dt >= 0 */
+    double   galactic_virial_drift_norm;      /* 0x01D0: Delta sigma_r^2 / sigma_r^2 <= 1.0e-6 */
+    float    qgp_floquet_debye_mass_fm;       /* 0x01D8: Dynamic screening mass */
+    float    planetary_gst_reflection_coeff;  /* 0x01DC: R_acoustic <= 1.0e-6 */
+    uint64_t dark_ledger_anyon_braid_count;   /* 0x01E0: Fibonacci anyon braid count */
+    uint32_t bz_jet_attenuation_db;           /* 0x01E8: Jet suppression in dB */
+    uint32_t v10_reserved_tail[5];            /* 0x01EC..0x01FF: 20 bytes pad */
 } shbt_swarm_mmio_regs_t;
 
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
-_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 448,
-               "shbt_swarm_mmio_regs_t must occupy exactly 448 bytes (7 cache lines)");
+_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 512,
+               "shbt_swarm_mmio_regs_t must occupy exactly 512 bytes (8 cache lines)");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, abi_version) == 0x00C0,
                "abi_version offset mismatch");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, chiral_ee_q16) == 0x0100,
@@ -678,6 +702,115 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, continuous_ribbon_discretization
                "continuous_ribbon_discretization_error offset mismatch");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, qrf_superposed_sheaf_spectral_radius) == 0x01A0,
                "qrf_superposed_sheaf_spectral_radius offset mismatch");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, eddington_damping_factor) == 0x01C0,
+               "eddington_damping_factor must start at Cache Line 7 (0x01C0)");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, dark_ledger_anyon_braid_count) == 0x01E0,
+               "dark_ledger_anyon_braid_count offset mismatch");
 #endif
 
+/* ==========================================================================
+ * 256-BYTE GALACTIC HARVEST APERTURE (0x4000E000)
+ * ========================================================================== */
+#define SHBT_GALACTIC_APERTURE_ALIGNMENT  256
+#define SHBT_GALACTIC_APERTURE_MAGIC      0x534842544F4D4547ULL /* "SHBTOMEG" */
+
+#define SHBT_HARVEST_CTRL_ENABLE          (1U << 0)
+#define SHBT_HARVEST_CTRL_ISENTROPIC_LOCK (1U << 1)
+#define SHBT_HARVEST_CTRL_BZ_QUENCH       (1U << 2)
+#define SHBT_HARVEST_CTRL_MODULAR_FLOW    (1U << 3)
+#define SHBT_HARVEST_CTRL_RESET           (1U << 31)
+
+#define SHBT_HARVEST_STAT_ACTIVE          (1U << 0)
+#define SHBT_HARVEST_STAT_ERGOSPHERE_LOCK (1U << 1)
+#define SHBT_HARVEST_STAT_AREA_PRESERVED  (1U << 2)
+#define SHBT_HARVEST_STAT_JET_QUENCHED    (1U << 3)
+#define SHBT_HARVEST_STAT_ZERO_VOL_VALID  (1U << 4)
+#define SHBT_HARVEST_STAT_ERROR           (1U << 31)
+
+typedef struct __attribute__((packed)) {
+    uint32_t radial_distance_m;       /**< Fixed-point radial coordinate (meters) */
+    int16_t  polar_angle_mrad;        /**< Polar coordinate theta in milliradians */
+    int16_t  azimuth_angle_mrad;      /**< Azimuthal coordinate phi in milliradians */
+    uint16_t synthetic_shift_mhz;     /**< Shift counter-vector frequency component */
+} shbt_harvester_node_telemetry_t;
+
+_Static_assert(sizeof(shbt_harvester_node_telemetry_t) == 10,
+               "shbt_harvester_node_telemetry_t must be 10 bytes");
+
+typedef struct __attribute__((packed, aligned(SHBT_GALACTIC_APERTURE_ALIGNMENT))) {
+    /* Offset 0x00 - 0x1F: Aperture Header & Global Control (32 Bytes) */
+    uint64_t magic_id;              /**< Offset 0x00: Hardware Magic ID */
+    uint32_t control_reg;           /**< Offset 0x08: Aperture Control Register */
+    uint32_t status_reg;            /**< Offset 0x0C: Aperture Status Register */
+    uint64_t uptime_ticks;          /**< Offset 0x10: Master epoch tick counter */
+    uint32_t error_code;            /**< Offset 0x18: Detailed error diagnostic flags */
+    uint32_t firmware_revision;     /**< Offset 0x1C: Aperture microkernel revision */
+
+    /* Offset 0x20 - 0x3F: Kerr Metric & Astrodynamic Tracking (32 Bytes) */
+    double   bh_mass_kg;            /**< Offset 0x20: Tracked Black Hole Mass M */
+    double   bh_spin_dimless;       /**< Offset 0x28: Dimensionless spin a_* in [0, 1) */
+    double   horizon_radius_m;      /**< Offset 0x30: Outer Event Horizon radius r_H */
+    double   ergosurface_radius_m;  /**< Offset 0x38: Equatorial ergosurface radius r_E */
+
+    /* Offset 0x40 - 0x7F: Hexameric Constellation Array Telemetry (64 Bytes) */
+    shbt_harvester_node_telemetry_t nodes[6]; /**< 6 * 10 bytes = 60 bytes */
+    uint32_t constellation_sync_phase;        /**< Offset 0x7C: Inter-node phase sync word */
+
+    /* Offset 0x80 - 0x9F: Blandford-Znajek Jet Quencher Subsystem (32 Bytes) */
+    double   poloidal_current_amps; /**< Offset 0x80: Residual polar current I_polar */
+    double   quench_counter_pot_v;  /**< Offset 0x88: Applied synthetic counter-potential */
+    double   synthetic_impedance;   /**< Offset 0x90: Effective boundary impedance Z_load */
+    uint32_t jet_attenuation_db;    /**< Offset 0x98: Jet radiated attenuation in dB */
+    uint32_t reserved_bz;           /**< Offset 0x9C: Alignment pad */
+
+    /* Offset 0xA0 - 0xDF: Dark Ledger & Topological Injection Rail (64 Bytes) */
+    double   total_extracted_joules;/**< Offset 0xA0: Cumulative extracted exergy */
+    double   dark_ledger_joules;    /**< Offset 0xA8: Stored exergy in eta_D ledger */
+    double   grid_baseload_joules;  /**< Offset 0xB0: Exergy streamed to local grid */
+    uint64_t anyon_braid_count_lo;  /**< Offset 0xB8: Fibonacci anyon braid count (low 64) */
+    uint64_t anyon_braid_count_hi;  /**< Offset 0xC0: Fibonacci anyon braid count (high 64) */
+    uint32_t modular_flow_phase_rad;/**< Offset 0xC8: Tomita-Takesaki modular phase */
+    uint32_t dark_partition_ratio;  /**< Offset 0xCC: Fixed-point 23/33 partition lock */
+    uint64_t zero_volume_proof_hash;/**< Offset 0xD0: Topological zero-volume check hash */
+    uint64_t reserved_dark;         /**< Offset 0xD8: Reserved dark sector rail */
+
+    /* Offset 0xE0 - 0xFF: Cryptographic Audit & Hardware ECC (32 Bytes) */
+    uint8_t  hmac_signature[16];    /**< Offset 0xE0: Microkernel HMAC attestation */
+    uint64_t ecc_checksum;          /**< Offset 0xF0: Reed-Solomon memory ECC word */
+    uint64_t frame_canary;          /**< Offset 0xF8: Stack boundary protection canary */
+} shbt_galactic_aperture_mmio_t;
+
+_Static_assert(sizeof(shbt_galactic_aperture_mmio_t) == 256,
+               "SHBT ABI Error: Galactic Aperture MMIO structure must be exactly 256 bytes.");
+
+/* ==========================================================================
+ * 160-BYTE DENSE COMPACT MATTER DECONSTRUCTION APERTURE (0x00007F8000040000ULL)
+ * ========================================================================== */
+typedef struct __attribute__((packed, aligned(8))) {
+    volatile uint64_t engine_ctrl;                 /* 0x0000: Engine Master Control Register */
+    const volatile uint64_t engine_status;         /* 0x0008: Engine Status & Fault Interlock */
+    volatile uint64_t wzw_algebra_cfg;             /* 0x0010: WZW Affine Level & Slot Validation */
+    volatile uint64_t floquet_freq_mev;            /* 0x0018: Floquet Driving Frequency (MeV) */
+    volatile uint64_t floquet_debye_mass;          /* 0x0020: Dynamic Debye Screening Mass (fm^-1) */
+    const volatile uint64_t gamma_power_uw;        /* 0x0028: Radiated Prompt Gamma Power (micro-watts) */
+    volatile uint64_t central_density_kg_m3;       /* 0x0030: Monitored Central Density (kg/m^3) */
+    volatile uint64_t central_pressure_pa;         /* 0x0038: Monitored Central Pressure (Pa) */
+    const volatile uint64_t adiabatic_index_fixed; /* 0x0040: Core Gamma_1 in Q32.32 Fixed-Point */
+    volatile uint64_t mass_siphon_rate_kg_s;       /* 0x0048: Target Siphon Extraction Rate (kg/s) */
+    volatile uint64_t magnetar_b_field_tesla;      /* 0x0050: Magnetic Flux Density B (Tesla) */
+    volatile uint64_t dark_ledger_drain_ratio;     /* 0x0058: Dark Drain Efficiency (Q32.32 Fixed) */
+    const volatile int64_t  b_minus_l_accumulator; /* 0x0060: Signed (B - L) Net Disparity Count */
+    const volatile uint64_t visible_neutrino_flux; /* 0x0068: Neutrino Flux (cm^-2 s^-1) */
+    const volatile int64_t  activation_xsec_exponent; /* 0x0070: Activation Cross Section Log10(Barns) */
+    volatile uint64_t crystal_space_group;         /* 0x0078: Space Group Projector Code (e.g. 227) */
+    const volatile uint64_t peak_crystal_temp_mk;  /* 0x0080: Peak Transient Temperature (milli-Kelvin) */
+    volatile uint64_t heegaard_floer_shock_factor; /* 0x0088: Thermal Shunt Factor (100/1089) */
+    const volatile uint64_t borrmann_defect_density; /* 0x0090: Borrmann Defect Density */
+    volatile uint64_t aperture_command_trigger;    /* 0x0098: Aperture Command Trigger */
+} shbt_dense_matter_mmio_t;
+
+_Static_assert(sizeof(shbt_dense_matter_mmio_t) == 160,
+               "shbt_dense_matter_mmio_t must be exactly 160 bytes");
+
 #endif /* SHBT_SWARM_MMIO_H */
+

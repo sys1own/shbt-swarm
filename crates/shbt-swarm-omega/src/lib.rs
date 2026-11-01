@@ -12,6 +12,7 @@ pub mod smbh_siphon;
 pub mod halo_clamp;
 pub mod cross_lapse_bus;
 pub mod virial_vlasov;
+pub mod planetary_siphon;
 pub mod elysium_metric;
 pub mod gw_recoil_clamp;
 pub use gw_recoil_clamp::{
@@ -22,10 +23,14 @@ pub use gw_recoil_clamp::{
 
 pub use stellar_deconstruct::{EddingtonBypassEngine, DeconstructionError};
 pub use dynamo_brake::{DynkinBrakingRouter, DynamoError};
-pub use smbh_siphon::{KerrBlackHole, HexamericSiphonSystem, SiphonError};
+pub use smbh_siphon::{
+    BoyerLindquistCoord, HexamericHarvesterNode, HexamericSiphonSystem, KerrBlackHole,
+    SiphonError, SmbhSiphonController,
+};
 pub use halo_clamp::{HernquistDMHalo, GalacticVirialClampEngine, VirialClampError};
 pub use cross_lapse_bus::*;
 pub use virial_vlasov::*;
+pub use planetary_siphon::*;
 pub use elysium_metric::{
     compute_coriolis_acceleration, evaluate_boundary_junction_stress, evaluate_christoffel_symbols,
     evaluate_electric_weyl, evaluate_metric, evaluate_shift_curl, lapse_function, shift_vector,

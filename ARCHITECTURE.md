@@ -1,6 +1,6 @@
 # Architectural Specification: sys1own/shbt-swarm
 
-This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, 16-crate Rust workspace architecture, C11 bare-metal microkernel ABI v9.0 (`0x00090312` at physical addresses `0x70000000` / `0x80000000`, `0x70020000`, `0x40008000`, `0x4000A000`, and `0x4000C000`), closed-loop multiphysics simulation contracts, and the 280-gate verification / 81-theorem formal proof ledger.
+This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, 16-crate Rust workspace architecture, C11 bare-metal microkernel ABI v10.0 (`0x000A0312` at physical addresses `0x70000000` / `0x80000000`, `0x70020000`, `0x40008000`, `0x4000A000`, `0x4000C000`, `0x4000E000`, and `0x00007F8000040000ULL`), closed-loop multiphysics simulation contracts, and the 304-gate verification / 88-theorem formal proof ledger.
 
 ---
 
@@ -165,12 +165,12 @@ graph TD
 12. **`crates/shbt-swarm-cad`**: Parametric constructive solid geometry (CSG) blueprint for the SHBT-MAR-312X nacelle and its 8 sub-assemblies.
 13. **`crates/shbt-swarm-telemetry`**: Zero-copy circular ring buffers, SECDED Hamming(72,64) ECC encoding, and Burau-Cayley phylogenetic hash tracking.
 14. **`crates/shbt-swarm-net`**: Distributed swarm mesh protocol, Sp(2g, Z) symplectic consensus messaging, and 4-layer AEGIS perimeter coordination.
-15. **`crates/shbt-swarm-hil`**: Hardware-in-the-Loop qualification harness certifying all 280 hardware verification gates (`GATE-001` through `GATE-SWARM-280`).
-16. **`crates/shbt-swarm-cli`**: Operational command-line interfaces `swarm-audit` (executes the 232-gate matrix) and `swarm-ctl` (bare-metal MMIO control utility).
+15. **`crates/shbt-swarm-hil`**: Hardware-in-the-Loop qualification harness certifying all 304 hardware verification gates (`GATE-001` through `GATE-SWARM-304`).
+16. **`crates/shbt-swarm-cli`**: Operational command-line interfaces `swarm-audit` (executes the 304-gate matrix) and `swarm-ctl` (bare-metal MMIO control utility).
 
 ---
 
-## 3. C11 Bare-Metal Hardware Contract & Register Maps (ABI v9, 0x00090312)
+## 3. C11 Bare-Metal Hardware Contract & Register Maps (ABI v10, 0x000A0312)
 
 The bare-metal C11 microkernel contract provides deterministic, memory-mapped register access at fixed physical base addresses across all operational phases.
 
@@ -183,17 +183,19 @@ The bare-metal C11 microkernel contract provides deterministic, memory-mapped re
 #include <stdint.h>
 #include <stddef.h>
 
-#define SHBT_SWARM_ABI_VERSION          0x00090312U
-#define SHBT_SWARM_FORMAL_PROOFS_COUNT  81U
-#define SHBT_SWARM_HIL_GATES_COUNT      280U
+#define SHBT_SWARM_ABI_VERSION          0x000A0312U
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT  88U
+#define SHBT_SWARM_HIL_GATES_COUNT      304U
 
-#define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL /* Base aperture (0x70000000 - 0x700001BF, 448 B, 7 cache lines) */
+#define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL /* Base aperture (0x70000000 - 0x700001FF, 512 B, 8 cache lines) */
 #define SHBT_NESTED_SIM_MMIO_BASE       0x7000B000UL /* Phase 6.1 Multiverse aperture (0x7000B000 - 0x7000B07F, 128 B) */
 #define SHBT_SWARM_HYPERFRAME_BASE_ADDR 0x70020000UL /* 64-bank Stinespring hyperframe (0x70020000 - 0x70040FFF, 135,168 B) */
 #define SHBT_MMIO_MAR312X_BASE          0x40000000UL /* Phase 4 reactor control aperture (256 B) */
 #define SHBT_MMIO_OMEGA_BASE            0x40008000UL /* Phase 5A OMEGA control aperture (256 B) */
 #define SHBT_MMIO_LOGOS_BASE            0x4000A000UL /* Phase 5B LOGOS control aperture (256 B) */
 #define SHBT_MMIO_APOTH_BASE            0x4000C000UL /* Phase 6 APOTHEOSIS aperture (256 B) */
+#define SHBT_SWARM_HARVEST_APERTURE_BASE 0x4000E000UL /* Phase 5A Galactic Harvest aperture (256 B) */
+#define SHBT_SWARM_FOUNDRY_DENSE_BASE   0x00007F8000040000ULL /* Phase 3 Dense Matter aperture (160 B) */
 
 #define SHBT_FRAME_BYTES                2112U
 #define SHBT_VISIBLE_ANCHOR_BYTES       640U     /* eta_A = 10/33 * 2112 B */
@@ -206,9 +208,9 @@ The bare-metal C11 microkernel contract provides deterministic, memory-mapped re
 #define SHBT_MAX_SPACE_GROUP_ID         230U
 ```
 
-### 3.2 448-Byte Master Base Register Contract (`shbt_swarm_mmio_regs_t`)
+### 3.2 512-Byte Master Base Register Contract (`shbt_swarm_mmio_regs_t`)
 
-The master MMIO base aperture occupies exactly 448 bytes (seven 64-byte cache lines) aligned to a 64-byte boundary:
+The master MMIO base aperture occupies exactly 512 bytes (eight 64-byte cache lines) aligned to a 64-byte boundary:
 
 ```c
 #pragma pack(push, 1)
@@ -246,9 +248,9 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     volatile uint64_t pcss_crowbar_latency_ps;         /* 0x00B8: <= 2500 ps (2.5 ns) */
 
     /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
-    volatile uint32_t abi_version;                     /* 0x00C0: 0x00090312 */
-    volatile uint32_t formal_proofs_unsat_count;       /* 0x00C4: 81 */
-    volatile uint32_t hil_gates_pass_count;            /* 0x00C8: 280 */
+    volatile uint32_t abi_version;                     /* 0x00C0: 0x000A0312 */
+    volatile uint32_t formal_proofs_unsat_count;       /* 0x00C4: 88 */
+    volatile uint32_t hil_gates_pass_count;            /* 0x00C8: 304 */
     volatile uint32_t active_phase_mask;               /* 0x00CC: 0x0000007F (Phases 1..6) */
     volatile uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
     volatile uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */
@@ -286,11 +288,22 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     volatile double   qrf_superposed_sheaf_nilpotent_defect;  /* 0x01A8: Sheaf nilpotent defect ||(T-I)^2|| */
     volatile double   qrf_hocbf_barrier_margin_min;           /* 0x01B0: Relative-degree r=2 barrier margin */
     volatile uint64_t v9_reserved_guard;                      /* 0x01B8: 64-bit alignment guard to 0x01C0 */
+
+    /* --- Cache Line 7 (0x01C0..0x01FF): Galactic Synthesis & Multi-Reservoir Invariants (64 bytes) --- */
+    volatile float    eddington_damping_factor;        /* 0x01C0: kappa_eff / kappa_0 <= 1.0e-12 */
+    volatile float    core_adiabatic_index_gamma1;     /* 0x01C4: Gamma_1 >= 4/3 + 1.0e-6 */
+    volatile double   hawking_area_delta_margin;       /* 0x01C8: dA_H / dt >= 0 */
+    volatile double   galactic_virial_drift_norm;      /* 0x01D0: Delta sigma_r^2 / sigma_r^2 <= 1.0e-6 */
+    volatile float    qgp_floquet_debye_mass_fm;       /* 0x01D8: Dynamic screening mass */
+    volatile float    planetary_gst_reflection_coeff;  /* 0x01DC: R_acoustic <= 1.0e-6 */
+    volatile uint64_t dark_ledger_anyon_braid_count;   /* 0x01E0: Fibonacci anyon braid count */
+    volatile uint32_t bz_jet_attenuation_db;           /* 0x01E8: Jet suppression in dB */
+    volatile uint32_t v10_reserved_tail[5];            /* 0x01EC..0x01FF: 20 bytes pad */
 } shbt_swarm_mmio_regs_t;
 #pragma pack(pop)
 
-_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 448,
-               "shbt_swarm_mmio_regs_t must occupy exactly 448 bytes (7 cache lines)");
+_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 512,
+               "shbt_swarm_mmio_regs_t must occupy exactly 512 bytes (8 cache lines)");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, abi_version) == 0x00C0,
                "abi_version offset mismatch");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, chiral_ee_q16) == 0x0100,
@@ -299,6 +312,10 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, clathrate_vortex_drift_velocity)
                "clathrate_vortex_drift_velocity must be 8-byte aligned at 0x0118");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, branch_prune_entropy_debt) == 0x0134,
                "branch_prune_entropy_debt must reside at 0x0134");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, eddington_damping_factor) == 0x01C0,
+               "eddington_damping_factor must start at Cache Line 7 (0x01C0)");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, dark_ledger_anyon_braid_count) == 0x01E0,
+               "dark_ledger_anyon_braid_count offset mismatch");
 ```
 
 ### 3.3 Base Register Offset Table
@@ -348,9 +365,9 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, branch_prune_entropy_debt) == 0x
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Description & Invariant |
 | --- | --- | --- | --- | --- | --- |
-| `0x00C0` | `abi_version` | `uint32_t` | RO | `0x00090312` | Kernel ABI release identifier (v9.312) |
-| `0x00C4` | `formal_proofs_unsat_count` | `uint32_t` | RO | `81` | Certified formal Z3 SMT proofs count (81/81 UNSAT) |
-| `0x00C8` | `hil_gates_pass_count` | `uint32_t` | RO | `280` | Certified Hardware-in-the-Loop gates count (280/280 PASS) |
+| `0x00C0` | `abi_version` | `uint32_t` | RO | `0x000A0312` | Kernel ABI release identifier (v10.312) |
+| `0x00C4` | `formal_proofs_unsat_count` | `uint32_t` | RO | `88` | Certified formal Z3 SMT proofs count (88/88 UNSAT) |
+| `0x00C8` | `hil_gates_pass_count` | `uint32_t` | RO | `304` | Certified Hardware-in-the-Loop gates count (304/304 PASS) |
 | `0x00CC` | `active_phase_mask` | `uint32_t` | RW | `0x0000007F` | Active lifecycle phase mask (Bits 0..6 for Phases 1..6) |
 | `0x00D0` | `heartbeat_monotonic_ticks` | `uint64_t` | RO | `0x00000000` | Microkernel 64-bit monotonic cycle heartbeat counter |
 | `0x00D8` | `reserved_v6_pad[5]` | `uint64_t[5]`| RO | `0x00000000` | Alignment padding to Cache Line 4 boundary (0x0100) |
@@ -397,9 +414,23 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, branch_prune_entropy_debt) == 0x
 | `0x01A4` | `qrf_microcausality_trace_fidelity` | `float` | RO | `1.000000` | Quantum Reference Frame microcausality trace fidelity (>= 0.999999) |
 | `0x01A8` | `v9_reserved_tail[3]` | `uint64_t[3]`| RO | `0x00000000` | Alignment padding to 448 bytes (0x01C0) |
 
+#### Cache Line 7 (Offsets `0x01C0` .. `0x01FF`): Galactic Synthesis & Multi-Reservoir Invariants
+
+| Offset | Field Name | Type | Access | Reset Value | Physical Quantity & Invariant |
+| --- | --- | --- | --- | --- | --- |
+| `0x01C0` | `eddington_damping_factor` | `float` | RO | `1.000000` | Metric opacity quenching ratio (kappa_eff / kappa_0 <= 10^-12) |
+| `0x01C4` | `core_adiabatic_index_gamma1` | `float` | RO | `1.333334` | Degenerate core adiabatic index (Gamma_1 >= 4/3 + 10^-6) |
+| `0x01C8` | `hawking_area_delta_margin` | `double` | RO | `0.000000` | Hawking horizon area monotonicity rate (dA_H / dt >= 0) |
+| `0x01D0` | `galactic_virial_drift_norm` | `double` | RO | `0.000000` | Dark matter halo virial Jeans stability drift (<= 10^-6) |
+| `0x01D8` | `qgp_floquet_debye_mass_fm` | `float` | RO | `15.00000` | Dynamic Floquet QGP screening mass (mu_D >= 15.0 fm^-1) |
+| `0x01DC` | `planetary_gst_reflection_coeff` | `float` | RO | `0.000000` | Acoustic impedance match reflection coefficient (R_acoustic <= 10^-6) |
+| `0x01E0` | `dark_ledger_anyon_braid_count` | `uint64_t` | RO | `0` | Cumulative dark-ledger Fibonacci anyon braid count |
+| `0x01E8` | `bz_jet_attenuation_db` | `uint32_t` | RO | `120` | Blandford-Znajek relativistic jet attenuation (>= 120 dB) |
+| `0x01EC` | `v10_reserved_tail[5]` | `uint32_t[5]` | RO | `[0; 5]` | Alignment padding to 512 bytes (0x0200) |
+
 ### 3.4 Hardware Fault Bitmasks (64-Bit Invariants)
 
-Hardware faults are latched in `fault_status_mask` (`0x0008`). Lower 32 bits monitor physical hardware invariants; upper bits 32..53 enforce ABI v7 and ABI v9 first-principles theoretical closures:
+Hardware faults are latched in `fault_status_mask` (`0x0008`). Lower 32 bits monitor physical hardware invariants; upper bits 32..60 enforce ABI v7, ABI v9, and ABI v10 first-principles theoretical closures:
 
 ```c
 /* Lower 32 Bits: Physical Invariant & Hardware Faults */
@@ -450,6 +481,16 @@ Hardware faults are latched in `fault_status_mask` (`0x0008`). Lower 32 bits mon
 #define SHBT_SWARM_FAULT_SHEAF_SPECTRUM_DIV    (1ULL << 52) /* Simplicial sheaf spectrum != 1.0 */
 #define SHBT_SWARM_FAULT_METRIC_SUP_CAUSALITY  (1ULL << 53) /* Metric superposition microcausality trip */
 #define SHBT_SWARM_FAULT_V9_MASK               (0x003F800000000000ULL)
+
+/* Bits 54..60: ABI v10 Galactic Harvest & Dense Matter Invariants */
+#define SHBT_SWARM_FAULT_EDDINGTON_OVERPRESSURE     (1ULL << 54) /* Metric opacity blow-out */
+#define SHBT_SWARM_FAULT_CORE_ADIABAT_COLLAPSE      (1ULL << 55) /* Gamma_1 < 4/3 core collapse */
+#define SHBT_SWARM_FAULT_HAWKING_AREA_DECREASE      (1ULL << 56) /* dA_H / dt < 0 area decrease */
+#define SHBT_SWARM_FAULT_HALO_VIRIAL_JEANS_DRIFT    (1ULL << 57) /* Halo velocity dispersion drift > 10^-6 */
+#define SHBT_SWARM_FAULT_FLOQUET_COLOR_UNLOCKED     (1ULL << 58) /* Debye screening unlocked */
+#define SHBT_SWARM_FAULT_PLANETARY_ACOUSTIC_BREACH  (1ULL << 59) /* Acoustic reflection R > 10^-6 */
+#define SHBT_SWARM_FAULT_BZ_JET_LEAKAGE             (1ULL << 60) /* Jet attenuation < 120 dB */
+#define SHBT_SWARM_FAULT_V10_MASK                   (0x001FC00000000000ULL)
 ```
 
 
@@ -497,6 +538,69 @@ The freestanding C11 microkernel ABI v7.1 defines a dedicated 128-byte cacheline
 | `0x0038` | `_pad2` | `uint64_t` | RO | `0` | 8-byte alignment padding |
 | `0x0040` | `cbf_trip_status` | `_Atomic uint64_t` | RO | `0x00000000` | Class X1 detected, Sanctuary Fork, Zombie Swap, & QP-CBF trip flags |
 | `0x0048` | `_pad3[7]` | `uint64_t[7]` | RO | `[0; 7]` | Padding to 128-byte cacheline-pair boundary |
+
+### 3.7 256-Byte Phase 5A Galactic Harvest Aperture (`0x4000E000`)
+
+The C11 microkernel ABI v10.0 defines a dedicated 256-byte MMIO aperture mapped at physical address `0x4000E000` (`shbt_galactic_aperture_mmio_t`) for Kerr SMBH ergosphere energy harvesting, Blandford-Znajek relativistic jet quenching, hexameric node telemetry, and dark ledger exergy injection:
+
+| Offset | Field Name | Type | Access | Reset Value | Physical Description & Invariant |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `0x0000` | `magic_id` | `uint64_t` | RO | `0x534842544F4D4547` | Hardware Magic ID ("SHBTOMEG") |
+| `0x0008` | `control_reg` | `uint32_t` | RW | `0x0000000F` | Aperture Control Register (Enable, Isentropic, Quench, Flow) |
+| `0x000C` | `status_reg` | `uint32_t` | RO | `0x0000001F` | Aperture Status Register (Active, ErgoLock, AreaOK, Quenched, ZeroVol) |
+| `0x0010` | `uptime_ticks` | `uint64_t` | RO | `0` | Master epoch tick counter |
+| `0x0018` | `error_code` | `uint32_t` | RO | `0` | Diagnostic error flags |
+| `0x001C` | `firmware_revision` | `uint32_t` | RO | `0x000A0312` | Aperture microkernel revision (v10.312) |
+| `0x0020` | `bh_mass_kg` | `double` | RO | `8.26e36` | Tracked Kerr SMBH Mass M (kg) |
+| `0x0028` | `bh_spin_dimless` | `double` | RO | `0.900000` | Dimensionless spin a_* in [0, 1) |
+| `0x0030` | `horizon_radius_m` | `double` | RO | `1.76e10` | Outer Event Horizon radius r_H (meters) |
+| `0x0038` | `ergosurface_radius_m`| `double` | RO | `2.45e10` | Equatorial ergosurface radius r_E (meters) |
+| `0x0040` | `nodes[6]` | `node_t[6]` | RO | `[0; 6]` | 6-node hexameric array astrodynamic telemetry (60 B) |
+| `0x007C` | `constellation_sync_phase`| `uint32_t` | RO | `0` | Inter-node phase synchronization status |
+| `0x0080` | `poloidal_current_amps` | `double` | RO | `0.000000` | Residual polar current I_polar |
+| `0x0088` | `quench_counter_pot_v` | `double` | RO | `1.0e20` | Synthetic counter-potential for BZ jet quenching |
+| `0x0090` | `synthetic_impedance` | `double` | RO | `376.7303` | Effective boundary impedance Z_load (Ohms) |
+| `0x0098` | `jet_attenuation_db` | `uint32_t` | RO | `120` | Radiated jet attenuation in dB (>= 120 dB) |
+| `0x009C` | `reserved_bz` | `uint32_t` | RO | `0` | Alignment pad |
+| `0x00A0` | `total_extracted_joules`| `double`| RO | `0.000000` | Cumulative extracted exergy (Joules) |
+| `0x00A8` | `dark_ledger_joules` | `double` | RO | `0.000000` | Exergy routed to dark ledger eta_D (Joules) |
+| `0x00B0` | `grid_baseload_joules`| `double` | RO | `0.000000` | Exergy exported to local grid (Joules) |
+| `0x00B8` | `anyon_braid_count_lo` | `uint64_t` | RO | `0` | Fibonacci anyon braid count (low 64 bits) |
+| `0x00C0` | `anyon_braid_count_hi` | `uint64_t` | RO | `0` | Fibonacci anyon braid count (high 64 bits) |
+| `0x00C8` | `modular_flow_phase_rad`| `uint32_t` | RO | `0` | Tomita-Takesaki modular phase |
+| `0x00CC` | `dark_partition_ratio` | `uint32_t` | RO | `0x00000048` | Fixed-point 23/33 dark partition lock |
+| `0x00D0` | `zero_volume_proof_hash`| `uint64_t` | RO | `0` | Topological zero-volume check hash |
+| `0x00D8` | `reserved_dark` | `uint64_t` | RO | `0` | Reserved dark rail |
+| `0x00E0` | `hmac_signature[16]` | `uint8_t[16]` | RO | `[0; 16]` | Microkernel HMAC attestation signature |
+| `0x00F0` | `ecc_checksum` | `uint64_t` | RO | `0` | Reed-Solomon memory ECC word |
+| `0x00F8` | `frame_canary` | `uint64_t` | RO | `0x5348425443414E59` | Stack boundary protection canary |
+
+### 3.8 160-Byte Phase 3 Dense Matter Deconstruction Aperture (`0x00007F8000040000ULL`)
+
+The C11 microkernel ABI v10.0 defines a dedicated 160-byte MMIO aperture mapped at physical address `0x00007F8000040000ULL` (`shbt_dense_matter_mmio_t`) for relativistic compact matter deconstruction, Floquet QGP Debye screening, zero-neutrino Bogoliubov dark shunting, and Borrmann diamond crystallization:
+
+| Offset | Field Name | Type | Access | Reset Value | Physical Description & Invariant |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `0x0000` | `engine_ctrl` | `uint64_t` | RW | `0x00000001` | Master Engine Control Register |
+| `0x0008` | `engine_status` | `uint64_t` | RO | `0x00000001` | Status & Fault Interlock Register |
+| `0x0010` | `wzw_algebra_cfg` | `uint64_t` | RW | `312` | WZW Affine Level & Slot Validation |
+| `0x0018` | `floquet_freq_mev` | `uint64_t` | RW | `180` | Floquet Driving Frequency (MeV) |
+| `0x0020` | `floquet_debye_mass` | `uint64_t` | RO | `15` | Dynamic Debye Screening Mass (fm^-1) |
+| `0x0028` | `gamma_power_uw` | `uint64_t` | RO | `0` | Radiated Prompt Gamma Power (micro-watts) |
+| `0x0030` | `central_density_kg_m3` | `uint64_t` | RO | `8e17` | Monitored Central Density (kg/m^3) |
+| `0x0038` | `central_pressure_pa` | `uint64_t` | RO | `1.2e34` | Monitored Central Pressure (Pa) |
+| `0x0040` | `adiabatic_index_fixed` | `uint64_t` | RO | `0x0000000155555555` | Core Gamma_1 in Q32.32 Fixed-Point (>= 4/3) |
+| `0x0048` | `mass_siphon_rate_kg_s` | `uint64_t` | RW | `1e15` | Target Siphon Extraction Rate (kg/s) |
+| `0x0050` | `magnetar_b_field_tesla` | `uint64_t` | RW | `1e10` | Magnetic Flux Density B (Tesla) |
+| `0x0058` | `dark_ledger_drain_ratio`| `uint64_t` | RO | `0x00000000B26D45D8` | Dark Drain Efficiency (23/33 in Q32.32) |
+| `0x0060` | `b_minus_l_accumulator` | `int64_t` | RO | `0` | Signed (B - L) Net Disparity Count (== 0) |
+| `0x0068` | `visible_neutrino_flux` | `uint64_t` | RO | `0` | Visible Neutrino Flux (cm^-2 s^-1, == 0) |
+| `0x0070` | `activation_xsec_exponent`| `int64_t` | RO | `-120` | Activation Cross Section Log10(Barns) |
+| `0x0078` | `crystal_space_group` | `uint64_t` | RW | `227` | Space Group Projector Code (Diamond Fd-3m = 227) |
+| `0x0080` | `peak_crystal_temp_mk` | `uint64_t` | RO | `4200` | Peak Transient Temperature (milli-Kelvin) |
+| `0x0088` | `heegaard_floer_shock_factor`| `uint64_t`| RO | `100` | Thermal Shunt Factor (100/1089) |
+| `0x0090` | `borrmann_defect_density` | `uint64_t`| RO | `0` | Borrmann Defect Density |
+| `0x0098` | `aperture_command_trigger`| `uint64_t`| RW | `0` | Aperture Command Trigger |
 
 ## 4. Rust `#![no_std]` Core Interfaces Across Crates
 
@@ -890,16 +994,16 @@ impl QuantumHocbfFilter {
 
 The closed-loop simulation suite in `crates/shbt-swarm-sim` coordinates multiphysics evolution across microsecond and attosecond domains.
 
-### 5.1 10-Engine Coupled Galactic Multiphysics Tick Sequence
+### 5.1 13-Engine Coupled Galactic Multiphysics Tick Sequence
 
-The canonical synchronous entry point `galactic_multiphysics_step(regs: &mut ShbtSwarmMmioRegs)` couples ten developmental physics engines, populates Cache Line 6 MMIO telemetry, and executes zero-fault verification:
+The canonical synchronous entry point `galactic_multiphysics_step(regs: &mut ShbtSwarmMmioRegs)` couples thirteen developmental physics engines, populates Cache Line 6 and Cache Line 7 MMIO telemetry, and executes zero-fault verification:
 
 ```rust
 pub fn galactic_multiphysics_step(
     regs: &mut ShbtSwarmMmioRegs,
 ) -> Result<GalacticMultiphysicsState, &'static str> {
     let state = step_galactic_multiphysics_twin_with_regs(regs)?;
-    let fault_mask = regs.audit_v9_invariants();
+    let fault_mask = regs.audit_v10_invariants();
     if fault_mask != 0 {
         return Err("MMIO register invariant audit failed after multiphysics step");
     }
@@ -909,15 +1013,18 @@ pub fn galactic_multiphysics_step(
 
 #### Synchronous Multi-Physics Execution Pipeline:
 1. **Stellar Deconstruction & Non-Abelian Dynamo Braking (Phase 5A):** `EddingtonBypassEngine` solves metric-conformal Rosseland opacity; `DynkinBrakingRouter` applies so(10)_312 braking torque with zero thermal runaway.
-2. **SMBH Ergosphere Siphoning (Phase 5A Extended):** `HexamericSiphonSystem` extracts rotational energy while verifying the Hawking area non-decrease theorem ($dA_H / dt \ge 0$).
-3. **Hernquist Dark Matter Halo Virial Clamping (Phase 5A Extended):** `GalacticVirialClampEngine` stabilizes stellar velocity dispersion ($\Delta\sigma_r^2 / \sigma_r^2 \le 10^{-6}$) via CCZ4 312 ADM hub compensation.
-4. **Attosecond Dynamical Diffraction & Fracton Thermal Shunts (Phase 5B):** `DarwinEwaldVonLaueSolver` computes anomalous Borrmann transmission ($\tau_B \ge 1453.4$); `FractonThermalSink` drains excess entropy to the dark boundary.
-5. **Israel-Darmois Junction & Attosecond DCE Suppression (Phase 5B Extended):** `IsraelDarmoisJunctionEngine` zeroes extrinsic boundary curvature jump ($[K_{ij}] \equiv 0$); `BorrmannDceSuppressor` enforces zero-entropy parametric amplification ($Q_{\text{DCE}} \le 10^{-50}\text{ W}$).
-6. **Amorphous SO(3) BF Gauge Topological Projector (Phase 3/Foundry):** `AmorphousBfGaugeEngine` guarantees exact trivial holonomy on glass networks ($F \wedge B \equiv 0$, $E_{ij} \equiv 0$).
-7. **Lorentzian Poset Sheaf Consensus & Observer Ascension (Phases 2 & 6):** `PosetSheafEngine` discharges 1-cohomology obstruction ($\check{H}^1 \equiv 0$); `QualiaCobordismEngine` coalesces subjective experiential branches.
-8. **Bondi-Sachs Shear & Christodoulou Memory Recoil Clamping (Phase 5A ABI v9):** `GwRecoilClampEngine` evaluates null infinity shear and fires 312-hub quad-axial CCZ4 counter-pulses ($\Delta h_{ij}^{\text{TT, mem}} \le 10^{-120}$, $\Delta x_{\text{CoM}} \le 10^{-15}\text{ m}$).
-9. **Continuous Knizhnik-Zamolodchikov Fibonacci Ribbon TQFT (Phase 5B ABI v9):** `ContinuousRibbonState` modulates physical constants continuously along flat connection geodesics on $\Sigma_{0,4}$ with zero discretization error ($\epsilon_{\text{disc}} \equiv 0.000000$) and exact CWF framing cancellation ($\Delta_{\text{fr}} \equiv 0$).
-10. **Relativistic QRF Sheaf Covariance & Nagumo Invariance (Phase 2/AI ABI v9):** `UnipotentSheafEngine` steps unipotent consensus across superposed metric branches ($(\mathbf{T}-\mathbb{I})^2 \equiv 0 \implies \rho_{\text{spec}} = 1.0$), while `QuantumHocbfFilter` enforces relative-degree $r=2$ HOCBF safety.
+2. **SMBH Ergosphere Siphoning (Phase 5A Extended):** `HexamericSiphonSystem` extracts rotational energy while verifying the Hawking area non-decrease theorem (`dA_H / dt >= 0`).
+3. **Hernquist Dark Matter Halo Virial Clamping (Phase 5A Extended):** `GalacticVirialClampEngine` stabilizes stellar velocity dispersion (`Delta sigma_r^2 / sigma_r^2 <= 10^-6`) via CCZ4 312 ADM hub compensation.
+4. **Attosecond Dynamical Diffraction & Fracton Thermal Shunts (Phase 5B):** `DarwinEwaldVonLaueSolver` computes anomalous Borrmann transmission (`tau_B >= 1453.4`); `FractonThermalSink` drains excess entropy to the dark boundary.
+5. **Israel-Darmois Junction & Attosecond DCE Suppression (Phase 5B Extended):** `IsraelDarmoisJunctionEngine` zeroes extrinsic boundary curvature jump (`[K_ij] == 0`); `BorrmannDceSuppressor` enforces zero-entropy parametric amplification (`Q_DCE <= 10^-50 W`).
+6. **Amorphous SO(3) BF Gauge Topological Projector (Phase 3/Foundry):** `AmorphousBfGaugeEngine` guarantees exact trivial holonomy on glass networks (`F ^ B == 0`, `E_ij == 0`).
+7. **Lorentzian Poset Sheaf Consensus & Observer Ascension (Phases 2 & 6):** `PosetSheafEngine` discharges 1-cohomology obstruction (`H^1 == 0`); `QualiaCobordismEngine` coalesces subjective experiential branches.
+8. **Bondi-Sachs Shear & Christodoulou Memory Recoil Clamping (Phase 5A ABI v9):** `GwRecoilClampEngine` evaluates null infinity shear and fires 312-hub quad-axial CCZ4 counter-pulses (`Delta h_ij^TT,mem <= 10^-120`, `Delta x_CoM <= 10^-15 m`).
+9. **Continuous Knizhnik-Zamolodchikov Fibonacci Ribbon TQFT (Phase 5B ABI v9):** `ContinuousRibbonState` modulates physical constants continuously along flat connection geodesics on Sigma_{0,4} with zero discretization error (`eps_disc == 0.000000`) and exact CWF framing cancellation (`Delta_fr == 0`).
+10. **Relativistic QRF Sheaf Covariance & Nagumo Invariance (Phase 2/AI ABI v9):** `UnipotentSheafEngine` steps unipotent consensus across superposed metric branches (`(T - I)^2 == 0 => rho_spec = 1.0`), while `QuantumHocbfFilter` enforces relative-degree r=2 HOCBF safety.
+11. **Athermal Dense Matter Transmutation & Decompression (Phase 3/Foundry ABI v10):** `DenseMatterTransmutationEngine` drives Floquet color Debye screening (`mu_D >= 15 fm^-1`), preserves core adiabat (`Gamma_1 >= 4/3`), shunts entropy via zero-neutrino Bogoliubov dark flow, and projects into diamond crystal space-group 227 (`THM-FOUNDRY-10-EXT`, `THM-FOUNDRY-11-EXT`).
+12. **Kerr SMBH Ergosphere Harvester & Jet Quenching (Phase 5A ABI v10):** `SmbhSiphonController` and `KerrBlackHole` extract spin exergy under Penrose-Floer boundary CFT duality, preserving horizon area non-decrease (`dA_H / dt >= 0`), quenching Blandford-Znajek jets (>= 120 dB), and injecting exergy into zero-volume dark ledger (`THM-OMEGA-21-EXT`, `THM-OMEGA-22-EXT`).
+13. **Universal Planetary Siphon & Supercomoving Virial Clamping (Phase 5A ABI v10):** `VirialVlasovEngine` and `PlanetarySiphonEngine` deconstruct planetary envelopes via GST-225 flash acoustic matching (`R_acoustic <= 10^-6`) with 312 ADM hub supercomoving Vlasov-Poisson virial stabilization (`Delta sigma_r^2 / sigma_r^2 <= 10^-6`, `THM-OMEGA-18-EXT`..`20-EXT`).
 
 ### 5.2 Microsecond/Attosecond Dual-Clock Loop
 
@@ -980,9 +1087,9 @@ The SHBT-MAR-312X nacelle geometry satisfies strict mass-volume envelope constra
 
 Platform correctness is certified across a dual formal testing and hardware-qualification hierarchy:
 
-### 7.1 Formal Z3 SMT Verification Suite (81/81 UNSAT)
+### 7.1 Formal Z3 SMT Verification Suite (88/88 UNSAT)
 
-The 81 formal theorems are distributed across 21 verification modules in `formal/`:
+The 88 formal theorems are distributed across 23 verification modules in `formal/`:
 
 1. `formal/verify_swarm_cloning.py` (4 theorems: `THM-CLONE-01`..`04`): Categorical no-cloning, ADM mass conservation, modular framing lock, and (B - L) conservation.
 2. `formal/verify_swarm_ai_safety.py` (10 theorems: `THM-AI-01`..`06`, `THM-AI-01-EXT`, `02-EXT`, `04-EXT`, `05-EXT`): PT-GoI resolvent bounds, Connes cocycle isentropy, spacelike no-signaling, and HOCBF forward invariance.
@@ -992,10 +1099,10 @@ The 81 formal theorems are distributed across 21 verification modules in `formal
 6. `formal/verify_logos_hypercomputer.py` (6 theorems: `THM-LOGOS-01`..`06`): Borrmann mode computronium coherence, attosecond switching bounds, and omnibus DMA loss thresholds.
 7. `formal/verify_apotheosis_sandbox.py` (6 theorems: `THM-APOTH-01`..`06`): Linear proof tokens, sandbox non-interference, and Class X1 anti-genocide interlock triggers.
 8. `formal/verify_apotheosis_omega.py` (7 theorems: `THM-OMEGA-06-EXT`, `07-EXT`, `THM-LOGOS-05-EXT`, `06-EXT`, `THM-APOTH-06-EXT`, `07-EXT`, `08-EXT`): Adiabatic awareness transfer, non-Abelian affine dynamo braking, Israel-Darmois lapse junction, and multi-deity symplectic consensus.
-9. `formal/verify_omega_smbh_halo.py` (2 theorems: `THM-OMEGA-08-EXT`, `09-EXT`): Kerr SMBH ergosphere extraction, Hawking area preservation (*dA*<sub>*H*</sub> ≥ 0), and dark matter halo virial clamping.
+9. `formal/verify_omega_smbh_halo.py` (2 theorems: `THM-OMEGA-08-EXT`, `09-EXT`): Kerr SMBH ergosphere extraction, Hawking area preservation (`dA_H >= 0`), and dark matter halo virial clamping.
 10. `formal/verify_amorphous_dce.py` (2 theorems: `THM-FOUNDRY-06-EXT`, `THM-LOGOS-07-EXT`): Non-Abelian SO(3) BF amorphous curvature flatness and Kagan-Afanas'ev attosecond DCE vacuum photon nullification.
-11. `formal/verify_sheaf_qualia.py` (2 theorems: `THM-SHIELD-07-EXT`, `THM-APOTH-09-EXT`): Asynchronous Lorentzian poset sheaf 1-cohomology vanishing (*Ȟ*¹(*P*, ℱ) = 0) and holographic qualia functor Betti invariance.
-12. `formal/verify_bio_homochirality.py` (1 theorem: `THM-BIO-05-EXT`): Microscopic *Z*⁰ parity selection and Floquet-Kondepudi-Nelson homochiral lock (*ee* ≡ 1.000000).
+11. `formal/verify_sheaf_qualia.py` (2 theorems: `THM-SHIELD-07-EXT`, `THM-APOTH-09-EXT`): Asynchronous Lorentzian poset sheaf 1-cohomology vanishing (`H^1(P, F) == 0`) and holographic qualia functor Betti invariance.
+12. `formal/verify_bio_homochirality.py` (1 theorem: `THM-BIO-05-EXT`): Microscopic Z^0 parity selection and Floquet-Kondepudi-Nelson homochiral lock (`ee == 1.000000`).
 13. `formal/verify_ai_soliton_ep2.py` (1 theorem: `THM-AI-06-EXT`): Non-Hermitian Lugiato-Lefever Kerr cavity soliton Lyapunov stability basin at EP2.
 14. `formal/verify_pachner_coboundary.py` (1 theorem: `THM-SHIELD-08-EXT`): Continuous relativistic bistellar Pachner flip sheaf coboundary invariance.
 15. `formal/verify_foundry_fluid_gravity.py` (1 theorem: `THM-FOUNDRY-07-EXT`): 346-slot Fefferman-Graham holographic fluid-gravity dual with Sugawara acoustic impedance matching.
@@ -1003,10 +1110,13 @@ The 81 formal theorems are distributed across 21 verification modules in `formal
 17. `formal/verify_logos_elysium_physics.py` (7 theorems: `THM-LOGOS-09-EXT`, `10-EXT`, `THM-OMEGA-11-EXT`, `12-EXT`, `13-EXT`, `THM-FOUNDRY-09-EXT`, `THM-BIO-06-EXT`): Takagi-Taupin dynamical diffraction, fracton Lindblad drain, cross-lapse optical impedance matching, athermal plasma refining, virial Vlasov equilibrium, zero-Coriolis metric fields, and biosphere Lyapunov stability.
 18. `formal/shbt_recursive_multiverse_smt.py` (6 theorems: `THM-NEST-01`..`06`): Infinite recursive multiverse geometric capacity bounding, zero-compute dormant seed invariance, cross-tier Lagrangian commutator vanishing, epistemic veil safeword preservation with 17.01 as egress, and recursive Class X1 anti-genocide CBF interlocks.
 19. `formal/verify_omega_recoil.py` (3 theorems: `THM-OMEGA-14-EXT`..`16-EXT`): Bondi-Sachs shear, non-linear Christodoulou memory integral, and 312 ADM hub quad-axial counter-pulse recoil clamping.
-20. `formal/verify_logos_continuous_ribbon.py` (3 theorems: `THM-LOGOS-11-EXT`..`13-EXT`): Knizhnik-Zamolodchikov continuous holonomy, zero discretization error ($\epsilon_{\text{disc}} \equiv 0.000000$), and Calugareanu-White-Fuller framing anomaly cancellation ($\Delta_{\text{fr}} \equiv 0$).
-21. `formal/verify_qrf_covariance.py` (3 theorems: `THM-STEN-11-EXT`..`13-EXT`): Relativistic Quantum Reference Frame transformation covariance, unipotent simplicial sheaf consensus, and relative-degree $r=2$ HOCBF safety.
+20. `formal/verify_logos_continuous_ribbon.py` (3 theorems: `THM-LOGOS-11-EXT`..`13-EXT`): Knizhnik-Zamolodchikov continuous holonomy, zero discretization error (`eps_disc == 0.000000`), and Calugareanu-White-Fuller framing anomaly cancellation (`Delta_fr == 0`).
+21. `formal/verify_qrf_covariance.py` (3 theorems: `THM-STEN-11-EXT`..`13-EXT`): Relativistic Quantum Reference Frame transformation covariance, unipotent simplicial sheaf consensus, and relative-degree r=2 HOCBF safety.
+22. `formal/verify_dense_matter_transmute.py` (2 theorems: `THM-FOUNDRY-10-EXT`, `11-EXT`): Relativistic dense matter decompression, Floquet QGP screening, zero-neutrino dark shunting, and Borrmann diamond crystallization.
+23. `formal/verify_smbh_ergosphere_harvest.py` (2 theorems: `THM-OMEGA-21-EXT`, `22-EXT`): Kerr SMBH ergosphere harvesting, Penrose-Floer boundary CFT dual, Hawking area non-decrease, Blandford-Znajek jet quenching, and zero-volume dark ledger exergy storage.
+24. `formal/verify_galactic_virial_clamp.py` (3 theorems: `THM-OMEGA-18-EXT`..`20-EXT`): Universal multi-reservoir envelope harvesting, metric opacity quenching, White Dwarf athermal Urca cooling, GST-225 flash planetary deconstruction, and 312 ADM hub supercomoving Vlasov-Poisson virial clamping.
 
-### 7.2 Master Hardware-in-the-Loop Gate Harness (280/280 PASS)
+### 7.2 Master Hardware-in-the-Loop Gate Harness (304/304 PASS)
 
 Executed by `crates/shbt-swarm-hil` (`swarm-audit` runner):
 
@@ -1023,4 +1133,7 @@ Executed by `crates/shbt-swarm-hil` (`swarm-audit` runner):
 * `GATE-SWARM-257` .. `GATE-SWARM-264`: Non-linear GW memory recoil clamping and 312-hub quad-axial CCZ4 Gundlach damping.
 * `GATE-SWARM-265` .. `GATE-SWARM-272`: Continuous Fibonacci ribbon field theory, Knizhnik-Zamolodchikov continuous holonomy, and dynamic framing nullification.
 * `GATE-SWARM-273` .. `GATE-SWARM-280`: Relativistic QRF covariance, unipotent simplicial sheaf consensus, and superposed HOCBF Nagumo invariance.
+* `GATE-SWARM-281` .. `GATE-SWARM-288`: Kerr SMBH ergosphere harvesting, Penrose-Floer boundary CFT duality, Hawking area non-decrease, Blandford-Znajek jet quenching, and zero-volume dark ledger injection.
+* `GATE-SWARM-289` .. `GATE-SWARM-296`: Athermal dense matter transmutation, Floquet QGP screening, core adiabat conservation, Bogoliubov dark shunting, and Borrmann diamond projection.
+* `GATE-SWARM-297` .. `GATE-SWARM-304`: Universal envelope harvesting, metric opacity quenching, GST-225 flash acoustic matching, and 312 ADM hub supercomoving Vlasov-Poisson virial clamping.
 

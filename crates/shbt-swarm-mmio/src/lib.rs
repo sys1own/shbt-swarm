@@ -1,4 +1,4 @@
-//! `shbt-swarm-mmio`: Bare-Metal Microkernel ABI v7 (`0x00070312`) Register Specification.
+//! `shbt-swarm-mmio`: Bare-Metal Microkernel ABI v10 (`0x000A0312`) Register Specification.
 //! Zero-allocation `#![no_std]` FFI bindings matching `include/shbt_swarm_mmio.h`.
 
 #![no_std]
@@ -17,12 +17,14 @@ use shbt_swarm_core::{
 pub const SHBT_SWARM_MMIO_BASE_ADDR: u64 = 0x8000_0000;
 pub const SHBT_SWARM_STINESPRING_BASE_ADDR: u64 = 0x7002_0000;
 pub const SHBT_SWARM_STINESPRING_FRAME_BYTES: usize = 135_168;
-pub const SHBT_SWARM_ABI_VERSION: u32 = 0x0009_0312;
+pub const SHBT_SWARM_ABI_VERSION: u32 = 0x000A_0312;
 pub const SHBT_SWARM_CHANNELS_TOTAL: u32 = 312;
 pub const SHBT_SWARM_CFT_SLOTS_TOTAL: u32 = 346;
-pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 81;
-pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 280;
+pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 88;
+pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 304;
 pub const SHBT_NESTED_SIM_MMIO_BASE: u64 = 0x7000_B000;
+pub const SHBT_SWARM_HARVEST_APERTURE_BASE: u64 = 0x4000_E000;
+pub const SHBT_SWARM_FOUNDRY_DENSE_BASE: u64 = 0x0000_7F80_0004_0000;
 pub const SHBT_APOTH_EGRESS_SAFEWORD_IRQ: u32 = 0x8000_0000;
 pub const SHBT_CANONICAL_KL: u32 = 26;
 pub const SHBT_CANONICAL_KQ: u32 = 8;
@@ -49,6 +51,7 @@ pub const ABI_VERSION_V4: u32 = 0x0004_0312;
 pub const ABI_VERSION_V6: u32 = 0x0006_0312;
 pub const ABI_VERSION_V7: u32 = 0x0007_0312;
 pub const ABI_VERSION_V9: u32 = 0x0009_0312;
+pub const ABI_VERSION_V10: u32 = 0x000A_0312;
 pub const SHBT_APOTH_MMIO_BASE: usize = 0x4000_C000;
 
 // Baseline Fault Bitmasks (Bits 0..31)
@@ -81,6 +84,16 @@ pub const SHBT_SWARM_FAULT_QRF_DECOHERENCE_TRIP: u64 = 1 << 51;
 pub const SHBT_SWARM_FAULT_SHEAF_SPECTRUM_DIV: u64 = 1 << 52;
 pub const SHBT_SWARM_FAULT_METRIC_SUP_CAUSALITY: u64 = 1 << 53;
 pub const SHBT_SWARM_FAULT_V9_MASK: u64 = 0x003F_8000_0000_0000;
+
+// v10 Galactic Harvest & Dense Matter Invariant Fault Bitmasks (Bits 54..60)
+pub const SHBT_SWARM_FAULT_EDDINGTON_OVERPRESSURE: u64 = 1 << 54;
+pub const SHBT_SWARM_FAULT_CORE_ADIABAT_COLLAPSE: u64 = 1 << 55;
+pub const SHBT_SWARM_FAULT_HAWKING_AREA_DECREASE: u64 = 1 << 56;
+pub const SHBT_SWARM_FAULT_HALO_VIRIAL_JEANS_DRIFT: u64 = 1 << 57;
+pub const SHBT_SWARM_FAULT_FLOQUET_COLOR_UNLOCKED: u64 = 1 << 58;
+pub const SHBT_SWARM_FAULT_PLANETARY_ACOUSTIC_BREACH: u64 = 1 << 59;
+pub const SHBT_SWARM_FAULT_BZ_JET_LEAKAGE: u64 = 1 << 60;
+pub const SHBT_SWARM_FAULT_V10_MASK: u64 = 0x001F_C000_0000_0000;
 
 // Nominal v7 Hardware Thresholds
 pub const SHBT_SWARM_CHIRAL_EE_Q16_HOMOCHIRAL: u32 = 0x0001_0000;
@@ -162,10 +175,21 @@ pub struct ShbtSwarmMmioRegs {
     pub qrf_superposed_sheaf_spectral_radius: f32,
     pub qrf_microcausality_trace_fidelity: f32,
     pub v9_reserved_tail: [u64; 3],
+
+    // Cache Line 7 (0x01C0..0x01FF): ABI v10 Research Closures (64 bytes)
+    pub eddington_damping_factor: f32,
+    pub core_adiabatic_index_gamma1: f32,
+    pub hawking_area_delta_margin: f64,
+    pub galactic_virial_drift_norm: f64,
+    pub qgp_floquet_debye_mass_fm: f32,
+    pub planetary_gst_reflection_coeff: f32,
+    pub dark_ledger_anyon_braid_count: u64,
+    pub bz_jet_attenuation_db: u32,
+    pub v10_reserved_tail: [u32; 5],
 }
 
 const _: () = {
-    assert!(size_of::<ShbtSwarmMmioRegs>() == 448);
+    assert!(size_of::<ShbtSwarmMmioRegs>() == 512);
     assert!(align_of::<ShbtSwarmMmioRegs>() == 64);
     assert!(offset_of!(ShbtSwarmMmioRegs, abi_version) == 0x00C0);
     assert!(offset_of!(ShbtSwarmMmioRegs, chiral_ee_q16) == 0x0100);
@@ -174,6 +198,94 @@ const _: () = {
     assert!(offset_of!(ShbtSwarmMmioRegs, gw_memory_residual_strain_norm) == 0x0180);
     assert!(offset_of!(ShbtSwarmMmioRegs, continuous_ribbon_discretization_error) == 0x0190);
     assert!(offset_of!(ShbtSwarmMmioRegs, qrf_superposed_sheaf_spectral_radius) == 0x01A0);
+    assert!(offset_of!(ShbtSwarmMmioRegs, eddington_damping_factor) == 0x01C0);
+    assert!(offset_of!(ShbtSwarmMmioRegs, dark_ledger_anyon_braid_count) == 0x01E0);
+};
+
+#[repr(C, packed)]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtHarvesterNodeTelemetry {
+    pub radial_distance_m: u32,
+    pub polar_angle_mrad: i16,
+    pub azimuth_angle_mrad: i16,
+    pub synthetic_shift_mhz: u16,
+}
+
+const _: () = {
+    assert!(size_of::<ShbtHarvesterNodeTelemetry>() == 10);
+};
+
+#[repr(C, align(256))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtGalacticApertureMmioRegs {
+    pub magic_id: u64,
+    pub control_reg: u32,
+    pub status_reg: u32,
+    pub uptime_ticks: u64,
+    pub error_code: u32,
+    pub firmware_revision: u32,
+
+    pub bh_mass_kg: f64,
+    pub bh_spin_dimless: f64,
+    pub horizon_radius_m: f64,
+    pub ergosurface_radius_m: f64,
+
+    pub nodes: [ShbtHarvesterNodeTelemetry; 6],
+    pub constellation_sync_phase: u32,
+
+    pub poloidal_current_amps: f64,
+    pub quench_counter_pot_v: f64,
+    pub synthetic_impedance: f64,
+    pub jet_attenuation_db: u32,
+    pub reserved_bz: u32,
+
+    pub total_extracted_joules: f64,
+    pub dark_ledger_joules: f64,
+    pub grid_baseload_joules: f64,
+    pub anyon_braid_count_lo: u64,
+    pub anyon_braid_count_hi: u64,
+    pub modular_flow_phase_rad: u32,
+    pub dark_partition_ratio: u32,
+    pub zero_volume_proof_hash: u64,
+    pub reserved_dark: u64,
+
+    pub hmac_signature: [u8; 16],
+    pub ecc_checksum: u64,
+    pub frame_canary: u64,
+}
+
+const _: () = {
+    assert!(size_of::<ShbtGalacticApertureMmioRegs>() == 256);
+    assert!(align_of::<ShbtGalacticApertureMmioRegs>() == 256);
+};
+
+#[repr(C, align(8))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtDenseMatterMmioRegs {
+    pub engine_ctrl: u64,
+    pub engine_status: u64,
+    pub wzw_algebra_cfg: u64,
+    pub floquet_freq_mev: u64,
+    pub floquet_debye_mass: u64,
+    pub gamma_power_uw: u64,
+    pub central_density_kg_m3: u64,
+    pub central_pressure_pa: u64,
+    pub adiabatic_index_fixed: u64,
+    pub mass_siphon_rate_kg_s: u64,
+    pub magnetar_b_field_tesla: u64,
+    pub dark_ledger_drain_ratio: u64,
+    pub b_minus_l_accumulator: i64,
+    pub visible_neutrino_flux: u64,
+    pub activation_xsec_exponent: i64,
+    pub crystal_space_group: u64,
+    pub peak_crystal_temp_mk: u64,
+    pub heegaard_floer_shock_factor: u64,
+    pub borrmann_defect_density: u64,
+    pub aperture_command_trigger: u64,
+}
+
+const _: () = {
+    assert!(size_of::<ShbtDenseMatterMmioRegs>() == 160);
 };
 
 #[repr(C, align(64))]
@@ -259,12 +371,27 @@ impl ShbtSwarmMmioRegs {
             qrf_superposed_sheaf_spectral_radius: 1.0,
             qrf_microcausality_trace_fidelity: 1.0,
             v9_reserved_tail: [0; 3],
+            eddington_damping_factor: 1.0,
+            core_adiabatic_index_gamma1: 4.0 / 3.0,
+            hawking_area_delta_margin: 0.0,
+            galactic_virial_drift_norm: 0.0,
+            qgp_floquet_debye_mass_fm: 0.25,
+            planetary_gst_reflection_coeff: 0.0,
+            dark_ledger_anyon_braid_count: 0,
+            bz_jet_attenuation_db: 120,
+            v10_reserved_tail: [0; 5],
         }
     }
 
     #[inline]
     #[allow(clippy::approx_constant)]
     pub const fn new_nominal_v9() -> Self {
+        Self::new_nominal_v7()
+    }
+
+    #[inline]
+    #[allow(clippy::approx_constant)]
+    pub const fn new_nominal_v10() -> Self {
         Self::new_nominal_v7()
     }
 
@@ -335,6 +462,34 @@ impl ShbtSwarmMmioRegs {
         }
         if self.qrf_microcausality_trace_fidelity < 0.999999 || self.qrf_microcausality_trace_fidelity.is_nan() {
             faults |= SHBT_SWARM_FAULT_METRIC_SUP_CAUSALITY;
+        }
+        self.fault_status_mask |= faults;
+        faults
+    }
+
+    #[inline]
+    pub fn audit_v10_invariants(&mut self) -> u64 {
+        let mut faults = self.audit_v9_invariants();
+        if self.eddington_damping_factor < 0.0 || self.eddington_damping_factor > 1.0 || self.eddington_damping_factor.is_nan() {
+            faults |= SHBT_SWARM_FAULT_EDDINGTON_OVERPRESSURE;
+        }
+        if self.core_adiabatic_index_gamma1 < (4.0 / 3.0) || self.core_adiabatic_index_gamma1.is_nan() {
+            faults |= SHBT_SWARM_FAULT_CORE_ADIABAT_COLLAPSE;
+        }
+        if self.hawking_area_delta_margin < 0.0 || self.hawking_area_delta_margin.is_nan() {
+            faults |= SHBT_SWARM_FAULT_HAWKING_AREA_DECREASE;
+        }
+        if self.galactic_virial_drift_norm > 1.0e-12 || self.galactic_virial_drift_norm.is_nan() {
+            faults |= SHBT_SWARM_FAULT_HALO_VIRIAL_JEANS_DRIFT;
+        }
+        if self.qgp_floquet_debye_mass_fm < 0.15 || self.qgp_floquet_debye_mass_fm.is_nan() {
+            faults |= SHBT_SWARM_FAULT_FLOQUET_COLOR_UNLOCKED;
+        }
+        if self.planetary_gst_reflection_coeff > 0.05 || self.planetary_gst_reflection_coeff.is_nan() {
+            faults |= SHBT_SWARM_FAULT_PLANETARY_ACOUSTIC_BREACH;
+        }
+        if self.bz_jet_attenuation_db < 60 {
+            faults |= SHBT_SWARM_FAULT_BZ_JET_LEAKAGE;
         }
         self.fault_status_mask |= faults;
         faults
@@ -729,5 +884,32 @@ mod tests {
         let mut fault_regs2 = regs;
         fault_regs2.secular_com_drift_meters = 1.0e-12;
         assert_ne!(fault_regs2.audit_v9_invariants() & SHBT_SWARM_FAULT_COM_HALO_DRIFT_TRIP, 0);
+    }
+
+    #[test]
+    fn test_v10_nominal_and_fault_invariants() {
+        let mut regs = ShbtSwarmMmioRegs::new_nominal_v10();
+        assert_eq!(regs.abi_version, SHBT_SWARM_ABI_VERSION);
+        assert_eq!(regs.audit_v10_invariants(), SHBT_SWARM_FAULT_NONE);
+
+        let mut fault_regs = regs;
+        fault_regs.eddington_damping_factor = 1.5;
+        assert_ne!(fault_regs.audit_v10_invariants() & SHBT_SWARM_FAULT_EDDINGTON_OVERPRESSURE, 0);
+
+        let mut fault_regs2 = regs;
+        fault_regs2.core_adiabatic_index_gamma1 = 1.2;
+        assert_ne!(fault_regs2.audit_v10_invariants() & SHBT_SWARM_FAULT_CORE_ADIABAT_COLLAPSE, 0);
+
+        let mut fault_regs3 = regs;
+        fault_regs3.hawking_area_delta_margin = -0.01;
+        assert_ne!(fault_regs3.audit_v10_invariants() & SHBT_SWARM_FAULT_HAWKING_AREA_DECREASE, 0);
+
+        let mut fault_regs4 = regs;
+        fault_regs4.galactic_virial_drift_norm = 1.0e-10;
+        assert_ne!(fault_regs4.audit_v10_invariants() & SHBT_SWARM_FAULT_HALO_VIRIAL_JEANS_DRIFT, 0);
+
+        let mut fault_regs5 = regs;
+        fault_regs5.bz_jet_attenuation_db = 30;
+        assert_ne!(fault_regs5.audit_v10_invariants() & SHBT_SWARM_FAULT_BZ_JET_LEAKAGE, 0);
     }
 }
