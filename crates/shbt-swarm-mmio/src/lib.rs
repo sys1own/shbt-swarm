@@ -17,17 +17,21 @@ use shbt_swarm_core::{
 pub const SHBT_SWARM_MMIO_BASE_ADDR: u64 = 0x8000_0000;
 pub const SHBT_SWARM_STINESPRING_BASE_ADDR: u64 = 0x7002_0000;
 pub const SHBT_SWARM_STINESPRING_FRAME_BYTES: usize = 135_168;
-pub const SHBT_SWARM_ABI_VERSION: u32 = 0x0007_0312;
+pub const SHBT_SWARM_ABI_VERSION: u32 = 0x0009_0312;
 pub const SHBT_SWARM_CHANNELS_TOTAL: u32 = 312;
 pub const SHBT_SWARM_CFT_SLOTS_TOTAL: u32 = 346;
-pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 71;
-pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 240;
+pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 81;
+pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 280;
 pub const SHBT_NESTED_SIM_MMIO_BASE: u64 = 0x7000_B000;
 pub const SHBT_APOTH_EGRESS_SAFEWORD_IRQ: u32 = 0x8000_0000;
 pub const SHBT_CANONICAL_KL: u32 = 26;
 pub const SHBT_CANONICAL_KQ: u32 = 8;
 pub const SHBT_CANONICAL_K_COS: u32 = 312;
 pub const SHBT_DYNKIN_SLOTS_TOTAL: u32 = 346;
+
+pub const SHBT_SWARM_CMD_CLAMP_GW_RECOIL: u32 = 0x0000_0100;
+pub const SHBT_SWARM_CMD_ENGAGE_CONT_RIBBON: u32 = 0x0000_0200;
+pub const SHBT_SWARM_CMD_ASSERT_QRF_COVARIANCE: u32 = 0x0000_0400;
 
 pub const SHBT_CTRL_ENABLE_BIT: u64 = 1 << 0;
 pub const SHBT_CTRL_LAZY_MERA_BIT: u64 = 1 << 1;
@@ -43,6 +47,8 @@ pub const SHBT_CBF_SIM_KILL_DISABLE_BIT: u64 = 1 << 32;
 pub const MAGIC_SWRM: u32 = 0x5357_524D; // 'SWRM'
 pub const ABI_VERSION_V4: u32 = 0x0004_0312;
 pub const ABI_VERSION_V6: u32 = 0x0006_0312;
+pub const ABI_VERSION_V7: u32 = 0x0007_0312;
+pub const ABI_VERSION_V9: u32 = 0x0009_0312;
 pub const SHBT_APOTH_MMIO_BASE: usize = 0x4000_C000;
 
 // Baseline Fault Bitmasks (Bits 0..31)
@@ -64,6 +70,17 @@ pub const SHBT_SWARM_FAULT_FLUX_JUMP: u64 = 1 << 36;
 pub const SHBT_SWARM_FAULT_POYNTING_JET: u64 = 1 << 37;
 pub const SHBT_SWARM_FAULT_MOSSBAUER_DETUNE: u64 = 1 << 38;
 pub const SHBT_SWARM_FAULT_BINDING_DECOHERENCE: u64 = 1 << 39;
+pub const SHBT_SWARM_FAULT_V7_MASK: u64 = 0x0000_00FF_0000_0000;
+
+// v9 Research Extensions Fault Bitmasks (Bits 47..53)
+pub const SHBT_SWARM_FAULT_GW_MEMORY_STRAIN_TRIP: u64 = 1 << 47;
+pub const SHBT_SWARM_FAULT_COM_HALO_DRIFT_TRIP: u64 = 1 << 48;
+pub const SHBT_SWARM_FAULT_RIBBON_KZ_SINGULARITY: u64 = 1 << 49;
+pub const SHBT_SWARM_FAULT_DISCRETIZATION_NONZERO: u64 = 1 << 50;
+pub const SHBT_SWARM_FAULT_QRF_DECOHERENCE_TRIP: u64 = 1 << 51;
+pub const SHBT_SWARM_FAULT_SHEAF_SPECTRUM_DIV: u64 = 1 << 52;
+pub const SHBT_SWARM_FAULT_METRIC_SUP_CAUSALITY: u64 = 1 << 53;
+pub const SHBT_SWARM_FAULT_V9_MASK: u64 = 0x003F_8000_0000_0000;
 
 // Nominal v7 Hardware Thresholds
 pub const SHBT_SWARM_CHIRAL_EE_Q16_HOMOCHIRAL: u32 = 0x0001_0000;
@@ -133,15 +150,30 @@ pub struct ShbtSwarmMmioRegs {
     pub phenomenal_binding_purity: f32,
     pub branch_prune_entropy_debt: f32,
     pub v7_reserved_tail: u64,
+
+    // Cache Line 5 (0x0140..0x017F): ABI v8 Reserved Pad (64 bytes)
+    pub reserved_v8_pad: [u64; 8],
+
+    // Cache Line 6 (0x0180..0x01BF): ABI v9 Target Research Closures (64 bytes)
+    pub gw_memory_residual_strain_norm: f64,
+    pub secular_com_drift_meters: f64,
+    pub continuous_ribbon_discretization_error: f64,
+    pub ribbon_kz_connection_residual: f64,
+    pub qrf_superposed_sheaf_spectral_radius: f32,
+    pub qrf_microcausality_trace_fidelity: f32,
+    pub v9_reserved_tail: [u64; 3],
 }
 
 const _: () = {
-    assert!(size_of::<ShbtSwarmMmioRegs>() == 320);
+    assert!(size_of::<ShbtSwarmMmioRegs>() == 448);
     assert!(align_of::<ShbtSwarmMmioRegs>() == 64);
     assert!(offset_of!(ShbtSwarmMmioRegs, abi_version) == 0x00C0);
     assert!(offset_of!(ShbtSwarmMmioRegs, chiral_ee_q16) == 0x0100);
     assert!(offset_of!(ShbtSwarmMmioRegs, clathrate_vortex_drift_velocity) == 0x0118);
     assert!(offset_of!(ShbtSwarmMmioRegs, branch_prune_entropy_debt) == 0x0134);
+    assert!(offset_of!(ShbtSwarmMmioRegs, gw_memory_residual_strain_norm) == 0x0180);
+    assert!(offset_of!(ShbtSwarmMmioRegs, continuous_ribbon_discretization_error) == 0x0190);
+    assert!(offset_of!(ShbtSwarmMmioRegs, qrf_superposed_sheaf_spectral_radius) == 0x01A0);
 };
 
 #[repr(C, align(64))]
@@ -219,7 +251,21 @@ impl ShbtSwarmMmioRegs {
             phenomenal_binding_purity: SHBT_SWARM_BINDING_PURITY_NOMINAL,
             branch_prune_entropy_debt: SHBT_SWARM_BRANCH_ENTROPY_DEBT_ZERO,
             v7_reserved_tail: 0,
+            reserved_v8_pad: [0; 8],
+            gw_memory_residual_strain_norm: 0.0,
+            secular_com_drift_meters: 0.0,
+            continuous_ribbon_discretization_error: 0.0,
+            ribbon_kz_connection_residual: 0.0,
+            qrf_superposed_sheaf_spectral_radius: 1.0,
+            qrf_microcausality_trace_fidelity: 1.0,
+            v9_reserved_tail: [0; 3],
         }
+    }
+
+    #[inline]
+    #[allow(clippy::approx_constant)]
+    pub const fn new_nominal_v9() -> Self {
+        Self::new_nominal_v7()
     }
 
     #[inline]
@@ -264,6 +310,31 @@ impl ShbtSwarmMmioRegs {
             || self.branch_prune_entropy_debt.abs() > 0.0
         {
             faults |= SHBT_SWARM_FAULT_BINDING_DECOHERENCE;
+        }
+        self.fault_status_mask |= faults;
+        faults
+    }
+
+    #[inline]
+    pub fn audit_v9_invariants(&mut self) -> u64 {
+        let mut faults = self.audit_v7_invariants();
+        if self.gw_memory_residual_strain_norm > 1.0e-120 || self.gw_memory_residual_strain_norm.is_nan() {
+            faults |= SHBT_SWARM_FAULT_GW_MEMORY_STRAIN_TRIP;
+        }
+        if self.secular_com_drift_meters > 1.0e-15 || self.secular_com_drift_meters.is_nan() {
+            faults |= SHBT_SWARM_FAULT_COM_HALO_DRIFT_TRIP;
+        }
+        if self.ribbon_kz_connection_residual > 1.0e-120 || self.ribbon_kz_connection_residual.is_nan() {
+            faults |= SHBT_SWARM_FAULT_RIBBON_KZ_SINGULARITY;
+        }
+        if self.continuous_ribbon_discretization_error != 0.0 || self.continuous_ribbon_discretization_error.is_nan() {
+            faults |= SHBT_SWARM_FAULT_DISCRETIZATION_NONZERO;
+        }
+        if (self.qrf_superposed_sheaf_spectral_radius - 1.0).abs() > 1.0e-6 || self.qrf_superposed_sheaf_spectral_radius.is_nan() {
+            faults |= SHBT_SWARM_FAULT_SHEAF_SPECTRUM_DIV;
+        }
+        if self.qrf_microcausality_trace_fidelity < 0.999999 || self.qrf_microcausality_trace_fidelity.is_nan() {
+            faults |= SHBT_SWARM_FAULT_METRIC_SUP_CAUSALITY;
         }
         self.fault_status_mask |= faults;
         faults
@@ -643,5 +714,20 @@ mod tests {
         let mut fault_regs = regs;
         fault_regs.chiral_ee_q16 = 0;
         assert_ne!(fault_regs.audit_v7_invariants() & SHBT_SWARM_FAULT_CHIRAL_RACEMIC, 0);
+    }
+
+    #[test]
+    fn test_v9_nominal_and_fault_invariants() {
+        let mut regs = ShbtSwarmMmioRegs::new_nominal_v9();
+        assert_eq!(regs.abi_version, SHBT_SWARM_ABI_VERSION);
+        assert_eq!(regs.audit_v9_invariants(), SHBT_SWARM_FAULT_NONE);
+
+        let mut fault_regs = regs;
+        fault_regs.gw_memory_residual_strain_norm = 1.0e-50;
+        assert_ne!(fault_regs.audit_v9_invariants() & SHBT_SWARM_FAULT_GW_MEMORY_STRAIN_TRIP, 0);
+
+        let mut fault_regs2 = regs;
+        fault_regs2.secular_com_drift_meters = 1.0e-12;
+        assert_ne!(fault_regs2.audit_v9_invariants() & SHBT_SWARM_FAULT_COM_HALO_DRIFT_TRIP, 0);
     }
 }

@@ -1,6 +1,6 @@
 # Architectural Specification: sys1own/shbt-swarm
 
-This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, 16-crate Rust workspace architecture, C11 bare-metal microkernel ABI v7.1 (`0x00070312` at physical addresses `0x70000000` / `0x80000000`, `0x70020000`, `0x40008000`, `0x4000A000`, and `0x4000C000`), closed-loop multiphysics simulation contracts, and the 240-gate verification / 71-theorem formal proof ledger.
+This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, 16-crate Rust workspace architecture, C11 bare-metal microkernel ABI v9.0 (`0x00090312` at physical addresses `0x70000000` / `0x80000000`, `0x70020000`, `0x40008000`, `0x4000A000`, and `0x4000C000`), closed-loop multiphysics simulation contracts, and the 280-gate verification / 81-theorem formal proof ledger.
 
 ---
 
@@ -20,8 +20,8 @@ The platform executes an autonomous, self-similar closed-loop lifecycle spanning
 +------------------------------+-----------------------------+---------------------------------------+
 |  PHASE 4: MASS-REACTOR       PHASE 5A: OMEGA MEGASTRUCTURE PHASE 5B: LOGOS HYPER-COMPUTING         |
 |  * Compact MAR-312X Nacelle  * Hexameric Deconstructors    * 10^32-Qubit Borrmann Computronium     |
-|  * 5-Zone DEC-X Converter    * SMBH Ergosphere Siphoning   * Attosecond PT-GoI Execution           |
-|  * Superhydride Vortex Pin   * Dark Matter Virial Potentials* Attosecond DCE Vacuum Nullification  |
+|  * 5-Zone DEC-X Converter    * Zero-Coriolis Elysium Metric* Continuous Fibonacci Ribbon TQFT     |
+|  * Superhydride Vortex Pin   * Bondi-Sachs GW Recoil Clamp * Attosecond PT-GoI Execution           |
 |  * Direct Boundary CFT Bus   * 4-Layer AEGIS Perimeter     * Stark-Acceleration Compensator        |
 +------------------------------+-----------------------------+---------------------------------------+
 |                                  PHASE 6: APOTHEOSIS                                              |
@@ -154,23 +154,23 @@ graph TD
 1. **`crates/shbt-swarm-core`**: Core `#![no_std]` primitives, fixed-point Q16.16 and Q16.48 arithmetic, SIMD vector types, endian-safe serialization, and shared constants.
 2. **`crates/shbt-swarm-bio`**: Biogenic payload synthesis and molecular assembly. Contains **`floquet_homochirality.rs`** executing Floquet-Kondepudi-Nelson microscopic Z^0 electroweak parity selection and homochiral lock.
 3. **`crates/shbt-swarm-cloner`**: Autonomous Von Neumann quine replication engines implementing Pathway A (Tomita-Takesaki copy), Pathway B (Verlinde template imprint), and Pathway C (cryogenic state capture).
-4. **`crates/shbt-swarm-ai`**: 101-layer TTN-MERA holographic world model, optical PT-GoI resolvent solver, and Connes relative modular flow. Contains **`kerr_soliton_ep2.rs`** implementing non-Hermitian Lugiato-Lefever Kerr cavity soliton Lyapunov stabilization at EP2.
+4. **`crates/shbt-swarm-ai`**: 101-layer TTN-MERA holographic world model, optical PT-GoI resolvent solver, Connes relative modular flow, and **`qrf_sheaf.rs`** implementing Relativistic Quantum Reference Frame covariance under metric superposition, unipotent simplicial sheaf consensus, and relative-degree r=2 active-set QP HOCBF filtering.
 5. **`crates/shbt-swarm-shield`**: High-order control barrier functions (HOCBF) of relative degree r=2 and relativistic simplicial sheaf consensus. Contains **`pachner_coboundary.rs`** verifying unipotent parabolic shear sheaf 1-cohomology invariance under bistellar Pachner flips.
 6. **`crates/shbt-swarm-foundry`**: 346-slot continuous Dynkin router, 230-space-group Kohn-Sham lattice projector, and SO(3) BF gauge theory. Contains **`fluid_cft_dual.rs`** implementing the 346-slot Fefferman-Graham fluid-gravity dual with Sugawara acoustic impedance matching.
 7. **`crates/shbt-swarm-reactor`**: SHBT-MAR-312X mass-annihilation reactor physics, catalytic seed die, and 5-zone DEC-X converter. Contains **`clathrate_pinning.rs`** implementing Bean-Livingston surface barrier TDGL vortex creep pinning in ternary clathrate coils.
-8. **`crates/shbt-swarm-omega`**: Kardashev Type III megastructure engineering, hexameric stellar deconstructors, and Elysium biomes. Contains **`smbh_siphoning.rs`** (Kerr SMBH ergosphere Penrose siphoning under Hawking area non-decrease) and **`halo_virial.rs`** (dark matter halo CCZ4 virial potential clamping).
-9. **`crates/shbt-swarm-logos`**: Phase 5B monolithic galactic hyper-computing, 10^32-qubit computronium, and omnibus DMA fabric. Contains **`stark_compensation.rs`** implementing dynamic Lamb-Moessbauer Stark-acceleration shift cancellation and attosecond DCE nullification.
+8. **`crates/shbt-swarm-omega`**: Kardashev Type III megastructure engineering, hexameric stellar deconstructors, and Elysium biomes. Contains **`elysium_metric.rs`** (Zero-Coriolis irrotational metric splice), **`virial_vlasov.rs`** (Vlasov-Poisson kinetic re-equilibration), and **`gw_recoil_clamp.rs`** (312-hub quad-axial CCZ4 Gundlach-damped non-linear Christodoulou gravitational wave memory counter-pulse).
+9. **`crates/shbt-swarm-logos`**: Phase 5B monolithic galactic hyper-computing, 10^32-qubit computronium, and omnibus DMA fabric. Contains **`takagi_taupin.rs`** (non-Hermitian attosecond Takagi-Taupin electrodynamics), **`fracton_drain.rs`** (fracton Lindblad thermal drain), and **`continuous_ribbon.rs`** (continuous Knizhnik-Zamolodchikov flat connection Wilson flow on Sigma_{0,4} with exact framing cancellation and zero Landauer heat).
 10. **`crates/shbt-swarm-apotheosis`**: Phase 6 observer ascension, holographic qualia functor, and multi-tenant deity sandboxes. Contains **`branch_pruning.rs`** implementing unitary Everettian branch-pruning and multiverse garbage collection.
 11. **`crates/shbt-swarm-sim`**: Multiphysics closed-loop simulation twin featuring `ReactorTwin`, `HbtPicRotator`, `WarpSolitonCoupler`, and `SwarmSimEngine`.
 12. **`crates/shbt-swarm-cad`**: Parametric constructive solid geometry (CSG) blueprint for the SHBT-MAR-312X nacelle and its 8 sub-assemblies.
 13. **`crates/shbt-swarm-telemetry`**: Zero-copy circular ring buffers, SECDED Hamming(72,64) ECC encoding, and Burau-Cayley phylogenetic hash tracking.
 14. **`crates/shbt-swarm-net`**: Distributed swarm mesh protocol, Sp(2g, Z) symplectic consensus messaging, and 4-layer AEGIS perimeter coordination.
-15. **`crates/shbt-swarm-hil`**: Hardware-in-the-Loop qualification harness certifying all 232 hardware verification gates (`GATE-001` through `GATE-232`).
+15. **`crates/shbt-swarm-hil`**: Hardware-in-the-Loop qualification harness certifying all 280 hardware verification gates (`GATE-001` through `GATE-SWARM-280`).
 16. **`crates/shbt-swarm-cli`**: Operational command-line interfaces `swarm-audit` (executes the 232-gate matrix) and `swarm-ctl` (bare-metal MMIO control utility).
 
 ---
 
-## 3. C11 Bare-Metal Hardware Contract & Register Maps (ABI v7, 0x00070312)
+## 3. C11 Bare-Metal Hardware Contract & Register Maps (ABI v9, 0x00090312)
 
 The bare-metal C11 microkernel contract provides deterministic, memory-mapped register access at fixed physical base addresses across all operational phases.
 
@@ -183,11 +183,11 @@ The bare-metal C11 microkernel contract provides deterministic, memory-mapped re
 #include <stdint.h>
 #include <stddef.h>
 
-#define SHBT_SWARM_ABI_VERSION          0x00070312U
-#define SHBT_SWARM_FORMAL_PROOFS_COUNT  71U
-#define SHBT_SWARM_HIL_GATES_COUNT      240U
+#define SHBT_SWARM_ABI_VERSION          0x00090312U
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT  81U
+#define SHBT_SWARM_HIL_GATES_COUNT      280U
 
-#define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL /* Base aperture (0x70000000 - 0x7000013F, 320 B) */
+#define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL /* Base aperture (0x70000000 - 0x700001BF, 448 B, 7 cache lines) */
 #define SHBT_NESTED_SIM_MMIO_BASE       0x7000B000UL /* Phase 6.1 Multiverse aperture (0x7000B000 - 0x7000B07F, 128 B) */
 #define SHBT_SWARM_HYPERFRAME_BASE_ADDR 0x70020000UL /* 64-bank Stinespring hyperframe (0x70020000 - 0x70040FFF, 135,168 B) */
 #define SHBT_MMIO_MAR312X_BASE          0x40000000UL /* Phase 4 reactor control aperture (256 B) */
@@ -206,9 +206,9 @@ The bare-metal C11 microkernel contract provides deterministic, memory-mapped re
 #define SHBT_MAX_SPACE_GROUP_ID         230U
 ```
 
-### 3.2 320-Byte Master Base Register Contract (`shbt_swarm_mmio_regs_t`)
+### 3.2 448-Byte Master Base Register Contract (`shbt_swarm_mmio_regs_t`)
 
-The master MMIO base aperture occupies exactly 320 bytes (five 64-byte cache lines) aligned to a 64-byte boundary:
+The master MMIO base aperture occupies exactly 448 bytes (seven 64-byte cache lines) aligned to a 64-byte boundary:
 
 ```c
 #pragma pack(push, 1)
@@ -246,9 +246,9 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     volatile uint64_t pcss_crowbar_latency_ps;         /* 0x00B8: <= 2500 ps (2.5 ns) */
 
     /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
-    volatile uint32_t abi_version;                     /* 0x00C0: 0x00070312 */
-    volatile uint32_t formal_proofs_unsat_count;       /* 0x00C4: 71 */
-    volatile uint32_t hil_gates_pass_count;            /* 0x00C8: 240 */
+    volatile uint32_t abi_version;                     /* 0x00C0: 0x00090312 */
+    volatile uint32_t formal_proofs_unsat_count;       /* 0x00C4: 81 */
+    volatile uint32_t hil_gates_pass_count;            /* 0x00C8: 280 */
     volatile uint32_t active_phase_mask;               /* 0x00CC: 0x0000007F (Phases 1..6) */
     volatile uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
     volatile uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */
@@ -266,11 +266,31 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     volatile float    phenomenal_binding_purity;       /* 0x0130: Braided anyon purity == 1.0 */
     volatile float    branch_prune_entropy_debt;       /* 0x0134: Unitary prune entropy == 0.0 */
     volatile uint64_t v7_reserved_tail;                /* 0x0138: Cache-line closure to 0x0140 */
+
+    /* --- Cache Line 5 (0x0140..0x017F): Zero-Coriolis & Closed Biosphere Extension --- */
+    volatile double   elysium_pocket_lapse_alpha;      /* 0x0140: ADM lapse alpha(0) == 1.000000 */
+    volatile double   elysium_coriolis_residual_norm;  /* 0x0148: Residual Coriolis acceleration (m/s^2) */
+    volatile double   elysium_weyl_electric_norm;      /* 0x0150: Electric Weyl tensor norm E_ij */
+    volatile double   elysium_israel_splice_stress;    /* 0x0158: Israel-Darmois boundary splice stress */
+    volatile double   biosphere_lyapunov_v;            /* 0x0160: Non-equilibrium Lyapunov function V */
+    volatile double   biosphere_lyapunov_v_dot;        /* 0x0168: Lyapunov decay derivative dV/dt < 0 */
+    volatile double   biosphere_chnops_conservation_margin; /* 0x0170: CHNOPS conservation residual */
+    volatile double   biosphere_dark_shunt_flow_fraction;   /* 0x0178: Dark-ledger metabolic flow fraction */
+
+    /* --- Cache Line 6 (0x0180..0x01BF): ABI v9 Gravitational Recoil, Continuous Ribbon & QRF --- */
+    volatile double   gw_christodoulou_memory_strain_max;     /* 0x0180: Residual memory strain <= 10^-120 */
+    volatile double   sgra_secular_com_drift_m;               /* 0x0188: Sgr A* secular CoM drift <= 10^-15 m */
+    volatile double   continuous_ribbon_discretization_error; /* 0x0190: KZ holonomy error eps_disc == 0 */
+    volatile double   continuous_ribbon_internal_heat_j;      /* 0x0198: Landauer internal heat Q == 0.0 J */
+    volatile double   qrf_transformation_unitary_fidelity;    /* 0x01A0: QRF transform fidelity == 1.000000 */
+    volatile double   qrf_superposed_sheaf_nilpotent_defect;  /* 0x01A8: Sheaf nilpotent defect ||(T-I)^2|| */
+    volatile double   qrf_hocbf_barrier_margin_min;           /* 0x01B0: Relative-degree r=2 barrier margin */
+    volatile uint64_t v9_reserved_guard;                      /* 0x01B8: 64-bit alignment guard to 0x01C0 */
 } shbt_swarm_mmio_regs_t;
 #pragma pack(pop)
 
-_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 320,
-               "shbt_swarm_mmio_regs_t must occupy exactly 320 bytes (5 cache lines)");
+_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 448,
+               "shbt_swarm_mmio_regs_t must occupy exactly 448 bytes (7 cache lines)");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, abi_version) == 0x00C0,
                "abi_version offset mismatch");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, chiral_ee_q16) == 0x0100,

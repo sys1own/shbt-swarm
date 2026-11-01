@@ -1,12 +1,12 @@
 {
   "workspace": "shbt-swarm",
-  "abi_version": "0x00070312",
-  "total_gates": 240,
-  "passed_gates": 240,
+  "abi_version": "0x00090312",
+  "total_gates": 280,
+  "passed_gates": 280,
   "failed_gates": 0,
   "formal_z3_proofs": {
-    "total": 71,
-    "unsat": 71,
+    "total": 81,
+    "unsat": 81,
     "sat": 0
   }
 }

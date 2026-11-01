@@ -13,6 +13,12 @@ pub mod halo_clamp;
 pub mod cross_lapse_bus;
 pub mod virial_vlasov;
 pub mod elysium_metric;
+pub mod gw_recoil_clamp;
+pub use gw_recoil_clamp::{
+    Ccz4GundlachConfig, GwRecoilClampEngine, SymTensor3, Vector3, CANONICAL_K_HUBS,
+    DARK_LEDGER_ETA_D, G_NEWTON, MEMORY_NULL_TOLERANCE, QUADRANT_HUBS, SECULAR_COM_TOLERANCE,
+    SOLAR_MASS,
+};
 
 pub use stellar_deconstruct::{EddingtonBypassEngine, DeconstructionError};
 pub use dynamo_brake::{DynkinBrakingRouter, DynamoError};

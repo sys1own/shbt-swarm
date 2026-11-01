@@ -13,9 +13,9 @@
 #include "shbt_mmio_apotheosis.h"
 #include "shbt_nested_sim_abi.h"
 
-#define SHBT_SWARM_ABI_VERSION          0x00070312U
-#define SHBT_SWARM_FORMAL_PROOFS_COUNT  71U
-#define SHBT_SWARM_HIL_GATES_COUNT      240U
+#define SHBT_SWARM_ABI_VERSION          0x00090312U
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT  81U
+#define SHBT_SWARM_HIL_GATES_COUNT      280U
 #define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL
 #define SHBT_SWARM_HYPERFRAME_BASE_ADDR 0x70020000UL
 #define SHBT_SWARM_APOTHEOSIS_BASE_ADDR 0x4000C000UL
@@ -58,6 +58,9 @@
 /* Extended Opcodes */
 #define SHBT_SWARM_CMD_HOCBF_EVAL_FILTER           0x00200000U /* Execute r=2 QP barrier filter */
 #define SHBT_SWARM_CMD_CRYOPHONON_SHUNT_ENGAGE     0x00400000U /* Engage Diamond-GaN S=100/1089 shunt */
+#define SHBT_SWARM_CMD_CLAMP_GW_RECOIL             0x00000100U /* Phase 5A: Quad-axial recoil clamp */
+#define SHBT_SWARM_CMD_ENGAGE_CONT_RIBBON          0x00000200U /* Phase 5B: Continuous Fibonacci ribbon */
+#define SHBT_SWARM_CMD_ASSERT_QRF_COVARIANCE       0x00000400U /* Phase 2: Relativistic QRF covariance */
 #define SHBT_SWARM_CMD_EXEC_UNIV_SYNTH          0x00002000U /* Phase 3: R_univ^SWARM arbitrary matter */
 #define SHBT_SWARM_CMD_ZERO_COMP_DIRECT_RENDER  0x00004000U /* Phase 3: Delta C_post-sim = 0 render */
 #define SHBT_SWARM_CMD_MERA_DAG_INSTANCE        0x00008000U /* Phase 3: Sp(2g,Z) MERA-DAG tiling */
@@ -134,6 +137,16 @@
 #define SHBT_SWARM_FAULT_MOSSBAUER_DETUNE     (1ULL << 38)
 #define SHBT_SWARM_FAULT_BINDING_DECOHERENCE  (1ULL << 39)
 #define SHBT_SWARM_FAULT_V7_MASK              (0x000000FF00000000ULL)
+
+/* v9 Research Extensions Fault Bitmasks (Bits 47..53) */
+#define SHBT_SWARM_FAULT_GW_MEMORY_STRAIN_TRIP (1ULL << 47)
+#define SHBT_SWARM_FAULT_COM_HALO_DRIFT_TRIP   (1ULL << 48)
+#define SHBT_SWARM_FAULT_RIBBON_KZ_SINGULARITY (1ULL << 49)
+#define SHBT_SWARM_FAULT_DISCRETIZATION_NONZERO (1ULL << 50)
+#define SHBT_SWARM_FAULT_QRF_DECOHERENCE_TRIP  (1ULL << 51)
+#define SHBT_SWARM_FAULT_SHEAF_SPECTRUM_DIV    (1ULL << 52)
+#define SHBT_SWARM_FAULT_METRIC_SUP_CAUSALITY  (1ULL << 53)
+#define SHBT_SWARM_FAULT_V9_MASK               (0x003F800000000000ULL)
 
 /* v7 First-Principles Hardware Threshold Constants */
 #define SHBT_SWARM_CHIRAL_EE_Q16_HOMOCHIRAL   0x00010000U  /* 1.000000 in Q16.16 */
@@ -633,11 +646,23 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     float    phenomenal_binding_purity;       /* 0x0130: Braided anyon purity == 1.0 */
     float    branch_prune_entropy_debt;       /* 0x0134: Unitary prune entropy == 0.0 */
     uint64_t v7_reserved_tail;                /* 0x0138: Cache-line closure to 0x0140 */
+
+    /* --- Cache Line 5 (0x0140..0x017F): ABI v8 Reserved Pad (64 bytes) --- */
+    uint64_t reserved_v8_pad[8];              /* 0x0140..0x017F: 64 bytes pad */
+
+    /* === CACHELINE 6 (Offsets 0x0180 .. 0x01BF): Target Research Closures (64 bytes) === */
+    double   gw_memory_residual_strain_norm;          /* 0x0180: <= 1.0e-120 */
+    double   secular_com_drift_meters;                /* 0x0188: <= 1.0e-15 m */
+    double   continuous_ribbon_discretization_error;  /* 0x0190: == 0.000000 */
+    double   ribbon_kz_connection_residual;           /* 0x0198: <= 1.0e-120 */
+    float    qrf_superposed_sheaf_spectral_radius;    /* 0x01A0: == 1.000000 */
+    float    qrf_microcausality_trace_fidelity;       /* 0x01A4: >= 0.999999 */
+    uint64_t v9_reserved_tail[3];                     /* 0x01A8..0x01BF: 24 bytes pad */
 } shbt_swarm_mmio_regs_t;
 
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
-_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 320,
-               "shbt_swarm_mmio_regs_t must occupy exactly 320 bytes (5 cache lines)");
+_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 448,
+               "shbt_swarm_mmio_regs_t must occupy exactly 448 bytes (7 cache lines)");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, abi_version) == 0x00C0,
                "abi_version offset mismatch");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, chiral_ee_q16) == 0x0100,
@@ -646,6 +671,12 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, clathrate_vortex_drift_velocity)
                "clathrate_vortex_drift_velocity must be 8-byte aligned at 0x0118");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, branch_prune_entropy_debt) == 0x0134,
                "branch_prune_entropy_debt must reside at 0x0134");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, gw_memory_residual_strain_norm) == 0x0180,
+               "gw_memory_residual_strain_norm must start at Cache Line 6 (0x0180)");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, continuous_ribbon_discretization_error) == 0x0190,
+               "continuous_ribbon_discretization_error offset mismatch");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, qrf_superposed_sheaf_spectral_radius) == 0x01A0,
+               "qrf_superposed_sheaf_spectral_radius offset mismatch");
 #endif
 
 #endif /* SHBT_SWARM_MMIO_H */

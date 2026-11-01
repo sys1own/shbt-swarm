@@ -9,8 +9,10 @@ pub use lugiato_ep2::*;
 pub mod pt_goi_solver;
 pub mod modular_learning;
 pub mod logos_core;
+pub mod qrf_sheaf;
 
 pub use logos_core::*;
+pub use qrf_sheaf::*;
 
 pub use pt_goi_solver::{
     FixedQ32, GoIError, GoIExecutionReport, PolaritonVector, PtGoiSolver,
