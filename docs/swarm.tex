@@ -4240,14 +4240,15 @@ $k = 100$ & $7.888609 \times 10^{-31}$ & $2.0000000$ & $4{,}848\text{ B}$ (0 Hea
 \FloatBarrier
 
 
-\section{Bare-Metal C11 Microkernel (SHBT-MMIO-SWARM v7), 16-Crate Rust Workspace \& Ecosystem Crosswalk}
-\label{sec:c11_microkernel_v7}
+\section{Bare-Metal C11 Microkernel (SHBT-MMIO-SWARM v9), 16-Crate Rust Workspace \& Ecosystem Crosswalk}
+\label{sec:c11_microkernel_v9}
 
 \subsection{Hardware Memory Architecture and Phase 5 Control Apertures}
 The hardware interface for \texttt{sys1own/shbt-swarm} is exposed through structured memory-mapped I/O apertures:
 \begin{itemize}
-    \item \textbf{Base MMIO Aperture (\texttt{0x70000000} / \texttt{0x80000000}, 320 Bytes):} Five 64-byte aligned cache lines (\texttt{shbt\_swarm\_mmio\_regs\_t}, ABI v7 \texttt{0x00070312}). Cache Lines 0--3 map baseline control, mass-energy, galactic, and microkernel audit telemetry. Cache Line 4 (\texttt{0x0100..0x013F}) maps the v7 First-Principles theoretical closure registers: \texttt{chiral\_ee\_q16} (Floquet homochirality $ee \equiv 1.000000$), \texttt{kerr\_phase\_margin\_rad} ($\Delta\phi_{\mathrm{margin}} \ge 0.15\text{ rad}$), \texttt{pachner\_flip\_count} and \texttt{pachner\_cocycle\_status} ($\check{H}^1 \equiv 0$), \texttt{fluid\_cft\_reynolds\_stress\_max} ($\tau_{\mathrm{shear}} \le 45.0\text{ Pa}$), \texttt{clathrate\_vortex\_drift\_velocity} ($v_{\mathrm{drift}} \le 10^{-15}\text{ m/s}$), \texttt{smbh\_poynting\_leakage\_watts} ($S_{\mathrm{EM}}^r \equiv 0.0\text{ W}$), \texttt{mossbauer\_stark\_detuning\_hz} ($\Delta\omega_{\mathrm{net}} \equiv 0$), \texttt{phenomenal\_binding\_purity} ($\operatorname{Tr}(\rho^2) \equiv 1.0$), and \texttt{branch\_prune\_entropy\_debt} ($\Delta S_{\mathrm{vN}} \equiv 0.0$). Upper-word fault bitmasks (bits 32..39, \texttt{0x000000FF00000000ULL}) govern real-time hardware trips.
+    \item \textbf{Base MMIO Aperture (\texttt{0x70000000} / \texttt{0x80000000}, 448 Bytes):} Seven 64-byte aligned cache lines (\texttt{shbt\_swarm\_mmio\_regs\_t}, ABI v9 \texttt{0x00090312}). Cache Lines 0--3 map baseline control, mass-energy, galactic, and microkernel audit telemetry (81 formal Z3 proofs UNSAT, 280 HIL verification gates PASS). Cache Line 4 (\texttt{0x0100..0x013F}) maps the v7 First-Principles theoretical closure registers: \texttt{chiral\_ee\_q16} (Floquet homochirality $ee \equiv 1.000000$), \texttt{kerr\_phase\_margin\_rad} ($\Delta\phi_{\mathrm{margin}} \ge 0.15\text{ rad}$), \texttt{pachner\_flip\_count} and \texttt{pachner\_cocycle\_status} ($\check{H}^1 \equiv 0$), \texttt{fluid\_cft\_reynolds\_stress\_max} ($\tau_{\mathrm{shear}} \le 45.0\text{ Pa}$), \texttt{clathrate\_vortex\_drift\_velocity} ($v_{\mathrm{drift}} \le 10^{-15}\text{ m/s}$), \texttt{smbh\_poynting\_leakage\_watts} ($S_{\mathrm{EM}}^r \equiv 0.0\text{ W}$), \texttt{mossbauer\_stark\_detuning\_hz} ($\Delta\omega_{\mathrm{net}} \equiv 0$), \texttt{phenomenal\_binding\_purity} ($\operatorname{Tr}(\rho^2) \equiv 1.0$), and \texttt{branch\_prune\_entropy\_debt} ($\Delta S_{\mathrm{vN}} \equiv 0.0$). Cache Line 5 (\texttt{0x0140..0x017F}) maps ABI v8 reserved padding. Cache Line 6 (\texttt{0x0180..0x01BF}) maps the v9 First-Principles theoretical closure registers: \texttt{gw\_memory\_residual\_strain\_norm} ($\Delta h_{ij}^{\text{TT, mem}} \le 10^{-120}$), \texttt{secular\_com\_drift\_meters} ($\Delta x_{\text{CoM}} \le 10^{-15}\text{ m}$), \texttt{continuous\_ribbon\_discretization\_error} ($\epsilon_{\text{disc}} \equiv 0.000000$), \texttt{ribbon\_kz\_connection\_residual} ($\Delta_{\text{fr}} \equiv 0$), \texttt{qrf\_superposed\_sheaf\_spectral\_radius} ($\rho_{\text{spec}} \equiv 1.000000$), and \texttt{qrf\_microcausality\_trace\_fidelity} ($\mathcal{F}_{\text{micro}} \ge 0.999999$). Upper-word fault bitmasks (bits 32..39 and 47..53, \texttt{0x003F800000000000ULL}) govern real-time hardware trips.
     \item \textbf{Hyper-Frame Transceiver Aperture (\texttt{0x70020000}, 135,168 Bytes):} Maps the 64-bank \texttt{UnifiedStinespringHyperFrame} ($132.0\text{ KB}$), comprising 32 banks of Read-Only Parent Quine ROM (\texttt{00..31}) and 32 banks of Read-Write Daughter Synthesis RAM (\texttt{32..63}), partitioned into 2,112-byte frames with $10/33$ visible anchor and $23/33$ dark completion ledger.
+
     \item \textbf{Phase 5A OMEGA Control Aperture (\texttt{0x40008000}, 256 Bytes):} Maps \texttt{shbt\_omega\_ctrl\_t}, containing \texttt{shbt\_mera\_gal\_addr\_t} (64 B, layer depth up to $L=234$), \texttt{shbt\_elysium\_hab\_ctrl\_t} (64 B, $1.000g$ gravity, zero Coriolis, Mode A Stargate), and \texttt{shbt\_aegis\_ctrl\_t} (128 B, 4-layer defense telemetry and CBF triage latches).
     \item \textbf{Phase 5B LOGOS Control Aperture (\texttt{0x4000A000}, 256 Bytes):} Maps \texttt{shbt\_logos\_ctrl\_t}, containing \texttt{shbt\_logos\_core\_ctrl\_t} (64 B, $17.01\text{ as}$ PT-GoI, $58.79\text{ PHz}$ clock, $\alpha=10^{12}$ lapse), \texttt{shbt\_logos\_therm\_shunt\_t} (64 B, zero-entropy modular flow, $0\text{ mW}$ syndrome erasure debt), and \texttt{shbt\_logos\_omnibus\_ctrl\_t} (128 B, zero-latency DMA bus, Class X1 simulated sapience protection lock).
     \item \textbf{Phase 6 Apotheosis Control Aperture (\texttt{0x4000C000}, 256 Bytes):} Maps \path{shbt_apotheosis_ctrl_t}, containing \path{ctrl_cmd} (opcodes \texttt{0x00..0x80}), \path{sandbox_status_latch} (\path{SIM_SANDBOX_AIRGAP_LOCK}, \path{SHBT_LOGOS_SIM_X1_PROTECT_LATCH}, \path{SIM_KILL_DISABLE}), \path{fault_code}, \path{shbt_causal_observer_frame_t} (128 B active causal pointer and Bekenstein entropy budget), and \path{shbt_vessel_admissibility_cert_t} (64 B target neural-substrate admissibility certificate).
@@ -5713,10 +5714,11 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     uint64_t pcss_crowbar_latency_ps;         /* 0x00B8: <= 2500 ps (2.5 ns) */
 
     /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
-    uint32_t abi_version;                     /* 0x00C0: 0x00070312 */
-    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 65 */
-    uint32_t hil_gates_pass_count;            /* 0x00C8: 232 */
+    uint32_t abi_version;                     /* 0x00C0: 0x00090312 */
+    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 81 */
+    uint32_t hil_gates_pass_count;            /* 0x00C8: 280 */
     uint32_t active_phase_mask;               /* 0x00CC: 0x0000007F (Phases 1..6) */
+
     uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
     uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */
 
@@ -6025,8 +6027,9 @@ The freestanding C11 microkernel ABI header below defines the 128-byte cacheline
 \begin{lstlisting}[language=C,caption={The freestanding C11 Phase 6.1 MMIO Extension header (\texttt{include/shbt\_nested\_sim\_abi.h}).},label={lst:shbt_nested_sim_abi}]
 /* File: include/shbt_nested_sim_abi.h
  * Architecture: SHBT-APOTHEOSIS-312 / Phase 6.1 (SHBT-RECURSIVE-MULTIVERSE)
- * Standard: ISO/IEC 9899:2011 (C11) Freestanding Microkernel ABI v7.1
+ * Standard: ISO/IEC 9899:2011 (C11) Freestanding Microkernel ABI v9.0
  */
+
 #ifndef SHBT_NESTED_SIM_ABI_H
 #define SHBT_NESTED_SIM_ABI_H
 

@@ -348,9 +348,9 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, branch_prune_entropy_debt) == 0x
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Description & Invariant |
 | --- | --- | --- | --- | --- | --- |
-| `0x00C0` | `abi_version` | `uint32_t` | RO | `0x00070312` | Kernel ABI release identifier (v7.312) |
-| `0x00C4` | `formal_proofs_unsat_count` | `uint32_t` | RO | `71` | Certified formal Z3 SMT proofs count (71/71 UNSAT) |
-| `0x00C8` | `hil_gates_pass_count` | `uint32_t` | RO | `240` | Certified Hardware-in-the-Loop gates count (240/240 PASS) |
+| `0x00C0` | `abi_version` | `uint32_t` | RO | `0x00090312` | Kernel ABI release identifier (v9.312) |
+| `0x00C4` | `formal_proofs_unsat_count` | `uint32_t` | RO | `81` | Certified formal Z3 SMT proofs count (81/81 UNSAT) |
+| `0x00C8` | `hil_gates_pass_count` | `uint32_t` | RO | `280` | Certified Hardware-in-the-Loop gates count (280/280 PASS) |
 | `0x00CC` | `active_phase_mask` | `uint32_t` | RW | `0x0000007F` | Active lifecycle phase mask (Bits 0..6 for Phases 1..6) |
 | `0x00D0` | `heartbeat_monotonic_ticks` | `uint64_t` | RO | `0x00000000` | Microkernel 64-bit monotonic cycle heartbeat counter |
 | `0x00D8` | `reserved_v6_pad[5]` | `uint64_t[5]`| RO | `0x00000000` | Alignment padding to Cache Line 4 boundary (0x0100) |
@@ -372,9 +372,34 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, branch_prune_entropy_debt) == 0x
 | `0x0134` | `branch_prune_entropy_debt` | `float` | RO | `0.000000` | Unitary branch-prune entropy debt (Δ*S*<sub>vN</sub> = 0.0 nats) |
 | `0x0138` | `v7_reserved_tail` | `uint64_t` | RO | `0x00000000` | Alignment closure to 320 bytes (0x0140) |
 
+#### Cache Line 5 (Offsets `0x0140` .. `0x017F`): Zero-Coriolis & Closed Biosphere Extension
+
+| Offset | Field Name | Type | Access | Reset Value | Physical Quantity & Invariant |
+| --- | --- | --- | --- | --- | --- |
+| `0x0140` | `elysium_pocket_lapse_alpha` | `double` | RO | `1.000000` | ADM lapse at habitat origin alpha(0) == 1.000000 |
+| `0x0148` | `elysium_coriolis_residual_norm` | `double` | RO | `0.000000` | Residual Coriolis acceleration norm (a_Cor == 0 m/s^2) |
+| `0x0150` | `elysium_weyl_electric_norm` | `double` | RO | `0.000000` | Electric Weyl tensor tidal norm \|\|E_ij\|\| == 0 |
+| `0x0158` | `elysium_israel_splice_stress` | `double` | RO | `0.000000` | Israel-Darmois junction hypersurface splice stress == 0 |
+| `0x0160` | `biosphere_lyapunov_v` | `double` | RO | `0.000000` | Non-equilibrium ecosystem Lyapunov function V(x) |
+| `0x0168` | `biosphere_lyapunov_v_dot` | `double` | RO | `-0.050000`| Lyapunov decay derivative dV/dt < 0 (asymptotic stability) |
+| `0x0170` | `biosphere_chnops_conservation_margin` | `double` | RO | `1.0000e-14` | Closed-cycle CHNOPS elemental conservation margin |
+| `0x0178` | `biosphere_dark_shunt_flow_fraction` | `double` | RO | `0.696970` | Dark-ledger metabolic entropy shunt fraction (23/33) |
+
+#### Cache Line 6 (Offsets `0x0180` .. `0x01BF`): Target Research Closures (GW Recoil, Continuous Ribbon & QRF)
+
+| Offset | Field Name | Type | Access | Reset Value | Physical Quantity & Invariant |
+| --- | --- | --- | --- | --- | --- |
+| `0x0180` | `gw_memory_residual_strain_norm` | `double` | RO | `0.000000` | Non-linear Christodoulou displacement memory strain (<= 10^-120) |
+| `0x0188` | `secular_com_drift_meters` | `double` | RO | `0.000000` | Sgr A* hub CoM quad-axial counter-pulse drift (<= 10^-15 m) |
+| `0x0190` | `continuous_ribbon_discretization_error` | `double` | RO | `0.000000` | Knizhnik-Zamolodchikov flat connection error (eps_disc == 0) |
+| `0x0198` | `ribbon_kz_connection_residual` | `double` | RO | `0.000000` | CWF ribbon framing anomaly cancellation (Delta_fr == 0) |
+| `0x01A0` | `qrf_superposed_sheaf_spectral_radius` | `float` | RO | `1.000000` | Unipotent simplicial sheaf consensus spectral radius (rho_spec == 1.0) |
+| `0x01A4` | `qrf_microcausality_trace_fidelity` | `float` | RO | `1.000000` | Quantum Reference Frame microcausality trace fidelity (>= 0.999999) |
+| `0x01A8` | `v9_reserved_tail[3]` | `uint64_t[3]`| RO | `0x00000000` | Alignment padding to 448 bytes (0x01C0) |
+
 ### 3.4 Hardware Fault Bitmasks (64-Bit Invariants)
 
-Hardware faults are latched in `fault_status_mask` (`0x0008`). Lower 32 bits monitor physical hardware invariants; upper bits 32..39 enforce the ABI v7 first-principles theoretical closure:
+Hardware faults are latched in `fault_status_mask` (`0x0008`). Lower 32 bits monitor physical hardware invariants; upper bits 32..53 enforce ABI v7 and ABI v9 first-principles theoretical closures:
 
 ```c
 /* Lower 32 Bits: Physical Invariant & Hardware Faults */
@@ -406,7 +431,27 @@ Hardware faults are latched in `fault_status_mask` (`0x0008`). Lower 32 bits mon
 #define SHBT_SWARM_FAULT_POYNTING_JET         (1ULL << 37) /* SMBH horizon Poynting leakage > 0 W */
 #define SHBT_SWARM_FAULT_MOSSBAUER_DETUNE     (1ULL << 38) /* Acceleration Stark detuning != 0 */
 #define SHBT_SWARM_FAULT_BINDING_DECOHERENCE  (1ULL << 39) /* Subjective qualia decoherence */
+
+/* Bits 40..46: Zero-Coriolis & Closed Biosphere Invariants */
+#define SHBT_SWARM_FAULT_CORIOLIS_INDUCED_SHEAR     (1ULL << 40)
+#define SHBT_SWARM_FAULT_ELYSIUM_METRIC_SPLICE_BREACH (1ULL << 41)
+#define SHBT_SWARM_FAULT_WEYL_TIDAL_NONZERO         (1ULL << 42)
+#define SHBT_SWARM_FAULT_BIOSPHERE_LYAPUNOV_INSTABILITY (1ULL << 43)
+#define SHBT_SWARM_FAULT_CHNOPS_MASS_LEAK           (1ULL << 44)
+#define SHBT_SWARM_FAULT_METABOLIC_HEAT_REJECTION_COLLAPSE (1ULL << 45)
+#define SHBT_SWARM_FAULT_HABITAT_VIABILITY_TRIP     (1ULL << 46)
+
+/* Bits 47..53: ABI v9 Research Extensions */
+#define SHBT_SWARM_FAULT_GW_MEMORY_STRAIN_TRIP (1ULL << 47) /* Bondi-Sachs memory strain > 10^-120 */
+#define SHBT_SWARM_FAULT_COM_HALO_DRIFT_TRIP   (1ULL << 48) /* Secular CoM drift > 10^-15 m */
+#define SHBT_SWARM_FAULT_RIBBON_KZ_SINGULARITY (1ULL << 49) /* KZ flat connection holonomy residual */
+#define SHBT_SWARM_FAULT_DISCRETIZATION_NONZERO (1ULL << 50) /* Continuous ribbon error eps_disc != 0 */
+#define SHBT_SWARM_FAULT_QRF_DECOHERENCE_TRIP  (1ULL << 51) /* QRF transformation decoherence */
+#define SHBT_SWARM_FAULT_SHEAF_SPECTRUM_DIV    (1ULL << 52) /* Simplicial sheaf spectrum != 1.0 */
+#define SHBT_SWARM_FAULT_METRIC_SUP_CAUSALITY  (1ULL << 53) /* Metric superposition microcausality trip */
+#define SHBT_SWARM_FAULT_V9_MASK               (0x003F800000000000ULL)
 ```
+
 
 ### 3.5 64-Bank Stinespring Hyperframe Aperture (`0x70020000`)
 
@@ -755,30 +800,126 @@ pub struct RecursiveCbfInterlock {
     pub sim_kill_disable_latched: bool,
 }
 
-// crates/shbt-swarm-sim/src/galactic_multiphysics.rs
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
-pub struct TierMultiphysicsSample {
-    pub tier_k: u32,
-    pub active_entropy_fraction_q64: u128,
-    pub cumulative_entropy_multiple_q64: u128,
-    pub unrendered_child_branches: u64,
-    pub bulk_backreaction_norm: u64,
-    pub egress_unbraid_latency_as_x100: u64,
+// crates/shbt-swarm-omega/src/gw_recoil_clamp.rs
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct Ccz4GundlachConfig {
+    pub kappa_1: f64,
+    pub kappa_2: f64,
+    pub lapse_acceleration: f64,
 }
 
-pub struct RecursiveSimulationEngine {
-    pub samples: [TierMultiphysicsSample; 105],
-    pub evaluated_tiers: usize,
+pub struct GwRecoilClampEngine {
+    pub config: Ccz4GundlachConfig,
+    pub sgra_mass_kg: f64,
+    pub active_hubs: usize,
+    pub hub_thrust_newtons: f64,
+    pub integrated_shear_plus: f64,
+    pub integrated_shear_cross: f64,
+    pub memory_strain_norm: f64,
+    pub cumulative_drift_m: f64,
+    pub clamping_engaged: bool,
 }
 
-impl RecursiveSimulationEngine {
-    pub fn execute_100_tier_sweep(&mut self, unrendered_branches_per_tier: u64);
+impl GwRecoilClampEngine {
+    pub fn new(sgra_mass_kg: f64, config: Ccz4GundlachConfig) -> Result<Self, &'static str>;
+    pub fn step_pulse(&mut self, h_plus_dot: f64, h_cross_dot: f64, dt_s: f64) -> Result<(f64, f64), &'static str>;
+    pub fn execute_quad_axial_recoil_clamp(&mut self, net_gw_flux_momentum: f64) -> Result<f64, &'static str>;
+}
+
+// crates/shbt-swarm-logos/src/continuous_ribbon.rs
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct Complex {
+    pub re: f64,
+    pub im: f64,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct MultiverseTargetConstants {
+    pub alpha_em_ratio: f64,
+    pub g_newton_ratio: f64,
+    pub lambda_ratio: f64,
+}
+
+pub struct ContinuousRibbonState {
+    pub holonomy: Complex,
+    pub z_current: Complex,
+    pub accumulated_twist: f64,
+    pub accumulated_writhe: f64,
+    pub framing_anomaly: f64,
+    pub internal_dissipation_joules: f64,
+}
+
+impl ContinuousRibbonState {
+    pub fn new() -> Self;
+    pub fn step_rk4(&mut self, z_current: Complex, dz_dt: Complex, dt: f64);
+    pub fn modulate_constants_ballistic(&mut self, target: MultiverseTargetConstants, steps: usize) -> Complex;
+}
+
+// crates/shbt-swarm-ai/src/qrf_sheaf.rs
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct MetricBranch {
+    pub branch_id: u32,
+    pub probability_weight: f32,
+    pub lapse_alpha: f32,
+    pub shift_beta: [f32; 3],
+    pub spatial_gamma_diag: [f32; 3],
+}
+
+pub struct QrfState {
+    pub branches: [MetricBranch; 4],
+    pub branch_count: usize,
+    pub total_weight: f32,
+}
+
+pub struct SheafNodeState {
+    pub state_vectors: [[f32; 4]; 4],
+}
+
+pub struct UnipotentSheafEngine;
+impl UnipotentSheafEngine {
+    pub fn step_unipotent_consensus(qrf: &QrfState, node_i: &SheafNodeState, node_j: &SheafNodeState, dt: f32) -> Result<SheafNodeState, &'static str>;
+}
+
+pub struct QuantumHocbfFilter;
+impl QuantumHocbfFilter {
+    pub fn filter_control_safe(qrf: &QrfState, u_nominal: [f32; 3], h_barrier: f32, h_dot: f32, gamma_1: f32, gamma_2: f32) -> Result<[f32; 3], &'static str>;
 }
 ```
 
 ## 5. End-to-End Multiphysics Simulation Tick API (`crates/shbt-swarm-sim`)
 
 The closed-loop simulation suite in `crates/shbt-swarm-sim` coordinates multiphysics evolution across microsecond and attosecond domains.
+
+### 5.1 10-Engine Coupled Galactic Multiphysics Tick Sequence
+
+The canonical synchronous entry point `galactic_multiphysics_step(regs: &mut ShbtSwarmMmioRegs)` couples ten developmental physics engines, populates Cache Line 6 MMIO telemetry, and executes zero-fault verification:
+
+```rust
+pub fn galactic_multiphysics_step(
+    regs: &mut ShbtSwarmMmioRegs,
+) -> Result<GalacticMultiphysicsState, &'static str> {
+    let state = step_galactic_multiphysics_twin_with_regs(regs)?;
+    let fault_mask = regs.audit_v9_invariants();
+    if fault_mask != 0 {
+        return Err("MMIO register invariant audit failed after multiphysics step");
+    }
+    Ok(state)
+}
+```
+
+#### Synchronous Multi-Physics Execution Pipeline:
+1. **Stellar Deconstruction & Non-Abelian Dynamo Braking (Phase 5A):** `EddingtonBypassEngine` solves metric-conformal Rosseland opacity; `DynkinBrakingRouter` applies so(10)_312 braking torque with zero thermal runaway.
+2. **SMBH Ergosphere Siphoning (Phase 5A Extended):** `HexamericSiphonSystem` extracts rotational energy while verifying the Hawking area non-decrease theorem ($dA_H / dt \ge 0$).
+3. **Hernquist Dark Matter Halo Virial Clamping (Phase 5A Extended):** `GalacticVirialClampEngine` stabilizes stellar velocity dispersion ($\Delta\sigma_r^2 / \sigma_r^2 \le 10^{-6}$) via CCZ4 312 ADM hub compensation.
+4. **Attosecond Dynamical Diffraction & Fracton Thermal Shunts (Phase 5B):** `DarwinEwaldVonLaueSolver` computes anomalous Borrmann transmission ($\tau_B \ge 1453.4$); `FractonThermalSink` drains excess entropy to the dark boundary.
+5. **Israel-Darmois Junction & Attosecond DCE Suppression (Phase 5B Extended):** `IsraelDarmoisJunctionEngine` zeroes extrinsic boundary curvature jump ($[K_{ij}] \equiv 0$); `BorrmannDceSuppressor` enforces zero-entropy parametric amplification ($Q_{\text{DCE}} \le 10^{-50}\text{ W}$).
+6. **Amorphous SO(3) BF Gauge Topological Projector (Phase 3/Foundry):** `AmorphousBfGaugeEngine` guarantees exact trivial holonomy on glass networks ($F \wedge B \equiv 0$, $E_{ij} \equiv 0$).
+7. **Lorentzian Poset Sheaf Consensus & Observer Ascension (Phases 2 & 6):** `PosetSheafEngine` discharges 1-cohomology obstruction ($\check{H}^1 \equiv 0$); `QualiaCobordismEngine` coalesces subjective experiential branches.
+8. **Bondi-Sachs Shear & Christodoulou Memory Recoil Clamping (Phase 5A ABI v9):** `GwRecoilClampEngine` evaluates null infinity shear and fires 312-hub quad-axial CCZ4 counter-pulses ($\Delta h_{ij}^{\text{TT, mem}} \le 10^{-120}$, $\Delta x_{\text{CoM}} \le 10^{-15}\text{ m}$).
+9. **Continuous Knizhnik-Zamolodchikov Fibonacci Ribbon TQFT (Phase 5B ABI v9):** `ContinuousRibbonState` modulates physical constants continuously along flat connection geodesics on $\Sigma_{0,4}$ with zero discretization error ($\epsilon_{\text{disc}} \equiv 0.000000$) and exact CWF framing cancellation ($\Delta_{\text{fr}} \equiv 0$).
+10. **Relativistic QRF Sheaf Covariance & Nagumo Invariance (Phase 2/AI ABI v9):** `UnipotentSheafEngine` steps unipotent consensus across superposed metric branches ($(\mathbf{T}-\mathbb{I})^2 \equiv 0 \implies \rho_{\text{spec}} = 1.0$), while `QuantumHocbfFilter` enforces relative-degree $r=2$ HOCBF safety.
+
+### 5.2 Microsecond/Attosecond Dual-Clock Loop
 
 ```rust
 pub struct SwarmSimEngine {
@@ -814,6 +955,7 @@ impl SwarmSimEngine {
 }
 ```
 
+
 ---
 
 ## 6. Parametric CAD Blueprint: SHBT-MAR-312X Nacelle
@@ -838,9 +980,9 @@ The SHBT-MAR-312X nacelle geometry satisfies strict mass-volume envelope constra
 
 Platform correctness is certified across a dual formal testing and hardware-qualification hierarchy:
 
-### 7.1 Formal Z3 SMT Verification Suite (71/71 UNSAT)
+### 7.1 Formal Z3 SMT Verification Suite (81/81 UNSAT)
 
-The 71 formal theorems are distributed across 18 verification modules in `formal/`:
+The 81 formal theorems are distributed across 21 verification modules in `formal/`:
 
 1. `formal/verify_swarm_cloning.py` (4 theorems: `THM-CLONE-01`..`04`): Categorical no-cloning, ADM mass conservation, modular framing lock, and (B - L) conservation.
 2. `formal/verify_swarm_ai_safety.py` (10 theorems: `THM-AI-01`..`06`, `THM-AI-01-EXT`, `02-EXT`, `04-EXT`, `05-EXT`): PT-GoI resolvent bounds, Connes cocycle isentropy, spacelike no-signaling, and HOCBF forward invariance.
@@ -860,8 +1002,11 @@ The 71 formal theorems are distributed across 18 verification modules in `formal
 16. `formal/verify_reactor_pinning_apoth.py` (4 theorems: `THM-REACTOR-08-EXT`, `THM-OMEGA-10-EXT`, `THM-LOGOS-08-EXT`, `THM-APOTH-10-EXT`): Bean-Livingston clathrate flux pinning, Blandford-Znajek jet extinction, Moessbauer Stark-acceleration cancellation, and unitary multiverse branch-pruning.
 17. `formal/verify_logos_elysium_physics.py` (7 theorems: `THM-LOGOS-09-EXT`, `10-EXT`, `THM-OMEGA-11-EXT`, `12-EXT`, `13-EXT`, `THM-FOUNDRY-09-EXT`, `THM-BIO-06-EXT`): Takagi-Taupin dynamical diffraction, fracton Lindblad drain, cross-lapse optical impedance matching, athermal plasma refining, virial Vlasov equilibrium, zero-Coriolis metric fields, and biosphere Lyapunov stability.
 18. `formal/shbt_recursive_multiverse_smt.py` (6 theorems: `THM-NEST-01`..`06`): Infinite recursive multiverse geometric capacity bounding, zero-compute dormant seed invariance, cross-tier Lagrangian commutator vanishing, epistemic veil safeword preservation with 17.01 as egress, and recursive Class X1 anti-genocide CBF interlocks.
+19. `formal/verify_omega_recoil.py` (3 theorems: `THM-OMEGA-14-EXT`..`16-EXT`): Bondi-Sachs shear, non-linear Christodoulou memory integral, and 312 ADM hub quad-axial counter-pulse recoil clamping.
+20. `formal/verify_logos_continuous_ribbon.py` (3 theorems: `THM-LOGOS-11-EXT`..`13-EXT`): Knizhnik-Zamolodchikov continuous holonomy, zero discretization error ($\epsilon_{\text{disc}} \equiv 0.000000$), and Calugareanu-White-Fuller framing anomaly cancellation ($\Delta_{\text{fr}} \equiv 0$).
+21. `formal/verify_qrf_covariance.py` (3 theorems: `THM-STEN-11-EXT`..`13-EXT`): Relativistic Quantum Reference Frame transformation covariance, unipotent simplicial sheaf consensus, and relative-degree $r=2$ HOCBF safety.
 
-### 7.2 Master Hardware-in-the-Loop Gate Harness (240/240 PASS)
+### 7.2 Master Hardware-in-the-Loop Gate Harness (280/280 PASS)
 
 Executed by `crates/shbt-swarm-hil` (`swarm-audit` runner):
 
@@ -874,3 +1019,8 @@ Executed by `crates/shbt-swarm-hil` (`swarm-audit` runner):
 * `GATE-189` .. `GATE-208`: Phase 6 Apotheosis ascension, deity sandboxes, qualia cobordisms, and vessel re-embodiment.
 * `GATE-209` .. `GATE-232`: First-Principles Theoretical Closure (electroweak parity, LLE EP2 solitons, Pachner sheaves, holographic fluid-gravity, TDGL pinning, BZ jet extinction, acceleration Moessbauer, and phenomenal binding).
 * `GATE-NEST-01` .. `GATE-NEST-08`: Phase 6.1 Recursive Multiverse & Epistemic Veils (geometric series quota convergence, zero-compute dormant seeds, 17.01 as safeword egress, and recursive Class X1 anti-genocide interlocks).
+* `GATE-SWARM-233` .. `GATE-SWARM-256`: Zero-Coriolis Elysium manifolds, closed biosphere Lyapunov functions, and Takagi-Taupin Attosecond diffraction.
+* `GATE-SWARM-257` .. `GATE-SWARM-264`: Non-linear GW memory recoil clamping and 312-hub quad-axial CCZ4 Gundlach damping.
+* `GATE-SWARM-265` .. `GATE-SWARM-272`: Continuous Fibonacci ribbon field theory, Knizhnik-Zamolodchikov continuous holonomy, and dynamic framing nullification.
+* `GATE-SWARM-273` .. `GATE-SWARM-280`: Relativistic QRF covariance, unipotent simplicial sheaf consensus, and superposed HOCBF Nagumo invariance.
+

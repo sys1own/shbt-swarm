@@ -279,18 +279,19 @@ impl QuantumHocbfFilter {
 }
 
 fn libm_sin(x: QReal) -> QReal {
-    let x_mod = x % (2.0 * 3.141592653589793);
+    let x_mod = x % (2.0 * core::f64::consts::PI);
     let x3 = x_mod * x_mod * x_mod;
     let x5 = x3 * x_mod * x_mod;
     x_mod - (x3 / 6.0) + (x5 / 120.0)
 }
 
 fn libm_cos(x: QReal) -> QReal {
-    let x_mod = x % (2.0 * 3.141592653589793);
+    let x_mod = x % (2.0 * core::f64::consts::PI);
     let x2 = x_mod * x_mod;
     let x4 = x2 * x2;
     1.0 - (x2 / 2.0) + (x4 / 24.0)
 }
+
 
 #[cfg(test)]
 mod tests {

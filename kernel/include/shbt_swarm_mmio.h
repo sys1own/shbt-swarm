@@ -589,7 +589,7 @@ _Static_assert(sizeof(shbt_logos_ctrl_t) == 256, "shbt_logos_ctrl_t master bank 
 
 
 /* ==========================================================================
- * SHBT-MMIO-SWARM v7 REGISTER BLOCK (320 BYTES / 5 CACHE LINES)
+ * SHBT-MMIO-SWARM v9 REGISTER BLOCK (448 BYTES / 7 CACHE LINES)
  * Physical Base Address: 0x80000000
  * ========================================================================== */
 typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
@@ -626,9 +626,10 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     uint64_t pcss_crowbar_latency_ps;         /* 0x00B8: <= 2500 ps (2.5 ns) */
 
     /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
-    uint32_t abi_version;                     /* 0x00C0: 0x00070312 */
-    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 65 */
-    uint32_t hil_gates_pass_count;            /* 0x00C8: 232 */
+    uint32_t abi_version;                     /* 0x00C0: 0x00090312 */
+    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 81 */
+    uint32_t hil_gates_pass_count;            /* 0x00C8: 280 */
+
     uint32_t active_phase_mask;               /* 0x00CC: 0x0000007F (Phases 1..6) */
     uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
     uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */

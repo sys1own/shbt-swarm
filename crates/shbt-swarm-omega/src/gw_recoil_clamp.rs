@@ -74,9 +74,8 @@ impl SymTensor3 {
     }
 
     #[inline(always)]
-
-
     pub fn scale(&self, s: f64) -> Self {
+
   Self {
       xx: self.xx * s,
       xy: self.xy * s,
@@ -119,9 +118,8 @@ impl SymTensor3 {
 /// 3D Vector Representation
 #[derive(Copy, Clone, Debug, Default, PartialEq)]
 #[repr(C, align(32))]
-
-
 pub struct Vector3 {
+
     pub x: f64,
     pub y: f64,
     pub z: f64,
@@ -511,8 +509,8 @@ fn cos_series(rad: f64) -> f64 {
 #[cfg(test)]
 mod tests {
     extern crate std;
-    use std::println;
     use super::*;
+
 
     #[test]
     fn test_gw_recoil_clamp_initialization() {

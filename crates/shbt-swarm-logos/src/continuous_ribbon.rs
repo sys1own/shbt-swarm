@@ -15,7 +15,10 @@
 //! Environment: #![no_std] bare-metal microkernel execution.
 //! ============================================================================
 
+#![allow(clippy::excessive_precision, clippy::approx_constant, clippy::should_implement_trait)]
+
 use core::f64::consts::PI;
+
 
 /// Golden ratio constant phi = (1 + sqrt(5)) / 2
 pub const PHI: f64 = 1.61803398874989484820;

@@ -62,11 +62,17 @@ The architecture unites seven developmental phases into a binary-compatible C11 
 | **Phase 5A** (`shbt-swarm-omega`) | `THM-OMEGA-10-EXT` | Metric-conformal horizon phase lock (Ω<sub>F</sub> ≡ ω) extinguishing Blandford–Znajek jets | P<sub>BZ</sub><sup>jet</sup> ≡ 0.0 W, dA<sub>H</sub> / dt ≥ 0 | `GATE-224`–`GATE-226` |
 | **Phase 5B** (`shbt-swarm-logos`) | `THM-LOGOS-08-EXT` | Quadratic electro-optic Stark/Zeeman compensation of <sup>57</sup>Fe Mössbauer Doppler detuning | Δω<sub>acc</sub> + Δω<sub>tune</sub> ≡ 0, τ<sub>B</sub> ≥ 1453.4 | `GATE-227`–`GATE-229` |
 | **Phase 6** (`shbt-swarm-apotheosis`) | `THM-APOTH-10-EXT`<br>`THM-APOTH-11-EXT` | Braided Fibonacci anyonic phenomenal binding & unitary Householder–Givens historical branch coalescence | Tr(ρ<sup>2</sup>) ≡ 1.0, ΔS<sub>vN</sub> ≡ 0, ΔF<sub>ego</sub> ≡ 0 | `GATE-230`–`GATE-232` |
+
+#### Target First-Principles Closures (v6.315 to v6.316)
+
+| Phase & Crate | Formal Theorem | First-Principles Closure Mechanism | Verified Invariant Bound | HIL Gates |
+| :--- | :--- | :--- | :--- | :--- |
 | **Phase 5A** (`shbt-swarm-omega`) | `THM-OMEGA-14-EXT..16-EXT` | 312-hub quad-axial CCZ4 counter-pulse & non-linear Christodoulou memory clamping | Residual strain <= 10^-120, CoM drift <= 10^-15 m, P_ADM == 0 | `GATE-SWARM-257`–`GATE-SWARM-264` |
 | **Phase 5B** (`shbt-swarm-logos`) | `THM-LOGOS-11-EXT..13-EXT` | Continuous Knizhnik–Zamolodchikov Wilson flow on Σ_{0,4} & dynamic framing cancellation | eps_disc == 0.000000, Delta_fr == 0, Q_internal == 0.0 J | `GATE-SWARM-265`–`GATE-SWARM-272` |
 | **Phase 2** (`shbt-swarm-ai`) | `THM-STEN-11-EXT..13-EXT` | Relativistic Quantum Reference Frame covariance & unipotent simplicial sheaf consensus | (T - I)^2 == 0 => rho_spec = 1.0, microcausality preserved | `GATE-SWARM-273`–`GATE-SWARM-280` |
 
 ---
+
 
 <a id="section-2"></a>
 ## 2. Formal SHBT No-Cloning Theorems vs. Constructive Von Neumann Quine Replication (Pathways A, B, C)

@@ -268,6 +268,20 @@ pub fn step_galactic_multiphysics_twin_with_regs(
     Ok(state)
 }
 
+/// Canonical entry point executing a 10-engine coupled simulation step
+/// populating Cache Line 6 MMIO registers and verifying zero-fault invariant audit.
+pub fn galactic_multiphysics_step(
+    regs: &mut ShbtSwarmMmioRegs,
+) -> Result<GalacticMultiphysicsState, &'static str> {
+    let state = step_galactic_multiphysics_twin_with_regs(regs)?;
+    let fault_mask = regs.audit_v9_invariants();
+    if fault_mask != 0 {
+        return Err("MMIO register invariant audit failed after multiphysics step");
+    }
+    Ok(state)
+}
+
+
 pub const BENCHMARK_MAX_TIERS: usize = 105;
 pub const ATTOSECONDS_PER_STEP_X100: u64 = 1701; // 17.01 as
 
@@ -373,7 +387,15 @@ mod tests {
         assert_eq!(regs.gw_memory_residual_strain_norm, 0.0);
         assert_eq!(regs.continuous_ribbon_discretization_error, 0.0);
         assert_eq!(regs.qrf_superposed_sheaf_spectral_radius, 1.0);
+
+        // Test canonical galactic_multiphysics_step with invariant auditing
+        let mut audit_regs = ShbtSwarmMmioRegs::new_nominal_v9();
+        let step_res = galactic_multiphysics_step(&mut audit_regs);
+        assert!(step_res.is_ok());
+        assert_eq!(audit_regs.fault_status_mask, 0);
     }
+
+
 
     #[test]
     fn test_recursive_multiverse_100_tier_sweep() {
