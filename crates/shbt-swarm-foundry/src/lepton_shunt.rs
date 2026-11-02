@@ -53,7 +53,7 @@ impl LeptonShuntCore {
         decompressed_neutrons: f64,
         commanded_theta: f64,
     ) -> LeptonShuntTelemetry {
-        let half_pi = 1.570_796_326_794_896_6;
+        let half_pi = core::f64::consts::FRAC_PI_2;
         let is_locked = (commanded_theta - half_pi).abs() < 1.0e-12;
         let neutrino_flux = if is_locked {
             0.0
@@ -90,6 +90,12 @@ impl LeptonShuntCore {
     }
 }
 
+impl Default for LeptonShuntCore {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -97,7 +103,7 @@ mod tests {
     #[test]
     fn test_resonant_shunt_locking() {
         let mut core = LeptonShuntCore::new();
-        let half_pi = 1.570_796_326_794_896_6;
+        let half_pi = core::f64::consts::FRAC_PI_2;
         let telemetry = core.process_transmutation_shunt(1.0e47, half_pi);
         assert_eq!(telemetry.neutrino_flux_observed, 0.0);
         assert!(telemetry.shunt_complete);

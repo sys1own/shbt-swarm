@@ -160,7 +160,7 @@ impl GalacticMultiphysicsState {
             y: 0.0,
             z: 1.0e60 * dt_macro,
         };
-        self.topological_sink.dissipate_disk_angular_momentum(&bulk_delta_j);
+        self.topological_sink.dissipate_disk_angular_momentum(bulk_delta_j);
         let topological_ang_mom_absorbed = self.topological_sink.verify_shift_nullification();
 
         MultiphysicsTickStatus {
@@ -179,6 +179,12 @@ impl GalacticMultiphysicsState {
             smbh_ergosphere_harvesting,
             topological_ang_mom_absorbed,
         }
+    }
+}
+
+impl Default for GalacticMultiphysicsState {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

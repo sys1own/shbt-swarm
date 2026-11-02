@@ -3326,7 +3326,7 @@ impl DenseMatterHilVerifier {
             gate_id: HilGateId::Gate237LaminarDriftVelocity,
             observed_value: v_fluid,
             threshold_bound: 0.05,
-            passed: v_fluid <= 0.05 && v_fluid >= 0.0,
+            passed: (0.0..=0.05).contains(&v_fluid),
         }
     }
 
@@ -3362,7 +3362,7 @@ impl DenseMatterHilVerifier {
             gate_id: HilGateId::Gate241AthermalRadioPurity,
             observed_value: p_neutron,
             threshold_bound: 1.0e-120,
-            passed: p_neutron <= 1.0e-120 && p_neutron >= 0.0,
+            passed: (0.0..=1.0e-120).contains(&p_neutron),
         }
     }
 }

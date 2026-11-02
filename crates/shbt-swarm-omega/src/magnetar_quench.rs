@@ -81,7 +81,7 @@ impl MagnetarHelicityQuencher {
         if val <= 0.0 {
             return -999.0;
         }
-        let ln10 = 2.302_585_092_994_046;
+        let ln10 = core::f64::consts::LN_10;
         let mut v = val;
         let mut exponent = 0.0;
         while v < 0.1 {
