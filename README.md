@@ -67,34 +67,34 @@ The architecture unites seven developmental phases into a binary-compatible C11 
 
 | Phase & Crate | Formal Theorem | First-Principles Closure Mechanism | Verified Invariant Bound | HIL Gates |
 | :--- | :--- | :--- | :--- | :--- |
-| **Phase 5A** (shbt-swarm-omega) | THM-OMEGA-14-EXT..16-EXT | 312-hub quad-axial CCZ4 counter-pulse & non-linear Christodoulou memory clamping | Residual strain <= 10^-120, CoM drift <= 10^-15 m, P_ADM == 0 | GATE-SWARM-257–GATE-SWARM-264 |
-| **Phase 5B** (shbt-swarm-logos) | THM-LOGOS-11-EXT..13-EXT | Continuous Knizhnik–Zamolodchikov Wilson flow on Σ_{0,4} & dynamic framing cancellation | eps_disc == 0.000000, Delta_fr == 0, Q_internal == 0.0 J | GATE-SWARM-265–GATE-SWARM-272 |
-| **Phase 2** (shbt-swarm-ai) | THM-STEN-11-EXT..13-EXT | Relativistic Quantum Reference Frame covariance & unipotent simplicial sheaf consensus | (T - I)^2 == 0 => rho_spec = 1.0, microcausality preserved | GATE-SWARM-273–GATE-SWARM-280 |
-| **Phase 3** (shbt-swarm-foundry) | THM-FOUNDRY-10-EXT..11-EXT | Floquet QGP screening, core adiabat conservation, Bogoliubov dark shunt, Borrmann diamond projector | Debye mass >= 15 fm^-1, Gamma_1 >= 4/3 + 10^-6, zero neutrinos | GATE-SWARM-281–GATE-SWARM-288 |
-| **Phase 5A** (shbt-swarm-omega) | THM-OMEGA-21-EXT..22-EXT | Kerr SMBH ergosphere harvesting, Penrose-Floer boundary CFT dual, Hawking area dA_H >= 0, BZ jet quenching | Area non-decrease dA_H/dt >= 0, jet attenuation >= 120 dB | GATE-SWARM-289–GATE-SWARM-296 |
-| **Phase 5A** (shbt-swarm-omega) | THM-OMEGA-18-EXT..20-EXT | Universal multi-reservoir envelope harvesting, metric opacity quenching, GST-225 flash acoustic matching, 312 ADM hub supercomoving Vlasov-Poisson virial clamping | kappa_eff <= 10^-12, R_acoustic <= 10^-6, virial drift <= 10^-6 | GATE-SWARM-297–GATE-SWARM-304 |
+| **Phase 5A** (`shbt-swarm-omega`) | `THM-OMEGA-14-EXT`..`16-EXT` | 312-hub quad-axial CCZ4 counter-pulse & non-linear Christodoulou memory clamping | Residual strain ‖*h*<sub>*ij*</sub><sup>res</sup>‖<sub>∞</sub> ≤ 10<sup>−120</sup>, CoM drift ‖Δ**x**<sub>CoM</sub>‖ ≤ 10<sup>−15</sup> m, *P*<sub>ADM</sub><sup>*i*</sup> ≡ 0 | `GATE-SWARM-257`–`GATE-SWARM-264` |
+| **Phase 5B** (`shbt-swarm-logos`) | `THM-LOGOS-11-EXT`..`13-EXT` | Continuous Knizhnik–Zamolodchikov Wilson flow on Σ<sub>0,4</sub> & dynamic framing cancellation | *ε*<sub>disc</sub> ≡ 0.000000, Δ<sub>fr</sub> ≡ 0.0, *Q*<sub>int</sub> ≡ 0.0 J | `GATE-SWARM-265`–`GATE-SWARM-272` |
+| **Phase 2** (`shbt-swarm-ai`) | `THM-STEN-11-EXT`..`13-EXT` | Relativistic Quantum Reference Frame covariance & unipotent simplicial sheaf consensus | (**T**̂ − **I**)² ≡ 0 ⟹ *ρ*<sub>spec</sub> = 1.0, microcausality preserved | `GATE-SWARM-273`–`GATE-SWARM-280` |
+| **Phase 3** (`shbt-swarm-foundry`) | `THM-FOUNDRY-10-EXT`..`11-EXT` | Floquet QGP screening, core adiabat conservation, Bogoliubov dark shunt, Borrmann diamond projector | Debye mass *μ*<sub>D</sub> ≥ 15.0 fm<sup>−1</sup>, *Γ*<sub>1</sub> ≥ 4/3 + 10<sup>−6</sup>, *Φ*<sub>*ν*</sub> ≡ 0 cm<sup>−2</sup> s<sup>−1</sup> | `GATE-SWARM-281`–`GATE-SWARM-288` |
+| **Phase 5A** (`shbt-swarm-omega`) | `THM-OMEGA-21-EXT`..`22-EXT` | Kerr SMBH ergosphere harvesting, Penrose-Floer boundary CFT dual, Hawking area *dA*<sub>H</sub>/*dt* ≥ 0, BZ jet quenching | Area non-decrease *dA*<sub>H</sub>/*dt* ≥ 0, jet attenuation ≥ 120.0 dB | `GATE-SWARM-289`–`GATE-SWARM-296` |
+| **Phase 5A** (`shbt-swarm-omega`) | `THM-OMEGA-18-EXT`..`20-EXT` | Universal multi-reservoir envelope harvesting, metric opacity quenching, GST-225 flash acoustic matching, 312 ADM hub supercomoving Vlasov-Poisson virial clamping | *κ*<sub>eff</sub>/*κ*<sub>0</sub> ≤ 10<sup>−12</sup>, *R*<sub>acoustic</sub> ≤ 10<sup>−6</sup>, |Δ*σ*<sub>*r*</sub>² / *σ*<sub>*r*</sub>²| ≤ 10<sup>−6</sup> | `GATE-SWARM-297`–`GATE-SWARM-304` |
 
 #### Target First-Principles Closures: Compact Degenerate Deconstruction & Galactic Kinematics
 
 | Domain / Subsystem | Physical Problem Resolved | Mathematical Governing Invariant | Hardware & Telemetry Anchor |
 | :--- | :--- | :--- | :--- |
-| **Floquet QCD Color Screening** | Inner-crust nuclear pasta melting without releasing free quarks | mu_D >= 15.0 fm^-1, U_screen >= 35.2 MeV, v_fluid <= 0.05 c | Dense MMIO (0x7F000000), GATE-233..234 |
-| **Isothermal Decompression EoS** | Preventing prompt black hole collapse or kilonova deflagration | Gamma_1 >= 4/3 + 1.0e-6, M_dot <= 1.0e20 kg/s | Dense MMIO (0x7F000000), GATE-235..237 |
-| **Bogoliubov Lepton Shunt** | Neutrino cooling and baryonic mass-energy leakage nullification | Phi_nu == 0.000 cm^-2 s^-1, theta_k = pi/2, eta_exergy == 1.0 | Shunt MMIO (0x7F000200), GATE-238..239 |
-| **Magnetar Helicity Quench** | Crustal magnetic reconnection flares and Alfvén wave shock waves | Delta dB >= 120.0 dB, tau_quench = 100.0 s, w in pi_3(SU(2)) | Quench MMIO (0x7F000100), GATE-240 |
-| **Dynkian Feedstock Synthesis** | Secondary radio-activation and unconfined stray neutron emission | P_neutron <= 1.0e-120, sigma_act <= 1.0e-120 b | Foundry Core, GATE-241 |
-| **Multi-Scale Symplectic Cascade** | Bridging 17.01 as micro-ticks to 10^6 yr galactic orbital relaxation | d(omega) == 0, Delta H / H(0) <= 1.0e-15 over 10^9 steps | Galactic MMIO (0x8F000000), GATE-242..243 |
-| **CCZ4 GW Memory Recoil Clamp** | Permanent Christodoulou strain & galactic core detachment drift | ||h_ij^res||_inf <= 1.0e-120, ||Delta x_CoM|| <= 1.0e-15 m | Galactic MMIO (0x8F000028), GATE-244..247 |
-| **Topological Disk J_disk Sink** | Gravitomagnetic frame-dragging shift anomalies & disk warping | ||beta^i||_inf <= 1.0e-120, Level K = 312 Sp(2g, Z) winding | Galactic MMIO (0x8F000048), GATE-248..249 |
-| **13-Engine Multiphysics Loop** | Closed-loop cross-engine coupling and causality synchronization | bits[12:0] == 0x1FFF across all 13 physical engines | Galactic MMIO (0x8F000070), GATE-250 |
+| **Floquet QCD Color Screening** | Inner-crust nuclear pasta melting without releasing free quarks | *μ*<sub>D</sub> ≥ 15.0 fm<sup>−1</sup>, *U*<sub>screen</sub> ≥ 35.2 MeV, *v*<sub>fluid</sub> ≤ 0.05*c* | Dense MMIO (`0x7F000000`), `GATE-233`..`234` |
+| **Isothermal Decompression EoS** | Preventing prompt black hole collapse or kilonova deflagration | *Γ*<sub>1</sub> ≥ 4/3 + 1.0 × 10<sup>−6</sup>, *Ṁ*<sub>NS</sub> ≤ 1.0 × 10²⁰ kg/s | Dense MMIO (`0x7F000000`), `GATE-235`..`237` |
+| **Bogoliubov Lepton Shunt** | Neutrino cooling and baryonic mass-energy leakage nullification | *Φ*<sub>*ν*</sub> ≡ 0.000 cm<sup>−2</sup> s<sup>−1</sup>, *θ*<sub>*k*</sub> = *π*/2, *η*<sub>exergy</sub> ≡ 100.0% | Shunt MMIO (`0x7F000200`), `GATE-238`..`239` |
+| **Magnetar Helicity Quench** | Crustal magnetic reconnection flares and Alfvén wave shock waves | ΔdB ≥ 120.0 dB, *τ*<sub>quench</sub> = 100.0 s, *w* ∈ *π*₃(SU(2)) | Quench MMIO (`0x7F000100`), `GATE-240` |
+| **Dynkian Feedstock Synthesis** | Secondary radio-activation and unconfined stray neutron emission | *P*<sub>neutron</sub> ≤ 1.0 × 10<sup>−120</sup>, *σ*<sub>act</sub> ≤ 1.0 × 10<sup>−120</sup> b | Foundry Core, `GATE-241` |
+| **Multi-Scale Symplectic Cascade** | Bridging 17.01 as micro-ticks to 10⁶ yr galactic orbital relaxation | *dω* ≡ 0, |Δ*H* / *H*(0)| ≤ 1.0 × 10<sup>−15</sup> over 10⁹ steps | Galactic MMIO (`0x8F000000`), `GATE-242`..`243` |
+| **CCZ4 GW Memory Recoil Clamp** | Permanent Christodoulou strain & galactic core detachment drift | ‖*h*<sub>*ij*</sub><sup>res</sup>‖<sub>∞</sub> ≤ 1.0 × 10<sup>−120</sup>, ‖Δ**x**<sub>CoM</sub>‖ ≤ 1.0 × 10<sup>−15</sup> m | Galactic MMIO (`0x8F000028`), `GATE-244`..`247` |
+| **Topological Disk J_disk Sink** | Gravitomagnetic frame-dragging shift anomalies & disk warping | ‖**β**‖<sub>∞</sub> ≤ 1.0 × 10<sup>−120</sup>, Level *K* = 312 Sp(2*g*, ℤ) winding | Galactic MMIO (`0x8F000048`), `GATE-248`..`249` |
+| **13-Engine Multiphysics Loop** | Closed-loop cross-engine coupling and causality synchronization | Status bits [12:0] ≡ 0x1FFF across all 13 physical engines | Galactic MMIO (`0x8F000070`), `GATE-250` |
 
 ##### Galactic Harvesting & All-Mass Conversion Closures (v6.316 to v6.317 / ABI v10)
 
 | Domain & Target Subsystem | Formal Theorem | First-Principles Closure Mechanism | Verified Invariant Bound | HIL Gates |
 | :--- | :--- | :--- | :--- | :--- |
-| **Dense Compact Matter Transmutation** (shbt-swarm-foundry) | THM-FOUNDRY-10-EXT<br>THM-FOUNDRY-11-EXT | 45-slot affine su(3)_8 gauge modulation, dynamic Floquet Debye color screening (mu_D >= 15.0 fm^-1), degenerate core adiabat preservation, zero-neutrino Bogoliubov dark-ledger lepton shunt (23/33 partition), and Cattaneo–Vernotte Borrmann nodal crystallization | Dynamic Debye mass mu_D >= 15.0 fm^-1, Core adiabat Gamma_1 >= 4/3 + 1.0e-6, Neutrino flux Phi_nu == 0 cm^-2 s^-1, Borrmann peak temp T_peak <= 35.0 K | GATE-SWARM-281–GATE-SWARM-290 |
-| **Kerr SMBH Ergosphere Harvester** (shbt-swarm-omega) | THM-OMEGA-21-EXT<br>THM-OMEGA-22-EXT | 24-node hexameric constellation Boyer–Lindquist ergosurface tracking, boundary CFT Penrose dual operator, Hawking event horizon area non-decrease, counter-potential Blandford–Znajek jet quenching, and zero-volume anyon dark ledger storage with Tomita–Takesaki modular flow | Area rate dA_H / dt >= 0.000000, Jet attenuation >= 120 dB, Extracted exergy <= 29.2893% M c^2, Anyon dark volume V_vol == 0.000 m^3, Cryostat heat Q_internal == 0.0 J | GATE-SWARM-291–GATE-SWARM-296 |
-| **Universal Siphon & Galactic Dynamic Virial Clamping** (shbt-swarm-omega) | THM-OMEGA-18-EXT<br>THM-OMEGA-19-EXT<br>THM-OMEGA-20-EXT | Metric-conformal Rosseland opacity quenching (kappa_eff / kappa_0 <= 1.0e-12), laminar Bondi–Hoyle accretion (M_dot >= 2.5 M_sun/yr), affine su(2)_26 athermal White Dwarf Urca cooling, octahedral GST-225 acoustic impedance matching, and 312 ADM hub supercomoving Vlasov–Poisson Jeans virial clamping | Effective opacity kappa_eff / kappa_0 <= 1.0e-12, Acoustic reflectance R_acoustic <= 1.0e-6, Velocity dispersion drift Delta sigma_r^2 / sigma_r^2 <= 1.0e-6, Virial invariant 2K + W + Omega_syn == 0 | GATE-SWARM-297–GATE-SWARM-304 |
+| **Dense Compact Matter Transmutation** (`shbt-swarm-foundry`) | `THM-FOUNDRY-10-EXT`<br>`THM-FOUNDRY-11-EXT` | 45-slot affine 𝔰𝔲(3)₈ gauge modulation, dynamic Floquet Debye color screening (*μ*<sub>D</sub> ≥ 15.0 fm<sup>−1</sup>), degenerate core adiabat preservation, zero-neutrino Bogoliubov dark-ledger lepton shunt (23/33 partition), and Cattaneo–Vernotte Borrmann nodal crystallization | Dynamic Debye mass *μ*<sub>D</sub> ≥ 15.0 fm<sup>−1</sup>, Core adiabat *Γ*<sub>1</sub> ≥ 4/3 + 1.0 × 10<sup>−6</sup>, Neutrino flux *Φ*<sub>*ν*</sub> ≡ 0.0 cm<sup>−2</sup> s<sup>−1</sup>, Borrmann peak temp *T*<sub>peak</sub> ≤ 35.0 K | `GATE-SWARM-281`–`GATE-SWARM-290` |
+| **Kerr SMBH Ergosphere Harvester** (`shbt-swarm-omega`) | `THM-OMEGA-21-EXT`<br>`THM-OMEGA-22-EXT` | 24-node hexameric constellation Boyer–Lindquist ergosurface tracking, boundary CFT Penrose dual operator, Hawking event horizon area non-decrease, counter-potential Blandford–Znajek jet quenching, and zero-volume anyon dark ledger storage with Tomita–Takesaki modular flow | Area rate *dA*<sub>H</sub>/*dt* ≥ 0, Jet attenuation ≥ 120.0 dB, Extracted exergy ≤ 29.2893% *M* *c*², Anyon dark volume *V*<sub>vol</sub> ≡ 0.0 m³, Cryostat heat *Q*<sub>int</sub> ≡ 0.0 J | `GATE-SWARM-291`–`GATE-SWARM-296` |
+| **Universal Siphon & Galactic Dynamic Virial Clamping** (`shbt-swarm-omega`) | `THM-OMEGA-18-EXT`<br>`THM-OMEGA-19-EXT`<br>`THM-OMEGA-20-EXT` | Metric-conformal Rosseland opacity quenching (*κ*<sub>eff</sub>/*κ*<sub>0</sub> ≤ 1.0 × 10<sup>−12</sup>), laminar Bondi–Hoyle accretion (*Ṁ* ≥ 2.5 *M*<sub>☉</sub>/yr), affine 𝔰𝔲(2)₂₆ athermal White Dwarf Urca cooling, octahedral GST-225 acoustic impedance matching, and 312 ADM hub supercomoving Vlasov–Poisson Jeans virial clamping | Effective opacity *κ*<sub>eff</sub>/*κ*<sub>0</sub> ≤ 1.0 × 10<sup>−12</sup>, Acoustic reflectance *R*<sub>acoustic</sub> ≤ 10<sup>−6</sup>, Velocity dispersion drift |Δ*σ*<sub>*r*</sub>² / *σ*<sub>*r*</sub>²| ≤ 10<sup>−6</sup>, Virial invariant 2*K* + *W* + *Ω*<sub>syn</sub> ≡ 0 | `GATE-SWARM-297`–`GATE-SWARM-304` |
 
 ---
 
@@ -187,7 +187,7 @@ Cognitive weight adaptation operates via open-system Tomita-Takesaki relative mo
 
 ### 4.7 Relativistic Quantum Reference Frames (QRF) & Sheaf Covariance Under Metric Superposition
 
-Under extreme relativistic lapse foliations where lapse variations reach Delta alpha in [10^4, 10^12], consensus cannot presuppose a single classical spacetime background. The `shbt-swarm-ai::qrf_sheaf` engine models relativistic observer consensus across superposed metric branches H_geom = span{|g_munu^(m)>}_{m=1}^M:
+Under extreme relativistic lapse foliations where lapse variations reach Δ*α* ∈ [10⁴, 10¹²], consensus cannot presuppose a single classical spacetime background. The `shbt-swarm-ai::qrf_sheaf` engine models relativistic observer consensus across superposed metric branches ℋ<sub>geom</sub> = span{|*g*<sub>*μν*</sub><sup>(*m*)</sup>⟩}<sub>*m*=1</sub><sup>*M*</sup>:
 
 ```text
 +----------------------------------------------------------------------------------------------------+
@@ -196,9 +196,9 @@ Under extreme relativistic lapse foliations where lapse variations reach Delta a
 |                                                                                                    |
 |    Observer R (Frame R)                                                  Observer R' (Frame R')    |
 |    +-----------------------------+     Unitary QRF Transformation        +------------------------+|
-|    | State: rho^(R)              |  U_{R->R'} = P exp(-i/hbar ∫ pi X dx) | State: rho^(R')        ||
+|    | State: rho^(R)              |  U_{R⟶R'} = P exp(−i/ℏ ∫ π X dx)     | State: rho^(R')        ||
 |    | Observables: A^(R)          | ====================================> | Observables: A^(R')    ||
-|    | <A^(R)>_rho = Tr(rho A)     |       (Exact Trace Invariance)        | <A^(R')> = <A^(R)>     ||
+|    | ⟨A^(R)⟩_ρ = Tr(ρ A)         |       (Exact Trace Invariance)        | ⟨A^(R')⟩ = ⟨A^(R)⟩     ||
 |    +-----------------------------+                                       +------------------------+|
 |                   |                                                                   |            |
 |                   +-----------------------------------+-------------------------------+            |
@@ -206,9 +206,9 @@ Under extreme relativistic lapse foliations where lapse variations reach Delta a
 |                                                       v                                            |
 |                                 +-------------------------------------------+                      |
 |                                 |   Superposed Simplicial Sheaf Consensus   |                      |
-|                                 |   T_hat = ∑ |g^(m)><g^(m)| ⊗ T^(m)        |                      |
-|                                 |   Nilpotent Condition: (T_hat - I)^2 == 0 |                      |
-|                                 |   Spectral Radius: rho_spec(T_hat) = 1.0  |                      |
+|                                 |   T̂ = ∑ |g^(m)⟩⟨g^(m)| ⊗ T^(m)            |                      |
+|                                 |   Nilpotent Condition: (T̂ − I)² ≡ 0       |                      |
+|                                 |   Spectral Radius: ρ_spec(T̂) = 1.0        |                      |
 |                                 |   Decoherence Immunity Across All M Metric|                      |
 |                                 |   Branches (THM-STEN-12-EXT)              |                      |
 |                                 +-------------------------------------------+                      |
@@ -216,17 +216,17 @@ Under extreme relativistic lapse foliations where lapse variations reach Delta a
 |                                                       v                                            |
 |                                 +-------------------------------------------+                      |
 |                                 |   Active-Set QP Control Barrier Filter    |                      |
-|                                 |   min 1/2 ||u - u_nom||^2                 |                      |
-|                                 |   s.t.  Tr(rho psi_2(u)) >= 0             |                      |
-|                                 |   Microcausality: Tr_B(E_AB) = rho_A      |                      |
-|                                 |   Lapse Gradient: Delta alpha = 10^12     |                      |
+|                                 |   min ½ ‖u − u_nom‖²                      |                      |
+|                                 |   s.t.  Tr(ρ ψ₂(u)) ≥ 0                   |                      |
+|                                 |   Microcausality: Tr_B(ℰ_AB) ≡ ρ_A        |                      |
+|                                 |   Lapse Gradient: Δα = 10¹²               |                      |
 |                                 +-------------------------------------------+                      |
 +----------------------------------------------------------------------------------------------------+
 ```
 
-- **QRF Unitary Covariance (`THM-STEN-11-EXT`):** Relational coordinate displacement operator X_hat_{R'/R}^mu transforms sheaf observables covariantly while strictly preserving expectation values Tr(rho^(R') A^(R')) = Tr(rho^(R) A^(R)).
-- **Unipotent Simplicial Sheaf Consensus (`THM-STEN-12-EXT`):** Operator-valued transfer matrix over superposed metric branches satisfies (T_hat - I)^2 == 0, guaranteeing deadbeat consensus convergence in 2 steps and unitary spectral radius rho_spec = 1.0.
-- **Relativistic Relative-Degree r=2 HOCBF (`THM-STEN-13-EXT`):** Closed-loop active-set quadratic programming projects nominal controls onto the safe boundary, guaranteeing microcausality preservation across lapse gradients up to Delta alpha = 10^12.
+- **QRF Unitary Covariance (`THM-STEN-11-EXT`):** Relational coordinate displacement operator **X̂**<sub>*R*′/*R*</sub><sup>*μ*</sup> transforms sheaf observables covariantly while strictly preserving expectation values Tr(*ρ*<sup>(*R*′)</sup> **A**<sup>(*R*′)</sup>) = Tr(*ρ*<sup>(*R*)</sup> **A**<sup>(*R*)</sup>).
+- **Unipotent Simplicial Sheaf Consensus (`THM-STEN-12-EXT`):** Operator-valued transfer matrix over superposed metric branches satisfies (**T**̂ − **I**)² ≡ 0, guaranteeing deadbeat consensus convergence in 2 steps and unitary spectral radius *ρ*<sub>spec</sub>(**T**̂) = 1.0.
+- **Relativistic Relative-Degree *r* = 2 HOCBF (`THM-STEN-13-EXT`):** Closed-loop active-set quadratic programming projects nominal controls onto the safe boundary, guaranteeing microcausality preservation across lapse gradients up to Δ*α* = 10¹².
 
 ---
 
@@ -589,7 +589,7 @@ The megastructure fabric hosts 100,000 independent Elysium pocket habitats (`cra
 
 Power distribution across the Dyson swarm and pocket worlds is governed by the `PerpetualDarkPowerGrid`:
 - **Radiative Harvesting:** Captures total stellar luminosity *P*<sub>stellar</sub> = 3.827 × 10<sup>26</sup> W with boundary bus transmission efficiency *η*<sub>bus</sub> = 99.985%.
-- **Topological Dark Ledger Shunting:** Non-radiative entropy S_dark = (10/33)^2 = 100/1089 (90.82%) is shunted into the topological dark sector, limiting sensible waste heat dissipation to cryostats below 1.9955 x 10^-18 J per operation.
+- **Topological Dark Ledger Shunting:** Non-radiative entropy *S*<sub>dark</sub> = (10/33)² = 100/1089 (90.82%) is shunted into the topological dark sector, limiting sensible waste heat dissipation to cryostats below 1.9955 × 10<sup>−18</sup> J per operation.
 - **Lossless Power Transfer:** Superconducting Borrmann clathrate waveguides route exawatt-scale power buses across astronomical units without resistive ohmic drop.
 
 ### 9.5 AEGIS-OMEGA 4-Layer Planetary Defense & Proof-Carrying CBF Shield (`THM-OMEGA-05`, `THM-OMEGA-06`)
@@ -604,7 +604,7 @@ Autonomous megastructures are safeguarded by the 4-layer `AegisOmegaController` 
 
 ##### 9.3 Supermassive Black Hole (SMBH) Ergosphere Siphoning & Hawking Area Non-Decrease (THM-OMEGA-08-EXT)
 
-Kardashev Type III megastructure synthesis expands beyond solar stars to harvest supermassive black holes (SMBHs, M_BH = 10^6 .. 10^9 M_sun) via hexameric Bondi-Hoyle standoff accretion funnels operating in the ergosphere (r_H < r < r_ergo(theta)):
+Kardashev Type III megastructure synthesis expands beyond solar stars to harvest supermassive black holes (SMBHs, *M*<sub>BH</sub> = 10⁶..10⁹ *M*<sub>☉</sub>) via hexameric Bondi-Hoyle standoff accretion funnels operating in the ergosphere (*r*<sub>H</sub> < *r* < *r*<sub>ergo</sub>(*θ*)):
 
 1. **Kerr Geometry & Ergosphere Boundary:**
    In Boyer-Lindquist coordinates (G = c = 1), a Kerr black hole with mass M and spin parameter a = J/M has event horizon radius r_H = M + sqrt(M^2 - a^2) and ergosphere boundary r_ergo(theta) = M + sqrt(M^2 - a^2 cos^2(theta)). Inside the ergosphere, the asymptotic timelike Killing vector xi = d/dt becomes spacelike (g_tt > 0), permitting negative-energy orbits relative to infinity.
@@ -648,7 +648,7 @@ When Phase 5A deconstructs stellar systems and relocates up to 10<sup>9</sup> *M
 
 ### 9.13 Non-Linear Gravitational Wave Memory and Quad-Axial Recoil Clamping
 
-Matter extraction from the galactic nucleus at rates up to M_dot <= 0.08 M_sun/yr induces Bondi-Sachs radiative shear on future null infinity and permanent Christodoulou non-linear memory:
+Matter extraction from the galactic nucleus at rates up to *Ṁ* ≤ 0.08 *M*<sub>☉</sub>/yr induces Bondi-Sachs radiative shear on future null infinity and permanent Christodoulou non-linear memory:
 
 ```text
 +----------------------------------------------------------------------------------------------------+
@@ -656,12 +656,12 @@ Matter extraction from the galactic nucleus at rates up to M_dot <= 0.08 M_sun/y
 +----------------------------------------------------------------------------------------------------+
 |                                                                                                    |
 |    Sgr A* Nuclear Cusp                                              Future Null Infinity (I^+)     |
-|    Mass: M_ext ~ 10^11 M_sun                                        Bondi-Sachs Radiative Shear    |
-|    Uncompensated: Delta x_CoM > 0.27 pc                             c_AB(u, theta^C), News N_AB    |
+|    Mass: M_ext ∼ 10¹¹ M_☉                                           Bondi-Sachs Radiative Shear    |
+|    Uncompensated: Δx_CoM > 0.27 pc                                  c_AB(u, θ^C), News N_AB        |
 |               |                                                                   |                |
 |               v                                                                   v                |
 |    +-----------------------------+     Christodoulou Memory Integral     +-----------------------+ |
-|    | Asymmetric Funnel Inflow    | ------------------------------------> | Delta h_ij^TT, mem    | |
+|    | Asymmetric Funnel Inflow    | ------------------------------------> | Δh_ij^TT,mem          | |
 |    | Matter Flux: T_uu^matter    |                                       | Unmitigated Recoil    | |
 |    +-----------------------------+                                       +-----------------------+ |
 |                   |                                                                   |            |
@@ -670,43 +670,43 @@ Matter extraction from the galactic nucleus at rates up to M_dot <= 0.08 M_sun/y
 |                                                       v                                            |
 |                                 +-------------------------------------------+                      |
 |                                 |   312 ADM Sector Hub Active Synthesis     |                      |
-|                                 |   4 Quadrants x 78 Hubs (D_4 Symmetry)    |                      |
-|                                 |   K_ij^counter = -1/(2 alpha) ∂_t h_ij    |                      |
-|                                 |   beta^i = -zeta P_GW^i / M_hub           |                      |
+|                                 |   4 Quadrants × 78 Hubs (D₄ Symmetry)     |                      |
+|                                 |   K_ij^counter = −1/(2α) ∂_t h_ij         |                      |
+|                                 |   β^i = −ζ P_GW^i / M_hub                 |                      |
 |                                 +-------------------------------------------+                      |
 |                                                       |                                            |
 |                                                       v                                            |
 |                                 +-------------------------------------------+                      |
 |                                 |   Gundlach Damped CCZ4 Constraint Engine  |                      |
-|                                 |   d_t Theta = -1/2 kappa_1(1+kappa_2)aTh  |                      |
-|                                 |   Residual Strain: ||h_ij|| <= 10^-120    |                      |
-|                                 |   Secular CoM Drift: ||Delta x|| <= 10^-15|                      |
-|                                 |   Global ADM Momentum: P_ADM^i == 0       |                      |
+|                                 |   d_t Θ = −½ κ₁(1+κ₂) α Θ                 |                      |
+|                                 |   Residual Strain: ‖h_ij‖ ≤ 10⁻¹²⁰        |                      |
+|                                 |   Secular CoM Drift: ‖Δx‖ ≤ 10⁻¹⁵ m       |                      |
+|                                 |   Global ADM Momentum: P_ADM^i ≡ 0        |                      |
 |                                 +-------------------------------------------+                      |
 +----------------------------------------------------------------------------------------------------+
 ```
 
-- **Christodoulou Memory Nullification (`THM-OMEGA-14-EXT`):** Synthesized counter-metric from 312 ADM hubs exactly cancels the non-linear memory integral, driving residual strain to ||h_ij^TT, mem + h_ij^counter||_infty <= 10^-120.
-- **Galactic Center-of-Mass Secular Invariance (`THM-OMEGA-15-EXT`):** 4-quadrant dihedral D_4 symmetry ensures net linear momentum cancellation, bounding secular Sagittarius A* core drift to ||Delta x_CoM|| <= 10^-15 m over 100 Myr and preserving P_ADM^i == 0 identically.
-- **CCZ4 Gundlach Hyperbolic Damping (`THM-OMEGA-16-EXT`):** Damping parameters kappa_1 = 0.15 and kappa_2 = 0.0 enforce exponential decay of Hamiltonian and momentum constraints.
+- **Christodoulou Memory Nullification (`THM-OMEGA-14-EXT`):** Synthesized counter-metric from 312 ADM hubs exactly cancels the non-linear memory integral, driving residual strain to ‖**h**<sub>*ij*</sub><sup>TT,mem</sup> + **h**<sub>*ij*</sub><sup>counter</sup>‖<sub>∞</sub> ≤ 1.0 × 10<sup>−120</sup>.
+- **Galactic Center-of-Mass Secular Invariance (`THM-OMEGA-15-EXT`):** 4-quadrant dihedral *D*₄ symmetry ensures net linear momentum cancellation, bounding secular Sagittarius A* core drift to ‖Δ**x**<sub>CoM</sub>‖ ≤ 1.0 × 10<sup>−15</sup> m over 100 Myr and *P*<sub>ADM</sub><sup>*i*</sup> ≡ 0.
+- **CCZ4 Gundlach Hyperbolic Damping (`THM-OMEGA-16-EXT`):** Damping parameters *κ*₁ = 0.15 and *κ*₂ = 0.0 enforce exponential decay of Hamiltonian and momentum constraints.
 
 ### 9.14 Compact Degenerate Stellar Deconstruction (Neutron Stars & Magnetars)
 
-The continuous, non-explosive deconstruction and transmutation of compact degenerate relativistic objects (M in [1.2, 2.2] M_sun, rho_c ~ 10^17 to 10^18 kg/m^3, B ~ 10^8 to 10^11 T) is governed by boundary conformal projection of so_hat(10)_312 / [su_hat(2)_26 x su_hat(3)_8]:
+The continuous, non-explosive deconstruction and transmutation of compact degenerate relativistic objects (*M*<sub>NS</sub> ∈ [1.2, 2.2] *M*<sub>☉</sub>, *ρ*<sub>c</sub> ∼ 10¹⁷–10¹⁸ kg/m³, *B* ∼ 10⁸–10¹¹ T) is governed by boundary conformal projection of 𝔰𝔬̂(10)₃₁₂ / [𝔰𝔲̂(2)₂₆ × 𝔰𝔲̂(3)₈]:
 
-- **Floquet Color Screening & Nuclear Pasta Melting (`THM-FOUNDRY-10-EXT`):** Hexameric conformal RF actuators drive the su_hat(3)_8 color sector at Omega >> omega_plasma, generating a Debye screening mass mu_D >= 15.0 fm^-1 in the Magnus-expanded gluon propagator. The resulting screening work potential U_screen >= 35.2 MeV cancels the mean-field nuclear binding well (~16.0 MeV/nucleon) without exceeding the quark deconfinement threshold, athermally liquefying inner-crust pasta into a laminar nucleon fluid with v_fluid <= 0.05 c.
-- **Isothermal Decompression & Relativistic Stability (`THM-FOUNDRY-10-EXT`):** Locking mass throughput to M_dot <= 1.0 x 10^20 kg/s and thermodynamic trajectory d(ln T_c)/d(ln rho_c) <= 1/3 [1 + alpha_seed / (1 + beta_rad)] enforces a relativistic adiabatic index floor Gamma_1 >= 4/3 + 1.0 x 10^-6, strictly precluding dynamical black hole collapse and unconfined detonation.
-- **Unitary Bogoliubov Lepton Shunt (`THM-FOUNDRY-11-EXT`):** Uncontrolled beta decay (n -> p + e^- + nu_bar) is suppressed by weak-vertex Bogoliubov rotation with theta_k = pi/2 and cos^2(theta_B) = 13/18, shunting lepton charge into the dark ledger (eta_D = 23/33). Destructive interference nullifies bulk neutrino flux to Phi_nu == 0.000 cm^-2 s^-1, harvesting the 0.78233 MeV endpoint exergy into the 25.00 EW Direct Boundary CFT bus at 100.0% efficiency.
-- **Magnetar Crustal Helicity Evacuation (`THM-FOUNDRY-10-EXT`):** Synthetic gravitomagnetic vector potentials evacuate crustal magnetic energy (U_B ~ 10^40 J, B ~ 10^11 T) into the third homotopy invariant w in pi_3(SU(2)), achieving attenuation >= 120.0 dB (B <= 10^5 T) and eliminating reconnection flare triggers.
-- **Universal Dynkian Computronium Transmutation (`THM-FOUNDRY-11-EXT`):** The 346-slot Dynkin weight router converts cold {p, e^-} feedstock into pure C-12 and Fe-57 with neutron survival probability P_neutron <= 1.0 x 10^-120 and activation cross-section sigma_act <= 1.0 x 10^-120 b.
+- **Floquet Color Screening & Nuclear Pasta Melting (`THM-FOUNDRY-10-EXT`):** Hexameric conformal RF actuators drive the 𝔰𝔲̂(3)₈ color sector at *Ω* ≫ *ω*<sub>plasma</sub>, generating a Debye screening mass *μ*<sub>D</sub> ≥ 15.0 fm<sup>−1</sup> in the Magnus-expanded gluon propagator. The resulting screening work potential *U*<sub>screen</sub> ≥ 35.2 MeV cancels the mean-field nuclear binding well (∼ 16.0 MeV/nucleon) without exceeding the quark deconfinement threshold, athermally liquefying inner-crust pasta into a laminar nucleon fluid with *v*<sub>fluid</sub> ≤ 0.05*c*.
+- **Isothermal Decompression & Relativistic Stability (`THM-FOUNDRY-10-EXT`):** Locking mass throughput to *Ṁ*<sub>NS</sub> ≤ 1.0 × 10²⁰ kg/s and thermodynamic trajectory *d*(ln *T*<sub>c</sub>) / *d*(ln *ρ*<sub>c</sub>) ≤ ⅓ [1 + *α*<sub>seed</sub> / (1 + *β*<sub>rad</sub>)] enforces a relativistic adiabatic index floor *Γ*<sub>1</sub> ≥ 4/3 + 1.0 × 10<sup>−6</sup>, strictly precluding dynamical black hole collapse and unconfined detonation.
+- **Unitary Bogoliubov Lepton Shunt (`THM-FOUNDRY-11-EXT`):** Uncontrolled beta decay (*n* ⟶ *p* + *e*<sup>−</sup> + *ν̄*<sub>*e*</sub>) is suppressed by weak-vertex Bogoliubov rotation with *θ*<sub>*k*</sub> = *π*/2 and cos²(*θ*<sub>B</sub>) = 13/18, shunting lepton charge into the dark ledger (*η*<sub>D</sub> = 23/33). Destructive interference nullifies bulk neutrino flux to *Φ*<sub>*ν*</sub> ≡ 0.000 cm<sup>−2</sup> s<sup>−1</sup>, harvesting the 0.78233 MeV endpoint exergy into the 25.00 EW Direct Boundary CFT bus at 100.0% efficiency.
+- **Magnetar Crustal Helicity Evacuation (`THM-FOUNDRY-10-EXT`):** Synthetic gravitomagnetic vector potentials evacuate crustal magnetic energy (*U*<sub>*B*</sub> ∼ 10⁴⁰ J, *B* ∼ 10¹¹ T) into the third homotopy invariant *w* ∈ *π*₃(SU(2)), achieving attenuation ≥ 120.0 dB (*B* ≤ 10⁵ T) and eliminating reconnection flare triggers.
+- **Universal Dynkian Computronium Transmutation (`THM-FOUNDRY-11-EXT`):** The 346-slot Dynkin weight router converts cold {*p*, *e*<sup>−</sup>} feedstock into pure ¹²C and ⁵⁷Fe with neutron survival probability *P*<sub>neutron</sub> ≤ 1.0 × 10<sup>−120</sup> and activation cross-section *σ*<sub>act</sub> ≤ 1.0 × 10<sup>−120</sup> b.
 
 ### 9.15 Galactic Multi-Scale Symplectic Kinematics & Recoil Clamping
 
 Co-simulating attosecond microkernel operations with secular galactic relaxation timescales (10^8 years) requires exact symplectic integration and conservation laws:
 
-- **Cascaded Symplectic SPRK Integration (`THM-SIM-01-EXT`):** Decomposes total Hamiltonian flows across a dynamic timescale cascade alpha_casc = 10^12 via 4th-order Symplectic Partitioned Runge-Kutta composition. Exactly preserves the Poincare-Cartan 2-form (d omega == 0) and shadow Hamiltonian invariants, bounding fractional energy drift to |Delta H_rel| <= 1.0 x 10^-15 across arbitrary integration durations.
-- **Non-Linear Christodoulou GW Memory Recoil Clamping (`THM-OMEGA-21-EXT`):** 312 ADM sector hubs inject opposing CCZ4 Gundlach stress-energy pulses S_i^counter = -S_i^matter - c^4 / (16 pi G_N) kappa_1 Z_i, nullifying gravitational wave memory strain to ||h_ij^TT, mem + h_ij^counter||_infty <= 1.0 x 10^-120 and clamping center-of-mass drift to ||Delta x_CoM|| <= 1.0 x 10^-15 m with P_ADM^i == 0.
-- **Topological Boundary Sink for Disk Angular Momentum (`THM-OMEGA-22-EXT`):** Routes galactic disc angular momentum J_disk ~ 10^67 kg m^2/s into boundary Chern-Simons level k_CS = 312 winding invariants w^i in Z^3. Nullifies bulk current anomalies (j_eff^i == 0) and drives the ADM shift vector to ||beta||_infty <= 1.0 x 10^-120, preventing disc warping and gravitomagnetic precession.
+- **Cascaded Symplectic SPRK Integration (`THM-SIM-01-EXT`):** Decomposes total Hamiltonian flows across a dynamic timescale cascade *α*<sub>casc</sub> = 10¹² via 4th-order Symplectic Partitioned Runge-Kutta composition. Exactly preserves the Poincaré-Cartan 2-form (*dω* ≡ 0) and shadow Hamiltonian invariants, bounding fractional energy drift to |Δ*H*<sub>rel</sub>| ≤ 1.0 × 10<sup>−15</sup> across arbitrary integration durations.
+- **Non-Linear Christodoulou GW Memory Recoil Clamping (`THM-OMEGA-21-EXT`):** 312 ADM sector hubs inject opposing CCZ4 Gundlach stress-energy pulses *S*<sub>*i*</sub><sup>counter</sup> = −*S*<sub>*i*</sub><sup>matter</sup> − [*c*⁴ / (16*π* *G*<sub>N</sub>)] *κ*₁ *Z*<sub>*i*</sub>, nullifying gravitational wave memory strain to ‖**h**<sub>*ij*</sub><sup>TT,mem</sup> + **h**<sub>*ij*</sub><sup>counter</sup>‖<sub>∞</sub> ≤ 1.0 × 10<sup>−120</sup> and clamping center-of-mass drift to ‖Δ**x**<sub>CoM</sub>‖ ≤ 1.0 × 10<sup>−15</sup> m with *P*<sub>ADM</sub><sup>*i*</sup> ≡ 0.
+- **Topological Boundary Sink for Disk Angular Momentum (`THM-OMEGA-22-EXT`):** Routes galactic disc angular momentum *J*<sub>disk</sub> ∼ 10⁶⁷ kg·m²/s into boundary Chern-Simons level *k*<sub>CS</sub> = 312 winding invariants *w*<sup>*i*</sup> ∈ ℤ³. Nullifies bulk current anomalies (*j*<sub>eff</sub><sup>*i*</sup> ≡ 0) and drives the ADM shift vector to ‖**β**‖<sub>∞</sub> ≤ 1.0 × 10<sup>−120</sup>, preventing disc warping and gravitomagnetic precession.
 
 ---
 
@@ -780,7 +780,7 @@ The monolithic Borrmann computronium core executes optical clock switching at at
 
 ### 10.13 Continuous Fibonacci Ribbon Field Theory and Ballistic Gauge Modulation
 
-Replacing discrete Solovay-Kitaev Depth-9 recursion over the Artin braid group B_3 with continuous Knizhnik-Zamolodchikov (KZ) Wilson loop flows on the flat connection moduli space M_flat(Σ_{0,4}, SU(2)) eliminates algorithmic discretization error and framing jitter:
+Replacing discrete Solovay-Kitaev Depth-9 recursion over the Artin braid group *B*₃ with continuous Knizhnik-Zamolodchikov (KZ) Wilson loop flows on the flat connection moduli space ℳ<sub>flat</sub>(Σ<sub>0,4</sub>, SU(2)) eliminates algorithmic discretization error and framing jitter:
 
 ```text
 +----------------------------------------------------------------------------------------------------+
@@ -789,35 +789,35 @@ Replacing discrete Solovay-Kitaev Depth-9 recursion over the Artin braid group B
 |                                                                                                    |
 |    Discrete SK-9 (Legacy)                                           Continuous Ribbon (v9.0)       |
 |    Discrete Braid Words in B_3                                      Smooth Wilson Loop on M_flat   |
-|    eps_disc ~ O(log^c(1/eps))                                       eps_disc == 0.000000           |
-|    Framing Jitter: Delta_fr != 0                                    Delta_fr == 0.000000           |
-|    Landauer Heat: Q_int > 0 J                                       Q_internal == 0.0 J            |
+|    ε_disc ∼ O(log^c(1/ε))                                           ε_disc ≡ 0.000000              |
+|    Framing Jitter: Δ_fr ≠ 0                                         Δ_fr ≡ 0.000000                |
+|    Landauer Heat: Q_int > 0 J                                       Q_int ≡ 0.0 J                  |
 |               |                                                                   |                |
 |               +-----------------------------------+-------------------------------+                |
 |                                                   |                                                |
 |                                                   v                                                |
 |                             +-------------------------------------------+                          |
 |                             |   Knizhnik-Zamolodchikov Monodromy Engine |                          |
-|                             |   dPsi/dz = (A_0/z + A_1/(z-1)) Psi       |                          |
-|                             |   Residues: A_0 = diag(-0.4, -0.2)        |                          |
-|                             |   A_1 = F A_0 F,  F^2 == I_2              |                          |
-|                             |   Isospectrality: Tr(A_0) = Tr(A_1) = -0.6|                          |
+|                             |   dΨ/dz = (A₀/z + A₁/(z−1)) Ψ             |                          |
+|                             |   Residues: A₀ = diag(−0.4, −0.2)         |                          |
+|                             |   A₁ = F A₀ F,  F² ≡ I₂                   |                          |
+|                             |   Isospectrality: Tr(A₀) = Tr(A₁) = −0.6  |                          |
 |                             +-------------------------------------------+                          |
 |                                                   |                                                |
 |                                                   v                                                |
 |                             +-------------------------------------------+                          |
 |                             |   52-Hexamer PT-GoI Polariton Dynamics    |                          |
-|                             |   W_hat = P exp(∫ A(t) dt) (128-step RK4) |                          |
-|                             |   Unitarity: W† W = I_2                   |                          |
-|                             |   Framing Cancellation: Tw(tau) = -Wr(tau)|                          |
+|                             |   Ŵ = P exp(∫ A(t) dt) (128-step RK4)     |                          |
+|                             |   Unitarity: W†W ≡ I₂                     |                          |
+|                             |   Framing Cancellation: Tw(τ) = −Wr(τ)    |                          |
 |                             |   Transit Latency: t_mod = 17.01 as       |                          |
 |                             +-------------------------------------------+                          |
 +----------------------------------------------------------------------------------------------------+
 ```
 
-- **Zero Discretization Ballistic Modulation (`THM-LOGOS-11-EXT`):** Continuous parallel transport along moduli geodesics achieves eps_disc == 0.000000 in a single optical cavity transit time t_mod = 17.01 as.
-- **Continuous Framing Anomaly Cancellation (`THM-LOGOS-12-EXT`):** Dynamic twisting exactly cancels geometric writhe (Tw = -Wr), yielding Delta_fr == 0.000000, zero bulk curvature shocks E_munu^bulk == 0, and zero Landauer heat Q_internal == 0.0 J.
-- **Moduli Geodesic Flat Connection Isospectrality (`THM-LOGOS-13-EXT`):** Residues satisfy Tr(A_0) = Tr(A_1) = -0.6 and F^2 == I_2, guaranteeing isometric Wilson loop evolution W†W = I_2.
+- **Zero Discretization Ballistic Modulation (`THM-LOGOS-11-EXT`):** Continuous parallel transport along moduli geodesics achieves *ε*<sub>disc</sub> ≡ 0.000000 in a single optical cavity transit time *t*<sub>mod</sub> = 17.01 as.
+- **Continuous Framing Anomaly Cancellation (`THM-LOGOS-12-EXT`):** Dynamic twisting exactly cancels geometric writhe (Tw = −Wr), yielding Δ<sub>fr</sub> ≡ 0.000000, zero bulk curvature shocks *E*<sub>*μν*</sub><sup>bulk</sup> ≡ 0, and zero Landauer heat *Q*<sub>int</sub> ≡ 0.0 J.
+- **Moduli Geodesic Flat Connection Isospectrality (`THM-LOGOS-13-EXT`):** Residues satisfy Tr(**A**₀) = Tr(**A**₁) = −0.6 and **F**² ≡ **I**₂, guaranteeing isometric Wilson loop evolution **W**<sup>†</sup>**W** ≡ **I**₂.
 
 ---
 
@@ -1236,14 +1236,14 @@ graph TD
 | `GATE-201..208` | Phase 6 Extended Poset Sheaf Consensus & Qualia Cobordisms | 8 Gates | Causal Diamond Poset Sheaf Nilpotent Shear ((*T* − *I*)<sup>2</sup> = 0), Symplectic Transition Preservation (*T*<sup>T</sup> **Ω** *T* = **Ω**), Asynchronous Čech 1-Cocycle Obstruction Vanishing (Ȟ<sup>1</sup>(𝒫, ℱ) = 0), Consensus Spectral Radius Unity (*ρ*<sub>spec</sub> = 1.0), Holographic Qualia Homology Preservation (Betti numbers [1, 2, 0]), Scale-Invariant Qualia Fixed Point (*d* *H*<sub>*k*</sub> / *d*(ln *Λ*) = 0), Fibonacci Anyon Topological Entropy (*S*<sub>topo</sub> = −0.642965 nats), Unipotent Mind Cobordism Fission & Fusion (Δℱ<sub>ego</sub> = 0, *R*<sub>entropy</sub> ≥ 0) | **8/8 PASS** |
 | `GATE-209..232` | Phase 1–6 v7 First-Principles Closure Gates | 24 Gates | Chiral Electroweak Parity Selection (*ee* ≡ 1.000000), LLE EP2 Basin (Δ*φ* ≥ 0.15 rad), Pachner Sheaf Cohomology (Ȟ<sup>1</sup> ≡ 0), Holographic Navier-Stokes Shear (≤ 45.0 Pa), TDGL Vortex Drift (≤ 10<sup>−15</sup> m/s), Kerr BZ Jet Extinction (*P*<sub>jet</sub> ≡ 0.0 W), Mössbauer Borrmann Tuning (*τ*<sub>B</sub> ≥ 1453.4), Anyonic Binding & Unitary Branch Coalescence (Δ*S*<sub>vN</sub> ≡ 0, Δℱ<sub>ego</sub> ≡ 0) | **24/24 PASS** |
 | `GATE-NEST-01..08` | Phase 6.1 Recursive Multiverse & Epistemic Veils | 8 Gates | Geometric Capacity Bounding (∑ 2<sup>−*k*</sup> *C*₀ < *C*<sub>local</sub>), Zero-Compute Dormant Seeds, Adjoint Verlinde Epistemic Veil, 17.01 as Safeword Egress, Recursive Class X1 CBF Anti-Genocide Interlocks | **8/8 PASS** |
-| `GATE-SWARM-241..248` | Phase 5A Zero-Coriolis Elysium Habitat Manifolds | 8 Gates | Gravitomagnetic Null-Current (curl(beta) == 0), Zero Coriolis (a_cor == 0), Vorticity Vanishing (omega_ij == 0), 1.000g Habitability | **8/8 PASS** |
-| `GATE-SWARM-249..256` | Phase 1/Bio Non-Equilibrium Biosphere Lyapunov Stability | 8 Gates | Positive-Definite Lyapunov Functional (V >= 0), Strict Dissipation (dV/dt < 0), CHNOPS Conservation (Delta M/M <= 10^-12), CBF Shield | **8/8 PASS** |
-| `GATE-SWARM-257..264` | Phase 5A Bondi-Sachs GW Recoil Clamping | 8 Gates | Christodoulou Memory Null (strain <= 10^-120), Sgr A* Core Recoil Clamping (drift <= 10^-15 m), Global ADM Momentum (P_ADM == 0) | **8/8 PASS** |
-| `GATE-SWARM-265..272` | Phase 5B Continuous Fibonacci Ribbon Field Theory | 8 Gates | Flat KZ Connection Flow on Σ_{0,4}, Zero Discretization (eps_disc == 0), Zero Framing (Delta_fr == 0), Zero Landauer Heat (Q == 0.0 J) | **8/8 PASS** |
-| `GATE-SWARM-273..280` | Phase 2 Relativistic QRF Covariance & Sheaf Consensus | 8 Gates | Unitary Reference Frame Covariance (U†U = I), Unipotent Sheaf Consensus ((T - I)^2 == 0 => rho_spec = 1.0), Relative-Degree r=2 HOCBF | **8/8 PASS** |
-| `GATE-SWARM-281..288` | Phase 5A Kerr SMBH Ergosphere Harvester | 8 Gates | CFT Horizon Area Non-Decrease (dA_H/dt >= 0), Blandford-Znajek Jet Quenching, Modular Flow Dark Injection, Zero-Volume Proof | **8/8 PASS** |
-| `GATE-SWARM-289..296` | Phase 3 Athermal Dense Matter Transmutation | 8 Gates | Floquet Debye Screening (Debye mass >= 15 fm^-1), Degenerate Adiabat Conservation (Gamma_1 >= 4/3), Bogoliubov Shunt, Diamond Projector | **8/8 PASS** |
-| `GATE-SWARM-297..304` | Phase 5A Galactic Harvesting & Virial Clamping | 8 Gates | Metric Opacity Quenching (kappa_eff <= 10^-12), Flash Acoustic Matching (R_acoustic <= 10^-6), 312 ADM Vlasov-Poisson Clamping | **8/8 PASS** |
+| `GATE-SWARM-241..248` | Phase 5A Zero-Coriolis Elysium Habitat Manifolds | 8 Gates | Gravitomagnetic Null-Current (‖∇ × **β**‖ ≡ 0), Zero Coriolis (‖**a**<sub>Cor</sub>‖ ≡ 0), Vorticity Vanishing (*ω*<sub>*ij*</sub> ≡ 0), 1.000g Habitability | **8/8 PASS** |
+| `GATE-SWARM-249..256` | Phase 1/Bio Non-Equilibrium Biosphere Lyapunov Stability | 8 Gates | Positive-Definite Lyapunov Functional (*V* ≥ 0), Strict Dissipation (*dV*/*dt* < 0), CHNOPS Conservation (|Δ*M*/*M*| ≤ 10<sup>−12</sup>), CBF Shield | **8/8 PASS** |
+| `GATE-SWARM-257..264` | Phase 5A Bondi-Sachs GW Recoil Clamping | 8 Gates | Christodoulou Memory Null (‖*h*<sub>*ij*</sub><sup>res</sup>‖<sub>∞</sub> ≤ 10<sup>−120</sup>), Sgr A* Core Recoil Clamping (‖Δ**x**<sub>CoM</sub>‖ ≤ 10<sup>−15</sup> m), Global ADM Momentum (*P*<sub>ADM</sub><sup>*i*</sup> ≡ 0) | **8/8 PASS** |
+| `GATE-SWARM-265..272` | Phase 5B Continuous Fibonacci Ribbon Field Theory | 8 Gates | Flat KZ Connection Flow on Σ<sub>0,4</sub>, Zero Discretization (*ε*<sub>disc</sub> ≡ 0), Zero Framing (Δ<sub>fr</sub> ≡ 0), Zero Landauer Heat (*Q*<sub>int</sub> ≡ 0.0 J) | **8/8 PASS** |
+| `GATE-SWARM-273..280` | Phase 2 Relativistic QRF Covariance & Sheaf Consensus | 8 Gates | Unitary Reference Frame Covariance (**U**<sup>†</sup>**U** ≡ **I**), Unipotent Sheaf Consensus ((**T**̂ − **I**)² ≡ 0 ⟹ *ρ*<sub>spec</sub> = 1.0), Relative-Degree *r* = 2 HOCBF | **8/8 PASS** |
+| `GATE-SWARM-281..288` | Phase 5A Kerr SMBH Ergosphere Harvester | 8 Gates | CFT Horizon Area Non-Decrease (*dA*<sub>H</sub>/*dt* ≥ 0), BZ Jet Attenuation ≥ 120.0 dB, Modular Flow Dark Injection, Zero-Volume Proof (*V*<sub>vol</sub> ≡ 0.0 m³) | **8/8 PASS** |
+| `GATE-SWARM-289..296` | Phase 3 Athermal Dense Matter Transmutation | 8 Gates | Floquet Debye Screening (*μ*<sub>D</sub> ≥ 15.0 fm<sup>−1</sup>), Degenerate Adiabat Conservation (*Γ*<sub>1</sub> ≥ 4/3 + 10<sup>−6</sup>), Bogoliubov Shunt (*Φ*<sub>*ν*</sub> ≡ 0), Diamond Projector (*P*<sub>neutron</sub> ≤ 10<sup>−120</sup>) | **8/8 PASS** |
+| `GATE-SWARM-297..304` | Phase 5A Galactic Harvesting & Virial Clamping | 8 Gates | Metric Opacity Quenching (*κ*<sub>eff</sub>/*κ*<sub>0</sub> ≤ 10<sup>−12</sup>), Flash Acoustic Matching (*R*<sub>acoustic</sub> ≤ 10<sup>−6</sup>), 312 ADM Vlasov-Poisson Clamping (|Δ*σ*<sub>*r*</sub>² / *σ*<sub>*r*</sub>²| ≤ 10<sup>−6</sup>) | **8/8 PASS** |
 | **Total Pipeline** | **sys1own/shbt-swarm Master Verification** | **304 Gates** | **Complete System Closure across Quantum, Cognitive, Architectural, Energy, Galactic, Ascension, and Recursive Multiverse Domains** | **304/304 PASS** |
 
 ### 14.2 The 88 Formal Z3 SMT Theorems (`88/88 UNSAT`)
@@ -1253,7 +1253,7 @@ All 88 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 | Theorem Identifier | Target Verification Property | Negation Formulation | Solver Status | Script Path |
 | :--- | :--- | :--- | :--- | :--- |
 | `THM-CLONE-01` | Categorical & ADM Vacuum No-Cloning | Cloning non-orthogonal superposition preserves unitarity | `unsat` | `formal/verify_swarm_cloning.py` |
-| `THM-CLONE-02` | SK-9 Fidelity & Phylogenetic Stability | Cumulative topological error exceeds 10^-122 over 10^9 generations | `unsat` | `formal/verify_swarm_cloning.py` |
+| `THM-CLONE-02` | SK-9 Fidelity & Phylogenetic Stability | Cumulative topological error exceeds 10<sup>−122</sup> over 10⁹ generations | `unsat` | `formal/verify_swarm_cloning.py` |
 | `THM-CLONE-03` | Stoichiometric & Neutrino-Free Conservation | Crust-to-CHNOPS weak conversion generates free neutrino flux | `unsat` | `formal/verify_swarm_cloning.py` |
 | `THM-CLONE-04` | Symplectic Landauer Thermal Clamping | Visible reset dissipation raises cryostat temp above 4.2 K | `unsat` | `formal/verify_swarm_cloning.py` |
 | `THM-AI-01` | PT-GoI Equilibrium Real-Time Closure | PT-GoI optical propagation exceeds 19.795 us tick deadline | `unsat` | `formal/verify_swarm_ai_safety.py` |
@@ -1274,7 +1274,7 @@ All 88 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 | `THM-MARX-01` | Nacelle Compaction & 41-Core ADM Closure | 41-core loaded Jump-Cruiser exceeds 16,600.00 kg ADM single-frame limit| `unsat` | `formal/verify_mar312x_reactor.py` |
 | `THM-MARX-02` | SHBT-DEC-X 99.20% Conversion & 25 EW Forge | Tier 4 forge operation causes nacelle temp to exceed 192.50 K | `unsat` | `formal/verify_mar312x_reactor.py` |
 | `THM-MARX-03` | Purcell Infinite Shelf Life & Self-Healing | Spontaneous isomer decay occurs or autopoietic scrub dissipates heat | `unsat` | `formal/verify_mar312x_reactor.py` |
-| `THM-MARX-04` | 12-Layer Fracton Shield & 1.701 ps Crowbar | Radiation leakage exceeds 10^-14 or crowbar trip exceeds 2.50 ns | `unsat` | `formal/verify_mar312x_reactor.py` |
+| `THM-MARX-04` | 12-Layer Fracton Shield & 1.701 ps Crowbar | Radiation leakage exceeds 10<sup>−14</sup> or crowbar trip exceeds 2.50 ns | `unsat` | `formal/verify_mar312x_reactor.py` |
 | `THM-MARX-05` | Direct Boundary Bus 99.85% & Fast Cloning | Daughter ship synthesis turnaround exceeds 15.00 ms | `unsat` | `formal/verify_mar312x_reactor.py` |
 | `THM-MARX-06` | Monolithic 8x8 InP/InGaAs HBT & PIC Boundary Phase Coherence | RMS phase jitter exceeds 4.2895e-4 rad or coherence factor C < 0.9995 | `unsat` | `formal/verify_mar312x_reactor.py` |
 | `THM-MARX-07` | Closed-Loop MAR-312X Warp Soliton Drive & Acoustic Tamping | Acoustic power reflectance exceeds 1.0e-6 or M31 transit exceeds 9.0 h | `unsat` | `formal/verify_mar312x_reactor.py` |
@@ -1284,7 +1284,7 @@ All 88 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 | `THM-OMEGA-04`| 3.827e26 W Perpetual Dark Power Grid & Symplectic Recovery | Power transfer efficiency < 99.985% or cryostat waste heat exceeds 1.9955e-18 J | `unsat` | `formal/verify_omega_megastructures.py` |
 | `THM-OMEGA-05`| Aegis-Omega 4-Layer Planetary Defense Penetration Impossibility | Penetration of all 4 layers occurs or TMSV sensitivity > 0.010 pm/sqrt(Hz) | `unsat` | `formal/verify_omega_megastructures.py` |
 | `THM-OMEGA-06`| CBF Safety & Class M0 Xenobiological Inviolability | Swarm node population breaches ceiling or Class M0 habitat is modified | `unsat` | `formal/verify_omega_megastructures.py` |
-| `THM-LOGOS-01`| 10^32 Qubit Monolithic Computronium Coherence & Topology | Qubit count < 10^32, ops/sec < 10^48, or Solovay-Kitaev error > 10^-122 | `unsat` | `formal/verify_logos_hypercomputer.py` |
+| `THM-LOGOS-01`| 10³² Qubit Monolithic Computronium Coherence & Topology | Qubit count < 10³², ops/sec < 10⁴⁸, or Solovay-Kitaev error > 10<sup>−122</sup> | `unsat` | `formal/verify_logos_hypercomputer.py` |
 | `THM-LOGOS-02`| 10^16 W Zero-Heat Thermal Shunt & Dark Flow Conservation | Shunt capacity < 10^16 W or physical cryostat dissipation Q_int > 0 J/bit | `unsat` | `formal/verify_logos_hypercomputer.py` |
 | `THM-LOGOS-03`| 10<sup>18</sup> bps/cm<sup>2</sup> Optical Omnibus Fabric Contention & Loss | Bandwidth < 10<sup>18</sup> bps/cm<sup>2</sup>, packet loss > 0, or routing jitter > 1.701 ps | `unsat` | `formal/verify_logos_hypercomputer.py` |
 | `THM-LOGOS-04`| Galactic MERA Dynamic Addressing Uniqueness & Routing | Address collision occurs or 64-bit routing hierarchy misdirects packet | `unsat` | `formal/verify_logos_hypercomputer.py` |
@@ -1330,22 +1330,22 @@ All 88 formal theorems are encoded in `formal/` and proven via unsatisfiable neg
 | `THM-NEST-04` | Epistemic Veil Safeword Preservation & *O*(1) Egress | Safeword interrupt fails to register or egress un-braiding exceeds 17.01 as | `unsat` | `formal/shbt_recursive_multiverse_smt.py` |
 | `THM-NEST-05` | Recursive Class X1 Anti-Genocide CBF Interlock | Class X1 protected life in simulation is terminated without Stinespring Sanctuary Fork | `unsat` | `formal/shbt_recursive_multiverse_smt.py` |
 | `THM-NEST-06` | SplitMix64-Merkle Cosmic Seed Determinism | Seed generator collides across distinct intent tensors or fails determinism | `unsat` | `formal/shbt_recursive_multiverse_smt.py` |
-| `THM-OMEGA-14-EXT` | Christodoulou Non-Linear Memory Strain Nullification | Residual gravitational-wave memory strain exceeds 10^-120 under active CCZ4 counter-pulse | `unsat` | `formal/verify_omega_recoil.py` |
-| `THM-OMEGA-15-EXT` | Sgr A* Nuclear Cusp Recoil Clamping & ADM Invariance | Secular CoM displacement exceeds 10^-15 m or global ADM linear momentum P_ADM != 0 | `unsat` | `formal/verify_omega_recoil.py` |
-| `THM-OMEGA-16-EXT` | CCZ4 Hyperbolic Gundlach Constraint Damping Stability | Gundlach damping parameter kappa_1 <= 0 or constraint violation energy growth dTheta/dt >= 0 | `unsat` | `formal/verify_omega_recoil.py` |
-| `THM-LOGOS-11-EXT` | Continuous Knizhnik–Zamolodchikov Holonomy Isometry | Operator approximation error eps_disc > 0 or parallel transport fails isometry W†W != I | `unsat` | `formal/verify_logos_continuous_ribbon.py` |
-| `THM-LOGOS-12-EXT` | Continuous Ribbon Framing Anomaly Cancellation & Zero Heat | Framing defect Delta_fr != 0 or internal Landauer dissipation Q_internal > 0 | `unsat` | `formal/verify_logos_continuous_ribbon.py` |
-| `THM-LOGOS-13-EXT` | Moduli Geodesic Flat Connection Residue Isospectrality | Associator fails reflection involution F^2 != I_2 or residue traces diverge Tr(A_0) != Tr(A_1) | `unsat` | `formal/verify_logos_continuous_ribbon.py` |
-| `THM-STEN-11-EXT` | Relativistic Quantum Reference Frame Unitary Covariance | Reference frame transform operator fails unitarity or state expectation values diverge | `unsat` | `formal/verify_qrf_covariance.py` |
-| `THM-STEN-12-EXT` | Superposed Simplicial Sheaf Unipotence & Decoherence Immunity | Operator-valued transfer matrix fails (T - I)^2 == 0 or spectral radius rho_spec != 1.0 | `unsat` | `formal/verify_qrf_covariance.py` |
-| `THM-STEN-13-EXT` | Relativistic Multi-Branch HOCBF Forward Invariance | Relative-degree r=2 control barrier fails psi_2 < 0 or microcausality violated under Delta alpha = 10^12 | `unsat` | `formal/verify_qrf_covariance.py` |
-| `THM-FOUNDRY-10-EXT` | Floquet QGP Dynamic Color Debye Screening | Dynamic Debye mass mu_D < 15.0 fm^-1 or Coulomb barrier permits fusion heating | `unsat` | `formal/verify_dense_matter_transmute.py` |
-| `THM-FOUNDRY-11-EXT` | Degenerate Core Adiabat & Bogoliubov Dark Shunt | Core adiabatic index Gamma_1 < 4/3 or visible neutrino emission occurs | `unsat` | `formal/verify_dense_matter_transmute.py` |
-| `THM-OMEGA-21-EXT` | Kerr Ergosphere Siphon CFT Horizon Area Non-Decrease | Infalling Penrose modes decrease outer event horizon area dA_H/dt < 0 | `unsat` | `formal/verify_smbh_ergosphere_harvest.py` |
-| `THM-OMEGA-22-EXT` | Blandford-Znajek Relativistic Jet Quenching Stability | Net poloidal current generates unquenched jet power exceeding 10^-12 W | `unsat` | `formal/verify_smbh_ergosphere_harvest.py` |
-| `THM-OMEGA-18-EXT` | Metric Opacity Quenching & Radiation Decoupling | Quenched effective opacity kappa_eff exceeds 10^-12 kappa_0 or triggers blow-out | `unsat` | `formal/verify_galactic_virial_clamp.py` |
-| `THM-OMEGA-19-EXT` | Flash Acoustic Impedance Matching & Core Decoupling | Acoustic reflection coefficient R_acoustic exceeds 10^-6 during flash deconstruction | `unsat` | `formal/verify_galactic_virial_clamp.py` |
-| `THM-OMEGA-20-EXT` | 312 ADM Hub Supercomoving Virial Clamping Invariant | Fractional circular velocity drift Delta v_circ / v_circ exceeds 10^-6 under mass evacuation | `unsat` | `formal/verify_galactic_virial_clamp.py` |
+| `THM-OMEGA-14-EXT` | Christodoulou Non-Linear Memory Strain Nullification | Residual gravitational-wave memory strain ‖*h*<sub>*ij*</sub><sup>res</sup>‖<sub>∞</sub> > 10<sup>−120</sup> under active CCZ4 counter-pulse | `unsat` | `formal/verify_omega_recoil.py` |
+| `THM-OMEGA-15-EXT` | Sgr A* Nuclear Cusp Recoil Clamping & ADM Invariance | Secular CoM displacement ‖Δ**x**<sub>CoM</sub>‖ > 10<sup>−15</sup> m or global ADM linear momentum *P*<sub>ADM</sub><sup>*i*</sup> ≠ 0 | `unsat` | `formal/verify_omega_recoil.py` |
+| `THM-OMEGA-16-EXT` | CCZ4 Hyperbolic Gundlach Constraint Damping Stability | Gundlach damping parameter *κ*₁ ≤ 0 or constraint violation energy growth *dΘ*/*dt* ≥ 0 | `unsat` | `formal/verify_omega_recoil.py` |
+| `THM-LOGOS-11-EXT` | Continuous Knizhnik–Zamolodchikov Holonomy Isometry | Operator approximation error *ε*<sub>disc</sub> > 0 or parallel transport fails isometry **W**<sup>†</sup>**W** ≠ **I** | `unsat` | `formal/verify_logos_continuous_ribbon.py` |
+| `THM-LOGOS-12-EXT` | Continuous Ribbon Framing Anomaly Cancellation & Zero Heat | Framing defect Δ<sub>fr</sub> ≠ 0 or internal Landauer dissipation *Q*<sub>int</sub> > 0 | `unsat` | `formal/verify_logos_continuous_ribbon.py` |
+| `THM-LOGOS-13-EXT` | Moduli Geodesic Flat Connection Residue Isospectrality | Associator fails reflection involution **F**² ≠ **I**₂ or residue traces diverge Tr(**A**₀) ≠ Tr(**A**₁) | `unsat` | `formal/verify_logos_continuous_ribbon.py` |
+| `THM-STEN-11-EXT` | Relativistic Quantum Reference Frame Unitary Covariance | Reference frame transform operator fails unitarity **U**<sup>†</sup>**U** ≠ **I** or state expectation values diverge | `unsat` | `formal/verify_qrf_covariance.py` |
+| `THM-STEN-12-EXT` | Superposed Simplicial Sheaf Unipotence & Decoherence Immunity | Operator-valued transfer matrix fails (**T**̂ − **I**)² ≠ 0 or spectral radius *ρ*<sub>spec</sub> ≠ 1.0 | `unsat` | `formal/verify_qrf_covariance.py` |
+| `THM-STEN-13-EXT` | Relativistic Multi-Branch HOCBF Forward Invariance | Relative-degree *r* = 2 control barrier fails *ψ*₂ < 0 or microcausality violated under Δ*α* = 10¹² | `unsat` | `formal/verify_qrf_covariance.py` |
+| `THM-FOUNDRY-10-EXT` | Floquet QGP Dynamic Color Debye Screening | Dynamic Debye mass *μ*<sub>D</sub> < 15.0 fm<sup>−1</sup> or Coulomb barrier permits fusion heating | `unsat` | `formal/verify_dense_matter_transmute.py` |
+| `THM-FOUNDRY-11-EXT` | Degenerate Core Adiabat & Bogoliubov Dark Shunt | Core adiabatic index *Γ*<sub>1</sub> < 4/3 or visible neutrino emission occurs (*Φ*<sub>*ν*</sub> > 0) | `unsat` | `formal/verify_dense_matter_transmute.py` |
+| `THM-OMEGA-21-EXT` | Kerr Ergosphere Siphon CFT Horizon Area Non-Decrease | Infalling Penrose modes decrease outer event horizon area *dA*<sub>H</sub>/*dt* < 0 | `unsat` | `formal/verify_smbh_ergosphere_harvest.py` |
+| `THM-OMEGA-22-EXT` | Blandford-Znajek Relativistic Jet Quenching Stability | Net poloidal current generates unquenched jet power *P*<sub>jet</sub> > 10<sup>−12</sup> W | `unsat` | `formal/verify_smbh_ergosphere_harvest.py` |
+| `THM-OMEGA-18-EXT` | Metric Opacity Quenching & Radiation Decoupling | Quenched effective opacity *κ*<sub>eff</sub> > 10<sup>−12</sup> *κ*₀ or triggers blow-out | `unsat` | `formal/verify_galactic_virial_clamp.py` |
+| `THM-OMEGA-19-EXT` | Flash Acoustic Impedance Matching & Core Decoupling | Acoustic reflection coefficient *R*<sub>acoustic</sub> > 10<sup>−6</sup> during flash deconstruction | `unsat` | `formal/verify_galactic_virial_clamp.py` |
+| `THM-OMEGA-20-EXT` | 312 ADM Hub Supercomoving Virial Clamping Invariant | Fractional circular velocity drift |Δ*v*<sub>circ</sub> / *v*<sub>circ</sub>| > 10<sup>−6</sup> under mass evacuation | `unsat` | `formal/verify_galactic_virial_clamp.py` |
 
 ---
 
