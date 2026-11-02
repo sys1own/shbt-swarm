@@ -196,9 +196,9 @@ Under extreme relativistic lapse foliations where lapse variations reach Δ*α* 
 |                                                                                                    |
 |    Observer R (Frame R)                                                  Observer R' (Frame R')    |
 |    +-----------------------------+     Unitary QRF Transformation        +------------------------+|
-|    | State: rho^(R)              |  U_{R⟶R'} = P exp(−i/ℏ ∫ π X dx)     | State: rho^(R')        ||
-|    | Observables: A^(R)          | ====================================> | Observables: A^(R')    ||
-|    | ⟨A^(R)⟩_ρ = Tr(ρ A)         |       (Exact Trace Invariance)        | ⟨A^(R')⟩ = ⟨A^(R)⟩     ||
+|    | State: rho^(R)              |  U_{R⟶R'} = P exp(−i/ℏ ∫ π X dx)    |  State: rho^(R')        ||
+|    | Observables: A^(R)          | ===================================> |  Observables: A^(R')    ||
+|    | ⟨A^(R)⟩_ρ = Tr(ρ A)         |       (Exact Trace Invariance)        |  ⟨A^(R')⟩ = ⟨A^(R)⟩      ||
 |    +-----------------------------+                                       +------------------------+|
 |                   |                                                                   |            |
 |                   +-----------------------------------+-------------------------------+            |
@@ -656,7 +656,7 @@ Matter extraction from the galactic nucleus at rates up to *Ṁ* ≤ 0.08 *M*<su
 +----------------------------------------------------------------------------------------------------+
 |                                                                                                    |
 |    Sgr A* Nuclear Cusp                                              Future Null Infinity (I^+)     |
-|    Mass: M_ext ∼ 10¹¹ M_☉                                           Bondi-Sachs Radiative Shear    |
+|    Mass: M_ext ∼ 10¹¹ M_☉                                           Bondi-Sachs Radiative Shear   |
 |    Uncompensated: Δx_CoM > 0.27 pc                                  c_AB(u, θ^C), News N_AB        |
 |               |                                                                   |                |
 |               v                                                                   v                |
