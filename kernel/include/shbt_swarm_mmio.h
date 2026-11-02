@@ -812,5 +812,97 @@ typedef struct __attribute__((packed, aligned(8))) {
 _Static_assert(sizeof(shbt_dense_matter_mmio_t) == 160,
                "shbt_dense_matter_mmio_t must be exactly 160 bytes");
 
+/* ==========================================================================
+ * DENSE MATTER DECONSTRUCTION & GALACTIC ASTRODYNAMICS APERTURES
+ * ========================================================================== */
+
+#define SHBT_MMIO_ABI_VERSION         0x00080312U
+#define SHBT_MMIO_DENSE_BASE          0x7F000000ULL
+#define SHBT_MMIO_QUENCH_BASE         0x7F000100ULL
+#define SHBT_MMIO_SHUNT_BASE          0x7F000200ULL
+#define SHBT_MMIO_HIL_DENSE_BASE      0x7F000300ULL
+#define SHBT_MMIO_GALACTIC_BASE       0x8F000000ULL
+
+#define MULTIPHYSICS_13_ENGINES_MASK  0x00001FFFU
+#define HIL_GATES_233_241_MASK        0x000001FFU
+#define HIL_GATES_242_250_MASK        0x000001FFU
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Dense Matter Siphon & Color Screening (0x7F000000) */
+typedef struct __attribute__((packed, aligned(8))) {
+    volatile uint32_t abi_version;        /* 0x00: 0x00080312 */
+    volatile uint32_t status_flags;       /* 0x04: Bit 0=Enable, Bit 1=Trip */
+    volatile double   current_rho_b;      /* 0x08: Central density (kg/m^3) */
+    volatile double   commanded_m_dot;    /* 0x10: Commanded M_dot (kg/s) */
+    volatile double   rf_field_amplitude; /* 0x18: E_RF (V/m) */
+    volatile double   drive_freq_omega;   /* 0x20: Omega (rad/s) */
+    volatile double   eval_debye_mass;    /* 0x28: mu_D (fm^-1) */
+    volatile double   screen_potential;   /* 0x30: U_screen (MeV) */
+    volatile double   evaluated_gamma_1;  /* 0x38: Relativistic Gamma_1 */
+    volatile double   fluid_drift_v_c;    /* 0x40: v_fluid / c */
+    volatile uint32_t pasta_phase;        /* 0x48: 1=Gnocchi, 2=Spaghetti, 3=Lasagna, 4=Fluid */
+    volatile uint32_t _pad_tail;          /* 0x4C: 8-byte alignment pad */
+} shbt_mmio_dense_transmute_t;
+
+/* Magnetar Helicity Quencher (0x7F000100) */
+typedef struct __attribute__((packed, aligned(8))) {
+    volatile uint32_t control_bits;       /* 0x00: Bit 0=Arm, Bit 1=Quench */
+    volatile uint32_t status_enum;        /* 0x04: QuenchStatus */
+    volatile double   b_init_tesla;       /* 0x08: Initial B (T) */
+    volatile double   b_current_tesla;    /* 0x10: Current B (T) */
+    volatile double   current_db_down;    /* 0x18: Attenuation (dB) */
+    volatile double   dissipation_rate;   /* 0x20: dU_B/dt (W) */
+    volatile int64_t  topological_w;      /* 0x28: pi_3(SU(2)) invariant */
+    volatile double   run_duration_s;     /* 0x30: Elapsed time (s) */
+} shbt_mmio_magnetar_quench_t;
+
+/* Lepton Shunt & 25 EW CFT Bus (0x7F000200) */
+typedef struct __attribute__((packed, aligned(8))) {
+    volatile uint32_t coupling_mode;      /* 0x00: ShuntCouplingMode */
+    volatile uint32_t phase_locked;       /* 0x04: 1=Locked */
+    volatile double   theta_k_rad;        /* 0x08: Bogoliubov angle (rad) */
+    volatile double   phi_nu_observed;    /* 0x10: Neutrino flux (cm^-2 s^-1) */
+    volatile double   cft_power_output_w; /* 0x18: 25 EW Bus Power (W) */
+    volatile double   dark_debt_joules;   /* 0x20: Cumulative dark exergy */
+    volatile uint64_t disassembled_count; /* 0x28: Baryons shunted */
+} shbt_mmio_lepton_shunt_t;
+
+/* Galactic Astrodynamics Engine (0x8F000000) */
+typedef struct __attribute__((packed, aligned(8))) {
+    volatile uint32_t symplectic_ctrl;    /* 0x00: Bit 0=Engage, Bit 1=Reset */
+    volatile uint32_t symplectic_status;  /* 0x04: Bit 0=Preserved (d_omega == 0) */
+    volatile uint64_t cascade_ratio;      /* 0x08: alpha_casc (default 1e12) */
+    volatile double   energy_drift_rel;   /* 0x10: Delta H / H(0) */
+    volatile double   ccz4_kappa1;        /* 0x18: Gundlach damping parameter */
+    volatile double   ccz4_z_norm;        /* 0x20: ||Z_i|| constraint norm */
+    volatile double   gw_mem_residual;    /* 0x28: ||h_ij^mem + h_ij^counter|| */
+    volatile double   com_drift_x;        /* 0x30: CoM drift X (m) */
+    volatile double   com_drift_y;        /* 0x38: CoM drift Y (m) */
+    volatile double   com_drift_z;        /* 0x40: CoM drift Z (m) */
+    volatile uint64_t cs_level_k;         /* 0x48: Level K (312) */
+    volatile int64_t  cs_winding_x;       /* 0x50: Sp(2g, Z) Winding X */
+    volatile int64_t  cs_winding_y;       /* 0x58: Sp(2g, Z) Winding Y */
+    volatile int64_t  cs_winding_z;       /* 0x60: Sp(2g, Z) Winding Z */
+    volatile double   shift_anomaly_norm; /* 0x68: ||beta^i||_inf */
+    volatile uint32_t multiphysics_bits;  /* 0x70: Bits 0..12 engine status */
+    volatile uint32_t hil_gate_status;    /* 0x74: Gates 242-250 pass mask */
+} shbt_galactic_mmio_t;
+
+#ifdef __cplusplus
+}
+#endif
+
+_Static_assert(sizeof(shbt_mmio_dense_transmute_t) == 80,
+               "shbt_mmio_dense_transmute_t must be exactly 80 bytes");
+_Static_assert(sizeof(shbt_mmio_magnetar_quench_t) == 56,
+               "shbt_mmio_magnetar_quench_t must be exactly 56 bytes");
+_Static_assert(sizeof(shbt_mmio_lepton_shunt_t) == 48,
+               "shbt_mmio_lepton_shunt_t must be exactly 48 bytes");
+_Static_assert(sizeof(shbt_galactic_mmio_t) == 120,
+               "shbt_galactic_mmio_t must be exactly 120 bytes");
+
 #endif /* SHBT_SWARM_MMIO_H */
 

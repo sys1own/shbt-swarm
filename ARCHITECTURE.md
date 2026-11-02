@@ -602,6 +602,76 @@ The C11 microkernel ABI v10.0 defines a dedicated 160-byte MMIO aperture mapped 
 | `0x0090` | `borrmann_defect_density` | `uint64_t`| RO | `0` | Borrmann Defect Density |
 | `0x0098` | `aperture_command_trigger`| `uint64_t`| RW | `0` | Aperture Command Trigger |
 
+### 3.9 Compact Degenerate Deconstruction Apertures (`0x7F000000`, `0x7F000100`, `0x7F000200`)
+
+The C11 microkernel ABI v8 / v10 defines three dedicated memory-mapped apertures for compact stellar deconstruction, magnetar helicity quenching, and zero-neutrino lepton shunting:
+
+#### 1. Dense Matter Transmutation Aperture (`shbt_mmio_dense_transmute_t`, 80 Bytes, Base `0x7F000000`)
+| Offset | Field Name | Type | Access | Description & Invariant Bound |
+| :--- | :--- | :--- | :--- | :--- |
+| `0x0000` | `debye_mass_fm` | `double` | RO | Dynamic Floquet Debye mass `mu_D >= 15.0 fm^-1` |
+| `0x0008` | `pasta_melt_work_mev` | `double` | RO | Screening work potential `U_screen >= 35.2 MeV` |
+| `0x0010` | `adiabatic_gamma1` | `double` | RO | Relativistic core adiabatic index `Gamma_1 >= 4/3 + 10^-6` |
+| `0x0018` | `siphon_rate_kg_s` | `double` | RW | Mass throughput `M_dot <= 1.0 x 10^20 kg/s` |
+| `0x0020` | `fluid_velocity_c` | `double` | RO | Laminar nucleon drift `v_fluid <= 0.05 c` |
+| `0x0028` | `qgp_deconfinement_pot`| `double`| RO | Deconfinement threshold margin |
+| `0x0030` | `coulomb_coupling_gamma`| `double`| RO | Coulomb plasma parameter Gamma |
+| `0x0038` | `pasta_phase_id` | `uint32_t` | RO | Inner crust pasta phase identifier (0..4) |
+| `0x003C` | `rf_actuator_status` | `uint32_t` | RO | Hexameric RF actuator phase lock bitmask |
+| `0x0040` | `status_flags` | `uint32_t` | RO | Transmutation engine status flags |
+| `0x0044` | `fault_mask` | `uint32_t` | RO | Dense matter fault bitmask |
+| `0x0048` | `operation_ticks` | `uint64_t` | RO | Master operation tick counter |
+
+#### 2. Magnetar Helicity Quenching Aperture (`shbt_mmio_magnetar_quench_t`, 56 Bytes, Base `0x7F000100`)
+| Offset | Field Name | Type | Access | Description & Invariant Bound |
+| :--- | :--- | :--- | :--- | :--- |
+| `0x0000` | `initial_b_field_t` | `double` | RO | Initial crustal B-field `B_init ~ 10^11 T` |
+| `0x0008` | `current_b_field_t` | `double` | RO | Attenuated field `B <= 10^5 T` |
+| `0x0010` | `helicity_drain_rate` | `double` | RO | Helicity evacuation rate `dH_M/dt` |
+| `0x0018` | `quench_tau_s` | `double` | RO | Exponential damping timescale `tau = 100.0 s` |
+| `0x0020` | `gravitomagnetic_pot` | `double` | RO | Gravitomagnetic vector potential norm `||beta||` |
+| `0x0028` | `attenuation_db` | `double` | RO | Cumulative attenuation `>= 120.0 dB` |
+| `0x0030` | `quench_status` | `uint32_t` | RO | Quenching status bits (`QuenchCompleted120dB`) |
+| `0x0034` | `reserved` | `uint32_t` | RO | 8-byte alignment pad |
+
+#### 3. Unitary Lepton Shunt Aperture (`shbt_mmio_lepton_shunt_t`, 48 Bytes, Base `0x7F000200`)
+| Offset | Field Name | Type | Access | Description & Invariant Bound |
+| :--- | :--- | :--- | :--- | :--- |
+| `0x0000` | `neutrino_poynting_flux`| `double`| RO | Visible neutrino Poynting flux `Phi_nu == 0.0` |
+| `0x0008` | `bogoliubov_angle_rad` | `double` | RO | Rotation angle `theta_B = pi/2` |
+| `0x0010` | `cft_bus_exergy_ratio` | `double` | RO | Bus exergy efficiency `eta_CFT >= 0.9999` |
+| `0x0018` | `b_minus_l_deviation` | `double` | RO | Baryon minus lepton disparity count `== 0.0` |
+| `0x0020` | `dark_ledger_weight` | `double` | RO | Dark ledger partition ratio `23/33` |
+| `0x0028` | `shunt_status_flags` | `uint32_t` | RO | Shunt completion and interlock status flags |
+| `0x002C` | `reserved` | `uint32_t` | RO | 8-byte alignment pad |
+
+### 3.10 Galactic Astrodynamics MMIO Aperture (`0x8F000000`, 120 Bytes)
+
+The C11 microkernel ABI v8 / v10 defines a dedicated 120-byte MMIO aperture mapped at physical address `0x8F000000` (`shbt_galactic_mmio_t`) for symplectic multi-scale cascade integration, CCZ4 Christodoulou GW memory clamping, and boundary Chern-Simons disk angular momentum dissipation:
+
+| Offset | Field Name | Type | Access | Description & Invariant Bound |
+| :--- | :--- | :--- | :--- | :--- |
+| `0x0000` | `poincare_cartan_2form_err`| `double`| RO | Differential 2-form residual `d omega <= 1.0e-19` |
+| `0x0008` | `relative_energy_drift` | `double` | RO | Shadow Hamiltonian relative drift `<= 1.0e-15` |
+| `0x0010` | `ccz4_gundlach_z_norm` | `double` | RO | Gundlach constraint vector norm `||Z|| <= 1.0e-16` |
+| `0x0018` | `gw_memory_residual_norm`| `double` | RO | Christodoulou residual strain `||h_mem|| <= 1.0e-120` |
+| `0x0020` | `com_drift_x` | `float` | RO | Center-of-mass displacement X `|Delta x| <= 1.0e-15 m` |
+| `0x0024` | `com_drift_y` | `float` | RO | Center-of-mass displacement Y `|Delta y| <= 1.0e-15 m` |
+| `0x0028` | `com_drift_z` | `float` | RO | Center-of-mass displacement Z `|Delta z| <= 1.0e-15 m` |
+| `0x002C` | `com_drift_norm` | `float` | RO | Secular CoM drift norm `||Delta x_CoM|| <= 1.0e-15 m` |
+| `0x0030` | `adm_momentum_px` | `double` | RO | ADM linear momentum X `== 0.0` |
+| `0x0038` | `adm_momentum_py` | `double` | RO | ADM linear momentum Y `== 0.0` |
+| `0x0040` | `adm_momentum_pz` | `double` | RO | ADM linear momentum Z `== 0.0` |
+| `0x0048` | `cs_boundary_jx` | `double` | RO | Boundary absorbed angular momentum X |
+| `0x0050` | `cs_boundary_jy` | `double` | RO | Boundary absorbed angular momentum Y |
+| `0x0058` | `cs_boundary_jz` | `double` | RO | Boundary absorbed angular momentum Z |
+| `0x0060` | `adm_shift_vector_norm` | `double` | RO | Gravitomagnetic shift norm `||beta|| <= 1.0e-120` |
+| `0x0068` | `cs_level_k` | `uint32_t` | RO | Chern-Simons level `k_CS == 312` |
+| `0x006C` | `hil_gate_mask` | `uint32_t` | RO | HIL Gate 242-250 verification bitmask (`0x1FF`) |
+| `0x0070` | `multiphysics_status_flags`| `uint16_t`| RO | 13-engine tick status bits (`0x1FFF`) |
+| `0x0072` | `reserved_pad` | `uint16_t` | RO | Alignment pad |
+| `0x0074` | `fault_bitmask` | `uint32_t` | RO | Astrodynamic fault status bitmask |
+
 ## 4. Rust `#![no_std]` Core Interfaces Across Crates
 
 All workspace crates compile under `#![no_std]` with `#![forbid(unsafe_code)]` enabled on pure algorithmic modules.
@@ -1261,13 +1331,30 @@ The canonical synchronous entry point `galactic_multiphysics_step(regs: &mut Shb
 ```rust
 pub fn galactic_multiphysics_step(
     regs: &mut ShbtSwarmMmioRegs,
-) -> Result<GalacticMultiphysicsState, &'static str> {
+) -> Result<GalacticMultiphysicsTwinReport, &'static str> {
     let state = step_galactic_multiphysics_twin_with_regs(regs)?;
     let fault_mask = regs.audit_v10_invariants();
     if fault_mask != 0 {
         return Err("MMIO register invariant audit failed after multiphysics step");
     }
     Ok(state)
+}
+
+pub struct GalacticMultiphysicsState {
+    pub tick_counter: u64,
+    pub gw_compensator: GwRecoilCompensator,
+    pub topological_sink: TopologicalAngularMomentumSink,
+    pub baryonic_mass_remaining: f64,
+    pub extracted_ergosphere_energy: f64,
+    pub degenerate_remnant_mass: f64,
+}
+
+impl GalacticMultiphysicsState {
+    pub fn galactic_multiphysics_step(
+        &mut self,
+        dt_macro: f64,
+        lapse_alpha: f64,
+    ) -> MultiphysicsTickStatus;
 }
 ```
 

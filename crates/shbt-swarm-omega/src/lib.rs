@@ -20,6 +20,12 @@ pub use gw_recoil_clamp::{
     DARK_LEDGER_ETA_D, G_NEWTON, MEMORY_NULL_TOLERANCE, QUADRANT_HUBS, SECULAR_COM_TOLERANCE,
     SOLAR_MASS,
 };
+pub mod magnetar_quench;
+pub use magnetar_quench::*;
+pub mod gw_recoil;
+pub mod angular_momentum;
+pub use angular_momentum::*;
+
 
 pub use stellar_deconstruct::{EddingtonBypassEngine, DeconstructionError};
 pub use dynamo_brake::{DynkinBrakingRouter, DynamoError};

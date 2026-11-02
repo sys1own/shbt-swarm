@@ -17,7 +17,11 @@ pub mod dense_transmute;
 pub use dense_transmute::{
     BogoliubovDarkShunt, BorrmannDiamondProjector, DegenerateAdiabatTracker,
     DenseMatterTransmutationEngine, DenseTransmutationError, FloquetColorScreening,
+    DenseMatterTransmuteController, PastaPhase, SiphonFluidState, EosScreeningMetrics,
 };
+pub mod lepton_shunt;
+pub use lepton_shunt::*;
+
 
 pub use dynkin_router::{
     BoundaryState346, DynamicFramingCompensator as DynFramingCompensator, DynkinRouter346,

@@ -314,6 +314,147 @@ const _: () = {
     assert!(offset_of!(ShbtNestedSimMmioRegs, cbf_trip_status) == 0x40);
 };
 
+macro_rules! const_assert {
+    ($x:expr $(,)?) => {
+        const _: () = assert!($x);
+    };
+}
+
+pub const SHBT_MMIO_ABI_VERSION: u32 = 0x0008_0312;
+pub const SHBT_MMIO_DENSE_BASE: u64 = 0x7F00_0000;
+pub const SHBT_MMIO_QUENCH_BASE: u64 = 0x7F00_0100;
+pub const SHBT_MMIO_SHUNT_BASE: u64 = 0x7F00_0200;
+pub const SHBT_MMIO_HIL_DENSE_BASE: u64 = 0x7F00_0300;
+pub const SHBT_MMIO_GALACTIC_BASE: u64 = 0x8F00_0000;
+
+pub const MULTIPHYSICS_13_ENGINES_MASK: u32 = 0x0000_1FFF;
+pub const HIL_GATES_233_241_MASK: u32 = 0x0000_01FF;
+pub const HIL_GATES_242_250_MASK: u32 = 0x0000_01FF;
+
+/* Dense Matter Siphon & Color Screening (0x7F000000) */
+#[repr(C, align(8))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtMmioDenseTransmute {
+    pub abi_version: u32,        /* 0x00: 0x00080312 */
+    pub status_flags: u32,       /* 0x04: Bit 0=Enable, Bit 1=Trip */
+    pub current_rho_b: f64,      /* 0x08: Central density (kg/m^3) */
+    pub commanded_m_dot: f64,    /* 0x10: Commanded M_dot (kg/s) */
+    pub rf_field_amplitude: f64, /* 0x18: E_RF (V/m) */
+    pub drive_freq_omega: f64,   /* 0x20: Omega (rad/s) */
+    pub eval_debye_mass: f64,    /* 0x28: mu_D (fm^-1) */
+    pub screen_potential: f64,   /* 0x30: U_screen (MeV) */
+    pub evaluated_gamma_1: f64,  /* 0x38: Relativistic Gamma_1 */
+    pub fluid_drift_v_c: f64,    /* 0x40: v_fluid / c */
+    pub pasta_phase: u32,        /* 0x48: 1=Gnocchi, 2=Spaghetti, 3=Lasagna, 4=Fluid */
+    pub _pad_tail: u32,          /* 0x4C: 8-byte alignment pad */
+}
+
+/* Magnetar Helicity Quencher (0x7F000100) */
+#[repr(C, align(8))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtMmioMagnetarQuench {
+    pub control_bits: u32,       /* 0x00: Bit 0=Arm, Bit 1=Quench */
+    pub status_enum: u32,        /* 0x04: QuenchStatus */
+    pub b_init_tesla: f64,       /* 0x08: Initial B (T) */
+    pub b_current_tesla: f64,    /* 0x10: Current B (T) */
+    pub current_db_down: f64,    /* 0x18: Attenuation (dB) */
+    pub dissipation_rate: f64,   /* 0x20: dU_B/dt (W) */
+    pub topological_w: i64,      /* 0x28: pi_3(SU(2)) invariant */
+    pub run_duration_s: f64,     /* 0x30: Elapsed time (s) */
+}
+
+/* Lepton Shunt & 25 EW CFT Bus (0x7F000200) */
+#[repr(C, align(8))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtMmioLeptonShunt {
+    pub coupling_mode: u32,      /* 0x00: ShuntCouplingMode */
+    pub phase_locked: u32,       /* 0x04: 1=Locked */
+    pub theta_k_rad: f64,        /* 0x08: Bogoliubov angle (rad) */
+    pub phi_nu_observed: f64,    /* 0x10: Neutrino flux (cm^-2 s^-1) */
+    pub cft_power_output_w: f64, /* 0x18: 25 EW Bus Power (W) */
+    pub dark_debt_joules: f64,   /* 0x20: Cumulative dark exergy */
+    pub disassembled_count: u64, /* 0x28: Baryons shunted */
+}
+
+/* Galactic Astrodynamics Engine (0x8F000000) */
+#[repr(C, align(8))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtGalacticMmio {
+    pub symplectic_ctrl: u32,    /* 0x00: Bit 0=Engage, Bit 1=Reset */
+    pub symplectic_status: u32,  /* 0x04: Bit 0=Preserved (d_omega == 0) */
+    pub cascade_ratio: u64,      /* 0x08: alpha_casc (default 1e12) */
+    pub energy_drift_rel: f64,   /* 0x10: Delta H / H(0) */
+    pub ccz4_kappa1: f64,        /* 0x18: Gundlach damping parameter */
+    pub ccz4_z_norm: f64,        /* 0x20: ||Z_i|| constraint norm */
+    pub gw_mem_residual: f64,    /* 0x28: ||h_ij^mem + h_ij^counter|| */
+    pub com_drift_x: f64,        /* 0x30: CoM drift X (m) */
+    pub com_drift_y: f64,        /* 0x38: CoM drift Y (m) */
+    pub com_drift_z: f64,        /* 0x40: CoM drift Z (m) */
+    pub cs_level_k: u64,         /* 0x48: Level K (312) */
+    pub cs_winding_x: i64,       /* 0x50: Sp(2g, Z) Winding X */
+    pub cs_winding_y: i64,       /* 0x58: Sp(2g, Z) Winding Y */
+    pub cs_winding_z: i64,       /* 0x60: Sp(2g, Z) Winding Z */
+    pub shift_anomaly_norm: f64, /* 0x68: ||beta^i||_inf */
+    pub multiphysics_bits: u32,  /* 0x70: Bits 0..12 engine status */
+    pub hil_gate_status: u32,    /* 0x74: Gates 242-250 pass mask */
+}
+
+const_assert!(size_of::<ShbtMmioDenseTransmute>() == 80);
+const_assert!(align_of::<ShbtMmioDenseTransmute>() == 8);
+const_assert!(offset_of!(ShbtMmioDenseTransmute, abi_version) == 0x00);
+const_assert!(offset_of!(ShbtMmioDenseTransmute, status_flags) == 0x04);
+const_assert!(offset_of!(ShbtMmioDenseTransmute, current_rho_b) == 0x08);
+const_assert!(offset_of!(ShbtMmioDenseTransmute, commanded_m_dot) == 0x10);
+const_assert!(offset_of!(ShbtMmioDenseTransmute, rf_field_amplitude) == 0x18);
+const_assert!(offset_of!(ShbtMmioDenseTransmute, drive_freq_omega) == 0x20);
+const_assert!(offset_of!(ShbtMmioDenseTransmute, eval_debye_mass) == 0x28);
+const_assert!(offset_of!(ShbtMmioDenseTransmute, screen_potential) == 0x30);
+const_assert!(offset_of!(ShbtMmioDenseTransmute, evaluated_gamma_1) == 0x38);
+const_assert!(offset_of!(ShbtMmioDenseTransmute, fluid_drift_v_c) == 0x40);
+const_assert!(offset_of!(ShbtMmioDenseTransmute, pasta_phase) == 0x48);
+
+const_assert!(size_of::<ShbtMmioMagnetarQuench>() == 56);
+const_assert!(align_of::<ShbtMmioMagnetarQuench>() == 8);
+const_assert!(offset_of!(ShbtMmioMagnetarQuench, control_bits) == 0x00);
+const_assert!(offset_of!(ShbtMmioMagnetarQuench, status_enum) == 0x04);
+const_assert!(offset_of!(ShbtMmioMagnetarQuench, b_init_tesla) == 0x08);
+const_assert!(offset_of!(ShbtMmioMagnetarQuench, b_current_tesla) == 0x10);
+const_assert!(offset_of!(ShbtMmioMagnetarQuench, current_db_down) == 0x18);
+const_assert!(offset_of!(ShbtMmioMagnetarQuench, dissipation_rate) == 0x20);
+const_assert!(offset_of!(ShbtMmioMagnetarQuench, topological_w) == 0x28);
+const_assert!(offset_of!(ShbtMmioMagnetarQuench, run_duration_s) == 0x30);
+
+const_assert!(size_of::<ShbtMmioLeptonShunt>() == 48);
+const_assert!(align_of::<ShbtMmioLeptonShunt>() == 8);
+const_assert!(offset_of!(ShbtMmioLeptonShunt, coupling_mode) == 0x00);
+const_assert!(offset_of!(ShbtMmioLeptonShunt, phase_locked) == 0x04);
+const_assert!(offset_of!(ShbtMmioLeptonShunt, theta_k_rad) == 0x08);
+const_assert!(offset_of!(ShbtMmioLeptonShunt, phi_nu_observed) == 0x10);
+const_assert!(offset_of!(ShbtMmioLeptonShunt, cft_power_output_w) == 0x18);
+const_assert!(offset_of!(ShbtMmioLeptonShunt, dark_debt_joules) == 0x20);
+const_assert!(offset_of!(ShbtMmioLeptonShunt, disassembled_count) == 0x28);
+
+const_assert!(size_of::<ShbtGalacticMmio>() == 120);
+const_assert!(align_of::<ShbtGalacticMmio>() == 8);
+const_assert!(offset_of!(ShbtGalacticMmio, symplectic_ctrl) == 0x00);
+const_assert!(offset_of!(ShbtGalacticMmio, symplectic_status) == 0x04);
+const_assert!(offset_of!(ShbtGalacticMmio, cascade_ratio) == 0x08);
+const_assert!(offset_of!(ShbtGalacticMmio, energy_drift_rel) == 0x10);
+const_assert!(offset_of!(ShbtGalacticMmio, ccz4_kappa1) == 0x18);
+const_assert!(offset_of!(ShbtGalacticMmio, ccz4_z_norm) == 0x20);
+const_assert!(offset_of!(ShbtGalacticMmio, gw_mem_residual) == 0x28);
+const_assert!(offset_of!(ShbtGalacticMmio, com_drift_x) == 0x30);
+const_assert!(offset_of!(ShbtGalacticMmio, com_drift_y) == 0x38);
+const_assert!(offset_of!(ShbtGalacticMmio, com_drift_z) == 0x40);
+const_assert!(offset_of!(ShbtGalacticMmio, cs_level_k) == 0x48);
+const_assert!(offset_of!(ShbtGalacticMmio, cs_winding_x) == 0x50);
+const_assert!(offset_of!(ShbtGalacticMmio, cs_winding_y) == 0x58);
+const_assert!(offset_of!(ShbtGalacticMmio, cs_winding_z) == 0x60);
+const_assert!(offset_of!(ShbtGalacticMmio, shift_anomaly_norm) == 0x68);
+const_assert!(offset_of!(ShbtGalacticMmio, multiphysics_bits) == 0x70);
+const_assert!(offset_of!(ShbtGalacticMmio, hil_gate_status) == 0x74);
+
+
 impl ShbtSwarmMmioRegs {
     #[inline]
     #[allow(clippy::approx_constant)]

@@ -676,6 +676,24 @@ Matter extraction from the galactic nucleus at rates up to M_dot <= 0.08 M_sun/y
 - **Galactic Center-of-Mass Secular Invariance (`THM-OMEGA-15-EXT`):** 4-quadrant dihedral D_4 symmetry ensures net linear momentum cancellation, bounding secular Sagittarius A* core drift to ||Delta x_CoM|| <= 10^-15 m over 100 Myr and preserving P_ADM^i == 0 identically.
 - **CCZ4 Gundlach Hyperbolic Damping (`THM-OMEGA-16-EXT`):** Damping parameters kappa_1 = 0.15 and kappa_2 = 0.0 enforce exponential decay of Hamiltonian and momentum constraints.
 
+### 9.14 Compact Degenerate Stellar Deconstruction (Neutron Stars & Magnetars)
+
+The continuous, non-explosive deconstruction and transmutation of compact degenerate relativistic objects (M in [1.2, 2.2] M_sun, rho_c ~ 10^17 to 10^18 kg/m^3, B ~ 10^8 to 10^11 T) is governed by boundary conformal projection of so_hat(10)_312 / [su_hat(2)_26 x su_hat(3)_8]:
+
+- **Floquet Color Screening & Nuclear Pasta Melting (`THM-FOUNDRY-10-EXT`):** Hexameric conformal RF actuators drive the su_hat(3)_8 color sector at Omega >> omega_plasma, generating a Debye screening mass mu_D >= 15.0 fm^-1 in the Magnus-expanded gluon propagator. The resulting screening work potential U_screen >= 35.2 MeV cancels the mean-field nuclear binding well (~16.0 MeV/nucleon) without exceeding the quark deconfinement threshold, athermally liquefying inner-crust pasta into a laminar nucleon fluid with v_fluid <= 0.05 c.
+- **Isothermal Decompression & Relativistic Stability (`THM-FOUNDRY-10-EXT`):** Locking mass throughput to M_dot <= 1.0 x 10^20 kg/s and thermodynamic trajectory d(ln T_c)/d(ln rho_c) <= 1/3 [1 + alpha_seed / (1 + beta_rad)] enforces a relativistic adiabatic index floor Gamma_1 >= 4/3 + 1.0 x 10^-6, strictly precluding dynamical black hole collapse and unconfined detonation.
+- **Unitary Bogoliubov Lepton Shunt (`THM-FOUNDRY-11-EXT`):** Uncontrolled beta decay (n -> p + e^- + nu_bar) is suppressed by weak-vertex Bogoliubov rotation with theta_k = pi/2 and cos^2(theta_B) = 13/18, shunting lepton charge into the dark ledger (eta_D = 23/33). Destructive interference nullifies bulk neutrino flux to Phi_nu == 0.000 cm^-2 s^-1, harvesting the 0.78233 MeV endpoint exergy into the 25.00 EW Direct Boundary CFT bus at 100.0% efficiency.
+- **Magnetar Crustal Helicity Evacuation (`THM-FOUNDRY-10-EXT`):** Synthetic gravitomagnetic vector potentials evacuate crustal magnetic energy (U_B ~ 10^40 J, B ~ 10^11 T) into the third homotopy invariant w in pi_3(SU(2)), achieving attenuation >= 120.0 dB (B <= 10^5 T) and eliminating reconnection flare triggers.
+- **Universal Dynkian Computronium Transmutation (`THM-FOUNDRY-11-EXT`):** The 346-slot Dynkin weight router converts cold {p, e^-} feedstock into pure C-12 and Fe-57 with neutron survival probability P_neutron <= 1.0 x 10^-120 and activation cross-section sigma_act <= 1.0 x 10^-120 b.
+
+### 9.15 Galactic Multi-Scale Symplectic Kinematics & Recoil Clamping
+
+Co-simulating attosecond microkernel operations with secular galactic relaxation timescales (10^8 years) requires exact symplectic integration and conservation laws:
+
+- **Cascaded Symplectic SPRK Integration (`THM-SIM-01-EXT`):** Decomposes total Hamiltonian flows across a dynamic timescale cascade alpha_casc = 10^12 via 4th-order Symplectic Partitioned Runge-Kutta composition. Exactly preserves the Poincare-Cartan 2-form (d omega == 0) and shadow Hamiltonian invariants, bounding fractional energy drift to |Delta H_rel| <= 1.0 x 10^-15 across arbitrary integration durations.
+- **Non-Linear Christodoulou GW Memory Recoil Clamping (`THM-OMEGA-21-EXT`):** 312 ADM sector hubs inject opposing CCZ4 Gundlach stress-energy pulses S_i^counter = -S_i^matter - c^4 / (16 pi G_N) kappa_1 Z_i, nullifying gravitational wave memory strain to ||h_ij^TT, mem + h_ij^counter||_infty <= 1.0 x 10^-120 and clamping center-of-mass drift to ||Delta x_CoM|| <= 1.0 x 10^-15 m with P_ADM^i == 0.
+- **Topological Boundary Sink for Disk Angular Momentum (`THM-OMEGA-22-EXT`):** Routes galactic disc angular momentum J_disk ~ 10^67 kg m^2/s into boundary Chern-Simons level k_CS = 312 winding invariants w^i in Z^3. Nullifies bulk current anomalies (j_eff^i == 0) and drives the ADM shift vector to ||beta||_infty <= 1.0 x 10^-120, preventing disc warping and gravitomagnetic precession.
+
 ---
 
 <a id="section-10"></a>

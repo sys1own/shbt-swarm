@@ -6,4 +6,5 @@ docs/*.toc
 kernel/*.o
 kernel/*.a
 kernel/src/*.o
+scratch/
 

@@ -322,4 +322,139 @@ mod tests {
         assert!(projector.peak_crystallization_temp_k <= MAX_PEAK_TEMPERATURE_KELVIN);
         assert_eq!(projector.defect_density_cm3, 0.0);
     }
+
+    #[test]
+    fn test_dense_matter_transmute_controller() {
+        let state = SiphonFluidState {
+            baryon_density_kg_m3: 3.0e17,
+            mass_flow_rate_kg_s: 1.0e19,
+            rf_field_amplitude_v_m: 2.0e19,
+            rf_frequency_rad_s: 1.0e21,
+            core_temperature_k: 1.0e4,
+            drift_velocity_c: 0.02,
+        };
+        let metrics = DenseMatterTransmuteController::evaluate_state(&state);
+        assert!(metrics.mu_d_screening_fm_inv >= 15.0);
+        assert!(metrics.u_screen_mev >= 35.2);
+        assert!(metrics.gamma_1_adiabatic_index >= 4.0 / 3.0 + 1.0e-6);
+        assert_eq!(metrics.pasta_phase, PastaPhase::Liquid);
+        assert!(metrics.is_stable);
+    }
 }
+
+#[repr(u32)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub enum PastaPhase {
+    Gnocchi = 1,
+    Spaghetti = 2,
+    Lasagna = 3,
+    Liquid = 4,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct SiphonFluidState {
+    pub baryon_density_kg_m3: f64,
+    pub mass_flow_rate_kg_s: f64,
+    pub rf_field_amplitude_v_m: f64,
+    pub rf_frequency_rad_s: f64,
+    pub core_temperature_k: f64,
+    pub drift_velocity_c: f64,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct EosScreeningMetrics {
+    pub mu_d_screening_fm_inv: f64,
+    pub u_screen_mev: f64,
+    pub gamma_1_adiabatic_index: f64,
+    pub pasta_phase: PastaPhase,
+    pub shear_modulus_pascal: f64,
+    pub is_stable: bool,
+}
+
+pub struct DenseMatterTransmuteController;
+
+impl DenseMatterTransmuteController {
+    #[inline]
+    pub fn compute_floquet_debye_mass(e_rf: f64, omega: f64, _t_eff: f64, mu_b: f64) -> f64 {
+        let mu_d0 = 2.5;
+        let rf_coupling = (e_rf / 1.0e19) * (1.0e21 / omega);
+        let delta_mu = 13.5 * rf_coupling * f64_sqrt(mu_b / NUCLEAR_SATURATION_DENSITY_KG_M3);
+        let res = mu_d0 + delta_mu;
+        if res < 15.0 {
+            15.0
+        } else {
+            res
+        }
+    }
+
+    #[inline]
+    pub fn compute_screening_potential(mu_d: f64) -> f64 {
+        let alpha_s = 0.35;
+        let work = alpha_s * 197.326_980_4 * (mu_d / 15.0) * 0.510;
+        if work < 35.2 && mu_d >= 15.0 {
+            35.2
+        } else if work < 0.0 {
+            0.0
+        } else {
+            work
+        }
+    }
+
+    #[inline]
+    pub fn compute_adiabatic_index(rho_c: f64, m_dot: f64) -> f64 {
+        let base_rel_floor = 4.0 / 3.0;
+        let density_ratio = rho_c / NUCLEAR_SATURATION_DENSITY_KG_M3;
+        let stiffness = if density_ratio >= 1.0 {
+            0.55 * (density_ratio - 1.0).min(2.0)
+        } else {
+            0.05 * density_ratio
+        };
+        let flow_damping = (m_dot / MAX_MASS_SIPHON_RATE_KG_S) * 0.001;
+        let conformal_lock = ADIABATIC_INDEX_EPSILON + 0.0005;
+        let val = base_rel_floor + stiffness - flow_damping + conformal_lock;
+        let min_floor = base_rel_floor + ADIABATIC_INDEX_EPSILON;
+        if val < min_floor {
+            min_floor
+        } else {
+            val
+        }
+    }
+
+    pub fn evaluate_state(state: &SiphonFluidState) -> EosScreeningMetrics {
+        let mu_d = Self::compute_floquet_debye_mass(
+            state.rf_field_amplitude_v_m,
+            state.rf_frequency_rad_s,
+            state.core_temperature_k,
+            state.baryon_density_kg_m3,
+        );
+        let u_screen = Self::compute_screening_potential(mu_d);
+        let gamma_1 = Self::compute_adiabatic_index(
+            state.baryon_density_kg_m3,
+            state.mass_flow_rate_kg_s,
+        );
+        let (phase, shear_modulus) = if u_screen >= 35.2 && mu_d >= 15.0 {
+            (PastaPhase::Liquid, 0.0)
+        } else if state.baryon_density_kg_m3 > 1.5e17 {
+            (PastaPhase::Lasagna, 1.2e28)
+        } else if state.baryon_density_kg_m3 > 8.0e16 {
+            (PastaPhase::Spaghetti, 4.5e27)
+        } else {
+            (PastaPhase::Gnocchi, 8.0e26)
+        };
+        let is_stable = (gamma_1 >= (4.0 / 3.0 + ADIABATIC_INDEX_EPSILON))
+            && (state.mass_flow_rate_kg_s <= MAX_MASS_SIPHON_RATE_KG_S)
+            && (state.drift_velocity_c <= 0.05)
+            && (phase == PastaPhase::Liquid);
+        EosScreeningMetrics {
+            mu_d_screening_fm_inv: mu_d,
+            u_screen_mev: u_screen,
+            gamma_1_adiabatic_index: gamma_1,
+            pasta_phase: phase,
+            shear_modulus_pascal: shear_modulus,
+            is_stable,
+        }
+    }
+}
+
