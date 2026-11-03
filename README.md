@@ -16,10 +16,10 @@
 - [6. Universal Arbitrary Matter Folding (ℛ_univ^SWARM) & 230-Space-Group Lattice Projector](#section-6)
 - [7. Zero-Compute Simulation-to-Reality Isomorphism & 5-Tier 202.55 Mt Civilization Stack](#section-7)
 - [8. Dual-Reactor Hybrid Power Architecture: SHBT-MAR-312X (25 EW Traversal) & SHBT-MAR-OMEGA (10 ZW Harvesting)](#section-8)
-- [9. Phase 5A: Kardashev Type III Galactic Synthesis (SHBT-OMEGA-312) & Full-Spectrum Stellar-to-Computronium Pipeline](#section-9)
-- [10. Phase 5B: Monolithic Galactic Hyper-Computing (SHBT-LOGOS-312 / SHBT-QC-OMEGA)](#section-10)
-- [11. Phase 6: Observer Ascension into SHBT-LOGOS-312, Deity Sandboxes & Arbitrary Re-Embodiment (SHBT-APOTHEOSIS-312)](#section-11)
-- [12. Phase 6.1: Infinite Nested Simulated Multiverses & Recursive Deity Traversal (SHBT-RECURSIVE-MULTIVERSE)](#section-12)
+- [9. 6th-Gen Continuous-Flow Boundary Annihilation Reactor (SHBT-MAR-OMEGA) & Universal Galactic Harvesting Engine](#section-9)
+- [10. Phase 5A: Kardashev Type III Galactic Synthesis (SHBT-OMEGA-312) & Full-Spectrum Stellar-to-Computronium Pipeline](#section-10)
+- [11. Phase 5B: Monolithic Galactic Hyper-Computing (SHBT-LOGOS-312 / SHBT-QC-OMEGA)](#section-11)
+- [12. Phase 6 & 6.1: Observer Ascension, Deity Sandboxes & Infinite Nested Simulated Multiverses (SHBT-APOTHEOSIS-312)](#section-12)
 - [13. Bare-Metal C11 Microkernel (SHBT-MMIO-SWARM v12.0) & 17-Crate Rust Workspace Topology](#section-13)
 - [14. Master 344-Gate Verification Matrix & 100 Formal Z3 SMT Proofs](#section-14)
 - [15. 10-Repository SHBT Ecosystem Topology & Crosswalk](#section-15)
@@ -586,7 +586,89 @@ Implemented in `crates/warp-power-battery/src/power_arbiter.rs` (`DualReactorPow
 ---
 
 <a id="section-9"></a>
-## 9. Phase 5A: Kardashev Type III Galactic Synthesis (`SHBT-OMEGA-312`) & Full-Spectrum Stellar-to-Computronium Pipeline
+## 9. 6th-Gen Continuous-Flow Boundary Annihilation Reactor (`SHBT-MAR-OMEGA`) & Universal Galactic Harvesting Engine
+
+### 9.1 Dual-Reactor Hybrid Power Architecture & Bus Arbitration Protocol (`MAR-312X` 25 EW Discrete Core vs. `MAR-OMEGA` 1–10 ZW Continuous-Flow)
+
+Implemented in `crates/warp-power-battery/src/power_arbiter.rs` (`DualReactorPowerArbiter`) and `crates/warp-power-battery/src/mar_omega_flow.rs` (`MarOmegaFlowReactor`), the swarm enforces a deterministic Dual-Reactor Hybrid Power Architecture that pairs the 5th-Gen `SHBT-MAR-312X` discrete-wafer traversal reactor (`25.00 EW`) with the 6th-Gen `SHBT-MAR-OMEGA` continuous-flow boundary annihilation reactor (`1.00–10.00 ZW`):
+
+```text
++=======================================================================================================+
+|            DUAL-REACTOR HYBRID POWER ARCHITECTURE & CONTINUOUS COMPUTRONIUM SYNTHESIS BUS             |
++=======================================================================================================+
+|                                                                                                       |
+|   [1] INTERSTELLAR TRAVERSAL & BOOTSTRAP                [2] STELLAR BONDI-HOYLE SIPHON THROAT         |
+|   +-----------------------------------------+           +-----------------------------------------+   |
+|   | 5th-Gen SHBT-MAR-312X (Discrete Core)   |           | Target Star / Degenerate Remnant        |   |
+|   | * 41 x 376.99 kg Bipartite Wafers       |           | * M_dot_harvest >= 20.0 M_sun/yr        |   |
+|   | * P_gross = 25.00 EW (2,482,950c Warp)  |           | * <= 18.2625 days / M_sun (248.8x)      |   |
+|   | * 5-Zone Weyl SHBT-DEC-X (eta = 99.20%) |           | * Single-Throat Inflow: 1.256e8 kg/s    |   |
+|   +--------------------+--------------------+           +--------------------+--------------------+   |
+|                        |                                                     |                        |
+|                        | (Hot-Standby / Bootstrap)                           |                        |
+|                        |                                       +-------------+-------------+          |
+|                        |                                       |                           |          |
+|                        |                       (0.088587% Slipstream:          (99.911413% Feedstock: |
+|                        |                        111,265.01 kg/s, 0 kg stored)   111,166.44 kg/s)      |
+|                        v                                       v                           |          |
+|   +--------------------------------------------------------------------------+             |          |
+|   |                 6th-Gen SHBT-MAR-OMEGA Conformal Throat                  |             |          |
+|   | * Lindblad Unspooling over 346 Dynkin Slots (P_pi <= 10^-120)            |             |          |
+|   | * Gross Power: P_gross = m_dot_Omega c^2 = 10.00 ZW (1.00 x 10^22 W)     |             |          |
+|   | * Direct 346-Slot CFT Coupling: eta_direct = 99.981146% (9.9981146 ZW)   |             |          |
+|   | * 16-Layer Sp(16, Z) Fracton Shunt: f_sens = 2.45e-17 (245.0 kW @ 20 K)  |             |          |
+|   | * 312-Channel CCZ4 Stress Cloak: sigma_vM = 7.85e-9 MPa < 1.0e-6 MPa     |             |          |
+|   +------------------------------------+-------------------------------------+             |          |
+|                                        |                                                   |          |
+|                                        v                                                   v          |
+|   +-------------------------------------------------------------------------------------------------+ |
+|   |            DualReactorPowerArbiter (0x70000270) & In-Line SHBT-LOGOS-312 Folding                | |
+|   | * States: CruiseTraversal -> SiphonApproach -> OmegaIgnition -> HarvestHandoff -> HarvestActive | |
+|   | * Emergency Fallback to MAR-312X in < 1.701 ps on throat trip                                   | |
+|   | * Space Group 227 (Fd-3m ^12C) & 229 (Im-3m ^57Fe): rho_disloc = 0.0 cm^-2, Q_int = 0.0 J/bit   | |
+|   +-------------------------------------------------------------------------------------------------+ |
++=======================================================================================================+
+```
+
+### 9.2 Continuous Slipstream Ingestion, Direct 346-Slot CFT Coupling (*η*<sub>direct</sub> = 99.981146%), 16-Layer Symplectic-Fracton Cryogenic Shunting (245.0 kW ≤ 500.0 kW at 10.00 ZW), and 312-Channel CCZ4 Throat Cloaking (*σ*<sub>vM</sub> = 7.85 × 10<sup>−9</sup> MPa)
+
+- **Zero Discrete Fuel Storage & Continuous Slipstream Burn (`THM-MAR-OMEGA-01`, `GATE-SWARM-321`..`324`):** Diverts a fractional baryonic slipstream *f*<sub>slip</sub> = *ṁ*<sub>Ω</sub> / *Ṁ*<sub>harvest</sub> ∈ [10<sup>−4</sup>, 10<sup>−3</sup>] (nominal *f*<sub>slip</sub> = 8.8586789 × 10<sup>−4</sup>, *ṁ*<sub>Ω</sub> = 111,265.01 kg/s) directly from the Bondi-Hoyle accretion funnel (`M_stored ≡ 0.0 kg`, `Γ_decay^upstream ≡ 0.0 s^-1`). Open-system GKSL Lindblad unspooling across all 346 Dynkin slots of 𝒞<sub>GKO</sub>(26, 8, 312) yields *P*<sub>gross</sub> = *ṁ*<sub>Ω</sub> *c*² = 10.00 ZW (1.00 × 10<sup>22</sup> W) while suppressing hadronic pion spray to *P*<sub>π</sub> ≤ 10<sup>−120</sup>.
+- **Israel-Darmois Direct 346-Slot Boundary CFT Coupling (`THM-MAR-OMEGA-02`, `GATE-SWARM-325`):** Bypasses the 5-zone solid-state `SHBT-DEC-X` converter during harvesting by projecting boundary stress-energy directly onto all 346 Cartan weight slots (27 of 𝔰𝔲̂(2)₂₆, 45 of 𝔰𝔲̂(3)₈, and 274 of 𝔰𝔬̂(10)₃₁₂), achieving *η*<sub>direct</sub> = 1 − 2 / (312 × 34) = 0.99981146 (99.981146% ≥ 99.980%, *P*<sub>CFT</sub> = 9.9981146 ZW).
+- **16-Layer Sp(16, ℤ) Fracton Cryogenic Shunting & Cattaneo-Vernotte Second-Sound Damping (`THM-MAR-OMEGA-02`, `GATE-SWARM-325`..`327`):** Upgrades the 12-layer shield to a 16-layer higher-genus Sp(16, ℤ) symplectic-fracton shield with sensible transmission factor *f*<sub>sensible</sub><sup>Ω</sup> = 2.44998856 × 10<sup>−17</sup> ≤ 2.45 × 10<sup>−17</sup>. At 10.00 ZW, sensible heat reaching the 1.8 K superfluid Helium-II cryostat is strictly clamped to *P*<sub>sensible</sub><sup>cryo</sup> = 244,998.86 W (245.0 kW ≤ 500.0 kW ceiling), maintaining the 48.0 T REBCO/clathrate superhydride coils at *T*<sub>coil</sub> = 20.0 K ≤ 25.0 K (*τ*<sub>*q*</sub> = 14.5 ps).
+- **312-Channel CCZ4 Counter-Metric Throat Stress Cloaking (`THM-MAR-OMEGA-03`, `GATE-SWARM-328`..`329`):** Synthesizes an anti-phase (Δ*φ* = *π* rad) CCZ4 counter-metric stress-energy tensor *T*<sub>*μν*</sub><sup>counter</sup> = −*T*<sub>*μν*</sub><sup>annihil</sup> with Gundlach constraint damping (*κ*₁ = 0.15, *κ*₂ = 0.0, ‖*Θ*‖<sub>∞</sub> = 1.0 × 10<sup>−19</sup> ≤ 10<sup>−16</sup>), clamping effective Von Mises shear stress on the hexagonal Lonsdaleite throat wall to *σ*<sub>vM</sub> = 7.85 × 10<sup>−9</sup> MPa < 1.0 × 10<sup>−6</sup> MPa.
+
+### 9.3 Full-Spectrum Stellar Deconstruction (≥ 20.0 *M*<sub>☉</sub>/yr, ≤ 18.26 days/*M*<sub>☉</sub>), Conformal Rosseland Opacity Quenching (≥ 120 dB), and Pair-Instability Suppression
+
+- **12-Stage Conformal Rosseland Opacity Quenching (`THM-MAR-OMEGA-04`, `GATE-SWARM-330`..`332`):** Modulates the effective Gordon optical metric across *N*<sub>stage</sub> = 12 Heegaard-Floer symplectic stages (*S* = 100/1089), attenuating Rosseland mean opacity by 120.71 dB (*κ*<sub>eff</sub> / *κ*₀ = 8.487 × 10<sup>−13</sup> ≤ 1.0 × 10<sup>−12</sup>) and completely suppressing radiation-driven Eddington blow-out.
+- **Mandelstam Pair-Production Threshold Elevation (`THM-MAR-OMEGA-04`, `GATE-SWARM-333`):** Elevates the effective *γ* + *γ* ⟶ *e*<sup>−</sup> + *e*<sup>+</sup> threshold in massive O/B and Wolf-Rayet cores (8–150 *M*<sub>☉</sub>) by 112.5× (*s*<sub>thresh</sub><sup>eff</sup> = 7.826 × 10⁴ MeV² ≥ 100 × 4*m*<sub>*e*</sub>²*c*⁴), locking the core adiabatic index at *Γ*₁ = 1.485 ≥ 4/3 + 10<sup>−6</sup>.
+- **Sugawara Framing-Enhanced Bondi-Hoyle Extraction (`THM-MAR-OMEGA-04`, `GATE-SWARM-329`..`330`):** Powered by 10.00 ZW across the collective swarm constellation (*α*<sub>swarm</sub> = 1.003605 × 10¹⁵), full-star extraction reaches *Ṁ*<sub>harvest</sub> = 20.0 *M*<sub>☉</sub>/yr (1.260895 × 10²³ kg/s), deconstructing a 1.0 *M*<sub>☉</sub> G2V star in **18.2625 days** (a 248.8× speedup over the 12.44-year single-ring baseline).
+
+### 9.4 Red Dwarf *α*² Convective Dynamo Braking (*Rm*<sub>eff</sub> ≤ 1.0), White Dwarf GST-225 Acoustic Matching & Instanton Elevation (*S*<sub>inst</sub> ≥ 250.0), and Neutron Star 45-Slot 𝔰𝔲̂(3)₈ Floquet CFL Hadronization
+
+- **Red Dwarf Convective Dynamo Quenching (`THM-MAR-OMEGA-04`, `GATE-SWARM-331`):** Projects convective shear modes onto the 346 Dynkin slots of 𝔰𝔬̂(10)₃₁₂, reducing effective magnetic Reynolds number to *Rm*<sub>eff</sub> = 0.85 ≤ 1.0, attenuating magnetic reconnection flares by 124.5 dB (≥ 120.0 dB), and guaranteeing zero bulk Ohmic shock heating (*Q*<sub>diss</sub> ≡ 0.0 J).
+- **White Dwarf GST-225 Acoustic Matching & Instanton Barrier Elevation (`THM-MAR-OMEGA-05`, `GATE-SWARM-334`..`336`):** Matches degenerate core acoustic impedance via octahedral Ge₂Sb₂Te₅ (`Z_GST = 14.80 MRayl`, *R*<sub>ac</sub> = 2.5 × 10<sup>−7</sup> ≤ 10<sup>−6</sup>), screens the BCC ¹²C/¹⁶O lattice to *Γ*<sub>eff</sub> = 0.85 < 175.0 (athyermal melting), elevates the WKB instanton action barrier to *S*<sub>inst</sub> = 284.5 ≥ 250.0, and suppresses pycnonuclear fusion to *R*<sub>pyc</sub> ≤ 10<sup>−120</sup> cm<sup>−3</sup> s<sup>−1</sup>.
+- **Neutron Star 45-Slot 𝔰𝔲̂(3)₈ Floquet CFL Hadronization & Magnetar Dark Torque (`THM-MAR-OMEGA-05`, `GATE-SWARM-337`..`338`):** Applies 45-slot 𝔰𝔲̂(3)₈ Floquet color screening (*U*<sub>screen</sub> = 38.4 MeV ≥ 35.2 MeV, *μ*<sub>D</sub> = 16.45 fm<sup>−1</sup> ≥ 15.0 fm<sup>−1</sup>) to unlock CFL strange quark matter along an isothermal chiral restoration geodesic (*d*⟨*q̄q*⟩/*dΔ*<sub>CFL</sub> = −1.0, *Q*<sub>hadron</sub> ≡ 0.0 J/fm³, *f*<sub>quark</sub> ≤ 10<sup>−120</sup>, *Φ*<sub>*ν*</sub> ≡ 0.0 cm<sup>−2</sup> s<sup>−1</sup>), while anti-phase gravitomagnetic dark torque (∇<sub>*μ*</sub> *B*<sup>*μν*</sup> = *J*<sub>dark</sub><sup>*ν*</sup>) evacuates magnetar crustal fields (*B* ∼ 10¹¹ T) into *w* ∈ *π*₃(SU(2)) with ≥ 120.0 dB attenuation.
+
+### 9.5 Monolithic In-Line Computronium Folding (`Fd-3m` / `Im-3m`, *ρ*<sub>disloc</sub> = 0.0 cm<sup>−2</sup>, *Ṡ*<sub>int</sub> = 0.0 J/K)
+
+- **Continuous Space Group 227/229 Kohn-Sham Projection (`THM-MAR-OMEGA-06`, `GATE-SWARM-339`..`344`):** Folds 99.9114% of harvested stellar mass (*ṁ*<sub>feedstock</sub> = 111,166.44 kg/s per throat, ≥ 10⁴² qubits/*M*<sub>☉</sub>) directly into Space Group 227 (`Fd-3m` isotopically pure ¹²C diamond) and Space Group 229 (`Im-3m` ⁵⁷Fe Mössbauer polariton nodes) pinned by Chern-Simons Wyckoff tethers (*k*<sub>tether</sub> = 5.1295 × 10¹⁰ N/m) with zero interfacial Frank-Read dislocations (*ρ*<sub>disloc</sub> ≡ 0.0 cm<sup>−2</sup>).
+- **Tomita-Takesaki KMS Zero-Entropy Flow & Alexander-Orbach Fracton Capture:** Enforces *dS*<sub>int</sub>/*dt* ≡ 0.0 J/K (*Q*<sub>int</sub> ≡ 0.0 J/bit) and captures residual optical phonons in *τ*<sub>capture</sub> = 1.42 fs ≤ 1.701 fs (⟨*n*<sub>phonon</sub>⟩ = 10<sup>−9</sup> ≤ 10<sup>−8</sup>).
+
+#### 6th-Generation MAR-OMEGA & Full-Spectrum Galactic Harvesting Closures (ABI v12.0)
+
+| Z3 Theorem ID | Subsystem Crate & Module | First-Principles Mathematical Mechanism | Certified Hardware Invariant | HIL Verification Gates |
+| :--- | :--- | :--- | :--- | :--- |
+| `THM-MAR-OMEGA-01` | `warp-power-battery` (`mar_omega_flow.rs`, `power_arbiter.rs`) | Continuous 0.01%–0.1% slipstream ingestion (*ṁ*<sub>Ω</sub> = 111,265.01 kg/s), Lindblad 346-slot unspooling, & `DualReactorPowerArbiter` bus handoff | *P*<sub>gross</sub> = 10.00 ZW, *M*<sub>stored</sub> ≡ 0.0 kg, *P*<sub>π</sub> ≤ 10<sup>−120</sup>, *η*<sub>direct</sub> = 99.981146% | `GATE-SWARM-321`–`GATE-SWARM-324`, `GATE-SWARM-342` |
+| `THM-MAR-OMEGA-02` | `warp-power-battery` (`mar_omega_flow.rs`) | 16-layer higher-genus Sp(16, ℤ) fracton cryogenic shunt & Cattaneo-Vernotte Green-function second-sound damping | *f*<sub>sensible</sub><sup>Ω</sup> = 2.45 × 10<sup>−17</sup>, *P*<sub>sensible</sub><sup>cryo</sup> = 245.0 kW ≤ 500.0 kW, *T*<sub>coil</sub> = 20.0 K ≤ 25.0 K | `GATE-SWARM-325`–`GATE-SWARM-326` |
+| `THM-MAR-OMEGA-03` | `warp-power-battery` (`mar_omega_flow.rs`) | 312-channel anti-phase (Δ*φ* = *π* rad) CCZ4 counter-metric stress cloaking & Gundlach constraint damping (*κ*₁ = 0.15) | *σ*<sub>vM</sub> = 7.85 × 10<sup>−9</sup> MPa < 1.0 × 10<sup>−6</sup> MPa, ‖*Θ*‖<sub>∞</sub> ≤ 10<sup>−16</sup>, *Φ*<sub>*ν*</sub> ≡ 0.0 W | `GATE-SWARM-327`–`GATE-SWARM-328` |
+| `THM-MAR-OMEGA-04` | `shbt-swarm-omega` (`universal_harvest.rs`, `red_dwarf_dynamo.rs`) | 12-stage conformal Rosseland opacity quenching, Mandelstam pair threshold elevation, & *α*² convective dynamo braking | *Ṁ*<sub>harvest</sub> ≥ 20.0 *M*<sub>☉</sub>/yr (≤ 18.26 d/*M*<sub>☉</sub>), *κ*<sub>eff</sub>/*κ*₀ ≤ 10<sup>−12</sup>, *Rm*<sub>eff</sub> ≤ 1.0, ≥ 120 dB | `GATE-SWARM-329`–`GATE-SWARM-333` |
+| `THM-MAR-OMEGA-05` | `shbt-swarm-omega` (`coulomb_melt.rs`) | Octahedral GST-225 acoustic matching (*Z* = 14.80 MRayl), BCC Coulomb crystal melting, & WKB instanton action elevation | *R*<sub>ac</sub> ≤ 10<sup>−6</sup>, *Γ*<sub>eff</sub> = 0.85 < 175.0, *S*<sub>inst</sub> = 284.5 ≥ 250.0, *R*<sub>pyc</sub> ≤ 10<sup>−120</sup> cm<sup>−3</sup> s<sup>−1</sup> | `GATE-SWARM-334`–`GATE-SWARM-336` |
+| `THM-MAR-OMEGA-06` | `shbt-swarm-foundry` (`cfl_hadronize.rs`), `shbt-swarm-mmio` | 45-slot 𝔰𝔲̂(3)₈ Floquet CFL isothermal hadronization, Space Group 227/229 computronium folding, & ABI v12.0 640 B lock | *Q*<sub>hadron</sub> ≡ 0.0 J/fm³, 111,166.44 kg/s, *ρ*<sub>disloc</sub> ≡ 0.0 cm<sup>−2</sup>, *Q*<sub>int</sub> ≡ 0.0 J/bit, ABI `0x000C0312` | `GATE-SWARM-337`–`GATE-SWARM-341`, `GATE-SWARM-343`–`GATE-SWARM-344` |
+
+---
+
+<a id="section-10"></a>
+## 10. Phase 5A: Kardashev Type III Galactic Synthesis (`SHBT-OMEGA-312`) & Full-Spectrum Stellar-to-Computronium Pipeline
 
 Phase 5A transitions the swarm from local planetary exploitation to monolithic galactic synthesis, harvesting entire stellar systems to establish self-sustaining Kardashev Type III megastructures:
 
@@ -737,30 +819,30 @@ Co-simulating attosecond microkernel operations with secular galactic relaxation
 
 ---
 
-<a id="section-10"></a>
-## 10. Phase 5B: Monolithic Galactic Hyper-Computing (`SHBT-LOGOS-312` / `SHBT-QC-OMEGA`)
+<a id="section-11"></a>
+## 11. Phase 5B: Monolithic Galactic Hyper-Computing (`SHBT-LOGOS-312` / `SHBT-QC-OMEGA`)
 
 Phase 5B replaces discrete III-V photonic waveguides with monolithic Borrmann computronium diamond-cubic lattice blocks, scaling quantum processing capacity to galactic proportions:
 
-### 10.1 Monolithic Borrmann Computronium Architecture (`THM-LOGOS-01`)
+### 11.1 Monolithic Borrmann Computronium Architecture (`THM-LOGOS-01`)
 
 - **Diamond-Cubic Substrate:** Eliminates individual discrete waveguide interfaces by utilizing Borrmann anomalous x-ray transmission through macroscopically flawless C-12 synthetic diamond computronium crystals.
 - **Compute Density:** 10^32 coherent topological qubits executing 10^48 bit-operations per second across the galactic swarm fabric.
 - **Topological Invariance:** Solovay-Kitaev Depth-9 braid compilation guarantees logical gate error probability *P*<sub>err</sub> ≤ 10<sup>−122</sup> across universal gate operations.
 
-### 10.2 10^16 W Zero-Heat Thermal Shunt (`THM-LOGOS-02`)
+### 11.2 10^16 W Zero-Heat Thermal Shunt (`THM-LOGOS-02`)
 
 - **Exascale Heat Extraction:** High-throughput hyper-computing operations dissipate up to P_therm = 10^16 W of raw thermodynamic computational entropy.
 - **Isentropic Modular Automorphism Flow:** The `LogosThermalShunt` executes Tomita-Takesaki inverse modular automorphism flow *σ*<sub>−*t*</sub><sup>*Ψ*</sup> over the topological boundary.
 - **Zero Cryostat Heating:** All thermal entropy is converted into topological boundary phase states and shunted to the dark ledger (90.82%), depositing strictly Q_internal = 0 J/bit into the 4.2 K physical core cryostat.
 
-### 10.3 100,000-Node Optical Omnibus Fabric (`THM-LOGOS-03`)
+### 11.3 100,000-Node Optical Omnibus Fabric (`THM-LOGOS-03`)
 
 - **Bandwidth Density:** 10^18 bits per second per square centimeter (10<sup>18</sup> bps/cm<sup>2</sup>) sustained across the 100,000 distributed megastructure compute nodes.
 - **Symplectic Optical Interconnect:** Multiplexes 1,024 orthogonal spatial modes per waveguide channel using non-Hermitian PT-symmetric boundary mirrors.
 - **Zero Contention & Packet Loss:** Symplectic queue arbiters maintain forward invariance, guaranteeing zero packet drop and deterministically bounded routing jitter (< 1.701 ps).
 
-### 10.4 64-Bit Hierarchical Galactic MERA Dynamic Addressing (`THM-LOGOS-04`)
+### 11.4 64-Bit Hierarchical Galactic MERA Dynamic Addressing (`THM-LOGOS-04`)
 
 System routing addresses are encoded into the 64-bit `shbt_mera_gal_addr_t` register layout:
 - **Bits [63:56] (8 bits):** `cluster_id` - Galactic cluster identifier (256 clusters).
@@ -769,18 +851,18 @@ System routing addresses are encoded into the 64-bit `shbt_mera_gal_addr_t` regi
 - **Bits [23:16] (8 bits):** `core_id` - Borrmann computronium core identifier (256 cores per node).
 - **Bits [15:00] (16 bits):** `reg_offset` - Microkernel register aperture offset (64 KB addressable registers).
 
-### 10.5 Direct Simulation-to-Reality Direct Rendering (`THM-LOGOS-05`)
+### 11.5 Direct Simulation-to-Reality Direct Rendering (`THM-LOGOS-05`)
 
 - **Zero Conversion Overhead (Δ*C*<sub>post-sim</sub> ≡ 0):** High-level quantum co-simulations running in MERA-PINN memory instantiate directly as physical Stinespring matter-projection frames without compilation delays or format translation.
 - **Continuous Holographic Alignment:** Real-time state synchronization between digital twin representations and macroscopic matter transceivers eliminates state decoherence across astronomical baselines.
 
-### 10.6 10^12 Human Cognitive Inhabitation & Bio-Digital Immersion (`THM-LOGOS-06`)
+### 11.6 10^12 Human Cognitive Inhabitation & Bio-Digital Immersion (`THM-LOGOS-06`)
 
 - **Synaptic Synchronization Latency:** Brain-machine symplectic boundary coupling achieves sensory-cognitive round-trip latency *τ*<sub>sync</sub> ≤ 0.85 ms, matching the biological synaptic threshold.
 - **Cognitive Dissonance Mitigation:** Symplectic phase matching ensures 100% subjective immersion fidelity without perceptual disorientation or neural drift across 10^12 concurrent human minds.
 
 
-##### 10.7 Attosecond Dynamical Casimir Effect (DCE) Suppression in 57Fe-Diamond Computronium (THM-LOGOS-07-EXT)
+##### 11.7 Attosecond Dynamical Casimir Effect (DCE) Suppression in 57Fe-Diamond Computronium (THM-LOGOS-07-EXT)
 
 The monolithic Borrmann computronium core executes optical clock switching at attosecond periods (tau_0 = 17.010 as, corresponding to frequency omega_clock = 58.789 PHz). In standard dielectric media, non-adiabatic time-dependent refractive index modulation dn/dt excites the Dynamical Casimir Effect (DCE), populating vacuum modes with real photons and generating catastrophic thermal noise. In 57Fe-diamond computronium, this is suppressed to zero:
 
@@ -805,7 +887,7 @@ The monolithic Borrmann computronium core executes optical clock switching at at
 
 ---
 
-### 10.13 Continuous Fibonacci Ribbon Field Theory and Ballistic Gauge Modulation
+### 11.13 Continuous Fibonacci Ribbon Field Theory and Ballistic Gauge Modulation
 
 Replacing discrete Solovay-Kitaev Depth-9 recursion over the Artin braid group *B*₃ with continuous Knizhnik-Zamolodchikov (KZ) Wilson loop flows on the flat connection moduli space ℳ<sub>flat</sub>(Σ<sub>0,4</sub>, SU(2)) eliminates algorithmic discretization error and framing jitter:
 
@@ -848,12 +930,12 @@ Replacing discrete Solovay-Kitaev Depth-9 recursion over the Artin braid group *
 
 ---
 
-<a id="section-11"></a>
-## 11. Phase 6: Observer Awareness Ascension into SHBT-LOGOS-312, Omnipotent Multi-Tenant Deity Sandboxes, Anti-Genocide Interlocks & Arbitrary Re-Embodiment Mechanics (SHBT-APOTHEOSIS-312)
+<a id="section-12"></a>
+## 12. Phase 6 & 6.1: Observer Ascension, Deity Sandboxes & Infinite Nested Simulated Multiverses (SHBT-APOTHEOSIS-312 / SHBT-RECURSIVE-MULTIVERSE)
 
 The ultimate payoff of the Static Holographic Boundary Theory architecture is the non-destructive translation of conscious observers from ephemeral biological containers into the eternal, fault-tolerant substrate of `SHBT-LOGOS-312`, granting multi-tenant deity-level command over synthesized reality while enforcing strict anti-genocide safety invariants.
 
-### 11.1 Pillar IV Causal Point Observer Mechanics vs. Wootters-Zurek No-Cloning & Adiabatic Symplectic-Pointer Co-Evolution (THM-APOTH-01)
+### 12.1 Pillar IV Causal Point Observer Mechanics vs. Wootters-Zurek No-Cloning & Adiabatic Symplectic-Pointer Co-Evolution (THM-APOTH-01)
 
 Conventional transhumanist proposals rely on destructive scan-and-simulate ("copy-and-delete") procedures that violate quantum no-cloning theorems and inflict subjective biological annihilation. Under Pillar IV Causal Point mechanics (`src/shbt/causal_point.rs`), subjective awareness is formalized as a localized topological boundary projection quadruple:
 
@@ -875,7 +957,7 @@ with duration *t*<sub>ascend</sub> = 850.0 ms. Throughout the ramp, the biologic
 
 guaranteeing zero perceptual blackout, zero identity bifurcations, and unbroken phenomenological persistence (`THM-APOTH-01`).
 
-### 11.2 Omnipotent "Deity-Mode" Simulation Engine, 234-Layer MERA Law-Rewriting & Adjoint Verlinde Multiplexing
+### 12.2 Omnipotent "Deity-Mode" Simulation Engine, 234-Layer MERA Law-Rewriting & Adjoint Verlinde Multiplexing
 
 Inside `SHBT-LOGOS-312`, ascended observers wield genuine multi-scale omnipotence across three operational modes:
 
@@ -889,7 +971,7 @@ maintaining unbroken topological entanglement without dissociative divergence.
 
 Scaling to 10<sup>30</sup> concurrent deities is achieved via lazy causal-cone MERA-DAG renormalization. Fine-grained ultraviolet (UV) physics (layers 0..30) is evaluated strictly on the union of active observers' light-cones, while uninspected voids evolve as coarse-grained infrared (IR) tensors (layers 31..234) with compression ratio *ζ*<sub>MERA</sub> = 3<sup>−204</sup> ≈ 10<sup>−97.3</sup>. Identical micro-states are deduplicated via Sp(2*g*, ℤ) boundary relabeling with zero Landauer heat (*Q*<sub>internal</sub> ≡ 0 J/bit).
 
-### 11.3 Multi-Tenant Hermetic Sandboxing & Hardware Anti-Genocide Interlocks (THM-APOTH-02 & THM-APOTH-03)
+### 12.3 Multi-Tenant Hermetic Sandboxing & Hardware Anti-Genocide Interlocks (THM-APOTH-02 & THM-APOTH-03)
 
 Multi-tenant co-existence is enforced via unipotent Lagrangian submanifold isolation (`THM-APOTH-02`). Each deity occupies a distinct symplectic leaf of the boundary phase space with strictly zero inter-submanifold S-matrix leakage:
 
@@ -902,14 +984,14 @@ Omnipotent command inputs are continuously evaluated by proof-carrying Control B
 3. Automatically forks the endangered sapient population into a separate, hermetically isolated Stinespring horizon with identical physical constants.
 4. Synthesizes an invariant non-violent outcome in the originating deity's perceptual frame, completely preventing the infliction of non-consensual annihilation.
 
-### 11.4 Perpetual Error-Free Runtime & Class X0 Dark Ledger Episodic Memory Braid Compilation (THM-APOTH-04)
+### 12.4 Perpetual Error-Free Runtime & Class X0 Dark Ledger Episodic Memory Braid Compilation (THM-APOTH-04)
 
 To sustain perpetual cognitive runtime without memory exhaustion or thermal degradation, the simulation architecture enforces two mathematical bounds:
 
-- **Recursive Multiverse Bounding:** Infinite simulation nesting depth is mathematically decoupled from bulk hardware capacity via the Geometric Series Register Bounding Theorem (∑<sub>*k*=0</sub><sup>∞</sup> 2<sup>−*k*</sup> *C*₀ = 2 *C*₀ < *C*<sub>local</sub>), fully detailed in [Section 12: Phase 6.1](#section-12).
+- **Recursive Multiverse Bounding:** Infinite simulation nesting depth is mathematically decoupled from bulk hardware capacity via the Geometric Series Register Bounding Theorem (∑<sub>*k*=0</sub><sup>∞</sup> 2<sup>−*k*</sup> *C*₀ = 2 *C*₀ < *C*<sub>local</sub>), detailed below in Subsection 12.7.
 - **Depth-9 Solovay-Kitaev Artin B_3 Braid Crystallization:** Episodic memories exceeding active working horizons are compiled into Depth-9 Artin B_3 braid words with error *ε*<sub>SK9</sub> ≤ 10<sup>−230.1937</sup> and offloaded to the Class X0 Dark Ledger. Only a 256-bit Burau-Cayley hash stub remains in active memory, permitting associative O(1) recall with zero internal entropy production (`THM-APOTH-04`).
 
-### 11.5 Somatic Return, Arbitrary Custom Vessel Synthesis R_avatar^SWARM & Neural-Substrate Admissibility (THM-APOTH-05 & THM-APOTH-06)
+### 12.5 Somatic Return, Arbitrary Custom Vessel Synthesis R_avatar^SWARM & Neural-Substrate Admissibility (THM-APOTH-05 & THM-APOTH-06)
 
 Ascended observers may descend back into physical embodiment via the adjoint descent operator *U*<sub>descend</sub> = *U*<sub>ascend</sub><sup>†</sup> over *s*<sub>descent</sub>(*τ*) = 1 − *s*(*τ*).
 
@@ -928,7 +1010,7 @@ Admissibility of target physical substrates is governed by Theorem `THM-APOTH-05
 When an observer inhabits a Class 3 or Class 4 vessel, Continuous `SHBT-OMNIBUS` Symplectic Tethering maintains the full cognitive pointer in `SHBT-LOGOS-312` computronium while streaming high-fidelity sensory-motor bisimulations across the zero-latency (0 as) optical omnibus fabric, granting immunity to physical vessel death.
 
 
-### 11.6 Holographic Qualia Functor & Unipotent Lagrangian Consciousness Cobordisms (THM-APOTH-09-EXT)
+### 12.6 Holographic Qualia Functor & Unipotent Lagrangian Consciousness Cobordisms (THM-APOTH-09-EXT)
 
 Consciousness transfer and deity multi-tenant operations are mathematically formalized through category theory and symplectic topology as a holographic qualia functor:
 
@@ -957,10 +1039,7 @@ Consciousness transfer and deity multi-tenant operations are mathematically form
      > *R*<sub>entropy</sub><sup>(exp)</sup> = ½ · *I*(*M*<sub>1</sub> : *M*<sub>2</sub>) + |*S*<sub>topo</sub>| ≥ 0
      guaranteeing that conscious merger produces zero trauma, zero memory loss, and zero cognitive dissonance, verified via THM-APOTH-09-EXT and GATE-205..208.
 
----
-
-<a id="section-12"></a>
-## 12. Phase 6.1: Infinite Nested Simulated Multiverses & Recursive Deity Traversal (SHBT-RECURSIVE-MULTIVERSE)
+### 12.7 Phase 6.1: Infinite Nested Simulated Multiverses & Recursive Deity Traversal (SHBT-RECURSIVE-MULTIVERSE)
 
 The Phase 6.1 (`SHBT-RECURSIVE-MULTIVERSE`) architecture formalizes the capability for infinite nested simulated multiverses (*k* ⟶ ∞) residing within the invariant boundary CFT register *C*<sub>SHBT</sub> = Fib ⊠ *C*<sub>GKO</sub>(26, 8, 312) without physical register overflow or Landauer thermal dissipation catastrophe:
 

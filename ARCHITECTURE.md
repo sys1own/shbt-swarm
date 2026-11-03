@@ -69,7 +69,7 @@ The platform executes an autonomous, self-similar closed-loop lifecycle spanning
 - **DualReactorPowerArbiter Hardware Bus Handoff:** Coordinates deterministic state transitions (`CruiseTraversal` -> `SiphonApproach` -> `OmegaIgnition` -> `HarvestHandoff` -> `HarvestActive` -> `DepartureHandshake`) across the 346-slot CFT power bus (`0x70000270`), seamlessly transferring primary load to `SHBT-MAR-OMEGA` once `P_gross^Ω >= 100.0 EW` (`4x` MAR-312X rated power) and parking `SHBT-MAR-312X` in `0.0 W` hot-standby reserve (`SHBT_POWER_BUS_ARBITER_NOMINAL = 0x0000000EU`).
 
 ### 1.5 Phase 5A: Kardashev Type III Megastructure Engineering (SHBT-OMEGA-312)
-- **Full-Spectrum Stellar Deconstructors (<= 18.26 days/M_sun):** Hexameric radiative MHD and collective swarm Bondi-Hoyle-Lyttleton cascades siphon stellar envelopes and degenerate cores (`0.1 M_sun <= M_* <= 100 M_sun`) at `>= 20.0 M_sun/yr` (`<= 18.2625 days/M_sun`) under Gordon metric opacity quenching (`κ_eff / κ_0 <= 10^-12`), M-dwarf alpha^2-Omega dynamo quenching (`>= 120.0 dB`), White Dwarf BCC Coulomb crystal melting (`S_inst >= 250.0`), and CFL diquark isothermal hadronization (`Q_hadron == 0.0 J/fm^3`).
+- **Full-Spectrum Stellar Deconstructors (≤ 18.26 days/*M*<sub>☉</sub>):** Hexameric radiative MHD and collective swarm Bondi-Hoyle-Lyttleton cascades siphon stellar envelopes and degenerate cores (`0.1 M_sun <= M_* <= 100 M_sun`) at `>= 20.0 M_sun/yr` (`<= 18.2625 days/M_sun`) under Gordon metric opacity quenching (`κ_eff / κ_0 <= 10^-12`), M-dwarf alpha^2-Omega dynamo quenching (`>= 120.0 dB`), White Dwarf BCC Coulomb crystal melting (`S_inst >= 250.0`), and CFL diquark isothermal hadronization (`Q_hadron == 0.0 J/fm^3`).
 - **Kerr SMBH Ergosphere Siphoning:** Boundary Penrose extraction of black hole rotational energy governed by the Hawking area non-decrease theorem (`dA_H >= 0`) across dimensionless spin `a_* in [0, 0.998]`, with exact magnetic boundary cancellation yielding zero Poynting leakage (`S_EM^r == 0.0 W`).
 - **Galactic Dark Matter Halo Virial Clamping:** CCZ4 boundary metric potentials dynamically enforce the Jeans equation virial condition `2K_DM + W_DM == 0`, preventing galactic disk warp and halo phase-space collapse.
 - **Elysium Pocket Habitats:** Synthetic 1.0g artificial gravity biomes (`g_eff = 9.80665 m/s^2`) utilizing non-rotating metric curvature potentials (`Ω_rot == 0`), eliminating Coriolis nausea and vestibular disorientation.
@@ -429,12 +429,12 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, power_bus_arbiter_mode) == 0x027
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Quantity & Invariant |
 | --- | --- | --- | --- | --- | --- |
-| `0x0140` | `elysium_pocket_lapse_alpha` | `double` | RO | `1.000000` | ADM lapse at habitat origin alpha(0) == 1.000000 |
-| `0x0148` | `elysium_coriolis_residual_norm` | `double` | RO | `0.000000` | Residual Coriolis acceleration norm (a_Cor == 0 m/s^2) |
-| `0x0150` | `elysium_weyl_electric_norm` | `double` | RO | `0.000000` | Electric Weyl tensor tidal norm \|\|E_ij\|\| == 0 |
-| `0x0158` | `elysium_israel_splice_stress` | `double` | RO | `0.000000` | Israel-Darmois junction hypersurface splice stress == 0 |
-| `0x0160` | `biosphere_lyapunov_v` | `double` | RO | `0.000000` | Non-equilibrium ecosystem Lyapunov function V(x) |
-| `0x0168` | `biosphere_lyapunov_v_dot` | `double` | RO | `-0.050000`| Lyapunov decay derivative dV/dt < 0 (asymptotic stability) |
+| `0x0140` | `elysium_pocket_lapse_alpha` | `double` | RO | `1.000000` | ADM lapse at habitat origin *α*(0) ≡ 1.000000 |
+| `0x0148` | `elysium_coriolis_residual_norm` | `double` | RO | `0.000000` | Residual Coriolis acceleration norm (*a*<sub>Cor</sub> ≡ 0 m/s²) |
+| `0x0150` | `elysium_weyl_electric_norm` | `double` | RO | `0.000000` | Electric Weyl tensor tidal norm ‖*E*<sub>*ij*</sub>‖ ≡ 0 |
+| `0x0158` | `elysium_israel_splice_stress` | `double` | RO | `0.000000` | Israel-Darmois junction hypersurface splice stress ≡ 0 |
+| `0x0160` | `biosphere_lyapunov_v` | `double` | RO | `0.000000` | Non-equilibrium ecosystem Lyapunov function *V*(*x*) |
+| `0x0168` | `biosphere_lyapunov_v_dot` | `double` | RO | `-0.050000`| Lyapunov decay derivative *dV*/*dt* < 0 (asymptotic stability) |
 | `0x0170` | `biosphere_chnops_conservation_margin` | `double` | RO | `1.0000e-14` | Closed-cycle CHNOPS elemental conservation margin |
 | `0x0178` | `biosphere_dark_shunt_flow_fraction` | `double` | RO | `0.696970` | Dark-ledger metabolic entropy shunt fraction (23/33) |
 
@@ -442,26 +442,26 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, power_bus_arbiter_mode) == 0x027
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Quantity & Invariant |
 | --- | --- | --- | --- | --- | --- |
-| `0x0180` | `gw_memory_residual_strain_norm` | `double` | RO | `0.000000` | Non-linear Christodoulou displacement memory strain (<= 10^-120) |
-| `0x0188` | `secular_com_drift_meters` | `double` | RO | `0.000000` | Sgr A* hub CoM quad-axial counter-pulse drift (<= 10^-15 m) |
-| `0x0190` | `continuous_ribbon_discretization_error` | `double` | RO | `0.000000` | Knizhnik-Zamolodchikov flat connection error (eps_disc == 0) |
-| `0x0198` | `ribbon_kz_connection_residual` | `double` | RO | `0.000000` | CWF ribbon framing anomaly cancellation (Delta_fr == 0) |
-| `0x01A0` | `qrf_superposed_sheaf_spectral_radius` | `float` | RO | `1.000000` | Unipotent simplicial sheaf consensus spectral radius (rho_spec == 1.0) |
-| `0x01A4` | `qrf_microcausality_trace_fidelity` | `float` | RO | `1.000000` | Quantum Reference Frame microcausality trace fidelity (>= 0.999999) |
+| `0x0180` | `gw_memory_residual_strain_norm` | `double` | RO | `0.000000` | Non-linear Christodoulou displacement memory strain (≤ 10<sup>−120</sup>) |
+| `0x0188` | `secular_com_drift_meters` | `double` | RO | `0.000000` | Sgr A* hub CoM quad-axial counter-pulse drift (≤ 10<sup>−15</sup> m) |
+| `0x0190` | `continuous_ribbon_discretization_error` | `double` | RO | `0.000000` | Knizhnik-Zamolodchikov flat connection error (*ε*<sub>disc</sub> ≡ 0) |
+| `0x0198` | `ribbon_kz_connection_residual` | `double` | RO | `0.000000` | CWF ribbon framing anomaly cancellation (Δ<sub>fr</sub> ≡ 0) |
+| `0x01A0` | `qrf_superposed_sheaf_spectral_radius` | `float` | RO | `1.000000` | Unipotent simplicial sheaf consensus spectral radius (*ρ*<sub>spec</sub> ≡ 1.0) |
+| `0x01A4` | `qrf_microcausality_trace_fidelity` | `float` | RO | `1.000000` | Quantum Reference Frame microcausality trace fidelity (≥ 0.999999) |
 | `0x01A8` | `v9_reserved_tail[3]` | `uint64_t[3]`| RO | `0x00000000` | Alignment padding to 448 bytes (0x01C0) |
 
 #### Cache Line 7 (Offsets `0x01C0` .. `0x01FF`): Galactic Synthesis & Multi-Reservoir Invariants
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Quantity & Invariant |
 | --- | --- | --- | --- | --- | --- |
-| `0x01C0` | `eddington_damping_factor` | `float` | RO | `1.000000` | Metric opacity quenching ratio (kappa_eff / kappa_0 <= 10^-12) |
-| `0x01C4` | `core_adiabatic_index_gamma1` | `float` | RO | `1.333334` | Degenerate core adiabatic index (Gamma_1 >= 4/3 + 10^-6) |
-| `0x01C8` | `hawking_area_delta_margin` | `double` | RO | `0.000000` | Hawking horizon area monotonicity rate (dA_H / dt >= 0) |
-| `0x01D0` | `galactic_virial_drift_norm` | `double` | RO | `0.000000` | Dark matter halo virial Jeans stability drift (<= 10^-6) |
-| `0x01D8` | `qgp_floquet_debye_mass_fm` | `float` | RO | `15.00000` | Dynamic Floquet QGP screening mass (mu_D >= 15.0 fm^-1) |
-| `0x01DC` | `planetary_gst_reflection_coeff` | `float` | RO | `0.000000` | Acoustic impedance match reflection coefficient (R_acoustic <= 10^-6) |
+| `0x01C0` | `eddington_damping_factor` | `float` | RO | `1.000000` | Metric opacity quenching ratio (*κ*<sub>eff</sub> / *κ*<sub>0</sub> ≤ 10<sup>−12</sup>) |
+| `0x01C4` | `core_adiabatic_index_gamma1` | `float` | RO | `1.333334` | Degenerate core adiabatic index (*Γ*<sub>1</sub> ≥ 4/3 + 10<sup>−6</sup>) |
+| `0x01C8` | `hawking_area_delta_margin` | `double` | RO | `0.000000` | Hawking horizon area monotonicity rate (*dA*<sub>*H*</sub> / *dt* ≥ 0) |
+| `0x01D0` | `galactic_virial_drift_norm` | `double` | RO | `0.000000` | Dark matter halo virial Jeans stability drift (≤ 10<sup>−6</sup>) |
+| `0x01D8` | `qgp_floquet_debye_mass_fm` | `float` | RO | `15.00000` | Dynamic Floquet QGP screening mass (*μ*<sub>D</sub> ≥ 15.0 fm<sup>−1</sup>) |
+| `0x01DC` | `planetary_gst_reflection_coeff` | `float` | RO | `0.000000` | Acoustic impedance match reflection coefficient (*R*<sub>acoustic</sub> ≤ 10<sup>−6</sup>) |
 | `0x01E0` | `dark_ledger_anyon_braid_count` | `uint64_t` | RO | `0` | Cumulative dark-ledger Fibonacci anyon braid count |
-| `0x01E8` | `bz_jet_attenuation_db` | `uint32_t` | RO | `120` | Blandford-Znajek relativistic jet attenuation (>= 120 dB) |
+| `0x01E8` | `bz_jet_attenuation_db` | `uint32_t` | RO | `120` | Blandford-Znajek relativistic jet attenuation (≥ 120 dB) |
 | `0x01EC` | `v10_reserved_tail[5]` | `uint32_t[5]` | RO | `[0; 5]` | Alignment padding to 512 bytes (0x0200) |
 
 #### Cache Line 8 (Offsets `0x0200` .. `0x023F`): Degenerate Core Melting, Stellar Hydro & Loss Cone
@@ -629,10 +629,10 @@ The C11 microkernel ABI v10.0 defines a dedicated 256-byte MMIO aperture mapped 
 | `0x0080` | `poloidal_current_amps` | `double` | RO | `0.000000` | Residual polar current I_polar |
 | `0x0088` | `quench_counter_pot_v` | `double` | RO | `1.0e20` | Synthetic counter-potential for BZ jet quenching |
 | `0x0090` | `synthetic_impedance` | `double` | RO | `376.7303` | Effective boundary impedance Z_load (Ohms) |
-| `0x0098` | `jet_attenuation_db` | `uint32_t` | RO | `120` | Radiated jet attenuation in dB (>= 120 dB) |
+| `0x0098` | `jet_attenuation_db` | `uint32_t` | RO | `120` | Radiated jet attenuation in dB (≥ 120 dB) |
 | `0x009C` | `reserved_bz` | `uint32_t` | RO | `0` | Alignment pad |
 | `0x00A0` | `total_extracted_joules`| `double`| RO | `0.000000` | Cumulative extracted exergy (Joules) |
-| `0x00A8` | `dark_ledger_joules` | `double` | RO | `0.000000` | Exergy routed to dark ledger eta_D (Joules) |
+| `0x00A8` | `dark_ledger_joules` | `double` | RO | `0.000000` | Exergy routed to dark ledger *η*<sub>D</sub> (Joules) |
 | `0x00B0` | `grid_baseload_joules`| `double` | RO | `0.000000` | Exergy exported to local grid (Joules) |
 | `0x00B8` | `anyon_braid_count_lo` | `uint64_t` | RO | `0` | Fibonacci anyon braid count (low 64 bits) |
 | `0x00C0` | `anyon_braid_count_hi` | `uint64_t` | RO | `0` | Fibonacci anyon braid count (high 64 bits) |
@@ -654,16 +654,16 @@ The C11 microkernel ABI v10.0 defines a dedicated 160-byte MMIO aperture mapped 
 | `0x0008` | `engine_status` | `uint64_t` | RO | `0x00000001` | Status & Fault Interlock Register |
 | `0x0010` | `wzw_algebra_cfg` | `uint64_t` | RW | `312` | WZW Affine Level & Slot Validation |
 | `0x0018` | `floquet_freq_mev` | `uint64_t` | RW | `180` | Floquet Driving Frequency (MeV) |
-| `0x0020` | `floquet_debye_mass` | `uint64_t` | RO | `15` | Dynamic Debye Screening Mass (fm^-1) |
+| `0x0020` | `floquet_debye_mass` | `uint64_t` | RO | `15` | Dynamic Debye Screening Mass (fm<sup>−1</sup>) |
 | `0x0028` | `gamma_power_uw` | `uint64_t` | RO | `0` | Radiated Prompt Gamma Power (micro-watts) |
-| `0x0030` | `central_density_kg_m3` | `uint64_t` | RO | `8e17` | Monitored Central Density (kg/m^3) |
+| `0x0030` | `central_density_kg_m3` | `uint64_t` | RO | `8e17` | Monitored Central Density (kg/m³) |
 | `0x0038` | `central_pressure_pa` | `uint64_t` | RO | `1.2e34` | Monitored Central Pressure (Pa) |
-| `0x0040` | `adiabatic_index_fixed` | `uint64_t` | RO | `0x0000000155555555` | Core Gamma_1 in Q32.32 Fixed-Point (>= 4/3) |
+| `0x0040` | `adiabatic_index_fixed` | `uint64_t` | RO | `0x0000000155555555` | Core *Γ*<sub>1</sub> in Q32.32 Fixed-Point (≥ 4/3) |
 | `0x0048` | `mass_siphon_rate_kg_s` | `uint64_t` | RW | `1e15` | Target Siphon Extraction Rate (kg/s) |
-| `0x0050` | `magnetar_b_field_tesla` | `uint64_t` | RW | `1e10` | Magnetic Flux Density B (Tesla) |
+| `0x0050` | `magnetar_b_field_tesla` | `uint64_t` | RW | `1e10` | Magnetic Flux Density *B* (Tesla) |
 | `0x0058` | `dark_ledger_drain_ratio`| `uint64_t` | RO | `0x00000000B26D45D8` | Dark Drain Efficiency (23/33 in Q32.32) |
-| `0x0060` | `b_minus_l_accumulator` | `int64_t` | RO | `0` | Signed (B - L) Net Disparity Count (== 0) |
-| `0x0068` | `visible_neutrino_flux` | `uint64_t` | RO | `0` | Visible Neutrino Flux (cm^-2 s^-1, == 0) |
+| `0x0060` | `b_minus_l_accumulator` | `int64_t` | RO | `0` | Signed (*B* − *L*) Net Disparity Count (≡ 0) |
+| `0x0068` | `visible_neutrino_flux` | `uint64_t` | RO | `0` | Visible Neutrino Flux (cm<sup>−2</sup> s<sup>−1</sup>, ≡ 0) |
 | `0x0070` | `activation_xsec_exponent`| `int64_t` | RO | `-120` | Activation Cross Section Log10(Barns) |
 | `0x0078` | `crystal_space_group` | `uint64_t` | RW | `227` | Space Group Projector Code (Diamond Fd-3m = 227) |
 | `0x0080` | `peak_crystal_temp_mk` | `uint64_t` | RO | `4200` | Peak Transient Temperature (milli-Kelvin) |
@@ -774,7 +774,7 @@ _Static_assert(sizeof(shbt_mmio_lepton_shunt_t) == 48, "shbt_mmio_lepton_shunt_t
 | `0x0008` | `theta_k_rad` | `double` | RW | Commanded Bogoliubov rotation angle `theta_k` (rad, target pi/2) |
 | `0x0010` | `phi_nu_observed` | `double` | RO | Visible neutrino Poynting flux `Phi_nu == 0.0 cm^-2 s^-1` |
 | `0x0018` | `cft_power_output_w`| `double` | RO | 25 EW Conformal Power Bus output power (W) |
-| `0x0020` | `dark_debt_joules` | `double` | RO | Cumulative exergy shunted to eta_D = 23/33 dark ledger (J) |
+| `0x0020` | `dark_debt_joules` | `double` | RO | Cumulative exergy shunted to *η*<sub>D</sub> = 23/33 dark ledger (J) |
 | `0x0028` | `disassembled_count`| `uint64_t`| RO | Disassembled nucleon count with exact `Delta(B - L) == 0` |
 
 ### 3.10 Galactic Astrodynamics MMIO Aperture (`0x8F000000`, 120 Bytes)
@@ -823,6 +823,79 @@ _Static_assert(sizeof(shbt_galactic_mmio_t) == 120, "shbt_galactic_mmio_t must b
 | `0x0068` | `shift_anomaly_norm`| `double` | RO | Gravitomagnetic shift anomaly norm `‖beta^i‖ <= 1.0e-120` |
 | `0x0070` | `multiphysics_bits` | `uint32_t` | RO | 13-Engine tick status bitmask (`0x1FFF` when all active) |
 | `0x0074` | `hil_gate_status` | `uint32_t` | RO | HIL Gate 242-250 verification pass bitmask (`0x1FF`) |
+
+### 3.11 256-Byte Continuous-Flow SHBT-MAR-OMEGA Reactor Aperture (`0x7F000600`)
+
+The C11 microkernel ABI v12.0 defines a dedicated 256-byte (4-cache-line) MMIO aperture mapped at physical address `0x7F000600` (`shbt_mar_omega_aperture_t`) and embedded at offset `0x0040` of `shbt_swarm_mmio_v12_t` for real-time control and telemetry of the 6th-Generation Continuous-Flow Boundary Annihilation Reactor (`SHBT-MAR-OMEGA`):
+
+| Offset | Field Name | Type | Access | Reset Value | Physical Description & Invariant |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `0x0000` | `omega_mass_inlet_kg_s` | `double` | RO | `111265.01` | Continuous baryonic slipstream mass flow rate *ṁ*<sub>Ω</sub> (≤ 111,265.01 kg/s) |
+| `0x0008` | `omega_slipstream_ratio` | `double` | RW | `8.858679e-4` | Baryonic slipstream fraction *f*<sub>slip</sub> ∈ [10<sup>−4</sup>, 10<sup>−3</sup>] (0.0 kg stored fuel) |
+| `0x0010` | `omega_gross_power_watts` | `double` | RO | `1.0000e22` | Continuous gross annihilation power *P*<sub>gross</sub> ∈ [1.00 ZW, 10.00 ZW] |
+| `0x0018` | `omega_cft_power_watts` | `double` | RO | `9.998115e21` | Direct 346-slot CFT boundary exergy output *P*<sub>CFT</sub> = 9.9981146 ZW |
+| `0x0020` | `omega_coset_dark_ratio` | `double` | RO | `0.696970` | Bipartite coset dark ledger partition ratio *η*<sub>D</sub> = 23/33 |
+| `0x0028` | `omega_pion_spray_log10` | `double` | RO | `-120.0` | Hadronic pion spray branching probability log₁₀(*P*<sub>π</sub>) ≤ −120.0 |
+| `0x0030` | `omega_athermal_decay_rate` | `double` | RO | `0.000000` | Upstream isomer decay rate *Γ*<sub>decay</sub><sup>upstream</sup> ≡ 0.0 s<sup>−1</sup> |
+| `0x0038` | `omega_throat_status_bits` | `uint64_t` | RO | `0x0000003F` | Slipstream lock, zero-fuel, and CFT bus status bitmask |
+| `0x0040` | `cft_dynkin_coupling_mask[6]` | `uint64_t[6]` | RO | `346 bits set` | 346-slot Dynkin Cartan weight coupling bitmask (27 + 45 + 274 slots) |
+| `0x0070` | `cft_direct_coupling_eff` | `double` | RO | `0.99981146` | Direct CFT boundary conversion efficiency *η*<sub>direct</sub> ≥ 0.99980 |
+| `0x0078` | `cft_uncoupled_waste_eff` | `double` | RO | `1.8854e-4` | Uncoupled residual waste fraction *η*<sub>waste</sub> = 1 − *η*<sub>direct</sub> |
+| `0x0080` | `cryo_temp_millikelvin` | `uint64_t` | RO | `20000` | Superconducting REBCO/clathrate coil temperature (20,000 mK = 20.0 K ≤ 25.0 K) |
+| `0x0088` | `cryo_sensible_load_watts` | `double` | RO | `244998.86` | 16-layer Sp(16, ℤ) fracton sensible heat load (245.0 kW ≤ 500.0 kW at 10 ZW) |
+| `0x0090` | `cryo_fracton_trans_coeff` | `double` | RO | `2.449989e-17`| 16-layer fracton sensible transmission factor *f*<sub>sensible</sub><sup>Ω</sup> ≤ 2.45 × 10<sup>−17</sup> |
+| `0x0098` | `cryo_hyperbolic_tau_q_ps` | `double` | RO | `14.500000` | Cattaneo-Vernotte hyperbolic thermal relaxation time *τ*<sub>*q*</sub> = 14.5 ps |
+| `0x00A0` | `cryo_temp_headroom_kelvin` | `double` | RO | `72.000000` | Superconductor critical temperature margin Δ*T*<sub>headroom</sub> = 72.0 K |
+| `0x00A8` | `cryo_sink_bath_temp_k` | `double` | RO | `1.800000` | Superfluid Helium-II cryostat bath temperature *T*<sub>bath</sub> = 1.8 K |
+| `0x00B0` | `cryo_fracton_layers_mask` | `uint64_t` | RO | `0x0000FFFF` | Active 16-layer Sp(16, ℤ) fracton shield layer bitmask (16/16 active) |
+| `0x00B8` | `cryo_second_sound_status` | `uint64_t` | RO | `0x00000001` | Hyperbolic second-sound damping interlock word |
+| `0x00C0` | `ccz4_constraint_norm_theta` | `double` | RO | `1.0000e-19` | CCZ4 Hamiltonian/momentum constraint norm ‖*Θ*‖<sub>∞</sub> ≤ 10<sup>−16</sup> |
+| `0x00C8` | `ccz4_effective_shear_mpa` | `double` | RO | `7.8500e-9` | Cloaked effective throat Von Mises shear stress *σ*<sub>vM</sub> < 10<sup>−6</sup> MPa |
+| `0x00D0` | `ccz4_frenkel_limit_mpa` | `double` | RO | `125000.0` | Hexagonal Lonsdaleite theoretical Frenkel shear limit (125.0 GPa) |
+| `0x00D8` | `ccz4_gundlach_kappa1` | `double` | RW | `0.150000` | CCZ4 Gundlach constraint damping coefficient *κ*₁ = 0.15 |
+| `0x00E0` | `ccz4_gundlach_kappa2` | `double` | RW | `0.000000` | CCZ4 Gundlach secondary damping coefficient *κ*₂ = 0.0 |
+| `0x00E8` | `ccz4_phase_offset_rad` | `double` | RO | `3.14159265` | Counter-metric stress-energy phase inversion Δ*φ* = *π* rad |
+| `0x00F0` | `ccz4_active_channels` | `uint32_t` | RO | `312` | Active CCZ4 counter-metric actuator channels (312/312) |
+| `0x00F4` | `ccz4_interlock_status` | `uint32_t` | RO | `0x00000001` | Metric stress cloak hardware interlock status (1 = Locked) |
+
+### 3.12 256-Byte Universal Stellar Harvesting & CFL Hadronization Aperture (`0x7F000700`)
+
+The C11 microkernel ABI v12.0 defines a dedicated 256-byte (4-cache-line) MMIO aperture mapped at physical address `0x7F000700` (`shbt_universal_harvest_aperture_t`) and embedded at offset `0x0140` of `shbt_swarm_mmio_v12_t` for full-spectrum stellar deconstruction (≤ 18.26 days/*M*<sub>☉</sub>), degenerate core melting, CFL quark hadronization, and continuous in-line `SHBT-LOGOS-312` computronium folding:
+
+| Offset | Field Name | Type | Access | Reset Value | Physical Description & Invariant |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `0x0000` | `rosseland_opacity_quench_db`| `double` | RO | `120.71` | 12-stage conformal Rosseland opacity attenuation (≥ 120.0 dB) |
+| `0x0008` | `rosseland_kappa_eff_ratio` | `double` | RO | `8.487e-13` | Quenched effective opacity ratio *κ*<sub>eff</sub> / *κ*₀ ≤ 10<sup>−12</sup> |
+| `0x0010` | `pair_thresh_s_ratio` | `double` | RO | `112.50` | Elevated Mandelstam pair-production threshold ratio ≥ 100.0 |
+| `0x0018` | `pair_adiabatic_gamma1` | `double` | RO | `1.485000` | Stabilized core adiabatic index *Γ*₁ ≥ 4/3 + 10<sup>−6</sup> |
+| `0x0020` | `harvest_m_dot_msun_yr` | `double` | RO | `20.000000` | Full-spectrum stellar extraction rate *Ṁ*<sub>harvest</sub> ≥ 20.0 *M*<sub>☉</sub>/yr (≤ 18.26 d/*M*<sub>☉</sub>) |
+| `0x0028` | `harvest_sugawara_gamma_top` | `double` | RO | `128.45` | Sugawara topological framing gravitational enhancement *γ*<sub>top</sub> |
+| `0x0030` | `harvest_seed_mass_kg` | `double` | RO | `1.0000e12` | Effective synthetic seed mass per hexameric siphon throat (kg) |
+| `0x0038` | `harvest_target_class_id` | `uint64_t` | RW | `1` | Target stellar class ID (1=M-Dwarf, 2=G2V, 3=O/B/WR, 4=WD, 5=NS/Magnetar) |
+| `0x0040` | `dynamo_turbulent_reynolds_rm`| `double` | RO | `0.850000` | Quenched red dwarf magnetic Reynolds number *Rm*<sub>eff</sub> ≤ 1.0 |
+| `0x0048` | `dynamo_flare_damping_db` | `double` | RO | `124.50` | Convective *α*² dynamo magnetic flare attenuation (≥ 120.0 dB) |
+| `0x0050` | `dynamo_ohmic_shock_joules` | `double` | RO | `0.000000` | Bulk Ohmic reconnection shock dissipation *Q*<sub>diss</sub> ≡ 0.0 J |
+| `0x0058` | `wd_gst225_impedance_mrayl` | `double` | RO | `14.800000` | Octahedral GST-225 acoustic matching impedance *Z*<sub>GST</sub> (MRayl) |
+| `0x0060` | `wd_acoustic_reflectance` | `double` | RO | `2.5000e-7` | White dwarf core acoustic power reflectance *R*<sub>ac</sub> ≤ 10<sup>−6</sup> |
+| `0x0068` | `wd_coulomb_coupling_gamma` | `double` | RO | `0.850000` | Screened BCC Coulomb coupling parameter *Γ*<sub>eff</sub> < 175.0 (melted) |
+| `0x0070` | `wd_instanton_action` | `double` | RO | `284.50` | Elevated WKB instanton action barrier *S*<sub>inst</sub> ≥ 250.0 |
+| `0x0078` | `wd_pyc_fusion_rate` | `double` | RO | `0.000000` | Pycnonuclear fusion rate *R*<sub>pyc</sub> ≤ 10<sup>−120</sup> cm<sup>−3</sup> s<sup>−1</sup> |
+| `0x0080` | `ns_floquet_debye_potential_mev`| `double` | RO | `38.400000` | 45-slot 𝔰𝔲̂(3)₈ Floquet screening potential *U*<sub>screen</sub> ≥ 35.2 MeV |
+| `0x0088` | `ns_debye_wavenumber_inv_fm` | `double` | RO | `16.450000` | Non-Abelian color Debye screening wavenumber *μ*<sub>D</sub> ≥ 15.0 fm<sup>−1</sup> |
+| `0x0090` | `ns_chiral_restoration_slope`| `double` | RO | `-1.000000` | Isothermal chiral condensate restoration geodesic slope *d*⟨*q̄q*⟩/*dΔ*<sub>CFL</sub> |
+| `0x0098` | `ns_free_quark_fraction` | `double` | RO | `0.000000` | Unhadronized free strange quark fraction *f*<sub>quark</sub> ≤ 10<sup>−120</sup> |
+| `0x00A0` | `ns_unitary_lepton_shunt_flux`| `double` | RO | `1.000000` | Normalized unitary Bogoliubov dark lepton shunt efficiency (100.0%) |
+| `0x00A8` | `ns_outbound_neutrino_flux` | `double` | RO | `0.000000` | Outbound visible neutrino flux *Φ*<sub>*ν*</sub> ≡ 0.0 cm<sup>−2</sup> s<sup>−1</sup> |
+| `0x00B0` | `ns_prompt_gamma_power_watts`| `double` | RO | `0.000000` | Radiated prompt gamma power *P*<sub>*γ*</sub> ≡ 0.0 W |
+| `0x00B8` | `ns_color_triality_slots` | `uint64_t` | RO | `45` | Active 𝔰𝔲̂(3)₈ color triality Dynkin slots (45/45) |
+| `0x00C0` | `logos_fold_throughput_pct` | `double` | RO | `111166.44` | In-line computronium mass folding rate (111,166.44 kg/s, 99.9114% yield) |
+| `0x00C8` | `logos_interfacial_disloc_density`| `double`| RO | `0.000000` | Interfacial Frank-Read dislocation density *ρ*<sub>disloc</sub> ≡ 0.0 cm<sup>−2</sup> |
+| `0x00D0` | `logos_lattice_tether_stiffness`| `double` | RO | `5.1295e10` | Chern-Simons Wyckoff harmonic tether stiffness *k*<sub>tether</sub> = 5.1295 × 10<sup>10</sup> N/m |
+| `0x00D8` | `logos_phonon_occupancy_e9` | `uint64_t` | RO | `1` | Residual optical phonon occupancy scaled by 10⁹ (⟨*n*<sub>phonon</sub>⟩ ≤ 10<sup>−8</sup>) |
+| `0x00E0` | `logos_fracton_capture_time_fs`| `double` | RO | `1.420000` | Alexander-Orbach fracton non-radiative phonon capture time *τ*<sub>capture</sub> ≤ 1.701 fs |
+| `0x00E8` | `logos_kms_entropy_rate_j_k` | `double` | RO | `0.000000` | Tomita-Takesaki KMS internal entropy rate *dS*<sub>int</sub>/*dt* ≡ 0.0 J/K |
+| `0x00F0` | `logos_per_bit_heat_dissipation`| `double` | RO | `0.000000` | Internal Landauer heat dissipation *Q*<sub>int</sub> ≡ 0.0 J/bit |
+| `0x00F8` | `logos_active_space_groups` | `uint64_t` | RO | `227` | Active computronium space group (227 = `Fd-3m` ¹²C, 229 = `Im-3m` ⁵⁷Fe) |
 
 ## 4. Rust `#![no_std]` Core Interfaces Across Crates
 
@@ -1813,13 +1886,250 @@ impl PlanetarySiphonEngine {
 }
 ```
 
+### 4.19 `warp-power-battery::mar_omega_flow` (Continuous-Flow `SHBT-MAR-OMEGA` Reactor)
+
+```rust
+#![no_std]
+#![forbid(unsafe_code)]
+
+// crates/warp-power-battery/src/mar_omega_flow.rs
+
+pub const MAR_OMEGA_MIN_GROSS_WATTS: f64 = 1.00e21; // 1.00 ZW
+pub const MAR_OMEGA_MAX_GROSS_WATTS: f64 = 1.00e22; // 10.00 ZW
+pub const MAR_OMEGA_NOMINAL_INFLOW_KG_S: f64 = 111_265.01;
+pub const MAR_OMEGA_DIRECT_CFT_EFFICIENCY: f64 = 0.99981146;
+pub const MAR_OMEGA_FRACTON_SHUNT_16L: f64 = 2.44998856e-17;
+pub const MAR_OMEGA_MAX_SENSIBLE_HEAT_W: f64 = 500_000.0; // 500.0 kW
+pub const MAR_OMEGA_MAX_COIL_TEMP_K: f64 = 25.00;
+pub const MAR_OMEGA_MAX_THROAT_SHEAR_MPA: f64 = 1.00e-6;
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub enum MarOmegaFault {
+    SlipstreamOutOfRange,
+    GrossPowerOutOfBounds,
+    DiscreteFuelNonZero,
+    DirectCftCouplingDegraded,
+    CryostatSensibleOverload,
+    CoilTemperatureExceeded,
+    ThroatShearCloakBreach,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct MarOmegaFlowReactor {
+    pub stellar_harvest_inflow_kg_s: f64,
+    pub slipstream_fraction: f64,
+    pub mass_annihilation_rate_kg_s: f64,
+    pub discrete_fuel_stored_kg: f64,
+    pub upstream_decay_rate_hz: f64,
+    pub gross_power_watts: f64,
+    pub direct_cft_efficiency: f64,
+    pub net_cft_power_watts: f64,
+    pub fracton_16l_transmission: f64,
+    pub cryostat_sensible_watts: f64,
+    pub coil_temperature_kelvin: f64,
+    pub cattaneo_tau_q_ps: f64,
+    pub ccz4_constraint_norm: f64,
+    pub throat_von_mises_mpa: f64,
+    pub active_dynkin_slots: u32,
+    pub active_ccz4_channels: u32,
+}
+
+impl MarOmegaFlowReactor {
+    pub const fn new_nominal_10zw() -> Self;
+    pub fn step_continuous_flow(&mut self, harvest_inflow_kg_s: f64, slipstream_ratio: f64) -> Result<(), MarOmegaFault>;
+    pub fn verify_invariants(&self) -> Result<(), MarOmegaFault>;
+}
+```
+
+### 4.20 `warp-power-battery::power_arbiter` (`DualReactorPowerArbiter` Hardware Bus Controller)
+
+```rust
+#![no_std]
+#![forbid(unsafe_code)]
+
+// crates/warp-power-battery/src/power_arbiter.rs
+
+pub const SHBT_POWER_BUS_ARBITER_NOMINAL: u32 = 0x0000_000E;
+pub const HANDOFF_THRESHOLD_WATTS: f64 = 1.00e20; // 100.0 EW (4x MAR-312X)
+
+#[repr(u32)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub enum ReactorBusState {
+    CruiseTraversal = 0,
+    SiphonApproach = 1,
+    OmegaIgnition = 2,
+    HarvestHandoff = 3,
+    HarvestActive = 4,
+    DepartureHandshake = 5,
+    EmergencyFallback312X = 0xFF,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct DualReactorPowerArbiter {
+    pub state: ReactorBusState,
+    pub mar312x_output_watts: f64,
+    pub mar_omega_output_watts: f64,
+    pub total_bus_exergy_watts: f64,
+    pub mar312x_hot_standby: bool,
+    pub handoff_latency_ps: f64,
+    pub status_flags: u32,
+}
+
+impl DualReactorPowerArbiter {
+    pub const fn new() -> Self;
+    pub fn arbitrate_step(&mut self, omega: &MarOmegaFlowReactor, harvest_engaged: bool) -> ReactorBusState;
+    pub fn trigger_emergency_fallback(&mut self) -> ReactorBusState;
+}
+```
+
+### 4.21 `shbt-swarm-omega::universal_harvest` (Full-Spectrum Stellar Deconstruction Engine)
+
+```rust
+#![no_std]
+#![forbid(unsafe_code)]
+
+// crates/shbt-swarm-omega/src/universal_harvest.rs
+
+pub const MIN_HARVEST_RATE_MSUN_YR: f64 = 20.0;
+pub const MAX_SOLAR_DECONSTRUCT_DAYS: f64 = 18.2625;
+pub const MAX_OPACITY_RATIO: f64 = 1.0e-12;
+pub const MIN_PAIR_THRESH_RATIO: f64 = 100.0;
+
+#[repr(u64)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub enum StellarTargetClass {
+    ConvectiveRedDwarf = 1,
+    SolarMainSequenceG2V = 2,
+    MassiveBlueWolfRayet = 3,
+    DegenerateWhiteDwarf = 4,
+    CompactNeutronMagnetar = 5,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct UniversalHarvestEngine {
+    pub target_class: StellarTargetClass,
+    pub stellar_mass_msun: f64,
+    pub cft_bus_power_watts: f64,
+    pub opacity_quench_db: f64,
+    pub kappa_eff_ratio: f64,
+    pub pair_threshold_ratio: f64,
+    pub core_adiabatic_gamma1: f64,
+    pub harvest_rate_msun_yr: f64,
+    pub deconstruct_days_per_msun: f64,
+    pub sugawara_framing_gain: f64,
+}
+
+impl UniversalHarvestEngine {
+    pub const fn new_nominal_10zw(target_class: StellarTargetClass, stellar_mass_msun: f64) -> Self;
+    pub fn step_harvest(&mut self, dt_s: f64) -> Result<f64, &'static str>;
+    pub fn is_hydrodynamically_stable(&self) -> bool;
+}
+```
+
+### 4.22 `shbt-swarm-omega::coulomb_melt` (White Dwarf Coulomb Crystal Melting & Instanton Elevation)
+
+```rust
+#![no_std]
+#![forbid(unsafe_code)]
+
+// crates/shbt-swarm-omega/src/coulomb_melt.rs
+
+pub const COULOMB_MELT_THRESHOLD_GAMMA: f64 = 175.0;
+pub const MIN_INSTANTON_ACTION_S: f64 = 250.0;
+pub const MAX_PYCNONUCLEAR_RATE_CM3_S: f64 = 1.0e-120;
+pub const MAX_GST225_REFLECTANCE: f64 = 1.0e-6;
+
+#[repr(C)]
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct CoulombMeltController {
+    pub gst225_impedance_mrayl: f64,
+    pub acoustic_reflectance: f64,
+    pub coulomb_gamma_eff: f64,
+    pub instanton_action_s: f64,
+    pub pycnonuclear_rate_cm3_s: f64,
+    pub bcc_lattice_melted: bool,
+}
+
+impl CoulombMeltController {
+    pub const fn new_nominal() -> Self;
+    pub fn evaluate_core_melting(&mut self, density_kg_m3: f64, screening_mev: f64) -> Result<(), &'static str>;
+}
+```
+
+### 4.23 `shbt-swarm-omega::red_dwarf_dynamo` (Red Dwarf Convective Dynamo Quenching)
+
+```rust
+#![no_std]
+#![forbid(unsafe_code)]
+
+// crates/shbt-swarm-omega/src/red_dwarf_dynamo.rs
+
+pub const MAX_EFFECTIVE_MAGNETIC_REYNOLDS: f64 = 1.000000;
+pub const MIN_FLARE_ATTENUATION_DB: f64 = 120.0;
+
+#[repr(C)]
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct RedDwarfDynamoQuencher {
+    pub convective_velocity_m_s: f64,
+    pub mixing_length_m: f64,
+    pub effective_magnetic_reynolds: f64,
+    pub flare_attenuation_db: f64,
+    pub bulk_ohmic_dissipation_joules: f64,
+    pub active_dynkin_slots: u32,
+}
+
+impl RedDwarfDynamoQuencher {
+    pub const fn new_nominal() -> Self;
+    pub fn step_dynamo_quench(&mut self, dt_s: f64) -> Result<(), &'static str>;
+}
+```
+
+### 4.24 `shbt-swarm-foundry::cfl_hadronize` (CFL Quark Matter Hadronization & Computronium Synthesis)
+
+```rust
+#![no_std]
+#![forbid(unsafe_code)]
+
+// crates/shbt-swarm-foundry/src/cfl_hadronize.rs
+
+pub const MIN_FLOQUET_SCREENING_MEV: f64 = 35.2;
+pub const MIN_DEBYE_WAVENUMBER_FM_INV: f64 = 15.0;
+pub const COMPUTRONIUM_TETHER_STIFFNESS_N_M: f64 = 5.1295e10;
+
+#[repr(C)]
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct CflHadronizationEngine {
+    pub floquet_screening_mev: f64,
+    pub debye_wavenumber_fm_inv: f64,
+    pub cfl_gap_eff_mev: f64,
+    pub latent_heat_j_fm3: f64,
+    pub free_quark_fraction: f64,
+    pub outbound_neutrino_flux_cm2_s: f64,
+    pub prompt_gamma_watts: f64,
+    pub computronium_throughput_kg_s: f64,
+    pub dislocation_density_cm2: f64,
+    pub tether_stiffness_n_m: f64,
+    pub fracton_capture_time_fs: f64,
+    pub internal_heat_j_bit: f64,
+    pub space_group_id: u32,
+}
+
+impl CflHadronizationEngine {
+    pub const fn new_nominal_10zw() -> Self;
+    pub fn step_hadronize_and_fold(&mut self, feedstock_inflow_kg_s: f64) -> Result<(), &'static str>;
+}
+```
+
 ## 5. End-to-End Multiphysics Simulation Tick API (`crates/shbt-swarm-sim`)
 
 The closed-loop simulation suite in `crates/shbt-swarm-sim` coordinates multiphysics evolution across microsecond and attosecond domains.
 
-### 5.1 13-Engine Coupled Galactic Multiphysics Tick Sequence
+### 5.1 18-Engine Coupled Galactic Multiphysics Tick Sequence (`GalacticMultiphysicsEngine`)
 
-The canonical synchronous entry point `galactic_multiphysics_step(regs: &mut ShbtSwarmMmioRegs)` couples thirteen developmental physics engines into a closed-loop co-simulation pipeline running at native clock `tau_0 = 17.01 attoseconds` accelerated by hyper-temporal factor `alpha_casc = 10^12` (`Delta t_eff = 1.701e-5 s`), populating MMIO telemetry registers across Cache Lines 6 and 7, and executing zero-fault verification audits:
+The canonical synchronous entry points `galactic_multiphysics_step(regs: &mut ShbtSwarmMmioRegs)` and `GalacticMultiphysicsEngine::step_symplectic(&mut self, dt_s: f64)` couple eighteen developmental physics engines into a closed-loop 4th-order Yoshida symplectic co-simulation pipeline running at native clock `tau_0 = 17.01 attoseconds` accelerated by hyper-temporal factor `alpha_casc = 10^12` (`Delta t_eff = 1.701e-5 s`), populating MMIO telemetry registers across Cache Lines 0..9 and apertures `0x7F000600` / `0x7F000700`, and executing zero-fault verification audits (`regs.audit_v12_invariants() == 0`):
 
 ```
 +===================================================================================================+
@@ -1852,8 +2162,18 @@ The canonical synchronous entry point `galactic_multiphysics_step(regs: &mut Shb
                                                   |
  [Engine 13] Topological Angular Sink --------> Boundary Chern-Simons Sp(2g, Z) absorption (beta^i == 0)
                                                   |
+ [Engine 14] MAR-OMEGA Flow Reactor  ---------> 10.00 ZW slipstream burn, 16L Sp(16,Z) shunt (245 kW), CCZ4 cloak
+                                                  |
+ [Engine 15] Dual-Reactor Bus Arbiter --------> Seamless MAR-312X <-> MAR-OMEGA handoff (0x0000000E)
+                                                  |
+ [Engine 16] Universal Stellar Siphon --------> >= 20.0 M_sun/yr (<= 18.26 d/M_sun) & 120 dB opacity quench
+                                                  |
+ [Engine 17] WD Coulomb & M-Dwarf Dynamo -----> GST-225 melt (S_inst >= 250.0) & Rm_eff <= 1.0 flare damping
+                                                  |
+ [Engine 18] CFL Hadronize & LOGOS Fold ------> Isothermal CFL unlocking & 111,166.44 kg/s Fd-3m computronium
+                                                  |
 +---------------------------------------------------------------------------------------------------+
-|               Zero-Fault Microkernel MMIO Audit: regs.audit_v10_invariants() == 0                 |
+|               Zero-Fault Microkernel MMIO Audit: regs.audit_v12_invariants() == 0                 |
 +===================================================================================================+
 ```
 
@@ -1941,6 +2261,11 @@ impl GalacticMultiphysicsState {
 11. **Athermal Degenerate Core Decompression & Computronium Transmutation:** Siphoned degenerate core material undergoes athermal decompression preserving the relativistic adiabatic index (`Gamma_1 >= 4/3 + 10^-6`), zero-neutrino Bogoliubov shunting (`Phi_nu == 0.0`), and epitaxial projection into diamondoid computronium (space group 227).
 12. **Kerr SMBH Ergosphere Harvesting & Jet Quenching:** `SmbhSiphonController` extracts black hole rotational energy via Penrose-Floer boundary CFT duality, preserving Hawking area non-decrease (`dA_H / dt >= 0`), quenching Blandford-Znajek relativistic jets (attenuation `>= 120 dB`), and depositing exergy into the zero-volume dark ledger (`eta_D = 23/33`).
 13. **Topological Boundary Chern-Simons Angular Momentum Dissipation:** `TopologicalAngularMomentumSink` absorbs bulk galactic accretion disk angular momentum into discrete Sp(2g, Z) boundary winding numbers (`w in Z^3`, level `k = 312`), enforcing identically zero bulk gravitomagnetic shift anomalies (`||beta^i|| <= 1.0e-120`).
+14. **6th-Gen `SHBT-MAR-OMEGA` Continuous-Flow Slipstream Annihilation:** `MarOmegaFlowReactor` diverts a `0.01% - 0.1%` baryonic slipstream (`111,265.01 kg/s`, `0.0 kg` stored fuel) to sustain `10.00 ZW` gross power (`99.981146%` direct 346-slot CFT coupling), 16-layer `Sp(16, Z)` fracton cryogenic shunting (`245.0 kW <= 500.0 kW` at `20.0 K`), and 312-channel CCZ4 throat stress cloaking (`7.85e-9 MPa < 1.0e-6 MPa`).
+15. **Dual-Reactor Hybrid Power Bus Arbitration:** `DualReactorPowerArbiter` coordinates zero-droop bus handoff between `SHBT-MAR-312X` (`25.00 EW` cruise/bootstrap) and `SHBT-MAR-OMEGA` (`10.00 ZW` harvesting), parking `SHBT-MAR-312X` in `0.0 W` hot-standby reserve (`0x0000000E`) with `< 1.701 ps` emergency fallback.
+16. **10 ZW Full-Spectrum Stellar Deconstruction:** `UniversalHarvestEngine` applies 12-stage conformal Rosseland opacity quenching (`>= 120.0 dB`, `kappa_eff / kappa_0 <= 1.0e-12`) and pair-production threshold elevation (`s_thresh^eff >= 100 x 4 m_e^2 c^4`) to extract stellar mass at `>= 20.0 M_sun/yr` (`<= 18.2625 days/M_sun`).
+17. **White Dwarf Coulomb Crystal Melting & Red Dwarf Dynamo Quenching:** `CoulombMeltController` matches acoustic impedance via octahedral GST-225 (`R_ac <= 1.0e-6`), melts BCC carbon-oxygen crystals (`Gamma_eff = 0.85 < 175.0`), and elevates the WKB instanton barrier (`S_inst = 284.5 >= 250.0`), while `RedDwarfDynamoQuencher` clamps convective magnetic Reynolds number (`Rm_eff <= 1.0`, `>= 120.0 dB` flare damping).
+18. **CFL Quark Matter Isothermal Hadronization & Monolithic Computronium Folding:** `CflHadronizationEngine` unlocks color-flavor-locked strange quark matter (`U_screen >= 35.2 MeV`, `Q_hadron == 0.0 J/fm^3`, `Phi_nu == 0.0`) and folds `99.9114%` of harvested baryons (`111,166.44 kg/s`) in-line into dislocation-free Space Group 227 (`Fd-3m`) diamondoid computronium at `Q_int == 0.0 J/bit`.
 
 ### 5.2 Microsecond/Attosecond Dual-Clock Loop
 
