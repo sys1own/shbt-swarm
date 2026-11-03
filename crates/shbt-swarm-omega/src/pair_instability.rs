@@ -21,6 +21,8 @@ pub struct PairSuppressionReport {
     pub opacity_ratio: f64,
     /// Core adiabatic index Gamma_1 = (d ln P / d ln rho)_ad.
     pub gamma_1: f64,
+    /// Alias for core adiabatic index.
+    pub core_adiabatic_index: f64,
     /// Effective pair production threshold shift in MeV.
     pub effective_threshold_mev: f64,
     /// Flag verifying simultaneous opacity and pair instability suppression.
@@ -83,6 +85,7 @@ impl PairInstabilitySuppressor {
         PairSuppressionReport {
             opacity_ratio,
             gamma_1,
+            core_adiabatic_index: gamma_1,
             effective_threshold_mev,
             is_stable,
         }

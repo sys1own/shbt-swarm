@@ -15,10 +15,14 @@ pub const MU0_C2: f64 = 1.129409067e11;
 pub struct DynamoQuenchReport {
     /// Effective magnetic Reynolds number (must be <= 1.000000).
     pub r_m_eff: f64,
+    /// Alias for effective magnetic Reynolds number.
+    pub effective_magnetic_reynolds: f64,
     /// Quenching attenuation in decibels (must be >= 120.0 dB).
     pub attenuation_db: f64,
     /// Bulk thermal dissipation in Joules (strictly 0.00 J).
     pub q_diss_joules: f64,
+    /// Alias for bulk thermal dissipation in Joules.
+    pub bulk_thermal_dissipation_joules: f64,
     /// Certification flag indicating all stability criteria are satisfied.
     pub is_quenched: bool,
 }
@@ -103,8 +107,10 @@ impl ConvectiveDynamoQuencher {
 
         DynamoQuenchReport {
             r_m_eff,
+            effective_magnetic_reynolds: r_m_eff,
             attenuation_db,
             q_diss_joules,
+            bulk_thermal_dissipation_joules: q_diss_joules,
             is_quenched,
         }
     }

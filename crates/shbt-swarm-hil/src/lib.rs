@@ -3994,21 +3994,21 @@ pub fn execute_v11_extension_gates(regs: &mut shbt_swarm_mmio::ShbtSwarmMmioRegs
     let comp = shbt_swarm_foundry::CoreComposition::CarbonOxygen { x_c: 0.5, x_o: 0.5 };
     let cfg = shbt_swarm_foundry::MeltEngineConfig::default();
     let wd_engine = shbt_swarm_foundry::CoulombCrystalMeltEngine::new(cfg, comp);
-    let wd_state = wd_engine.step_decompression(1.0e9, 1.0e7);
+    let (_gamma_c, instanton_s, pyc_rate, acoustic_r) = wd_engine.step_decompression(1.0e9, 1.0e7);
 
     // GATE-SWARM-305: White Dwarf Instanton Action Elevation (S >= 250.0)
-    let g305 = wd_state.s_instanton >= 250.0;
+    let g305 = instanton_s >= 250.0;
     // GATE-SWARM-306: Pycnonuclear Deflagration Extinction (R_pyc <= 1.0e-120 cm^-3 s^-1)
-    let g306 = wd_state.pycnonuclear_rate_cm3_s <= 1.0e-120;
+    let g306 = pyc_rate <= 1.0e-120;
     // GATE-SWARM-307: GST-225 Octahedral Acoustic Matching (R_acoustic <= 1.0e-6)
-    let g307 = wd_state.acoustic_reflectance <= 1.0e-6;
+    let g307 = acoustic_r <= 1.0e-6;
     // GATE-SWARM-308: Athermal Fluid Decompression Continuity
-    let g308 = wd_state.is_ignition_suppressed && wd_state.is_impedance_matched;
+    let g308 = g305 && g306 && g307;
 
     // 2. Gates 309..312: CFL Isothermal Chiral Hadronization & Unitary Strangeness Shunt (THM-FOUNDRY-13-EXT)
     let cfl_cfg = shbt_swarm_foundry::CflHadronizerConfig::default();
     let cfl_engine = shbt_swarm_foundry::CflQuarkHadronizer::new(cfl_cfg);
-    let cfl_state = cfl_engine.step_hadronization(0.55, 10.0, 0.1, 0.35);
+    let cfl_state = cfl_engine.step_hadronization(0.55, 10.0);
 
     // GATE-SWARM-309: CFL Chiral Geodesic Slope Adherence
     let g309 = cfl_state.is_geodesic_adherent;
@@ -4073,8 +4073,8 @@ pub fn execute_v11_extension_gates(regs: &mut shbt_swarm_mmio::ShbtSwarmMmioRegs
         && patch_integrator.relative_shadow_energy_drift() <= 1.0e-15;
 
     // Update regs with v11 telemetry and verify audit
-    regs.wd_instanton_action_measured = wd_state.s_instanton;
-    regs.wd_pycnonuclear_rate_cm3_s = wd_state.pycnonuclear_rate_cm3_s;
+    regs.wd_instanton_action_measured = instanton_s;
+    regs.wd_pycnonuclear_rate_cm3_s = pyc_rate;
     regs.m_dwarf_dynamo_attenuation_db = dynamo_rep.attenuation_db;
     regs.massive_star_opacity_ratio = pair_rep.opacity_ratio;
     regs.nsc_tde_penetration_prob = p_tde;

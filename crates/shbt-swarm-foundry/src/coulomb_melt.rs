@@ -54,7 +54,7 @@ pub struct MeltState {
 }
 
 /// Operational parameters for the Coulomb Crystal Melt Engine
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct MeltEngineConfig {
     pub su2_slots: u32,                  // Must equal 26
     pub floquet_screening_mev: f64,      // Must be >= 35.2 MeV
@@ -73,6 +73,7 @@ impl Default for MeltEngineConfig {
     }
 }
 
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct CoulombCrystalMeltEngine {
     config: MeltEngineConfig,
     composition: CoreComposition,
@@ -144,13 +145,18 @@ impl CoulombCrystalMeltEngine {
         }
     }
 
-    /// Step evaluation of core state during decompression
-    pub fn step_decompression(&self, density_kg_m3: f64, temperature_k: f64) -> MeltState {
+    /// Step evaluation of core state during decompression returning (Gamma_C, S_instanton, R_pyc, R_acoustic)
+    pub fn step_decompression(&self, density_kg_m3: f64, temperature_k: f64) -> (f64, f64, f64, f64) {
         let gamma = self.evaluate_gamma(density_kg_m3, temperature_k);
         let s_inst = self.evaluate_instanton_action(density_kg_m3);
         let r_pyc = self.evaluate_pycnonuclear_rate(s_inst, density_kg_m3);
         let r_ac = self.evaluate_acoustic_reflectance(density_kg_m3);
+        (gamma, s_inst, r_pyc, r_ac)
+    }
 
+    /// Step evaluation returning full MeltState struct
+    pub fn step_decompression_state(&self, density_kg_m3: f64, temperature_k: f64) -> MeltState {
+        let (gamma, s_inst, r_pyc, r_ac) = self.step_decompression(density_kg_m3, temperature_k);
         MeltState {
             density_kg_m3,
             temperature_k,
@@ -216,10 +222,13 @@ mod tests {
         let comp = CoreComposition::CarbonOxygen { x_c: 0.5, x_o: 0.5 };
         let engine = CoulombCrystalMeltEngine::new(config, comp);
 
-        let state = engine.step_decompression(1.0e9, 1.0e7);
-        assert!(state.s_instanton >= 250.0);
-        assert!(state.pycnonuclear_rate_cm3_s <= 1.0e-120);
-        assert!(state.acoustic_reflectance <= 1.0e-6);
+        let (gamma_c, instanton_s, pyc_rate, acoustic_r) = engine.step_decompression(1.0e9, 1.0e7);
+        assert!(instanton_s >= 250.0);
+        assert!(pyc_rate <= 1.0e-120);
+        assert!(acoustic_r <= 1.0e-6);
+        assert!(gamma_c > 0.0);
+
+        let state = engine.step_decompression_state(1.0e9, 1.0e7);
         assert!(state.is_ignition_suppressed);
         assert!(state.is_impedance_matched);
     }

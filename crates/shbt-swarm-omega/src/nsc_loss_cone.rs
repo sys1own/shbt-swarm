@@ -14,7 +14,7 @@ pub const SOLAR_RADIUS: f64 = 6.957e8;                 // m
 pub const PARSEC_METERS: f64 = 3.085677581491367e16;   // m
 
 /// Configuration parameters for the 312 ADM sector hub kinetic shield
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub struct NscShieldConfig {
     pub smbh_mass_kg: f64,
     pub smbh_spin_param: f64,        // Dimensionless Kerr parameter a* in [0, 0.998]
@@ -38,6 +38,7 @@ impl Default for NscShieldConfig {
 }
 
 /// Nuclear Star Cluster Loss-Cone Kinetic Shield Engine
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct NscLossConeShield {
     config: NscShieldConfig,
     rg: f64,

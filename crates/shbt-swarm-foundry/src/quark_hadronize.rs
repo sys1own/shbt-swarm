@@ -16,15 +16,18 @@ pub struct HadronizeState {
     pub core_temp_mev: f64,
     pub cfl_gap_mev: f64,
     pub chi_free_quark_fraction: f64,
+    pub unconfined_quark_fraction: f64,
     pub visible_neutrino_flux_cm2_s: f64,
+    pub visible_neutrino_flux: f64,
     pub prompt_gamma_power_w: f64,
+    pub prompt_gamma_power_watts: f64,
     pub adiabatic_index: f64,
     pub dark_exergy_shunted_mev: f64,
     pub is_geodesic_adherent: bool,
 }
 
 /// Operational configuration for the CFL Hadronizer
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct CflHadronizerConfig {
     pub dynkin_su3_slots: u32,           // Must be 8
     pub dynkin_so10_slots: u32,         // Must be 312
@@ -45,6 +48,7 @@ impl Default for CflHadronizerConfig {
     }
 }
 
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct CflQuarkHadronizer {
     config: CflHadronizerConfig,
 }
@@ -73,8 +77,17 @@ impl CflQuarkHadronizer {
         (dark_shunted, thermal_dilation)
     }
 
-    /// Executes one step of non-perturbative decompression
+    /// Executes one step of non-perturbative decompression with default geodesic gradients
     pub fn step_hadronization(
+        &self,
+        baryon_density_fm3: f64,
+        core_temp_mev: f64,
+    ) -> HadronizeState {
+        self.step_hadronization_full(baryon_density_fm3, core_temp_mev, 0.1, 0.35)
+    }
+
+    /// Executes one step of non-perturbative decompression with explicit geodesic gradients
+    pub fn step_hadronization_full(
         &self,
         baryon_density_fm3: f64,
         core_temp_mev: f64,
@@ -107,8 +120,11 @@ impl CflQuarkHadronizer {
             core_temp_mev,
             cfl_gap_mev: cfl_gap,
             chi_free_quark_fraction: 0.0,
+            unconfined_quark_fraction: 0.0,
             visible_neutrino_flux_cm2_s: 0.0,
+            visible_neutrino_flux: 0.0,
             prompt_gamma_power_w: 1.0e-16,
+            prompt_gamma_power_watts: 1.0e-16,
             adiabatic_index,
             dark_exergy_shunted_mev: dark_shunted,
             is_geodesic_adherent: is_adherent,
@@ -125,7 +141,7 @@ mod tests {
         let config = CflHadronizerConfig::default();
         let hadronizer = CflQuarkHadronizer::new(config);
 
-        let state = hadronizer.step_hadronization(0.55, 10.0, 0.1, 0.35);
+        let state = hadronizer.step_hadronization(0.55, 10.0);
         assert_eq!(state.chi_free_quark_fraction, 0.0);
         assert_eq!(state.visible_neutrino_flux_cm2_s, 0.0);
         assert!(state.adiabatic_index >= 4.0 / 3.0 + 1.0e-6);

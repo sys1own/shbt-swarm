@@ -74,7 +74,7 @@ The architecture unites seven developmental phases into a binary-compatible C11 
 | **Phase 5A** (`shbt-swarm-omega`) | `THM-OMEGA-21-EXT`..`22-EXT` | Kerr SMBH ergosphere harvesting, Penrose-Floer boundary CFT dual, Hawking area *dA*<sub>H</sub>/*dt* ≥ 0, BZ jet quenching | Area non-decrease *dA*<sub>H</sub>/*dt* ≥ 0, jet attenuation ≥ 120.0 dB | `GATE-SWARM-289`–`GATE-SWARM-296` |
 | **Phase 5A** (`shbt-swarm-omega`) | `THM-OMEGA-18-EXT`..`20-EXT` | Universal multi-reservoir envelope harvesting, metric opacity quenching, GST-225 flash acoustic matching, 312 ADM hub supercomoving Vlasov-Poisson virial clamping | *κ*<sub>eff</sub>/*κ*<sub>0</sub> ≤ 10<sup>−12</sup>, *R*<sub>acoustic</sub> ≤ 10<sup>−6</sup>, |Δ*σ*<sub>*r*</sub>² / *σ*<sub>*r*</sub>²| ≤ 10<sup>−6</sup> | `GATE-SWARM-297`–`GATE-SWARM-304` |
 
-##### First-Principles Closures: Degenerate Melting, Stellar Hydrodynamics & Symplectic Kinematics (v6.318 / ABI v11.0)
+### Galactic Stellar Deconstruction & Symplectic Closures (v6.317 to v6.318 / ABI v11)
 
 | Domain & Target Subsystem | Formal Theorem | First-Principles Closure Mechanism | Verified Invariant Bound | HIL Gates |
 | :--- | :--- | :--- | :--- | :--- |
@@ -1063,10 +1063,10 @@ Physical Memory Apertures:
                                   qgp_floquet_debye_mass_fm (mu_D >= 15.0 fm^-1), planetary_gst_reflection_coeff (R_acoustic <= 1.0e-6),
                                   dark_ledger_anyon_braid_count, bz_jet_attenuation_db (>= 120 dB), v10_reserved_tail (20 B pad).
   - Cache Line 8 (0x0200..0x023F): ABI v11 Degenerate Core Melting, Stellar Hydrodynamics & Loss-Cone Invariants:
-                                  wd_coulomb_coupling_gamma (Gamma_C >= 178.0), wd_pycnonuclear_rate_cm3_s (R_pyc <= 1.0e-120),
-                                  cfl_gap_energy_mev (Delta_CFL >= 100.0 MeV), m_dwarf_dynamo_attenuation_db (>= 120.0 dB),
-                                  pair_instability_gamma1 (Gamma_1 >= 4/3 + 1.0e-6), nsc_loss_cone_flux_per_yr (F_loss <= 1.0e-120),
-                                  patch_symplectic_drift_norm (|Delta H / H| <= 1.0e-15), v11_reserved_tail (8 B pad).
+                                  wd_instanton_action_measured (S_instanton >= 250.0), wd_pycnonuclear_rate_cm3_s (R_pyc <= 1.0e-120 cm^-3 s^-1),
+                                  m_dwarf_dynamo_attenuation_db (>= 120.0 dB), massive_star_opacity_ratio (kappa_eff / kappa_0 <= 1.0e-12),
+                                  nsc_tde_penetration_prob (P_TDE <= 1.0e-120), async_symplectic_2form_drift (‖dω‖ <= 1.0e-19),
+                                  v11_harvested_nucleons_counter (transmuted baryons), v11_reserved_tail (8 B pad).
   - Hardware Fault Bitmasks (Bits 32..60):
       Bits 32..39: FAULT_CHIRAL_RACEMIC (bit 32), FAULT_LLE_CHAOS (bit 33), FAULT_PACHNER_COCYCLE (bit 34),
                    FAULT_ATMOS_SHOCK (bit 35), FAULT_FLUX_JUMP (bit 36), FAULT_POYNTING_JET (bit 37),

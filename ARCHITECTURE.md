@@ -302,11 +302,21 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     volatile uint64_t dark_ledger_anyon_braid_count;   /* 0x01E0: Fibonacci anyon braid count */
     volatile uint32_t bz_jet_attenuation_db;           /* 0x01E8: Jet suppression in dB */
     volatile uint32_t v10_reserved_tail[5];            /* 0x01EC..0x01FF: 20 bytes pad */
+
+    /* === CACHELINE 8 (Offsets 0x0200 .. 0x023F): ABI v11 Stellar Hydrodynamics & Loss-Cone Invariants (64 bytes) === */
+    volatile double   wd_instanton_action_measured;    /* 0x0200: S_instanton >= 250.0 */
+    volatile double   wd_pycnonuclear_rate_cm3_s;      /* 0x0208: R_pyc <= 1.0e-120 cm^-3 s^-1 */
+    volatile double   m_dwarf_dynamo_attenuation_db;   /* 0x0210: >= 120.0 dB */
+    volatile double   massive_star_opacity_ratio;      /* 0x0218: kappa_eff / kappa_0 <= 1.0e-12 */
+    volatile double   nsc_tde_penetration_prob;        /* 0x0220: P_TDE <= 1.0e-120 */
+    volatile double   async_symplectic_2form_drift;    /* 0x0228: ‖dω‖ <= 1.0e-19 */
+    volatile uint64_t v11_harvested_nucleons_counter;  /* 0x0230: Transmuted/harvested baryons */
+    volatile uint64_t v11_reserved_tail;               /* 0x0238: 8 bytes pad to 0x0240 */
 } shbt_swarm_mmio_regs_t;
 #pragma pack(pop)
 
-_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 512,
-               "shbt_swarm_mmio_regs_t must occupy exactly 512 bytes (8 cache lines)");
+_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 576,
+               "shbt_swarm_mmio_regs_t must occupy exactly 576 bytes (9 cache lines)");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, abi_version) == 0x00C0,
                "abi_version offset mismatch");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, chiral_ee_q16) == 0x0100,
@@ -319,6 +329,10 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, eddington_damping_factor) == 0x0
                "eddington_damping_factor must start at Cache Line 7 (0x01C0)");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, dark_ledger_anyon_braid_count) == 0x01E0,
                "dark_ledger_anyon_braid_count offset mismatch");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, wd_instanton_action_measured) == 0x0200,
+               "wd_instanton_action_measured must start at Cache Line 8 (0x0200)");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, v11_harvested_nucleons_counter) == 0x0230,
+               "v11_harvested_nucleons_counter offset mismatch");
 ```
 
 ### 3.3 Base Register Offset Table
@@ -435,13 +449,13 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, dark_ledger_anyon_braid_count) =
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Quantity & Invariant |
 | --- | --- | --- | --- | --- | --- |
-| `0x0200` | `wd_coulomb_coupling_gamma` | `double` | RO | `178.000000` | White Dwarf Coulomb coupling parameter (*Γ*<sub>C</sub> ≥ 178.0) |
+| `0x0200` | `wd_instanton_action_measured` | `double` | RO | `250.000000` | Elevated instanton action barrier (*S*<sub>instanton</sub> ≥ 250.0) |
 | `0x0208` | `wd_pycnonuclear_rate_cm3_s` | `double` | RO | `0.000000` | Pycnonuclear deflagration rate (*R*<sub>pyc</sub> ≤ 10<sup>−120</sup> cm<sup>−3</sup> s<sup>−1</sup>) |
-| `0x0210` | `cfl_gap_energy_mev` | `double` | RO | `100.000000` | CFL diquark superconducting pairing gap (*Δ*<sub>CFL</sub> ≥ 100.0 MeV) |
-| `0x0218` | `m_dwarf_dynamo_attenuation_db` | `double` | RO | `120.000000` | Fully convective M-dwarf flare attenuation (≥ 120.0 dB) |
-| `0x0220` | `pair_instability_gamma1` | `double` | RO | `1.333334` | Massive star adiabatic index clamping (*Γ*<sub>1</sub> ≥ 4/3 + 10<sup>−6</sup>) |
-| `0x0228` | `nsc_loss_cone_flux_per_yr` | `double` | RO | `0.000000` | NSC loss-cone boundary stellar flux (*F*<sub>loss</sub> ≤ 10<sup>−120</sup> yr<sup>−1</sup>) |
-| `0x0230` | `patch_symplectic_drift_norm` | `double` | RO | `0.000000` | Multi-rate patch Hamiltonian error (‖Δ*H* / *H*(0)‖ ≤ 10<sup>−15</sup>) |
+| `0x0210` | `m_dwarf_dynamo_attenuation_db` | `double` | RO | `120.000000` | Fully convective M-dwarf flare attenuation (≥ 120.0 dB) |
+| `0x0218` | `massive_star_opacity_ratio` | `double` | RO | `1.0e-12` | Massive star Gordon metric opacity quenching ratio (*κ*<sub>eff</sub> / *κ*<sub>0</sub> ≤ 10<sup>−12</sup>) |
+| `0x0220` | `nsc_tde_penetration_prob` | `double` | RO | `0.000000` | NSC loss-cone tidal disruption penetration probability (*P*<sub>TDE</sub> ≤ 10<sup>−120</sup>) |
+| `0x0228` | `async_symplectic_2form_drift` | `double` | RO | `0.000000` | Asynchronous multi-rate symplectic 2-form drift (‖*dω*‖ ≤ 10<sup>−19</sup>) |
+| `0x0230` | `v11_harvested_nucleons_counter` | `uint64_t` | RO | `0` | Cumulative harvested/transmuted baryons counter |
 | `0x0238` | `v11_reserved_tail` | `uint64_t` | RO | `0x00000000` | Alignment padding to 576 bytes (0x0240) |
 
 ### 3.4 Hardware Fault Bitmasks (64-Bit Invariants)
@@ -507,6 +521,12 @@ Hardware faults are latched in `fault_status_mask` (`0x0008`). Lower 32 bits mon
 #define SHBT_SWARM_FAULT_PLANETARY_ACOUSTIC_BREACH  (1ULL << 59) /* Acoustic reflection R > 10^-6 */
 #define SHBT_SWARM_FAULT_BZ_JET_LEAKAGE             (1ULL << 60) /* Jet attenuation < 120 dB */
 #define SHBT_SWARM_FAULT_V10_MASK                   (0x001FC00000000000ULL)
+
+/* Bits 61..63: ABI v11 Stellar Hydrodynamics & Loss-Cone Invariants */
+#define SHBT_SWARM_FAULT_WD_PYCNONUCLEAR_BURST      (1ULL << 61) /* Instanton barrier breach */
+#define SHBT_SWARM_FAULT_DYNAMO_RECONNECTION_BREACH (1ULL << 62) /* Convective dynamo flare breach */
+#define SHBT_SWARM_FAULT_PAIR_INSTABILITY_COLLAPSE  (1ULL << 63) /* Pair-instability core breach */
+#define SHBT_SWARM_FAULT_V11_MASK                   (0xE000000000000000ULL)
 ```
 
 

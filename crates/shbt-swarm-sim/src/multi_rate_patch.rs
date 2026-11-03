@@ -39,6 +39,7 @@ pub struct GlobalMacroState {
 }
 
 /// Asynchronous Multi-Rate Symplectic Cascade Integrator
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct MultiRatePatchIntegrator {
     pub macro_step_sec: f64,
     pub micro_step_sec: f64,
