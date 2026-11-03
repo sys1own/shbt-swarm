@@ -21,6 +21,10 @@ pub use dense_transmute::{
 };
 pub mod lepton_shunt;
 pub use lepton_shunt::*;
+pub mod coulomb_melt;
+pub use coulomb_melt::*;
+pub mod quark_hadronize;
+pub use quark_hadronize::*;
 
 
 pub use dynkin_router::{

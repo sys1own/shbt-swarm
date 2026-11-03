@@ -25,6 +25,13 @@ pub use magnetar_quench::*;
 pub mod gw_recoil;
 pub mod angular_momentum;
 pub use angular_momentum::*;
+pub mod red_dwarf_dynamo;
+pub use red_dwarf_dynamo::*;
+pub mod pair_instability;
+pub use pair_instability::*;
+pub mod nsc_loss_cone;
+pub use nsc_loss_cone::{NscLossConeShield, NscShieldConfig};
+
 
 
 pub use stellar_deconstruct::{EddingtonBypassEngine, DeconstructionError};

@@ -17,11 +17,11 @@ use shbt_swarm_core::{
 pub const SHBT_SWARM_MMIO_BASE_ADDR: u64 = 0x8000_0000;
 pub const SHBT_SWARM_STINESPRING_BASE_ADDR: u64 = 0x7002_0000;
 pub const SHBT_SWARM_STINESPRING_FRAME_BYTES: usize = 135_168;
-pub const SHBT_SWARM_ABI_VERSION: u32 = 0x000A_0312;
+pub const SHBT_SWARM_ABI_VERSION: u32 = 0x000B_0312;
 pub const SHBT_SWARM_CHANNELS_TOTAL: u32 = 312;
 pub const SHBT_SWARM_CFT_SLOTS_TOTAL: u32 = 346;
-pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 88;
-pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 304;
+pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 94;
+pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 320;
 pub const SHBT_NESTED_SIM_MMIO_BASE: u64 = 0x7000_B000;
 pub const SHBT_SWARM_HARVEST_APERTURE_BASE: u64 = 0x4000_E000;
 pub const SHBT_SWARM_FOUNDRY_DENSE_BASE: u64 = 0x0000_7F80_0004_0000;
@@ -31,9 +31,19 @@ pub const SHBT_CANONICAL_KQ: u32 = 8;
 pub const SHBT_CANONICAL_K_COS: u32 = 312;
 pub const SHBT_DYNKIN_SLOTS_TOTAL: u32 = 346;
 
+pub const SHBT_DCA_BASE_ADDR: u64 = 0x7F00_0400;
+pub const SHBT_STELLAR_APERTURE_BASE_ADDR: u64 = 0x7F00_0500;
+pub const SHBT_PATCH_APERTURE_BASE_ADDR: u64 = 0x8F00_0100;
+
 pub const SHBT_SWARM_CMD_CLAMP_GW_RECOIL: u32 = 0x0000_0100;
 pub const SHBT_SWARM_CMD_ENGAGE_CONT_RIBBON: u32 = 0x0000_0200;
 pub const SHBT_SWARM_CMD_ASSERT_QRF_COVARIANCE: u32 = 0x0000_0400;
+pub const SHBT_SWARM_CMD_MELT_COULOMB_CRYSTAL: u32 = 0x0000_8000;
+pub const SHBT_SWARM_CMD_HADRONIZE_CFL_CORE: u32 = 0x0001_0000;
+pub const SHBT_SWARM_CMD_QUENCH_CONV_DYNAMO: u32 = 0x0002_0000;
+pub const SHBT_SWARM_CMD_CLAMP_PAIR_INSTABILITY: u32 = 0x0004_0000;
+pub const SHBT_SWARM_CMD_SHIELD_NSC_LOSS_CONE: u32 = 0x0008_0000;
+pub const SHBT_SWARM_CMD_STEP_ASYNC_SYMPLECTIC: u32 = 0x0010_0000;
 
 pub const SHBT_CTRL_ENABLE_BIT: u64 = 1 << 0;
 pub const SHBT_CTRL_LAZY_MERA_BIT: u64 = 1 << 1;
@@ -52,6 +62,7 @@ pub const ABI_VERSION_V6: u32 = 0x0006_0312;
 pub const ABI_VERSION_V7: u32 = 0x0007_0312;
 pub const ABI_VERSION_V9: u32 = 0x0009_0312;
 pub const ABI_VERSION_V10: u32 = 0x000A_0312;
+pub const ABI_VERSION_V11: u32 = 0x000B_0312;
 pub const SHBT_APOTH_MMIO_BASE: usize = 0x4000_C000;
 
 // Baseline Fault Bitmasks (Bits 0..31)
@@ -94,6 +105,13 @@ pub const SHBT_SWARM_FAULT_FLOQUET_COLOR_UNLOCKED: u64 = 1 << 58;
 pub const SHBT_SWARM_FAULT_PLANETARY_ACOUSTIC_BREACH: u64 = 1 << 59;
 pub const SHBT_SWARM_FAULT_BZ_JET_LEAKAGE: u64 = 1 << 60;
 pub const SHBT_SWARM_FAULT_V10_MASK: u64 = 0x001F_C000_0000_0000;
+
+// v11 Degenerate Core, Dynamo Quench & NSC Loss-Cone Fault Bitmasks (Bits 61..63)
+pub const SHBT_SWARM_FAULT_PYCNONUCLEAR_TRIP: u64 = 1 << 61;
+pub const SHBT_SWARM_FAULT_SUPERFLARE_DYNAMO_TRIP: u64 = 1 << 62;
+pub const SHBT_SWARM_FAULT_TDE_LOSS_CONE_TRIP: u64 = 1 << 63;
+pub const SHBT_SWARM_FAULT_V11_MASK: u64 = 0xE000_0000_0000_0000;
+
 
 // Nominal v7 Hardware Thresholds
 pub const SHBT_SWARM_CHIRAL_EE_Q16_HOMOCHIRAL: u32 = 0x0001_0000;
@@ -186,10 +204,20 @@ pub struct ShbtSwarmMmioRegs {
     pub dark_ledger_anyon_braid_count: u64,
     pub bz_jet_attenuation_db: u32,
     pub v10_reserved_tail: [u32; 5],
+
+    // Cache Line 8 (0x0200..0x023F): ABI v11 Stellar Hydrodynamics & Loss-Cone Invariants (64 bytes)
+    pub wd_instanton_action_measured: f64,
+    pub wd_pycnonuclear_rate_cm3_s: f64,
+    pub m_dwarf_dynamo_attenuation_db: f64,
+    pub massive_star_opacity_ratio: f64,
+    pub nsc_tde_penetration_prob: f64,
+    pub async_symplectic_2form_drift: f64,
+    pub v11_harvested_nucleons_counter: u64,
+    pub v11_reserved_tail: u64,
 }
 
 const _: () = {
-    assert!(size_of::<ShbtSwarmMmioRegs>() == 512);
+    assert!(size_of::<ShbtSwarmMmioRegs>() == 576);
     assert!(align_of::<ShbtSwarmMmioRegs>() == 64);
     assert!(offset_of!(ShbtSwarmMmioRegs, abi_version) == 0x00C0);
     assert!(offset_of!(ShbtSwarmMmioRegs, chiral_ee_q16) == 0x0100);
@@ -200,6 +228,8 @@ const _: () = {
     assert!(offset_of!(ShbtSwarmMmioRegs, qrf_superposed_sheaf_spectral_radius) == 0x01A0);
     assert!(offset_of!(ShbtSwarmMmioRegs, eddington_damping_factor) == 0x01C0);
     assert!(offset_of!(ShbtSwarmMmioRegs, dark_ledger_anyon_braid_count) == 0x01E0);
+    assert!(offset_of!(ShbtSwarmMmioRegs, wd_instanton_action_measured) == 0x0200);
+    assert!(offset_of!(ShbtSwarmMmioRegs, v11_harvested_nucleons_counter) == 0x0230);
 };
 
 #[repr(C, packed)]
@@ -320,7 +350,7 @@ macro_rules! const_assert {
     };
 }
 
-pub const SHBT_MMIO_ABI_VERSION: u32 = 0x0008_0312;
+pub const SHBT_MMIO_ABI_VERSION: u32 = 0x000B_0312;
 pub const SHBT_MMIO_DENSE_BASE: u64 = 0x7F00_0000;
 pub const SHBT_MMIO_QUENCH_BASE: u64 = 0x7F00_0100;
 pub const SHBT_MMIO_SHUNT_BASE: u64 = 0x7F00_0200;
@@ -328,8 +358,10 @@ pub const SHBT_MMIO_HIL_DENSE_BASE: u64 = 0x7F00_0300;
 pub const SHBT_MMIO_GALACTIC_BASE: u64 = 0x8F00_0000;
 
 pub const MULTIPHYSICS_13_ENGINES_MASK: u32 = 0x0000_1FFF;
+pub const MULTIPHYSICS_16_ENGINES_MASK: u32 = 0x0000_FFFF;
 pub const HIL_GATES_233_241_MASK: u32 = 0x0000_01FF;
 pub const HIL_GATES_242_250_MASK: u32 = 0x0000_01FF;
+
 
 /* Dense Matter Siphon & Color Screening (0x7F000000) */
 #[repr(C, align(8))]
@@ -454,6 +486,73 @@ const_assert!(offset_of!(ShbtGalacticMmio, shift_anomaly_norm) == 0x68);
 const_assert!(offset_of!(ShbtGalacticMmio, multiphysics_bits) == 0x70);
 const_assert!(offset_of!(ShbtGalacticMmio, hil_gate_status) == 0x74);
 
+#[repr(C, align(8))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtDcaRegisters {
+    pub control: u64,
+    pub status: u64,
+    pub su2_screen_mev_fp: u64,
+    pub instanton_action: u64,
+    pub pyc_mantissa: u64,
+    pub pyc_exponent: i64,
+    pub gst_impedance_real: u64,
+    pub gst_impedance_imag: u64,
+    pub acoustic_refl_fp: u64,
+    pub cfl_gap_mev_fp: u64,
+    pub free_quark_frac: u64,
+    pub dark_shunt_exergy: u64,
+    pub adiabatic_index: u64,
+    pub gamma_power_fp: u64,
+}
+
+const_assert!(size_of::<ShbtDcaRegisters>() == 112);
+const_assert!(align_of::<ShbtDcaRegisters>() == 8);
+
+#[repr(C, align(8))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtStellarApertureMmio {
+    pub ctrl0: u32,
+    pub ctrl1: u32,
+    pub status: u32,
+    pub dynkin_sync_clk: u32,
+    pub stellar_mass_fixed: u32,
+    pub convective_velocity_mms: u32,
+    pub convective_scale_l_m: u64,
+    pub spitzer_diffusivity_eta0: u32,
+    pub r_m_eff_fixed16: u32,
+    pub dynamo_attenuation_db_fixed16: u32,
+    pub bulk_dissipation_q_diss: u32,
+    pub zeta_shbt_numerator: u32,
+    pub zeta_shbt_denominator: u32,
+    pub gordon_metric_scaling_q64: u64,
+    pub core_temperature_kelvin: u64,
+    pub core_density_g_m3: u64,
+    pub core_gamma_1_fixed16: u32,
+    pub _reserved0: u32,
+    pub dynkin_slot_weights: [u32; 346],
+}
+
+const_assert!(size_of::<ShbtStellarApertureMmio>() == 1472);
+const_assert!(align_of::<ShbtStellarApertureMmio>() == 8);
+
+#[repr(C, align(8))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtPatchApertureHw {
+    pub csr: u32,
+    pub hub_shield_amp: u32,
+    pub lc_barrier_thresh: u64,
+    pub kerr_drag_beta_phi: u64,
+    pub sbh_bypass_excl_rad: f32,
+    pub _reserved0: u32,
+    pub cascade_ratio: u64,
+    pub ccz4_gundlach_damp: u32,
+    pub _reserved1: u32,
+    pub poincare_drift_mon: f64,
+    pub shadow_h_dev_mon: f64,
+}
+
+const_assert!(size_of::<ShbtPatchApertureHw>() == 64);
+const_assert!(align_of::<ShbtPatchApertureHw>() == 8);
 
 impl ShbtSwarmMmioRegs {
     #[inline]
@@ -521,6 +620,14 @@ impl ShbtSwarmMmioRegs {
             dark_ledger_anyon_braid_count: 0,
             bz_jet_attenuation_db: 120,
             v10_reserved_tail: [0; 5],
+            wd_instanton_action_measured: 255.0,
+            wd_pycnonuclear_rate_cm3_s: 0.0,
+            m_dwarf_dynamo_attenuation_db: 120.0,
+            massive_star_opacity_ratio: 1.0e-12,
+            nsc_tde_penetration_prob: 0.0,
+            async_symplectic_2form_drift: 1.0e-20,
+            v11_harvested_nucleons_counter: 0,
+            v11_reserved_tail: 0,
         }
     }
 
@@ -533,6 +640,12 @@ impl ShbtSwarmMmioRegs {
     #[inline]
     #[allow(clippy::approx_constant)]
     pub const fn new_nominal_v10() -> Self {
+        Self::new_nominal_v7()
+    }
+
+    #[inline]
+    #[allow(clippy::approx_constant)]
+    pub const fn new_nominal_v11() -> Self {
         Self::new_nominal_v7()
     }
 
@@ -635,7 +748,32 @@ impl ShbtSwarmMmioRegs {
         self.fault_status_mask |= faults;
         faults
     }
+
+    #[inline]
+    pub fn audit_v11_invariants(&mut self) -> u64 {
+        let mut faults = self.audit_v10_invariants();
+        if self.wd_instanton_action_measured < 250.0
+            || self.wd_instanton_action_measured.is_nan()
+            || self.wd_pycnonuclear_rate_cm3_s > 1.0e-120
+            || self.wd_pycnonuclear_rate_cm3_s.is_nan()
+        {
+            faults |= SHBT_SWARM_FAULT_PYCNONUCLEAR_TRIP;
+        }
+        if self.m_dwarf_dynamo_attenuation_db < 120.0
+            || self.m_dwarf_dynamo_attenuation_db.is_nan()
+        {
+            faults |= SHBT_SWARM_FAULT_SUPERFLARE_DYNAMO_TRIP;
+        }
+        if self.nsc_tde_penetration_prob > 1.0e-120
+            || self.nsc_tde_penetration_prob.is_nan()
+        {
+            faults |= SHBT_SWARM_FAULT_TDE_LOSS_CONE_TRIP;
+        }
+        self.fault_status_mask |= faults;
+        faults
+    }
 }
+
 
 /// Volatile MMIO controller supporting both bare-metal physical addresses (0x70000000)
 /// and host-aligned simulation arenas.
@@ -1053,4 +1191,28 @@ mod tests {
         fault_regs5.bz_jet_attenuation_db = 30;
         assert_ne!(fault_regs5.audit_v10_invariants() & SHBT_SWARM_FAULT_BZ_JET_LEAKAGE, 0);
     }
+
+    #[test]
+    fn test_v11_nominal_and_fault_invariants() {
+        let mut regs = ShbtSwarmMmioRegs::new_nominal_v11();
+        assert_eq!(regs.abi_version, SHBT_SWARM_ABI_VERSION);
+        assert_eq!(regs.audit_v11_invariants(), SHBT_SWARM_FAULT_NONE);
+
+        let mut fault_regs = regs;
+        fault_regs.wd_instanton_action_measured = 240.0;
+        assert_ne!(fault_regs.audit_v11_invariants() & SHBT_SWARM_FAULT_PYCNONUCLEAR_TRIP, 0);
+
+        let mut fault_regs2 = regs;
+        fault_regs2.wd_pycnonuclear_rate_cm3_s = 1.0e-50;
+        assert_ne!(fault_regs2.audit_v11_invariants() & SHBT_SWARM_FAULT_PYCNONUCLEAR_TRIP, 0);
+
+        let mut fault_regs3 = regs;
+        fault_regs3.m_dwarf_dynamo_attenuation_db = 110.0;
+        assert_ne!(fault_regs3.audit_v11_invariants() & SHBT_SWARM_FAULT_SUPERFLARE_DYNAMO_TRIP, 0);
+
+        let mut fault_regs4 = regs;
+        fault_regs4.nsc_tde_penetration_prob = 1.0e-100;
+        assert_ne!(fault_regs4.audit_v11_invariants() & SHBT_SWARM_FAULT_TDE_LOSS_CONE_TRIP, 0);
+    }
 }
+

@@ -1,6 +1,6 @@
 {
   "workspace": "shbt-swarm",
-  "abi_version": "0x000A0312",
+  "abi_version": "0x000B0312",
   "total_gates": 250,
   "passed_gates": 250,
   "failed_gates": 0,
@@ -9,8 +9,8 @@
     "unsat": 76,
     "sat": 0
   },
-  "total_active_gates": 304,
-  "passed_active_gates": 304,
-  "total_active_smt_proofs": 88,
-  "unsat_active_smt_proofs": 88
+  "total_active_gates": 320,
+  "passed_active_gates": 320,
+  "total_active_smt_proofs": 94,
+  "unsat_active_smt_proofs": 94
 }

@@ -1,6 +1,6 @@
 # Architectural Specification: sys1own/shbt-swarm
 
-This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, 16-crate Rust workspace architecture, C11 bare-metal microkernel ABI v10.0 (`0x000A0312` at physical addresses `0x70000000` / `0x80000000`, `0x70020000`, `0x40008000`, `0x4000A000`, `0x4000C000`, `0x4000E000`, and `0x00007F8000040000ULL`), closed-loop multiphysics simulation contracts, and the 304-gate verification / 88-theorem formal proof ledger.
+This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, 16-crate Rust workspace architecture, C11 bare-metal microkernel ABI v11.0 (`0x000B0312` at physical addresses `0x70000000` / `0x80000000`, `0x70020000`, `0x40008000`, `0x4000A000`, `0x4000C000`, `0x4000E000`, `0x7F000400`, `0x7F000500`, `0x8F000100`, and `0x00007F8000040000ULL`), closed-loop 16-engine multiphysics simulation contracts, and the 320-gate verification / 94-theorem formal proof ledger.
 
 ---
 
@@ -166,11 +166,11 @@ graph TD
 13. **`crates/shbt-swarm-telemetry`**: Zero-copy circular ring buffers, SECDED Hamming(72,64) ECC encoding, and Burau-Cayley phylogenetic hash tracking.
 14. **`crates/shbt-swarm-net`**: Distributed swarm mesh protocol, Sp(2g, Z) symplectic consensus messaging, and 4-layer AEGIS perimeter coordination.
 15. **`crates/shbt-swarm-hil`**: Hardware-in-the-Loop qualification harness certifying all 304 hardware verification gates (`GATE-001` through `GATE-SWARM-304`).
-16. **`crates/shbt-swarm-cli`**: Operational command-line interfaces `swarm-audit` (executes the 304-gate matrix) and `swarm-ctl` (bare-metal MMIO control utility).
+16. **`crates/shbt-swarm-cli`**: Operational command-line interfaces `swarm-audit` (executes the 320-gate matrix) and `swarm-ctl` (bare-metal MMIO control utility).
 
 ---
 
-## 3. C11 Bare-Metal Hardware Contract & Register Maps (ABI v10, 0x000A0312)
+## 3. C11 Bare-Metal Hardware Contract & Register Maps (ABI v11, 0x000B0312)
 
 The bare-metal C11 microkernel contract provides deterministic, memory-mapped register access at fixed physical base addresses across all operational phases.
 
@@ -183,11 +183,11 @@ The bare-metal C11 microkernel contract provides deterministic, memory-mapped re
 #include <stdint.h>
 #include <stddef.h>
 
-#define SHBT_SWARM_ABI_VERSION          0x000A0312U
-#define SHBT_SWARM_FORMAL_PROOFS_COUNT  88U
-#define SHBT_SWARM_HIL_GATES_COUNT      304U
+#define SHBT_SWARM_ABI_VERSION          0x000B0312U
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT  94U
+#define SHBT_SWARM_HIL_GATES_COUNT      320U
 
-#define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL /* Base aperture (0x70000000 - 0x700001FF, 512 B, 8 cache lines) */
+#define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL /* Base aperture (0x70000000 - 0x7000023F, 576 B, 9 cache lines) */
 #define SHBT_NESTED_SIM_MMIO_BASE       0x7000B000UL /* Phase 6.1 Multiverse aperture (0x7000B000 - 0x7000B07F, 128 B) */
 #define SHBT_SWARM_HYPERFRAME_BASE_ADDR 0x70020000UL /* 64-bank Stinespring hyperframe (0x70020000 - 0x70040FFF, 135,168 B) */
 #define SHBT_MMIO_MAR312X_BASE          0x40000000UL /* Phase 4 reactor control aperture (256 B) */
@@ -196,6 +196,9 @@ The bare-metal C11 microkernel contract provides deterministic, memory-mapped re
 #define SHBT_MMIO_APOTH_BASE            0x4000C000UL /* Phase 6 APOTHEOSIS aperture (256 B) */
 #define SHBT_SWARM_HARVEST_APERTURE_BASE 0x4000E000UL /* Phase 5A Galactic Harvest aperture (256 B) */
 #define SHBT_SWARM_FOUNDRY_DENSE_BASE   0x00007F8000040000ULL /* Phase 3 Dense Matter aperture (160 B) */
+#define SHBT_SWARM_DCA_APERTURE_BASE    0x7F000400UL          /* Dynamic Core Aperture (DCA) (112 B) */
+#define SHBT_SWARM_STELLAR_APERTURE_BASE 0x7F000500UL         /* Multi-Channel Stellar Aperture (1472 B) */
+#define SHBT_SWARM_PATCH_APERTURE_BASE  0x8F000100UL          /* Multi-Rate Symplectic Patch Aperture (64 B) */
 
 #define SHBT_FRAME_BYTES                2112U
 #define SHBT_VISIBLE_ANCHOR_BYTES       640U     /* eta_A = 10/33 * 2112 B */
@@ -208,9 +211,9 @@ The bare-metal C11 microkernel contract provides deterministic, memory-mapped re
 #define SHBT_MAX_SPACE_GROUP_ID         230U
 ```
 
-### 3.2 512-Byte Master Base Register Contract (`shbt_swarm_mmio_regs_t`)
+### 3.2 576-Byte Master Base Register Contract (`shbt_swarm_mmio_regs_t`)
 
-The master MMIO base aperture occupies exactly 512 bytes (eight 64-byte cache lines) aligned to a 64-byte boundary:
+The master MMIO base aperture occupies exactly 576 bytes (nine 64-byte cache lines) aligned to a 64-byte boundary:
 
 ```c
 #pragma pack(push, 1)
@@ -248,9 +251,9 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     volatile uint64_t pcss_crowbar_latency_ps;         /* 0x00B8: <= 2500 ps (2.5 ns) */
 
     /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
-    volatile uint32_t abi_version;                     /* 0x00C0: 0x000A0312 */
-    volatile uint32_t formal_proofs_unsat_count;       /* 0x00C4: 88 */
-    volatile uint32_t hil_gates_pass_count;            /* 0x00C8: 304 */
+    volatile uint32_t abi_version;                     /* 0x00C0: 0x000B0312 */
+    volatile uint32_t formal_proofs_unsat_count;       /* 0x00C4: 94 */
+    volatile uint32_t hil_gates_pass_count;            /* 0x00C8: 320 */
     volatile uint32_t active_phase_mask;               /* 0x00CC: 0x0000007F (Phases 1..6) */
     volatile uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
     volatile uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */
@@ -365,9 +368,9 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, dark_ledger_anyon_braid_count) =
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Description & Invariant |
 | --- | --- | --- | --- | --- | --- |
-| `0x00C0` | `abi_version` | `uint32_t` | RO | `0x000A0312` | Kernel ABI release identifier (v10.312) |
-| `0x00C4` | `formal_proofs_unsat_count` | `uint32_t` | RO | `88` | Certified formal Z3 SMT proofs count (88/88 UNSAT) |
-| `0x00C8` | `hil_gates_pass_count` | `uint32_t` | RO | `304` | Certified Hardware-in-the-Loop gates count (304/304 PASS) |
+| `0x00C0` | `abi_version` | `uint32_t` | RO | `0x000B0312` | Kernel ABI release identifier (v11.312) |
+| `0x00C4` | `formal_proofs_unsat_count` | `uint32_t` | RO | `94` | Certified formal Z3 SMT proofs count (94/94 UNSAT) |
+| `0x00C8` | `hil_gates_pass_count` | `uint32_t` | RO | `320` | Certified Hardware-in-the-Loop gates count (320/320 PASS) |
 | `0x00CC` | `active_phase_mask` | `uint32_t` | RW | `0x0000007F` | Active lifecycle phase mask (Bits 0..6 for Phases 1..6) |
 | `0x00D0` | `heartbeat_monotonic_ticks` | `uint64_t` | RO | `0x00000000` | Microkernel 64-bit monotonic cycle heartbeat counter |
 | `0x00D8` | `reserved_v6_pad[5]` | `uint64_t[5]`| RO | `0x00000000` | Alignment padding to Cache Line 4 boundary (0x0100) |
@@ -427,6 +430,19 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, dark_ledger_anyon_braid_count) =
 | `0x01E0` | `dark_ledger_anyon_braid_count` | `uint64_t` | RO | `0` | Cumulative dark-ledger Fibonacci anyon braid count |
 | `0x01E8` | `bz_jet_attenuation_db` | `uint32_t` | RO | `120` | Blandford-Znajek relativistic jet attenuation (>= 120 dB) |
 | `0x01EC` | `v10_reserved_tail[5]` | `uint32_t[5]` | RO | `[0; 5]` | Alignment padding to 512 bytes (0x0200) |
+
+#### Cache Line 8 (Offsets `0x0200` .. `0x023F`): Degenerate Core Melting, Stellar Hydro & Loss Cone
+
+| Offset | Field Name | Type | Access | Reset Value | Physical Quantity & Invariant |
+| --- | --- | --- | --- | --- | --- |
+| `0x0200` | `wd_coulomb_coupling_gamma` | `double` | RO | `178.000000` | White Dwarf Coulomb coupling parameter (*Γ*<sub>C</sub> ≥ 178.0) |
+| `0x0208` | `wd_pycnonuclear_rate_cm3_s` | `double` | RO | `0.000000` | Pycnonuclear deflagration rate (*R*<sub>pyc</sub> ≤ 10<sup>−120</sup> cm<sup>−3</sup> s<sup>−1</sup>) |
+| `0x0210` | `cfl_gap_energy_mev` | `double` | RO | `100.000000` | CFL diquark superconducting pairing gap (*Δ*<sub>CFL</sub> ≥ 100.0 MeV) |
+| `0x0218` | `m_dwarf_dynamo_attenuation_db` | `double` | RO | `120.000000` | Fully convective M-dwarf flare attenuation (≥ 120.0 dB) |
+| `0x0220` | `pair_instability_gamma1` | `double` | RO | `1.333334` | Massive star adiabatic index clamping (*Γ*<sub>1</sub> ≥ 4/3 + 10<sup>−6</sup>) |
+| `0x0228` | `nsc_loss_cone_flux_per_yr` | `double` | RO | `0.000000` | NSC loss-cone boundary stellar flux (*F*<sub>loss</sub> ≤ 10<sup>−120</sup> yr<sup>−1</sup>) |
+| `0x0230` | `patch_symplectic_drift_norm` | `double` | RO | `0.000000` | Multi-rate patch Hamiltonian error (‖Δ*H* / *H*(0)‖ ≤ 10<sup>−15</sup>) |
+| `0x0238` | `v11_reserved_tail` | `uint64_t` | RO | `0x00000000` | Alignment padding to 576 bytes (0x0240) |
 
 ### 3.4 Hardware Fault Bitmasks (64-Bit Invariants)
 
@@ -550,7 +566,7 @@ The C11 microkernel ABI v10.0 defines a dedicated 256-byte MMIO aperture mapped 
 | `0x000C` | `status_reg` | `uint32_t` | RO | `0x0000001F` | Aperture Status Register (Active, ErgoLock, AreaOK, Quenched, ZeroVol) |
 | `0x0010` | `uptime_ticks` | `uint64_t` | RO | `0` | Master epoch tick counter |
 | `0x0018` | `error_code` | `uint32_t` | RO | `0` | Diagnostic error flags |
-| `0x001C` | `firmware_revision` | `uint32_t` | RO | `0x000A0312` | Aperture microkernel revision (v10.312) |
+| `0x001C` | `firmware_revision` | `uint32_t` | RO | `0x000B0312` | Aperture microkernel revision (v10.312) |
 | `0x0020` | `bh_mass_kg` | `double` | RO | `8.26e36` | Tracked Kerr SMBH Mass M (kg) |
 | `0x0028` | `bh_spin_dimless` | `double` | RO | `0.900000` | Dimensionless spin a_* in [0, 1) |
 | `0x0030` | `horizon_radius_m` | `double` | RO | `1.76e10` | Outer Event Horizon radius r_H (meters) |
@@ -742,8 +758,8 @@ _Static_assert(sizeof(shbt_galactic_mmio_t) == 120, "shbt_galactic_mmio_t must b
 | `0x0008` | `cascade_ratio` | `uint64_t` | RO | Multi-scale cascade acceleration ratio `alpha_casc = 10^12` |
 | `0x0010` | `energy_drift_rel` | `double` | RO | Shadow Hamiltonian relative energy drift `Delta H / H(0) <= 1.0e-15` |
 | `0x0018` | `ccz4_kappa1` | `double` | RW | CCZ4 Gundlach constraint damping parameter `kappa_1` |
-| `0x0020` | `ccz4_z_norm` | `double` | RO | Gundlach constraint vector norm `||Z_i|| <= 1.0e-16` |
-| `0x0028` | `gw_mem_residual` | `double` | RO | GW Christodoulou residual strain `||h_ij^mem + h_ij^counter|| <= 1.0e-120` |
+| `0x0020` | `ccz4_z_norm` | `double` | RO | Gundlach constraint vector norm `‖Z_i‖ <= 1.0e-16` |
+| `0x0028` | `gw_mem_residual` | `double` | RO | GW Christodoulou residual strain `‖h_ij^mem + h_ij^counter‖ <= 1.0e-120` |
 | `0x0030` | `com_drift_x` | `double` | RO | Center-of-mass displacement X `|Delta x| <= 1.0e-15 m` |
 | `0x0038` | `com_drift_y` | `double` | RO | Center-of-mass displacement Y `|Delta y| <= 1.0e-15 m` |
 | `0x0040` | `com_drift_z` | `double` | RO | Center-of-mass displacement Z `|Delta z| <= 1.0e-15 m` |
@@ -751,7 +767,7 @@ _Static_assert(sizeof(shbt_galactic_mmio_t) == 120, "shbt_galactic_mmio_t must b
 | `0x0050` | `cs_winding_x` | `int64_t` | RO | Sp(2g, Z) boundary winding integer X `w_x` |
 | `0x0058` | `cs_winding_y` | `int64_t` | RO | Sp(2g, Z) boundary winding integer Y `w_y` |
 | `0x0060` | `cs_winding_z` | `int64_t` | RO | Sp(2g, Z) boundary winding integer Z `w_z` |
-| `0x0068` | `shift_anomaly_norm`| `double` | RO | Gravitomagnetic shift anomaly norm `||beta^i|| <= 1.0e-120` |
+| `0x0068` | `shift_anomaly_norm`| `double` | RO | Gravitomagnetic shift anomaly norm `‖beta^i‖ <= 1.0e-120` |
 | `0x0070` | `multiphysics_bits` | `uint32_t` | RO | 13-Engine tick status bitmask (`0x1FFF` when all active) |
 | `0x0074` | `hil_gate_status` | `uint32_t` | RO | HIL Gate 242-250 verification pass bitmask (`0x1FF`) |
 
@@ -1934,9 +1950,9 @@ The SHBT-MAR-312X nacelle geometry satisfies strict mass-volume envelope constra
 
 Platform correctness is certified across a dual formal testing and hardware-qualification hierarchy:
 
-### 7.1 Formal Z3 SMT Verification Suite (88/88 UNSAT)
+### 7.1 Formal Z3 SMT Verification Suite (94/94 UNSAT)
 
-The complete mathematical safety fabric is certified through 88 formal Z3 SMT theorems across 25 verification modules in `formal/`, all evaluated to UNSAT with zero negation counter-models:
+The complete mathematical safety fabric is certified through 94 formal Z3 SMT theorems across 26 verification modules in `formal/`, all evaluated to UNSAT with zero negation counter-models:
 
 1. `formal/verify_swarm_cloning.py` (4 theorems: `THM-CLONE-01`..`04`): Categorical no-cloning, ADM mass conservation, modular framing lock, and (B - L) conservation.
 2. `formal/verify_swarm_ai_safety.py` (10 theorems: `THM-AI-01`..`06`, `THM-AI-01-EXT`, `02-EXT`, `04-EXT`, `05-EXT`): PT-GoI resolvent bounds, Connes cocycle isentropy, spacelike no-signaling, and HOCBF forward invariance.
@@ -1963,8 +1979,11 @@ The complete mathematical safety fabric is certified through 88 formal Z3 SMT th
 23. `formal/verify_smbh_ergosphere_harvest.py` (2 theorems: `THM-OMEGA-21-EXT`, `22-EXT`): Kerr SMBH ergosphere harvesting, Penrose-Floer boundary CFT dual, Hawking area non-decrease, Blandford-Znajek jet quenching, and zero-volume dark ledger exergy storage.
 24. `formal/verify_galactic_virial_clamp.py` (3 theorems: `THM-OMEGA-18-EXT`..`20-EXT`): Universal multi-reservoir envelope harvesting, metric opacity quenching, White Dwarf athermal Urca cooling, GST-225 flash planetary deconstruction, and 312 ADM hub supercomoving Vlasov-Poisson virial clamping.
 25. `formal/verify_galactic_kinematics.py` (3 theorems: `THM-SIM-01-EXT`, `THM-OMEGA-21-EXT`, `THM-OMEGA-22-EXT`): Symplectic multi-scale cascade Poincaré-Cartan 2-form conservation, CCZ4 Christodoulou GW memory recoil clamping with 312 ADM hubs, and boundary Chern-Simons disk angular momentum dissipation.
+26. `formal/verify_wd_cfl_deconstruct.py` (2 theorems: `THM-FOUNDRY-12-EXT`, `THM-FOUNDRY-13-EXT`): White Dwarf Coulomb crystal melting instanton elevation, zero deflagration, and CFL quark matter isothermal hadronization.
+27. `formal/verify_dynamo_pair_stability.py` (2 theorems: `THM-OMEGA-23-EXT`, `THM-OMEGA-24-EXT`): Fully convective M-dwarf distributed dynamo quenching and massive star Gordon metric opacity quenching / pair-instability suppression.
+28. `formal/verify_nsc_losscone_symplectic.py` (2 theorems: `THM-OMEGA-25-EXT`, `THM-SIM-02-EXT`): Nuclear star cluster Fokker-Planck loss-cone topological barrier and multi-rate symplectic cascade co-simulation.
 
-### 7.2 Master Hardware-in-the-Loop Gate Harness (304/304 PASS)
+### 7.2 Master Hardware-in-the-Loop Gate Harness (320/320 PASS)
 
 Executed deterministically by `crates/shbt-swarm-hil` (`swarm-audit` CLI runner):
 
@@ -1979,6 +1998,7 @@ Executed deterministically by `crates/shbt-swarm-hil` (`swarm-audit` CLI runner)
 * `GATE-NEST-01` .. `GATE-NEST-08`: Phase 6.1 Recursive Multiverse & Epistemic Veils (geometric series quota convergence, zero-compute dormant seeds, 17.01 as safeword egress, and recursive Class X1 anti-genocide interlocks).
 * `GATE-233` .. `GATE-250`: Compact Stellar Deconstruction & Galactic Symplectic Kinematics (detailed below).
 * `GATE-SWARM-251` .. `GATE-SWARM-304`: Full constellation verification suite spanning zero-Coriolis Elysium manifolds, closed biosphere Lyapunov functions, Takagi-Taupin attosecond diffraction, Bondi-Sachs shear recoil clamping, continuous Fibonacci ribbon field theory, relativistic QRF covariance, and supercomoving virial clamping.
+* `GATE-SWARM-305` .. `GATE-SWARM-320`: Compact Degenerate Melting, Stellar Stabilization & Multi-Rate Symplectic Kinematics (BCC Coulomb crystal melting, CFL diquark hadronization, M-dwarf convective dynamo quenching, pair-instability suppression, NSC loss-cone barrier, and multi-scale symplectic integrator co-simulation).
 
 #### Dedicated Compact Deconstruction & Galactic Kinematics Gate Catalog (`GATE-233` .. `GATE-250`):
 
@@ -1995,11 +2015,11 @@ Executed deterministically by `crates/shbt-swarm-hil` (`swarm-audit` CLI runner)
 | `GATE-241` | `shbt-swarm-foundry` | `THM-FOUNDRY-11-EXT` | Dark ledger partition ratio `eta_D = 23/33`, `Delta(B-L)==0`| `23/33 exact` | `Delta(B - L) != 0` |
 | `GATE-242` | `shbt-swarm-sim` | `THM-SIM-01-EXT` | Symplectic 2-form invariant `d omega <= 1.0e-19` | `0.000000` | `d omega > 1.0e-19` |
 | `GATE-243` | `shbt-swarm-sim` | `THM-SIM-01-EXT` | Shadow Hamiltonian relative drift `Delta H / H_0 <= 1e-15` | `1.2e-16` | `Delta H / H_0 > 1e-15` |
-| `GATE-244` | `shbt-swarm-omega` | `THM-OMEGA-21-EXT` | CCZ4 Gundlach constraint damping norm `||Z_i|| <= 1e-16` | `2.4e-17` | `||Z_i|| > 1.0e-16` |
-| `GATE-245` | `shbt-swarm-omega` | `THM-OMEGA-21-EXT` | Christodoulou GW memory strain `||h_mem|| <= 1.0e-120` | `1.0e-125` | `||h_mem|| > 1e-120` |
-| `GATE-246` | `shbt-swarm-omega` | `THM-OMEGA-21-EXT` | Secular center-of-mass drift norm `||Delta x_CoM|| <= 1e-15 m`| `4.2e-16 m` | `||Delta x|| > 1e-15 m` |
+| `GATE-244` | `shbt-swarm-omega` | `THM-OMEGA-21-EXT` | CCZ4 Gundlach constraint damping norm `‖Z_i‖ <= 1e-16` | `2.4e-17` | `‖Z_i‖ > 1.0e-16` |
+| `GATE-245` | `shbt-swarm-omega` | `THM-OMEGA-21-EXT` | Christodoulou GW memory strain `‖h_mem‖ <= 1.0e-120` | `1.0e-125` | `‖h_mem‖ > 1e-120` |
+| `GATE-246` | `shbt-swarm-omega` | `THM-OMEGA-21-EXT` | Secular center-of-mass drift norm `‖Delta x_CoM‖ <= 1e-15 m`| `4.2e-16 m` | `‖Delta x‖ > 1e-15 m` |
 | `GATE-247` | `shbt-swarm-omega` | `THM-OMEGA-21-EXT` | ADM linear momentum conservation `Delta P_ADM^i == 0` | `0.000000` | `Delta P_ADM != 0` |
 | `GATE-248` | `shbt-swarm-omega` | `THM-OMEGA-22-EXT` | Boundary Chern-Simons disk angular momentum dissipation | `w in Z^3` | Non-integer winding |
-| `GATE-249` | `shbt-swarm-omega` | `THM-OMEGA-22-EXT` | Gravitomagnetic shift anomaly nullification `||beta^i|| <= 1e-120`| `1.0e-125` | `||beta^i|| > 1e-120` |
+| `GATE-249` | `shbt-swarm-omega` | `THM-OMEGA-22-EXT` | Gravitomagnetic shift anomaly nullification `‖beta^i‖ <= 1e-120`| `1.0e-125` | `‖beta^i‖ > 1e-120` |
 | `GATE-250` | `shbt-swarm-sim` | `THM-SIM-01-EXT` | 13-Engine coupled simulation status bitmask `== 0x1FFF` | `0x1FFF` | Missing engine bit |
 

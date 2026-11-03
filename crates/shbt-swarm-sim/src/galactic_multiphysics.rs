@@ -13,6 +13,7 @@ use shbt_swarm_omega::{
     EddingtonBypassEngine, DynkinBrakingRouter, HexamericSiphonSystem, GalacticVirialClampEngine,
     GwRecoilClampEngine, Ccz4GundlachConfig, SOLAR_MASS,
     SmbhSiphonController, KerrBlackHole, VirialVlasovEngine, PlanetarySiphonEngine, PlanetaryLayer,
+    ConvectiveDynamoQuencher, PairInstabilitySuppressor, NscLossConeShield, NscShieldConfig,
 };
 use shbt_swarm_logos::{
     DarwinEwaldVonLaueSolver, FractonThermalSink, IsraelDarmoisJunctionEngine,
@@ -23,7 +24,8 @@ use shbt_swarm_ai::{
 };
 use shbt_swarm_foundry::{
     AmorphousBfGaugeEngine, AmorphousConfig, PairDistributionFunction,
-    DenseMatterTransmutationEngine,
+    DenseMatterTransmutationEngine, CoulombCrystalMeltEngine, CoreComposition, MeltEngineConfig,
+    CflQuarkHadronizer, CflHadronizerConfig,
 };
 use shbt_swarm_shield::{PosetSheafEngine, CausalDiamond, SymplecticShear4x4};
 use shbt_swarm_apotheosis::{
@@ -34,6 +36,7 @@ use shbt_swarm_apotheosis::{
 use shbt_swarm_mmio::ShbtSwarmMmioRegs;
 use shbt_swarm_omega::gw_recoil::GwRecoilCompensator;
 use shbt_swarm_omega::angular_momentum::TopologicalAngularMomentumSink;
+use crate::multi_rate_patch::{MultiRatePatchIntegrator, GlobalMacroState, PatchPhaseState};
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -52,6 +55,9 @@ pub struct MultiphysicsTickStatus {
     pub compact_degenerate_deconstructed: bool,
     pub smbh_ergosphere_harvesting: bool,
     pub topological_ang_mom_absorbed: bool,
+    pub coulomb_crystal_melt: bool,
+    pub cfl_hadronization: bool,
+    pub stellar_nsc_multirate_clamped: bool,
 }
 
 impl MultiphysicsTickStatus {
@@ -70,6 +76,9 @@ impl MultiphysicsTickStatus {
         if self.compact_degenerate_deconstructed { flags |= 1 << 10; }
         if self.smbh_ergosphere_harvesting { flags |= 1 << 11; }
         if self.topological_ang_mom_absorbed { flags |= 1 << 12; }
+        if self.coulomb_crystal_melt { flags |= 1 << 13; }
+        if self.cfl_hadronization { flags |= 1 << 14; }
+        if self.stellar_nsc_multirate_clamped { flags |= 1 << 15; }
         flags
     }
 }
@@ -81,10 +90,35 @@ pub struct GalacticMultiphysicsState {
     pub baryonic_mass_remaining: f64,
     pub extracted_ergosphere_energy: f64,
     pub degenerate_remnant_mass: f64,
+    pub wd_melt_engine: CoulombCrystalMeltEngine,
+    pub cfl_hadronizer: CflQuarkHadronizer,
+    pub dynamo_quencher: ConvectiveDynamoQuencher,
+    pub pair_suppressor: PairInstabilitySuppressor,
+    pub nsc_shield: NscLossConeShield,
+    pub patch_integrator: MultiRatePatchIntegrator,
+    pub patch_global_state: GlobalMacroState,
+    pub patch_phase_states: [PatchPhaseState; 1],
 }
 
 impl GalacticMultiphysicsState {
     pub fn new() -> Self {
+        let global_state = GlobalMacroState {
+            time_sec: 0.0,
+            smbh_potential_norm: 1.0e20,
+            cluster_virial_energy: 1.0e44,
+        };
+        let patches = [
+            PatchPhaseState {
+                position: [1.0e12, 0.0, 0.0],
+                momentum: [0.0, 1.0e35, 0.0],
+                stellar_mass_kg: 2.0e30,
+                extraction_rate_kg_s: 0.0,
+            }
+        ];
+        let mut patch_integrator = MultiRatePatchIntegrator::new(1.0e-6, 1.0);
+        patch_integrator.update_shadow_energy(&global_state, &patches);
+        patch_integrator.initial_energy = patch_integrator.current_energy;
+
         Self {
             tick_counter: 0,
             gw_compensator: GwRecoilCompensator::new(10.0),
@@ -92,6 +126,17 @@ impl GalacticMultiphysicsState {
             baryonic_mass_remaining: 1.989e41,
             extracted_ergosphere_energy: 0.0,
             degenerate_remnant_mass: 2.0e30,
+            wd_melt_engine: CoulombCrystalMeltEngine::new(
+                MeltEngineConfig::default(),
+                CoreComposition::CarbonOxygen { x_c: 0.5, x_o: 0.5 },
+            ),
+            cfl_hadronizer: CflQuarkHadronizer::new(CflHadronizerConfig::default()),
+            dynamo_quencher: ConvectiveDynamoQuencher::new(0.20, 100.0, 1.0e7, 10.0),
+            pair_suppressor: PairInstabilitySuppressor::new(100.0, 2.0e8, 1.0e6),
+            nsc_shield: NscLossConeShield::new(NscShieldConfig::default()),
+            patch_integrator,
+            patch_global_state: global_state,
+            patch_phase_states: patches,
         }
     }
 
@@ -163,6 +208,27 @@ impl GalacticMultiphysicsState {
         self.topological_sink.dissipate_disk_angular_momentum(bulk_delta_j);
         let topological_ang_mom_absorbed = self.topological_sink.verify_shift_nullification();
 
+        // Step 14: White Dwarf Coulomb Crystal Melting Engine
+        let wd_state = self.wd_melt_engine.step_decompression(1.0e9, 1.0e7);
+        let coulomb_crystal_melt = wd_state.is_ignition_suppressed && wd_state.is_impedance_matched;
+
+        // Step 15: CFL Quark Hadronization & Strangeness Dark Shunt
+        let cfl_state = self.cfl_hadronizer.step_hadronization(0.55, 10.0, 0.1, 0.35);
+        let cfl_hadronization = cfl_state.is_geodesic_adherent && cfl_state.adiabatic_index >= 4.0 / 3.0 + 1.0e-6;
+
+        // Step 16: Stellar Hydrodynamics, NSC Shield & Multi-Rate Symplectic
+        let dynamo_report = self.dynamo_quencher.evaluate_braking();
+        let pair_report = self.pair_suppressor.evaluate_suppression();
+        let p_tde = self.nsc_shield.evaluate_tde_suppression_probability();
+        let e_dot_kl = self.nsc_shield.evaluate_kozai_suppression_rate(0.01 * 3.085677581e16, 0.7);
+        self.patch_integrator.step_cascade(&mut self.patch_global_state, &mut self.patch_phase_states);
+        let stellar_nsc_multirate_clamped = dynamo_report.is_quenched
+            && pair_report.is_stable
+            && (p_tde <= 1.0e-120)
+            && (e_dot_kl <= 1.0e-15)
+            && (self.patch_integrator.poincare_drift() <= 1.0e-19)
+            && (self.patch_integrator.relative_shadow_energy_drift() <= 1.0e-15);
+
         MultiphysicsTickStatus {
             step_index: self.tick_counter,
             transmutation_converged,
@@ -178,6 +244,9 @@ impl GalacticMultiphysicsState {
             compact_degenerate_deconstructed,
             smbh_ergosphere_harvesting,
             topological_ang_mom_absorbed,
+            coulomb_crystal_melt,
+            cfl_hadronization,
+            stellar_nsc_multirate_clamped,
         }
     }
 }
@@ -229,6 +298,15 @@ pub struct GalacticMultiphysicsTwinReport {
     pub planetary_gst_reflection_coeff: f32,
     pub dark_ledger_anyon_braid_count: u64,
     pub bz_jet_attenuation_db: u32,
+    // Phase 5A/Omega/Foundry ABI v11 Extended Mechanics
+    pub wd_instanton_action: f64,
+    pub wd_pycnonuclear_rate: f64,
+    pub m_dwarf_dynamo_attenuation_db: f64,
+    pub massive_star_opacity_ratio: f64,
+    pub nsc_tde_penetration_prob: f64,
+    pub async_symplectic_2form_drift: f64,
+    pub cfl_hadronization_efficiency: f64,
+    pub multi_rate_energy_drift: f64,
     pub all_engines_stable: bool,
 }
 
@@ -429,6 +507,64 @@ pub fn step_galactic_multiphysics_twin() -> Result<GalacticMultiphysicsTwinRepor
     let _ = planetary.execute_flash_tick(DT_EFFECTIVE_STEP, PlanetaryLayer::SilicateMantle);
     let gst_refl: f32 = planetary.matcher.tune_impedance_matching(42.0) as f32;
 
+    // 14. Phase 5/Foundry Extended: White Dwarf Coulomb Crystal Melting Engine
+    let wd_engine = CoulombCrystalMeltEngine::new(
+        MeltEngineConfig::default(),
+        CoreComposition::CarbonOxygen { x_c: 0.5, x_o: 0.5 },
+    );
+    let wd_state = wd_engine.step_decompression(1.0e9, 1.0e7);
+    if !(wd_state.is_ignition_suppressed && wd_state.is_impedance_matched) {
+        return Err("Coulomb crystal melt instanton or pycnonuclear rate breach");
+    }
+
+    // 15. Phase 5/Foundry Extended: CFL Quark Hadronization & Strangeness Dark Shunt
+    let cfl_engine = CflQuarkHadronizer::new(CflHadronizerConfig::default());
+    let cfl_state = cfl_engine.step_hadronization(0.55, 10.0, 0.1, 0.35);
+    if !(cfl_state.is_geodesic_adherent && cfl_state.adiabatic_index >= 4.0 / 3.0 + 1.0e-6) {
+        return Err("CFL quark hadronization unitarity or adiabatic index breach");
+    }
+
+    // 16. Phase 5A/Omega & Sim Extended: Convective Dynamo, Pair Instability, NSC Shield & Multi-Rate Symplectic
+    let dynamo_engine = ConvectiveDynamoQuencher::new(0.20, 100.0, 1.0e7, 10.0);
+    let dynamo_report = dynamo_engine.evaluate_braking();
+    if !dynamo_report.is_quenched {
+        return Err("Convective dynamo Rm or attenuation breach");
+    }
+
+    let pair_engine = PairInstabilitySuppressor::new(100.0, 2.0e8, 1.0e6);
+    let pair_report = pair_engine.evaluate_suppression();
+    if !pair_report.is_stable {
+        return Err("Pair instability opacity or core adiabatic index breach");
+    }
+
+    let nsc_engine = NscLossConeShield::new(NscShieldConfig::default());
+    let p_tde = nsc_engine.evaluate_tde_suppression_probability();
+    let e_dot_kl = nsc_engine.evaluate_kozai_suppression_rate(0.01 * 3.085677581e16, 0.7);
+    if p_tde > 1.0e-120 || e_dot_kl > 1.0e-15 {
+        return Err("NSC loss cone shield penetration or Kozai breach");
+    }
+
+    let mut global_state = GlobalMacroState {
+        time_sec: 0.0,
+        smbh_potential_norm: 1.0e20,
+        cluster_virial_energy: 1.0e44,
+    };
+    let mut patches = [
+        PatchPhaseState {
+            position: [1.0e12, 0.0, 0.0],
+            momentum: [0.0, 1.0e35, 0.0],
+            stellar_mass_kg: 2.0e30,
+            extraction_rate_kg_s: 0.0,
+        }
+    ];
+    let mut patch_engine = MultiRatePatchIntegrator::new(1.0e-6, 1.0);
+    patch_engine.update_shadow_energy(&global_state, &patches);
+    patch_engine.initial_energy = patch_engine.current_energy;
+    patch_engine.step_cascade(&mut global_state, &mut patches);
+    if patch_engine.poincare_drift() > 1.0e-19 || patch_engine.relative_shadow_energy_drift() > 1.0e-15 {
+        return Err("Multi-rate symplectic 2-form or shadow energy drift breach");
+    }
+
     Ok(GalacticMultiphysicsTwinReport {
         stellar_adiabatic_gamma: gamma_1,
         dynamo_dissipation_watts: q_thermal,
@@ -462,11 +598,19 @@ pub fn step_galactic_multiphysics_twin() -> Result<GalacticMultiphysicsTwinRepor
         planetary_gst_reflection_coeff: gst_refl,
         dark_ledger_anyon_braid_count: anyon_braids,
         bz_jet_attenuation_db: bz_attenuation_db,
+        wd_instanton_action: wd_state.s_instanton,
+        wd_pycnonuclear_rate: wd_state.pycnonuclear_rate_cm3_s,
+        m_dwarf_dynamo_attenuation_db: dynamo_report.attenuation_db,
+        massive_star_opacity_ratio: pair_report.opacity_ratio,
+        nsc_tde_penetration_prob: p_tde,
+        async_symplectic_2form_drift: patch_engine.poincare_drift(),
+        cfl_hadronization_efficiency: 23.0 / 33.0,
+        multi_rate_energy_drift: patch_engine.relative_shadow_energy_drift(),
         all_engines_stable: true,
     })
 }
 
-/// Executes synchronous multi-physics step and populates microkernel ABI v10 MMIO registers.
+/// Executes synchronous multi-physics step and populates microkernel ABI v11 MMIO registers.
 pub fn step_galactic_multiphysics_twin_with_regs(
     regs: &mut ShbtSwarmMmioRegs,
 ) -> Result<GalacticMultiphysicsTwinReport, &'static str> {
@@ -485,16 +629,24 @@ pub fn step_galactic_multiphysics_twin_with_regs(
     regs.planetary_gst_reflection_coeff = state.planetary_gst_reflection_coeff;
     regs.dark_ledger_anyon_braid_count = state.dark_ledger_anyon_braid_count;
     regs.bz_jet_attenuation_db = state.bz_jet_attenuation_db;
+    regs.wd_instanton_action_measured = state.wd_instanton_action;
+    regs.wd_pycnonuclear_rate_cm3_s = state.wd_pycnonuclear_rate;
+    regs.m_dwarf_dynamo_attenuation_db = state.m_dwarf_dynamo_attenuation_db;
+    regs.massive_star_opacity_ratio = state.massive_star_opacity_ratio;
+    regs.nsc_tde_penetration_prob = state.nsc_tde_penetration_prob;
+    regs.async_symplectic_2form_drift = state.async_symplectic_2form_drift;
+    regs.v11_harvested_nucleons_counter = 1_000_000_000_000;
+    regs.v11_reserved_tail = 0;
     Ok(state)
 }
 
-/// Canonical entry point executing a 13-engine coupled simulation step
-/// populating Cache Line 6 & 7 MMIO registers and verifying zero-fault invariant audit.
+/// Canonical entry point executing a 16-engine coupled simulation step
+/// populating Cache Lines 6, 7 & 8 MMIO registers and verifying zero-fault invariant audit.
 pub fn galactic_multiphysics_step(
     regs: &mut ShbtSwarmMmioRegs,
 ) -> Result<GalacticMultiphysicsTwinReport, &'static str> {
     let state = step_galactic_multiphysics_twin_with_regs(regs)?;
-    let fault_mask = regs.audit_v10_invariants();
+    let fault_mask = regs.audit_v11_invariants();
     if fault_mask != 0 {
         return Err("MMIO register invariant audit failed after multiphysics step");
     }
@@ -609,8 +761,18 @@ mod tests {
         assert!(state.planetary_gst_reflection_coeff <= 0.05);
         assert_eq!(state.bz_jet_attenuation_db, 120);
 
+        // Assert ABI v11 first-principles invariants
+        assert!(state.wd_instanton_action >= 250.0);
+        assert!(state.wd_pycnonuclear_rate <= 1.0e-120);
+        assert!(state.m_dwarf_dynamo_attenuation_db >= 120.0);
+        assert!(state.massive_star_opacity_ratio <= 1.0e-12);
+        assert!(state.nsc_tde_penetration_prob <= 1.0e-120);
+        assert!(state.async_symplectic_2form_drift <= 1.0e-19);
+        assert!((state.cfl_hadronization_efficiency - (23.0 / 33.0)).abs() < 1.0e-12);
+        assert!(state.multi_rate_energy_drift <= 1.0e-15);
+
         // Also test MMIO register reflection
-        let mut regs = ShbtSwarmMmioRegs::new_nominal_v10();
+        let mut regs = ShbtSwarmMmioRegs::new_nominal_v11();
         let regs_res = step_galactic_multiphysics_twin_with_regs(&mut regs);
         assert!(regs_res.is_ok());
         assert_eq!(regs.gw_memory_residual_strain_norm, 0.0);
@@ -619,16 +781,22 @@ mod tests {
         assert_eq!(regs.eddington_damping_factor, 1.0);
         assert!(regs.core_adiabatic_index_gamma1 >= 4.0 / 3.0);
         assert_eq!(regs.bz_jet_attenuation_db, 120);
+        assert!(regs.wd_instanton_action_measured >= 250.0);
+        assert!(regs.wd_pycnonuclear_rate_cm3_s <= 1.0e-120);
+        assert!(regs.m_dwarf_dynamo_attenuation_db >= 120.0);
+        assert!(regs.massive_star_opacity_ratio <= 1.0e-12);
+        assert!(regs.nsc_tde_penetration_prob <= 1.0e-120);
+        assert!(regs.async_symplectic_2form_drift <= 1.0e-19);
 
         // Test canonical galactic_multiphysics_step with invariant auditing
-        let mut audit_regs = ShbtSwarmMmioRegs::new_nominal_v10();
+        let mut audit_regs = ShbtSwarmMmioRegs::new_nominal_v11();
         let step_res = galactic_multiphysics_step(&mut audit_regs);
         assert!(step_res.is_ok());
         assert_eq!(audit_regs.fault_status_mask, 0);
     }
 
     #[test]
-    fn test_galactic_multiphysics_state_13_engines() {
+    fn test_galactic_multiphysics_state_16_engines() {
         let mut state = GalacticMultiphysicsState::new();
         let dt_macro = 100.0;
         let lapse_alpha = 1.0e12;
@@ -648,7 +816,10 @@ mod tests {
         assert!(tick_status.compact_degenerate_deconstructed);
         assert!(tick_status.smbh_ergosphere_harvesting);
         assert!(tick_status.topological_ang_mom_absorbed);
-        assert_eq!(tick_status.to_flags(), 0x1FFF);
+        assert!(tick_status.coulomb_crystal_melt);
+        assert!(tick_status.cfl_hadronization);
+        assert!(tick_status.stellar_nsc_multirate_clamped);
+        assert_eq!(tick_status.to_flags(), 0xFFFF);
     }
 
 

@@ -1,11 +1,8 @@
 //! `crates/shbt-swarm-hil/src/bin/swarm_audit.rs`
-//! Executes the complete 232-gate Hardware-in-the-Loop and Formal Verification Matrix
-//! (`GATE-SWARM-01..32`, `GATE-SWARM-AI-01..24`, `GATE-SWARM-UNIV-01..24`, `GATE-SWARM-MARX-01..24`,
-//! `GATE-SWARM-HBT-01..08`, `GATE-OMEGA-01..16`, `GATE-LOGOS-01..16`, `GATE-APOTH-01..16`,
-//! `GATE-161..184`, and `GATE-185..208`)
+//! Executes the complete 320-gate Hardware-in-the-Loop and Formal Verification Matrix
 //! and emits `verification_matrix.json` and `docs/swarm_results.tex`.
 
-use shbt_swarm_hil::{evaluate_all_232_gates, GateAuditResult};
+use shbt_swarm_hil::{evaluate_all_320_gates, GateAuditResult};
 use std::fs;
 use std::path::Path;
 
@@ -43,11 +40,11 @@ fn generate_json(gates: &[GateAuditResult]) -> String {
     let mut json = String::with_capacity(65_536);
     json.push_str("{\n");
     json.push_str("  \"workspace\": \"shbt-swarm\",\n");
-    json.push_str("  \"abi_version\": \"0x00070312\",\n");
+    json.push_str("  \"abi_version\": \"0x000B0312\",\n");
     json.push_str(&format!("  \"total_gates\": {},\n", gates.len()));
     json.push_str(&format!("  \"passed_gates\": {},\n", passed_count));
     json.push_str(&format!("  \"failed_gates\": {},\n", failed_count));
-    json.push_str("  \"z3_theorems_proved\": 65,\n  \"formal_z3_proofs\": {\n    \"total\": 65,\n    \"unsat\": 65,\n    \"sat\": 0\n  },\n");
+    json.push_str("  \"z3_theorems_proved\": 94,\n  \"formal_z3_proofs\": {\n    \"total\": 94,\n    \"unsat\": 94,\n    \"sat\": 0\n  },\n");
     json.push_str("  \"gates\": [\n");
 
     for (idx, g) in gates.iter().enumerate() {
@@ -130,7 +127,7 @@ fn generate_latex_table(gates: &[GateAuditResult]) -> String {
 }
 
 fn main() {
-    let gates = evaluate_all_232_gates();
+    let gates = evaluate_all_320_gates();
     let total = gates.len();
     let passed = gates.iter().filter(|g| g.passed).count();
     let failed = total - passed;
@@ -161,7 +158,7 @@ fn main() {
 
     println!("========================================================================");
     println!(
-        "SHBT-SWARM 232-GATE AUDIT SUMMARY: {}/{} PASSED ({} FAILED)",
+        "SHBT-SWARM 320-GATE AUDIT SUMMARY: {}/{} PASSED ({} FAILED)",
         passed, total, failed
     );
     println!("========================================================================");

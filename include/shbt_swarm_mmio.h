@@ -13,9 +13,9 @@
 #include "shbt_mmio_apotheosis.h"
 #include "shbt_nested_sim_abi.h"
 
-#define SHBT_SWARM_ABI_VERSION          0x000A0312U
-#define SHBT_SWARM_FORMAL_PROOFS_COUNT  88U
-#define SHBT_SWARM_HIL_GATES_COUNT      304U
+#define SHBT_SWARM_ABI_VERSION          0x000B0312U
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT  94U
+#define SHBT_SWARM_HIL_GATES_COUNT      320U
 #define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL
 #define SHBT_SWARM_HYPERFRAME_BASE_ADDR 0x70020000UL
 #define SHBT_SWARM_APOTHEOSIS_BASE_ADDR 0x4000C000UL
@@ -160,6 +160,20 @@
 #define SHBT_SWARM_FAULT_PLANETARY_ACOUSTIC_BREACH  (1ULL << 59)
 #define SHBT_SWARM_FAULT_BZ_JET_LEAKAGE             (1ULL << 60)
 #define SHBT_SWARM_FAULT_V10_MASK                   (0x001FC00000000000ULL)
+
+/* v11 Degenerate Core, Dynamo Quench & NSC Loss-Cone Fault Bitmasks (Bits 61..63) */
+#define SHBT_SWARM_FAULT_PYCNONUCLEAR_TRIP          (1ULL << 61)
+#define SHBT_SWARM_FAULT_SUPERFLARE_DYNAMO_TRIP     (1ULL << 62)
+#define SHBT_SWARM_FAULT_TDE_LOSS_CONE_TRIP         (1ULL << 63)
+#define SHBT_SWARM_FAULT_V11_MASK                   (0xE000000000000000ULL)
+
+/* v11 Hardware Command Opcodes */
+#define SHBT_SWARM_CMD_MELT_COULOMB_CRYSTAL         0x00008000U
+#define SHBT_SWARM_CMD_HADRONIZE_CFL_CORE           0x00010000U
+#define SHBT_SWARM_CMD_QUENCH_CONV_DYNAMO           0x00020000U
+#define SHBT_SWARM_CMD_CLAMP_PAIR_INSTABILITY       0x00040000U
+#define SHBT_SWARM_CMD_SHIELD_NSC_LOSS_CONE         0x00080000U
+#define SHBT_SWARM_CMD_STEP_ASYNC_SYMPLECTIC        0x00100000U
 
 
 /* v7 First-Principles Hardware Threshold Constants */
@@ -640,9 +654,9 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     uint64_t pcss_crowbar_latency_ps;         /* 0x00B8: <= 2500 ps (2.5 ns) */
 
     /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
-    uint32_t abi_version;                     /* 0x00C0: 0x000A0312 */
-    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 88 */
-    uint32_t hil_gates_pass_count;            /* 0x00C8: 304 */
+    uint32_t abi_version;                     /* 0x00C0: 0x000B0312 */
+    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 94 */
+    uint32_t hil_gates_pass_count;            /* 0x00C8: 320 */
     uint32_t active_phase_mask;               /* 0x00CC: 0x0000007F (Phases 1..6) */
     uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
     uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */
@@ -683,11 +697,21 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     uint64_t dark_ledger_anyon_braid_count;   /* 0x01E0: Fibonacci anyon braid count */
     uint32_t bz_jet_attenuation_db;           /* 0x01E8: Jet suppression in dB */
     uint32_t v10_reserved_tail[5];            /* 0x01EC..0x01FF: 20 bytes pad */
+
+    /* === CACHELINE 8 (Offsets 0x0200 .. 0x023F): ABI v11 Stellar Hydrodynamics & Loss-Cone Invariants (64 bytes) === */
+    double   wd_instanton_action_measured;    /* 0x0200: S_instanton >= 250.0 */
+    double   wd_pycnonuclear_rate_cm3_s;      /* 0x0208: R_pyc <= 1.0e-120 cm^-3 s^-1 */
+    double   m_dwarf_dynamo_attenuation_db;   /* 0x0210: >= 120.0 dB */
+    double   massive_star_opacity_ratio;      /* 0x0218: kappa_eff / kappa_0 <= 1.0e-12 */
+    double   nsc_tde_penetration_prob;        /* 0x0220: P_TDE <= 1.0e-120 */
+    double   async_symplectic_2form_drift;    /* 0x0228: ||d omega|| <= 1.0e-19 */
+    uint64_t v11_harvested_nucleons_counter;  /* 0x0230: Transmuted/harvested baryons */
+    uint64_t v11_reserved_tail;               /* 0x0238: 8 bytes pad to 0x0240 */
 } shbt_swarm_mmio_regs_t;
 
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
-_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 512,
-               "shbt_swarm_mmio_regs_t must occupy exactly 512 bytes (8 cache lines)");
+_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 576,
+               "shbt_swarm_mmio_regs_t must occupy exactly 576 bytes (9 cache lines)");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, abi_version) == 0x00C0,
                "abi_version offset mismatch");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, chiral_ee_q16) == 0x0100,
@@ -706,6 +730,10 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, eddington_damping_factor) == 0x0
                "eddington_damping_factor must start at Cache Line 7 (0x01C0)");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, dark_ledger_anyon_braid_count) == 0x01E0,
                "dark_ledger_anyon_braid_count offset mismatch");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, wd_instanton_action_measured) == 0x0200,
+               "wd_instanton_action_measured must start at Cache Line 8 (0x0200)");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, v11_harvested_nucleons_counter) == 0x0230,
+               "v11_harvested_nucleons_counter offset mismatch");
 #endif
 
 /* ==========================================================================
@@ -816,7 +844,7 @@ _Static_assert(sizeof(shbt_dense_matter_mmio_t) == 160,
  * DENSE MATTER DECONSTRUCTION & GALACTIC ASTRODYNAMICS APERTURES
  * ========================================================================== */
 
-#define SHBT_MMIO_ABI_VERSION         0x00080312U
+#define SHBT_MMIO_ABI_VERSION         0x000B0312U
 #define SHBT_MMIO_DENSE_BASE          0x7F000000ULL
 #define SHBT_MMIO_QUENCH_BASE         0x7F000100ULL
 #define SHBT_MMIO_SHUNT_BASE          0x7F000200ULL
@@ -824,6 +852,7 @@ _Static_assert(sizeof(shbt_dense_matter_mmio_t) == 160,
 #define SHBT_MMIO_GALACTIC_BASE       0x8F000000ULL
 
 #define MULTIPHYSICS_13_ENGINES_MASK  0x00001FFFU
+#define MULTIPHYSICS_16_ENGINES_MASK  0x0000FFFFU
 #define HIL_GATES_233_241_MASK        0x000001FFU
 #define HIL_GATES_242_250_MASK        0x000001FFU
 
@@ -891,6 +920,108 @@ typedef struct __attribute__((packed, aligned(8))) {
     volatile uint32_t hil_gate_status;    /* 0x74: Gates 242-250 pass mask */
 } shbt_galactic_mmio_t;
 
+/* ==========================================================================
+ * ABI v11.0 DEGENERATE CORE, STELLAR HYDRODYNAMIC, AND KINEMATIC PATCH APERTURES
+ * ========================================================================== */
+
+#define SHBT_DCA_BASE_ADDR              0x7F000400ULL
+#define SHBT_STELLAR_APERTURE_BASE_ADDR 0x7F000500ULL
+#define SHBT_PATCH_APERTURE_BASE_ADDR   0x8F000100ULL
+
+/* DCA Register Bitmasks */
+#define DCA_CTRL_ENABLE                 (1ULL << 0)
+#define DCA_CTRL_SU2_SCREEN_ENABLE      (1ULL << 1)
+#define DCA_CTRL_GST_MATCH_ENABLE       (1ULL << 2)
+#define DCA_CTRL_CFL_HADRON_ENABLE      (1ULL << 3)
+#define DCA_CTRL_DARK_SHUNT_ENGAGE      (1ULL << 4)
+#define DCA_CTRL_INTERLOCK_OVERRIDE     (1ULL << 31)
+
+#define DCA_STAT_ACTIVE                 (1ULL << 0)
+#define DCA_STAT_PYC_SUPPRESSED         (1ULL << 1)
+#define DCA_STAT_ACOUSTIC_LOCKED        (1ULL << 2)
+#define DCA_STAT_CFL_CONFINED           (1ULL << 3)
+#define DCA_STAT_DARK_SHUNT_ACTIVE      (1ULL << 4)
+#define DCA_STAT_STABILITY_MARGIN_OK    (1ULL << 5)
+#define DCA_STAT_DEFLAGRATION_ABORT     (1ULL << 30)
+#define DCA_STAT_ERROR_FLAG             (1ULL << 31)
+
+typedef struct __attribute__((packed, aligned(8))) {
+    volatile uint64_t control;               /* 0x00 */
+    volatile const uint64_t status;          /* 0x08 */
+    volatile uint64_t su2_screen_mev_fp;     /* 0x10 */
+    volatile const uint64_t instanton_action;/* 0x18 */
+    volatile const uint64_t pyc_mantissa;    /* 0x20 */
+    volatile const int64_t  pyc_exponent;    /* 0x28 */
+    volatile uint64_t gst_impedance_real;    /* 0x30 */
+    volatile uint64_t gst_impedance_imag;    /* 0x38 */
+    volatile const uint64_t acoustic_refl_fp;/* 0x40 */
+    volatile const uint64_t cfl_gap_mev_fp;  /* 0x48 */
+    volatile const uint64_t free_quark_frac; /* 0x50 */
+    volatile const uint64_t dark_shunt_exergy;/* 0x58 */
+    volatile const uint64_t adiabatic_index; /* 0x60 */
+    volatile const uint64_t gamma_power_fp;  /* 0x68 */
+} shbt_dca_registers_t;
+
+#define SHBT_DYNKIN_SLOT_TOTAL_CHANNELS 346U
+
+#define SHBT_CTRL0_APERTURE_ENABLE          (1U << 0)
+#define SHBT_CTRL0_RED_DWARF_DYNAMO_BRAKE   (1U << 1)
+#define SHBT_CTRL0_MASSIVE_PAIR_SUPPRESS    (1U << 2)
+#define SHBT_CTRL0_GORDON_METRIC_ENABLE     (1U << 3)
+#define SHBT_CTRL0_ATHERMAL_ZERO_Q_LOCK     (1U << 4)
+
+#define SHBT_STATUS_APERTURE_LOCKED         (1U << 0)
+#define SHBT_STATUS_R_M_CLAMPED_LE_1        (1U << 1)
+#define SHBT_STATUS_ATTENUATION_GE_120DB    (1U << 2)
+#define SHBT_STATUS_BULK_Q_ZERO_VALID       (1U << 3)
+#define SHBT_STATUS_OPACITY_SCALED_LE_12    (1U << 4)
+#define SHBT_STATUS_GAMMA1_STABLE           (1U << 5)
+#define SHBT_STATUS_DYNKIN_MESH_ALIGNED     (1U << 6)
+#define SHBT_STATUS_THERMAL_FAULT           (1U << 31)
+
+typedef struct __attribute__((packed, aligned(8))) {
+    volatile uint32_t CTRL0;                         /* 0x00 */
+    volatile uint32_t CTRL1;                         /* 0x04 */
+    volatile uint32_t STATUS;                        /* 0x08 */
+    volatile uint32_t DYNKIN_SYNC_CLK;               /* 0x0C */
+    volatile uint32_t STELLAR_MASS_FIXED;            /* 0x10 */
+    volatile uint32_t CONVECTIVE_VELOCITY_MMS;       /* 0x14 */
+    volatile uint64_t CONVECTIVE_SCALE_L_M;          /* 0x18 */
+    volatile uint32_t SPITZER_DIFFUSIVITY_ETA0;      /* 0x20 */
+    volatile uint32_t R_M_EFF_FIXED16;               /* 0x24 */
+    volatile uint32_t DYNAMO_ATTENUATION_DB_FIXED16; /* 0x28 */
+    volatile uint32_t BULK_DISSIPATION_Q_DISS;       /* 0x2C */
+    volatile uint32_t ZETA_SHBT_NUMERATOR;           /* 0x30 */
+    volatile uint32_t ZETA_SHBT_DENOMINATOR;         /* 0x34 */
+    volatile uint64_t GORDON_METRIC_SCALING_Q64;     /* 0x38 */
+    volatile uint64_t CORE_TEMPERATURE_KELVIN;       /* 0x40 */
+    volatile uint64_t CORE_DENSITY_G_M3;             /* 0x48 */
+    volatile uint32_t CORE_GAMMA_1_FIXED16;          /* 0x50 */
+    uint32_t          _reserved0;                    /* 0x54 */
+    volatile uint32_t DYNKIN_SLOT_WEIGHTS[SHBT_DYNKIN_SLOT_TOTAL_CHANNELS]; /* 0x58..0x5BF: 1384 bytes */
+} shbt_stellar_aperture_mmio_t;
+
+#define CSR_SHIELD_ENABLE_BIT           (1U << 0)
+#define CSR_KERR_DECOUPLE_BIT           (1U << 1)
+#define CSR_SBH_BYPASS_ACTIVE_BIT       (1U << 2)
+#define CSR_CASCADE_LOCK_BIT            (1U << 3)
+#define CSR_SYMPLECTIC_VIOLATION_BIT    (1U << 4)
+#define CSR_APERTURE_RESET_BIT          (1U << 31)
+
+typedef struct __attribute__((packed, aligned(8))) {
+    volatile uint32_t csr;                    /* 0x00: Control & Status */
+    volatile uint32_t hub_shield_amp;         /* 0x04: Shield Amplitude */
+    volatile uint64_t lc_barrier_thresh;      /* 0x08: J_barrier (m^2/s) */
+    volatile uint64_t kerr_drag_beta_phi;     /* 0x10: Shift Vector beta^phi */
+    volatile float    sbh_bypass_excl_rad;    /* 0x18: Exclusion Radius (m) */
+    volatile uint32_t _reserved0;             /* 0x1C: Alignment padding */
+    volatile uint64_t cascade_ratio;          /* 0x20: alpha_casc */
+    volatile uint32_t ccz4_gundlach_damp;     /* 0x28: kappa1 & kappa2 */
+    volatile uint32_t _reserved1;             /* 0x2C: Alignment padding */
+    volatile double   poincare_drift_mon;     /* 0x30: ||d omega|| */
+    volatile double   shadow_h_dev_mon;       /* 0x38: |Delta H / H0| */
+} shbt_patch_aperture_hw_t;
+
 #ifdef __cplusplus
 }
 #endif
@@ -903,6 +1034,12 @@ _Static_assert(sizeof(shbt_mmio_lepton_shunt_t) == 48,
                "shbt_mmio_lepton_shunt_t must be exactly 48 bytes");
 _Static_assert(sizeof(shbt_galactic_mmio_t) == 120,
                "shbt_galactic_mmio_t must be exactly 120 bytes");
+_Static_assert(sizeof(shbt_dca_registers_t) == 112,
+               "shbt_dca_registers_t must be exactly 112 bytes");
+_Static_assert(sizeof(shbt_stellar_aperture_mmio_t) == 1472,
+               "shbt_stellar_aperture_mmio_t must be exactly 1472 bytes");
+_Static_assert(sizeof(shbt_patch_aperture_hw_t) == 64,
+               "shbt_patch_aperture_hw_t must be exactly 64 bytes");
 
 #endif /* SHBT_SWARM_MMIO_H */
 
