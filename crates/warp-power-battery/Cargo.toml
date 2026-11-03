@@ -1,0 +1,11 @@
+[package]
+name = "warp-power-battery"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Dual-Reactor Hybrid Power Architecture: SHBT-MAR-312X (25.00 EW Traversal & Warp Core), SHBT-MAR-OMEGA (1-10 ZW Continuous-Flow Boundary Reactor), and Deterministic Power Bus Arbiter"
+
+[dependencies]
+shbt-swarm-core = { path = "../shbt-swarm-core" }
+shbt-swarm-mmio = { path = "../shbt-swarm-mmio" }
+shbt-swarm-mar312x = { path = "../shbt-swarm-mar312x" }

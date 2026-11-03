@@ -31,6 +31,10 @@ pub mod pair_instability;
 pub use pair_instability::*;
 pub mod nsc_loss_cone;
 pub use nsc_loss_cone::{NscLossConeShield, NscShieldConfig};
+pub mod universal_harvest;
+pub use universal_harvest::*;
+pub mod coulomb_melt;
+pub use coulomb_melt::*;
 
 
 

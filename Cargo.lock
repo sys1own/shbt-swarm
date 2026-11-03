@@ -85,6 +85,7 @@ dependencies = [
  "shbt-swarm-omega",
  "shbt-swarm-shield",
  "shbt-swarm-sim",
+ "warp-power-battery",
 ]
 
 [[package]]
@@ -139,4 +140,14 @@ dependencies = [
  "shbt-swarm-mmio",
  "shbt-swarm-omega",
  "shbt-swarm-shield",
+ "warp-power-battery",
+]
+
+[[package]]
+name = "warp-power-battery"
+version = "0.4.312"
+dependencies = [
+ "shbt-swarm-core",
+ "shbt-swarm-mar312x",
+ "shbt-swarm-mmio",
 ]

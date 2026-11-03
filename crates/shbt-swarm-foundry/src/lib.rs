@@ -25,6 +25,10 @@ pub mod coulomb_melt;
 pub use coulomb_melt::*;
 pub mod quark_hadronize;
 pub use quark_hadronize::*;
+pub mod cfl_hadronize;
+pub use cfl_hadronize::{
+    HadronizeAndFoldTelemetry, CHERN_SIMONS_STIFFNESS_N_M, COLOR_TRIALITY_SLOTS,
+};
 
 
 pub use dynkin_router::{

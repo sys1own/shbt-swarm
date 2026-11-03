@@ -10,12 +10,28 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <stdalign.h>
 #include "shbt_mmio_apotheosis.h"
 #include "shbt_nested_sim_abi.h"
 
-#define SHBT_SWARM_ABI_VERSION          0x000B0312U
-#define SHBT_SWARM_FORMAL_PROOFS_COUNT  94U
-#define SHBT_SWARM_HIL_GATES_COUNT      320U
+#define SHBT_SWARM_MMIO_MAGIC           0x53484254UL /* "SHBT" */
+#define SHBT_SWARM_ABI_VERSION          0x000C0312U
+#define SHBT_SWARM_ABI_VERSION_V12      0x000C0312UL
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT  100U
+#define SHBT_SWARM_HIL_GATES_COUNT      344U
+#define SHBT_SWARM_MMIO_TOTAL_SIZE      640U
+#define SHBT_SWARM_CACHE_LINE_BYTES     64U
+#define SHBT_MMIO_BASE_MAR_OMEGA        0x7F000600ULL
+#define SHBT_MMIO_BASE_UNIVERSAL_HARVEST 0x7F000700ULL
+
+/* Dual-Reactor Power Arbiter State Flags (Cache Line 0) */
+#define SHBT_POWER_BUS_MAR312X_ACTIVE       (1ULL << 0)
+#define SHBT_POWER_BUS_MAR312X_STANDBY      (1ULL << 1)
+#define SHBT_POWER_BUS_OMEGA_IGNITED        (1ULL << 2)
+#define SHBT_POWER_BUS_OMEGA_CFT_LOCKED     (1ULL << 3)
+#define SHBT_POWER_BUS_SLIPSTREAM_ENGAGED   (1ULL << 4)
+#define SHBT_POWER_BUS_FOUNDRY_INLINE_FOLD  (1ULL << 5)
+
 #define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL
 #define SHBT_SWARM_HYPERFRAME_BASE_ADDR 0x70020000UL
 #define SHBT_SWARM_APOTHEOSIS_BASE_ADDR 0x4000C000UL
@@ -707,11 +723,22 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     double   async_symplectic_2form_drift;    /* 0x0228: ||d omega|| <= 1.0e-19 */
     uint64_t v11_harvested_nucleons_counter;  /* 0x0230: Transmuted/harvested baryons */
     uint64_t v11_reserved_tail;               /* 0x0238: 8 bytes pad to 0x0240 */
+
+    /* === CACHELINE 9 (Offsets 0x0240 .. 0x027F): ABI v12 MAR-OMEGA Continuous Reactor & HIL Audit (64 bytes) === */
+    double   omega_gross_power_watts;         /* 0x0240: [1.0e21, 1.0e22] W (1-10 ZW) */
+    double   omega_cft_direct_eff;            /* 0x0248: >= 0.99980 (0.99981146) */
+    double   omega_cryo_sensible_watts;       /* 0x0250: <= 500,000.0 W (245.0 kW at 10 ZW) */
+    double   omega_throat_shear_mpa;          /* 0x0258: < 1.0e-6 MPa (7.85e-9 MPa) */
+    double   omega_bondi_hoyle_msun_yr;       /* 0x0260: >= 20.0 M_sun/yr */
+    uint64_t power_bus_arbiter_flags;         /* 0x0268: Dual-Reactor Arbiter state flags */
+    uint32_t hil_gates_pass_mask;             /* 0x0270: 0x00FFFFFF (24/24 MAR-OMEGA gates) */
+    uint32_t hil_status_code;                 /* 0x0274: 0x00000344 (344/344 PASS) */
+    uint64_t crc64_iso_checksum;              /* 0x0278: CRC-64-ISO hardware seal */
 } shbt_swarm_mmio_regs_t;
 
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
-_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 576,
-               "shbt_swarm_mmio_regs_t must occupy exactly 576 bytes (9 cache lines)");
+_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 640,
+               "shbt_swarm_mmio_regs_t must occupy exactly 640 bytes (10 cache lines)");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, abi_version) == 0x00C0,
                "abi_version offset mismatch");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, chiral_ee_q16) == 0x0100,
@@ -734,6 +761,8 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, wd_instanton_action_measured) ==
                "wd_instanton_action_measured must start at Cache Line 8 (0x0200)");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, v11_harvested_nucleons_counter) == 0x0230,
                "v11_harvested_nucleons_counter offset mismatch");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, omega_gross_power_watts) == 0x0240,
+               "omega_gross_power_watts must start at Cache Line 9 (0x0240)");
 #endif
 
 /* ==========================================================================
@@ -844,7 +873,7 @@ _Static_assert(sizeof(shbt_dense_matter_mmio_t) == 160,
  * DENSE MATTER DECONSTRUCTION & GALACTIC ASTRODYNAMICS APERTURES
  * ========================================================================== */
 
-#define SHBT_MMIO_ABI_VERSION         0x000B0312U
+#define SHBT_MMIO_ABI_VERSION         0x000C0312U
 #define SHBT_MMIO_DENSE_BASE          0x7F000000ULL
 #define SHBT_MMIO_QUENCH_BASE         0x7F000100ULL
 #define SHBT_MMIO_SHUNT_BASE          0x7F000200ULL
@@ -1022,6 +1051,122 @@ typedef struct __attribute__((packed, aligned(8))) {
     volatile double   shadow_h_dev_mon;       /* 0x38: |Delta H / H0| */
 } shbt_patch_aperture_hw_t;
 
+/* ==========================================================================
+ * ABI v12.0 MAR-OMEGA CONTINUOUS REACTOR & UNIVERSAL HARVEST APERTURES
+ * ========================================================================== */
+
+/* --- Cache Line 1..4: MAR-OMEGA Control Aperture (256 Bytes @ 0x7F000600) --- */
+typedef struct __attribute__((aligned(64))) shbt_mar_omega_aperture {
+    /* Cache Line 1 (0x040 - 0x07F): Continuous Slipstream Ingestion & Burn */
+    double omega_mass_inlet_kg_s;                        /* Continuous slipstream mass rate (<= 111,265.01 kg/s) */
+    union { double omega_slipstream_ratio; double slipstream_fraction; };
+    union { double omega_gross_power_watts; double gross_annihilation_watts; };
+    union { double omega_cft_power_watts; double direct_cft_exergy_watts; };
+    union { double omega_coset_dark_ratio; double dark_ledger_eta_d; };
+    union { double omega_pion_spray_log10; double pion_spray_prob_log10; };
+    union { double omega_athermal_decay_rate; double upstream_decay_rate_hz; };
+    union { uint64_t omega_throat_status_bits; uint64_t slipstream_status_flags; };
+
+    /* Cache Line 2 (0x080 - 0x0BF): Direct Boundary CFT Dynkin Projection */
+    union { uint64_t cft_dynkin_coupling_mask[6]; uint64_t cft_dynkin_coupling_bits[6]; };
+    union { double cft_direct_coupling_eff; double direct_cft_efficiency; };
+    union { double cft_uncoupled_waste_eff; double uncoupled_waste_fraction; };
+
+    /* Cache Line 3 (0x0C0 - 0x0FF): 16-Layer Symplectic Fracton & Cryostat */
+    uint64_t cryo_temp_millikelvin;                      /* Operating coil temp in mK (<= 25,000 mK = 25.0 K) */
+    union { double cryo_sensible_load_watts; double sensible_heat_load_watts; };
+    union { double cryo_fracton_trans_coeff; double fracton_transmission_factor; };
+    union { double cryo_hyperbolic_tau_q_ps; double cattaneo_relaxation_ps; };
+    union { double cryo_temp_headroom_kelvin; double rebco_headroom_kelvin; };
+    union { double cryo_sink_bath_temp_k; double he2_bath_temp_kelvin; };
+    union { uint64_t cryo_fracton_layers_mask; uint64_t fracton_genus_layer_mask; };
+    union { uint64_t cryo_second_sound_status; uint64_t cryo_interlock_word; };
+
+    /* Cache Line 4 (0x100 - 0x13F): 312-Channel Counter-Metric Stress Cloaking */
+    union { double ccz4_constraint_norm_theta; double riemann_theta_inf_norm; };
+    union { double ccz4_effective_shear_mpa; double throat_von_mises_mpa; };
+    union { double ccz4_frenkel_limit_mpa; double frenkel_limit_mpa; };
+    union { double ccz4_gundlach_kappa1; double ccz4_damping_kappa1; };
+    union { double ccz4_gundlach_kappa2; double ccz4_damping_kappa2; };
+    union { double ccz4_phase_offset_rad; double counter_metric_phase_rad; };
+    union { uint32_t ccz4_active_channels; uint32_t active_ccz4_channels; };
+    union { uint32_t ccz4_interlock_status; uint32_t metric_cloak_status; };
+} shbt_mar_omega_aperture_t;
+
+/* --- Cache Line 5..8: Universal Harvest Engine (256 Bytes @ 0x7F000700) --- */
+typedef struct __attribute__((aligned(64))) shbt_universal_harvest_aperture {
+    /* Cache Line 5 (0x140 - 0x17F): Conformal Opacity & Bondi-Hoyle Siphon */
+    union { double rosseland_opacity_quench_db; double metric_opacity_atten_db; };
+    union { double rosseland_kappa_eff_ratio; double kappa_eff_over_kappa0; };
+    union { double pair_thresh_s_ratio; double pair_quench_s_thresh_mev2; };
+    union { double pair_adiabatic_gamma1; double core_adiabatic_gamma1; };
+    union { double harvest_m_dot_msun_yr; double bondi_hoyle_rate_msun_yr; };
+    union { double harvest_sugawara_gamma_top; double sugawara_framing_gain; };
+    union { double harvest_seed_mass_kg; double ghost_seed_mass_kg; };
+    union { uint64_t harvest_target_class_id; uint64_t target_stellar_class_id; };
+
+    /* Cache Line 6 (0x180 - 0x1BF): Red Dwarf Dynamo & White Dwarf Melting */
+    union { double dynamo_turbulent_reynolds_rm; double red_dwarf_magnetic_reynolds; };
+    union { double dynamo_flare_damping_db; double flare_attenuation_db; };
+    union { double dynamo_ohmic_shock_joules; double dynamo_dissipation_joules; };
+    union { double wd_gst225_impedance_mrayl; double gst225_acoustic_z_mrayl; };
+    union { double wd_acoustic_reflectance; double acoustic_reflectance; };
+    union { double wd_coulomb_coupling_gamma; double coulomb_gamma_parameter; };
+    union { double wd_instanton_action; double instanton_action_s; };
+    union { double wd_pyc_fusion_rate; double pycnonuclear_rate_cm3_s; };
+
+    /* Cache Line 7 (0x1C0 - 0x1FF): Neutron Star CFL Hadronization & Lepton Shunt */
+    union { double ns_floquet_debye_potential_mev; double floquet_screening_mev; };
+    union { double ns_debye_wavenumber_inv_fm; double debye_wavenumber_fm_inv; };
+    union { double ns_chiral_restoration_slope; double chiral_geodesic_slope; };
+    union { double ns_free_quark_fraction; double free_quark_fraction; };
+    union { double ns_unitary_lepton_shunt_flux; double dark_lepton_shunt_flux; };
+    union { double ns_outbound_neutrino_flux; double neutrino_flux_cm2_s; };
+    union { double ns_prompt_gamma_power_watts; double prompt_gamma_watts; };
+    union { uint64_t ns_color_triality_slots; uint64_t color_triality_slot_mask; };
+
+    /* Cache Line 8 (0x200 - 0x23F): Monolithic Computronium Synthesis (LOGOS-312) */
+    union { double logos_fold_throughput_pct; double computronium_throughput_kg_s; };
+    union { double logos_interfacial_disloc_density; double dislocation_density_cm2; };
+    union { double logos_lattice_tether_stiffness; double chern_simons_stiffness_n_m; };
+    union { uint64_t logos_phonon_occupancy_e9; uint64_t phonon_occ_e9; };
+    union { double logos_fracton_capture_time_fs; double fracton_capture_time_fs; };
+    union { double logos_kms_entropy_rate_j_k; double internal_entropy_rate_j_k; };
+    union { double logos_per_bit_heat_dissipation; double internal_dissipation_j_bit; };
+    union { uint64_t logos_active_space_groups; uint64_t crystal_space_group_mask; };
+} shbt_universal_harvest_aperture_t;
+
+/* --- Master 640-Byte Microkernel Contract (ABI v12.0, 10 Cache Lines) --- */
+typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_v12 {
+    /* Cache Line 0 (0x000 - 0x03F): Microkernel Header & Global Control */
+    uint32_t magic;                                      /* 0x53484254 ("SHBT") */
+    uint32_t abi_version;                                /* 0x000C0312 (ABI v12.0) */
+    uint64_t symplectic_tick_counter;                    /* Monotonic symplectic step counter */
+    union { uint64_t global_status_flags; uint64_t power_bus_arbiter_flags; };
+    uint64_t global_fault_mask;                          /* Hardware fault syndrome register */
+    uint64_t aperture_phys_mar_omega;                    /* 0x7F000600ULL */
+    uint64_t aperture_phys_harvest;                      /* 0x7F000700ULL */
+    uint64_t reserved_cl0[2];                            /* Pad Cache Line 0 to 64 bytes */
+
+    /* Cache Lines 1..4 (0x040 - 0x13F): MAR-OMEGA Control Aperture (256B) */
+    shbt_mar_omega_aperture_t mar_omega;
+
+    /* Cache Lines 5..8 (0x140 - 0x23F): Universal Harvest Engine Aperture (256B) */
+    union {
+        shbt_universal_harvest_aperture_t harvest;
+        shbt_universal_harvest_aperture_t harvest_engine;
+    };
+
+    /* Cache Line 9 (0x240 - 0x27F): HIL Gate Audit Matrix & CRC64 Seal */
+    union { uint32_t hil_gates_pass_mask; uint32_t hil_gates_321_to_344_mask; };
+    union { uint32_t hil_total_gates_count; uint32_t hil_total_registered_gates; };
+    union { uint32_t hil_passed_gates_count; uint32_t hil_total_passed_gates; };
+    union { uint32_t hil_status_code; uint32_t hil_audit_status_code; };
+    union { uint64_t hardware_timer_ps; uint64_t monotonic_timestamp_ns; };
+    union { uint64_t crc64_iso_checksum; uint64_t aperture_crc64_iso; };
+    union { uint8_t line9_reserved[32]; uint8_t reserved_cl9[32]; };
+} shbt_swarm_mmio_v12_t;
+
 #ifdef __cplusplus
 }
 #endif
@@ -1040,6 +1185,15 @@ _Static_assert(sizeof(shbt_stellar_aperture_mmio_t) == 1472,
                "shbt_stellar_aperture_mmio_t must be exactly 1472 bytes");
 _Static_assert(sizeof(shbt_patch_aperture_hw_t) == 64,
                "shbt_patch_aperture_hw_t must be exactly 64 bytes");
+
+/* --- Strict Compile-Time ABI v12.0 Layout & Alignment Validations --- */
+_Static_assert(sizeof(shbt_mar_omega_aperture_t) == 256U, "MAR-OMEGA aperture must occupy 256 bytes (4 cache lines)");
+_Static_assert(sizeof(shbt_universal_harvest_aperture_t) == 256U, "Universal Harvest aperture must occupy 256 bytes (4 cache lines)");
+_Static_assert(sizeof(shbt_swarm_mmio_v12_t) == 640U, "ABI v12.0 MMIO struct must equal 640 bytes (10 cache lines)");
+_Static_assert(alignof(shbt_swarm_mmio_v12_t) == 64U, "ABI v12.0 MMIO struct must be 64-byte aligned");
+_Static_assert(offsetof(shbt_swarm_mmio_v12_t, mar_omega) == 64U, "MAR-OMEGA aperture must start at Cache Line 1 (0x040)");
+_Static_assert(offsetof(shbt_swarm_mmio_v12_t, harvest) == 320U, "Universal Harvest aperture must start at Cache Line 5 (0x140)");
+_Static_assert(offsetof(shbt_swarm_mmio_v12_t, harvest_engine) == 320U, "Universal Harvest aperture must start at Cache Line 5 (offset 0x140)");
 
 #endif /* SHBT_SWARM_MMIO_H */
 

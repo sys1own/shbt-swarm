@@ -10,6 +10,7 @@ members = [
     "crates/shbt-swarm-foundry",
     "crates/shbt-swarm-architect",
     "crates/shbt-swarm-mar312x",
+    "crates/warp-power-battery",
     "crates/shbt-swarm-sim",
     "crates/shbt-swarm-omega",
     "crates/shbt-swarm-aegis",

@@ -23,6 +23,7 @@ shbt-swarm-shield = { path = "../shbt-swarm-shield" }
 shbt-swarm-foundry = { path = "../shbt-swarm-foundry" }
 shbt-swarm-architect = { path = "../shbt-swarm-architect" }
 shbt-swarm-mar312x = { path = "../shbt-swarm-mar312x" }
+warp-power-battery = { path = "../warp-power-battery" }
 shbt-swarm-sim = { path = "../shbt-swarm-sim" }
 shbt-swarm-omega = { path = "../shbt-swarm-omega" }
 shbt-swarm-aegis = { path = "../shbt-swarm-aegis" }

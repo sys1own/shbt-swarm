@@ -19,6 +19,7 @@ z3-proofs:
 	$(PYTHON) formal/verify_mar312x_reactor.py
 	$(PYTHON) formal/verify_omega_megastructures.py
 	$(PYTHON) formal/verify_logos_hypercomputer.py
+	$(PYTHON) formal/verify_mar_omega_closure.py
 
 rust-test:
 	cargo check --workspace --all-targets

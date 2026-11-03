@@ -16,6 +16,10 @@ pub mod crowbar_smes;
 pub mod hbt_pic_rotator;
 pub mod warp_soliton_coupling;
 pub mod eda_export;
+#[path = "../../warp-power-battery/src/mar_omega_flow.rs"]
+pub mod mar_omega_flow;
+#[path = "../../warp-power-battery/src/power_arbiter.rs"]
+pub mod power_arbiter;
 
 pub use purcell_seed::*;
 pub use polariton_decx::*;

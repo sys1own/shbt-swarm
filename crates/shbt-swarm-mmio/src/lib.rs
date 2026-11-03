@@ -1,4 +1,4 @@
-//! `shbt-swarm-mmio`: Bare-Metal Microkernel ABI v10 (`0x000A0312`) Register Specification.
+//! `shbt-swarm-mmio`: Bare-Metal Microkernel ABI v12 (`0x000C0312`) Register Specification.
 //! Zero-allocation `#![no_std]` FFI bindings matching `include/shbt_swarm_mmio.h`.
 
 #![no_std]
@@ -17,11 +17,15 @@ use shbt_swarm_core::{
 pub const SHBT_SWARM_MMIO_BASE_ADDR: u64 = 0x8000_0000;
 pub const SHBT_SWARM_STINESPRING_BASE_ADDR: u64 = 0x7002_0000;
 pub const SHBT_SWARM_STINESPRING_FRAME_BYTES: usize = 135_168;
-pub const SHBT_SWARM_ABI_VERSION: u32 = 0x000B_0312;
+pub const SHBT_SWARM_ABI_VERSION: u32 = 0x000C_0312;
+pub const SHBT_SWARM_ABI_VERSION_V12: u32 = 0x000C_0312;
+pub const SHBT_SWARM_MMIO_MAGIC: u32 = 0x5348_4254;
+pub const SHBT_SWARM_MMIO_TOTAL_SIZE: usize = 640;
+pub const SHBT_SWARM_CACHE_LINE_BYTES: usize = 64;
 pub const SHBT_SWARM_CHANNELS_TOTAL: u32 = 312;
 pub const SHBT_SWARM_CFT_SLOTS_TOTAL: u32 = 346;
-pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 94;
-pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 320;
+pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 100;
+pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 344;
 pub const SHBT_NESTED_SIM_MMIO_BASE: u64 = 0x7000_B000;
 pub const SHBT_SWARM_HARVEST_APERTURE_BASE: u64 = 0x4000_E000;
 pub const SHBT_SWARM_FOUNDRY_DENSE_BASE: u64 = 0x0000_7F80_0004_0000;
@@ -33,7 +37,15 @@ pub const SHBT_DYNKIN_SLOTS_TOTAL: u32 = 346;
 
 pub const SHBT_DCA_BASE_ADDR: u64 = 0x7F00_0400;
 pub const SHBT_STELLAR_APERTURE_BASE_ADDR: u64 = 0x7F00_0500;
+pub const SHBT_MMIO_BASE_MAR_OMEGA: u64 = 0x7F00_0600;
+pub const SHBT_MMIO_BASE_UNIVERSAL_HARVEST: u64 = 0x7F00_0700;
 pub const SHBT_PATCH_APERTURE_BASE_ADDR: u64 = 0x8F00_0100;
+
+pub const SHBT_POWER_BUS_MAR312X_ACTIVE: u64 = 1 << 0;
+pub const SHBT_POWER_BUS_OMEGA_ACTIVE: u64 = 1 << 1;
+pub const SHBT_POWER_BUS_HANDOFF_SYNC: u64 = 1 << 2;
+pub const SHBT_POWER_BUS_ARBITER_LOCKED: u64 = 1 << 3;
+pub const SHBT_POWER_BUS_CROWBAR_FAULT: u64 = 1 << 31;
 
 pub const SHBT_SWARM_CMD_CLAMP_GW_RECOIL: u32 = 0x0000_0100;
 pub const SHBT_SWARM_CMD_ENGAGE_CONT_RIBBON: u32 = 0x0000_0200;
@@ -63,6 +75,7 @@ pub const ABI_VERSION_V7: u32 = 0x0007_0312;
 pub const ABI_VERSION_V9: u32 = 0x0009_0312;
 pub const ABI_VERSION_V10: u32 = 0x000A_0312;
 pub const ABI_VERSION_V11: u32 = 0x000B_0312;
+pub const ABI_VERSION_V12: u32 = 0x000C_0312;
 pub const SHBT_APOTH_MMIO_BASE: usize = 0x4000_C000;
 
 // Baseline Fault Bitmasks (Bits 0..31)
@@ -214,10 +227,21 @@ pub struct ShbtSwarmMmioRegs {
     pub async_symplectic_2form_drift: f64,
     pub v11_harvested_nucleons_counter: u64,
     pub v11_reserved_tail: u64,
+
+    // Cache Line 9 (0x0240..0x027F): ABI v12 MAR-OMEGA Continuous Reactor & HIL Audit (64 bytes)
+    pub omega_gross_power_watts: f64,
+    pub omega_cft_direct_eff: f64,
+    pub omega_cryo_sensible_watts: f64,
+    pub omega_throat_shear_mpa: f64,
+    pub omega_bondi_hoyle_msun_yr: f64,
+    pub power_bus_arbiter_flags: u64,
+    pub hil_gates_pass_mask: u32,
+    pub hil_status_code: u32,
+    pub crc64_iso_checksum: u64,
 }
 
 const _: () = {
-    assert!(size_of::<ShbtSwarmMmioRegs>() == 576);
+    assert!(size_of::<ShbtSwarmMmioRegs>() == 640);
     assert!(align_of::<ShbtSwarmMmioRegs>() == 64);
     assert!(offset_of!(ShbtSwarmMmioRegs, abi_version) == 0x00C0);
     assert!(offset_of!(ShbtSwarmMmioRegs, chiral_ee_q16) == 0x0100);
@@ -230,6 +254,8 @@ const _: () = {
     assert!(offset_of!(ShbtSwarmMmioRegs, dark_ledger_anyon_braid_count) == 0x01E0);
     assert!(offset_of!(ShbtSwarmMmioRegs, wd_instanton_action_measured) == 0x0200);
     assert!(offset_of!(ShbtSwarmMmioRegs, v11_harvested_nucleons_counter) == 0x0230);
+    assert!(offset_of!(ShbtSwarmMmioRegs, omega_gross_power_watts) == 0x0240);
+    assert!(offset_of!(ShbtSwarmMmioRegs, power_bus_arbiter_flags) == 0x0268);
 };
 
 #[repr(C, packed)]
@@ -350,7 +376,7 @@ macro_rules! const_assert {
     };
 }
 
-pub const SHBT_MMIO_ABI_VERSION: u32 = 0x000B_0312;
+pub const SHBT_MMIO_ABI_VERSION: u32 = 0x000C_0312;
 pub const SHBT_MMIO_DENSE_BASE: u64 = 0x7F00_0000;
 pub const SHBT_MMIO_QUENCH_BASE: u64 = 0x7F00_0100;
 pub const SHBT_MMIO_SHUNT_BASE: u64 = 0x7F00_0200;
@@ -628,6 +654,15 @@ impl ShbtSwarmMmioRegs {
             async_symplectic_2form_drift: 1.0e-20,
             v11_harvested_nucleons_counter: 0,
             v11_reserved_tail: 0,
+            omega_gross_power_watts: 1.0e22,
+            omega_cft_direct_eff: 0.999_811_46,
+            omega_cryo_sensible_watts: 244_998.856,
+            omega_throat_shear_mpa: 7.85e-9,
+            omega_bondi_hoyle_msun_yr: 20.0,
+            power_bus_arbiter_flags: SHBT_POWER_BUS_OMEGA_ACTIVE | SHBT_POWER_BUS_ARBITER_LOCKED,
+            hil_gates_pass_mask: 0x00FF_FFFF,
+            hil_status_code: 0x0000_0344,
+            crc64_iso_checksum: 0x3120_000C_0344_0100,
         }
     }
 
@@ -646,6 +681,12 @@ impl ShbtSwarmMmioRegs {
     #[inline]
     #[allow(clippy::approx_constant)]
     pub const fn new_nominal_v11() -> Self {
+        Self::new_nominal_v7()
+    }
+
+    #[inline]
+    #[allow(clippy::approx_constant)]
+    pub const fn new_nominal_v12() -> Self {
         Self::new_nominal_v7()
     }
 
@@ -772,7 +813,177 @@ impl ShbtSwarmMmioRegs {
         self.fault_status_mask |= faults;
         faults
     }
+
+    #[inline]
+    pub fn audit_v12_invariants(&mut self) -> u64 {
+        let mut faults = self.audit_v11_invariants();
+        if self.omega_gross_power_watts < 1.0e21
+            || self.omega_gross_power_watts > 1.0e22
+            || self.omega_gross_power_watts.is_nan()
+            || self.omega_cft_direct_eff < 0.99980
+            || self.omega_cft_direct_eff.is_nan()
+        {
+            faults |= SHBT_SWARM_FAULT_LANDAUER_OVERFLOW;
+        }
+        if self.omega_cryo_sensible_watts > 500_000.0
+            || self.omega_cryo_sensible_watts.is_nan()
+        {
+            faults |= SHBT_SWARM_FAULT_LANDAUER_OVERFLOW;
+        }
+        if self.omega_throat_shear_mpa >= 1.0e-6
+            || self.omega_throat_shear_mpa.is_nan()
+        {
+            faults |= SHBT_SWARM_FAULT_MAR312X_HOOP_STRESS;
+        }
+        if (self.power_bus_arbiter_flags & SHBT_POWER_BUS_CROWBAR_FAULT) != 0 {
+            faults |= SHBT_SWARM_FAULT_MAR312X_HOOP_STRESS;
+        }
+        self.fault_status_mask |= faults;
+        faults
+    }
 }
+
+/// 256-Byte MAR-OMEGA Continuous-Flow Reactor Aperture (`0x7F000600`, 4 cache lines).
+#[repr(C, align(64))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtMarOmegaAperture {
+    // Cache Line 1 (0x0040..0x007F): Continuous-Flow Kinetics & Slipstream Control
+    pub m_dot_siphon_kg_s: f64,
+    pub f_slip_ratio: f64,
+    pub m_dot_fuel_kg_s: f64,
+    pub p_gross_watts: f64,
+    pub p_cft_direct_watts: f64,
+    pub p_dark_shunt_watts: f64,
+    pub eta_direct_eff: f64,
+    pub stored_fuel_mass_kg: f64,
+
+    // Cache Line 2 (0x0080..0x00BF): 16-Layer Sp(16,Z) Fracton Cryogenic Shunt
+    pub p_sensible_cryo_watts: f64,
+    pub t_throat_kelvin: f64,
+    pub t_critical_rebco_kelvin: f64,
+    pub fracton_genus_g: u32,
+    pub fracton_layers_n: u32,
+    pub borrmann_transmission_tau: f64,
+    pub mossbauer_recoil_free_fm: f64,
+    pub cft_dynkin_active_slots: u64,
+    pub cft_coset_level_k: u64,
+
+    // Cache Line 3 (0x00C0..0x00FF): CCZ4 Metric Stress Cloaking & Weyl Safety
+    pub throat_radius_meters: f64,
+    pub uncloaked_radiation_pa: f64,
+    pub ccz4_counter_stress_pa: f64,
+    pub residual_throat_shear_mpa: f64,
+    pub frenkel_limit_mpa: f64,
+    pub safety_factor_structural: f64,
+    pub weyl_choke_latency_fs: f64,
+    pub ccz4_active_channels: u64,
+
+    // Cache Line 4 (0x0100..0x013F): Autopoietic Self-Heal & B-L Anomaly Lock
+    pub b_minus_l_charge_net: i64,
+    pub chiral_homochirality_ee: f64,
+    pub mera_scrub_rate_hz: f64,
+    pub wyckoff_227_lock_status: u64,
+    pub weyl_norm_throat: f64,
+    pub tomita_period_tau0: f64,
+    pub reactor_uptime_ticks: u64,
+    pub omega_fault_latch: u64,
+}
+
+const _: () = {
+    assert!(size_of::<ShbtMarOmegaAperture>() == 256);
+    assert!(align_of::<ShbtMarOmegaAperture>() == 64);
+};
+
+/// 256-Byte Universal Stellar Harvester & Computronium Pipeline Aperture (`0x7F000700`, 4 cache lines).
+#[repr(C, align(64))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtUniversalHarvestAperture {
+    // Cache Line 5 (0x0140..0x017F): Universal Bondi-Hoyle Siphon & Eddington Bypass
+    pub target_stellar_mass_msun: f64,
+    pub target_escape_vel_m_s: f64,
+    pub p_grav_unbind_watts: f64,
+    pub m_dot_bondi_hoyle_msun_yr: f64,
+    pub deconstruct_time_days_per_msun: f64,
+    pub opacity_suppression_ratio: f64,
+    pub eddington_bypass_gain: f64,
+    pub target_class_id: u64,
+
+    // Cache Line 6 (0x0180..0x01BF): White Dwarf Melter & Red Dwarf Dynamo Brake
+    pub wd_coulomb_gamma_eff: f64,
+    pub wd_su2_screening_length_m: f64,
+    pub wd_instanton_action_s: f64,
+    pub wd_pycnonuclear_rate_cm3_s: f64,
+    pub rd_magnetic_reynolds_eff: f64,
+    pub rd_dynamo_attenuation_db: f64,
+    pub rd_helicity_quench_watts: f64,
+    pub core_adiabatic_gamma1: f64,
+
+    // Cache Line 7 (0x01C0..0x01FF): Neutron Star / Magnetar CFL Hadronization
+    pub ns_cfl_gap_delta_mev: f64,
+    pub ns_colour_triality_lock: u64,
+    pub ns_free_quark_leak_prob: f64,
+    pub ns_pasta_shear_modulus_pa: f64,
+    pub magnetar_b_field_tesla: f64,
+    pub magnetar_schwinger_ratio: f64,
+    pub wzw_level_k_q: u64,
+    pub wzw_level_k_l: u64,
+
+    // Cache Line 8 (0x0200..0x023F): Continuous In-Line Computronium Folding
+    pub computronium_yield_kg_s: f64,
+    pub mera_bond_dimension_chi: u64,
+    pub chern_simons_stiffness_n_m: f64,
+    pub diamond_defect_density_cm3: f64,
+    pub logos_fracton_capture_time_fs: f64,
+    pub landauer_erasure_efficiency: f64,
+    pub cumulative_computronium_msun: f64,
+    pub harvest_pipeline_status: u64,
+}
+
+const _: () = {
+    assert!(size_of::<ShbtUniversalHarvestAperture>() == 256);
+    assert!(align_of::<ShbtUniversalHarvestAperture>() == 64);
+};
+
+/// Master 640-Byte (10 Cache-Line) SHBT-SWARM ABI v12.0 Register Map (`shbt_swarm_mmio_v12_t`).
+#[repr(C, align(64))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtSwarmMmioV12 {
+    // Cache Line 0 (0x0000..0x003F): Global ABI v12.0 Header & Master Control
+    pub magic_header: u32,
+    pub abi_version: u32,
+    pub system_control_flags: u64,
+    pub system_status_flags: u64,
+    pub global_fault_mask: u64,
+    pub monotonic_tick_ns: u64,
+    pub active_swarm_nodes: u64,
+    pub power_bus_arbiter_state: u64,
+    pub reserved_cl0: u64,
+
+    // Cache Lines 1..4 (0x0040..0x013F): SHBT-MAR-OMEGA Reactor Aperture (256B)
+    pub mar_omega: ShbtMarOmegaAperture,
+
+    // Cache Lines 5..8 (0x0140..0x023F): Universal Harvester & Foundry Aperture (256B)
+    pub universal_harvest: ShbtUniversalHarvestAperture,
+
+    // Cache Line 9 (0x0240..0x027F): Formal SMT & 344-Gate HIL Hardware Audit Seal
+    pub smt_theorems_verified: u32,
+    pub hil_gates_verified: u32,
+    pub hil_v12_extension_mask: u64,
+    pub symplectic_shadow_drift: f64,
+    pub global_adm_mass_error: f64,
+    pub nsc_tde_penetration_prob: f64,
+    pub hardware_crc64_iso: u64,
+    pub reserved_cl9_0: u64,
+    pub reserved_cl9_1: u64,
+}
+
+const _: () = {
+    assert!(size_of::<ShbtSwarmMmioV12>() == 640);
+    assert!(align_of::<ShbtSwarmMmioV12>() == 64);
+    assert!(offset_of!(ShbtSwarmMmioV12, mar_omega) == 0x0040);
+    assert!(offset_of!(ShbtSwarmMmioV12, universal_harvest) == 0x0140);
+    assert!(offset_of!(ShbtSwarmMmioV12, smt_theorems_verified) == 0x0240);
+};
 
 
 /// Volatile MMIO controller supporting both bare-metal physical addresses (0x70000000)
@@ -1213,6 +1424,26 @@ mod tests {
         let mut fault_regs4 = regs;
         fault_regs4.nsc_tde_penetration_prob = 1.0e-100;
         assert_ne!(fault_regs4.audit_v11_invariants() & SHBT_SWARM_FAULT_TDE_LOSS_CONE_TRIP, 0);
+    }
+
+    #[test]
+    fn test_v12_nominal_and_fault_invariants() {
+        assert_eq!(core::mem::size_of::<ShbtSwarmMmioRegs>(), 640);
+        assert_eq!(core::mem::size_of::<ShbtMarOmegaAperture>(), 256);
+        assert_eq!(core::mem::size_of::<ShbtUniversalHarvestAperture>(), 256);
+        assert_eq!(core::mem::size_of::<ShbtSwarmMmioV12>(), 640);
+
+        let mut regs = ShbtSwarmMmioRegs::new_nominal_v12();
+        assert_eq!(regs.abi_version, SHBT_SWARM_ABI_VERSION_V12);
+        assert_eq!(regs.audit_v12_invariants(), SHBT_SWARM_FAULT_NONE);
+
+        let mut fault_regs = regs;
+        fault_regs.omega_cryo_sensible_watts = 600_000.0;
+        assert_ne!(fault_regs.audit_v12_invariants() & SHBT_SWARM_FAULT_LANDAUER_OVERFLOW, 0);
+
+        let mut fault_regs2 = regs;
+        fault_regs2.omega_throat_shear_mpa = 1.0e-5;
+        assert_ne!(fault_regs2.audit_v12_invariants() & SHBT_SWARM_FAULT_MAR312X_HOOP_STRESS, 0);
     }
 }
 
