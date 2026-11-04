@@ -102,6 +102,63 @@ impl ContinuousFlowReactor {
     }
 }
 
+/// Primary operational core integrating continuous flow kinetics and RMHD divertor solver.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct MarOmegaReactorCore {
+    pub flow_reactor: ContinuousFlowReactor,
+    pub divertor: crate::divertor_rmhd::DivertorSolver,
+}
+
+impl MarOmegaReactorCore {
+    /// Constructs a nominal `MarOmegaReactorCore`.
+    #[inline]
+    pub fn new() -> Self {
+        Self {
+            flow_reactor: ContinuousFlowReactor::new_nominal(),
+            divertor: crate::divertor_rmhd::DivertorSolver::new(),
+        }
+    }
+
+    /// Primary execution step for stellar deconstruction slipstream diversion and reactor flow.
+    pub fn step_reactor_flow(
+        &mut self,
+        m_dot_siphon_kg_s: u64,
+        velocity_beta_q16: i32,
+        mmio_base: Option<*mut u8>,
+    ) -> Result<ReactorTelemetry, &'static str> {
+        let inflow_q32 = crate::divertor_rmhd::Q32::from_int(m_dot_siphon_kg_s as i64);
+        let beta = crate::divertor_rmhd::Q16::from_raw(velocity_beta_q16);
+
+        // 1. Solve RMHD equilibrium and update separatrix state
+        let tel_div = self.divertor.step_equilibrium(inflow_q32, beta);
+
+        // 2. Verify physical invariants before throat injection
+        if (tel_div.status_bits & crate::divertor_rmhd::status_flags::FRENKEL_SAFE) == 0 {
+            return Err("FATAL: Divertor effective shear stress violated Frenkel limit");
+        }
+        if (tel_div.status_bits & crate::divertor_rmhd::status_flags::LAMINAR) == 0 {
+            return Err("FATAL: Boundary layer transitioned to turbulence");
+        }
+
+        // 3. Commit hardware telemetry to Cache Line 10 if MMIO mapped
+        if let Some(base) = mmio_base {
+            unsafe {
+                self.divertor.write_to_mmio(base, &tel_div);
+            }
+        }
+
+        // 4. Return continuous-flow reactor telemetry
+        let tel_flow = self.flow_reactor.evaluate_flow_step(m_dot_siphon_kg_s as f64);
+        Ok(tel_flow)
+    }
+}
+
+impl Default for MarOmegaReactorCore {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -119,5 +176,17 @@ mod tests {
         assert!(tel.t_throat_kelvin < T_OP_MAX_K);
         assert!(tel.residual_throat_shear_mpa < 1.0e-6);
         assert!(tel.safety_invariants_locked);
+    }
+
+    #[test]
+    fn test_mar_omega_reactor_core_step() {
+        let mut core = MarOmegaReactorCore::new();
+        let mut mmio_buf = [0u8; 1024];
+        let res = core.step_reactor_flow(125_600_000, 32768, Some(mmio_buf.as_mut_ptr()));
+        assert!(res.is_ok());
+        let tel = res.unwrap();
+        assert!(tel.safety_invariants_locked);
+        let psi_raw = u32::from_ne_bytes(mmio_buf[0x0280..0x0284].try_into().unwrap());
+        assert_eq!(psi_raw, 0x000015C5);
     }
 }

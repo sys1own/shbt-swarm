@@ -249,26 +249,28 @@ impl DivertorSolver {
         base_addr: *mut u8,
         telemetry: &DivertorTelemetry,
     ) {
-        let cl10_ptr = base_addr.add(0x0280);
+        unsafe {
+            let cl10_ptr = base_addr.add(0x0280);
 
-        // 0x0280: Separatrix Psi (Q16.16)
-        core::ptr::write_volatile(cl10_ptr as *mut u32, telemetry.psi_separatrix.to_raw() as u32);
-        // 0x0284: Reynolds Margin (u32)
-        core::ptr::write_volatile(cl10_ptr.add(4) as *mut u32, telemetry.reynolds_margin);
-        // 0x0288: Feedstock Split (Q32.32)
-        core::ptr::write_volatile(cl10_ptr.add(8) as *mut u64, telemetry.feedstock_split_ratio.to_raw() as u64);
-        // 0x0290: Status Latch (u32)
-        core::ptr::write_volatile(cl10_ptr.add(16) as *mut u32, telemetry.status_bits);
-        // 0x0294: Measured Guide Field (Q16.16)
-        core::ptr::write_volatile(cl10_ptr.add(20) as *mut u32, self.active_b_guide.to_raw() as u32);
-        // 0x0298: Effective Shear Stress (Q32.32 Pa)
-        core::ptr::write_volatile(cl10_ptr.add(24) as *mut u64, telemetry.effective_shear_stress_pa.to_raw() as u64);
-        // 0x02A0: Siphon Mass Rate (Q32.32 kg/s)
-        core::ptr::write_volatile(cl10_ptr.add(32) as *mut u64, self.measured_inflow_kg_s.to_raw() as u64);
-        // 0x02A8: Throat Diversion Rate (Q32.32 kg/s)
-        core::ptr::write_volatile(cl10_ptr.add(40) as *mut u64, telemetry.mass_throat_kg_s.to_raw() as u64);
-        // 0x02B0: KH Growth Rate (0 in Q16.16)
-        core::ptr::write_volatile(cl10_ptr.add(48) as *mut u32, 0u32);
+            // 0x0280: Separatrix Psi (Q16.16)
+            core::ptr::write_volatile(cl10_ptr as *mut u32, telemetry.psi_separatrix.to_raw() as u32);
+            // 0x0284: Reynolds Margin (u32)
+            core::ptr::write_volatile(cl10_ptr.add(4) as *mut u32, telemetry.reynolds_margin);
+            // 0x0288: Feedstock Split (Q32.32)
+            core::ptr::write_volatile(cl10_ptr.add(8) as *mut u64, telemetry.feedstock_split_ratio.to_raw() as u64);
+            // 0x0290: Status Latch (u32)
+            core::ptr::write_volatile(cl10_ptr.add(16) as *mut u32, telemetry.status_bits);
+            // 0x0294: Measured Guide Field (Q16.16)
+            core::ptr::write_volatile(cl10_ptr.add(20) as *mut u32, self.active_b_guide.to_raw() as u32);
+            // 0x0298: Effective Shear Stress (Q32.32 Pa)
+            core::ptr::write_volatile(cl10_ptr.add(24) as *mut u64, telemetry.effective_shear_stress_pa.to_raw() as u64);
+            // 0x02A0: Siphon Mass Rate (Q32.32 kg/s)
+            core::ptr::write_volatile(cl10_ptr.add(32) as *mut u64, self.measured_inflow_kg_s.to_raw() as u64);
+            // 0x02A8: Throat Diversion Rate (Q32.32 kg/s)
+            core::ptr::write_volatile(cl10_ptr.add(40) as *mut u64, telemetry.mass_throat_kg_s.to_raw() as u64);
+            // 0x02B0: KH Growth Rate (0 in Q16.16)
+            core::ptr::write_volatile(cl10_ptr.add(48) as *mut u32, 0u32);
+        }
     }
 }
 
