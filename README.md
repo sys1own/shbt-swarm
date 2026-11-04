@@ -196,9 +196,9 @@ Under extreme relativistic lapse foliations where lapse variations reach Δ*α* 
 |                                                                                                    |
 |    Observer R (Frame R)                                                  Observer R' (Frame R')    |
 |    +-----------------------------+     Unitary QRF Transformation        +------------------------+|
-|    | State: ρ^(R)              |  U_{R⟶R'} = P exp(−i/ℏ ∫ π X dx)    |  State: ρ^(R')        ||
-|    | Observables: A^(R)          | ===================================> |  Observables: A^(R')    ||
-|    | ⟨A^(R)⟩_ρ = Tr(ρ A)         |       (Exact Trace Invariance)        |  ⟨A^(R')⟩ = ⟨A^(R)⟩      ||
+|    | State: ρ^(R)                |  U_{R⟶R'} = P exp(−i/ℏ ∫ π X dx)     |  State: ρ^(R')         ||
+|    | Observables: A^(R)          | ===================================>  |  Observables: A^(R')   ||
+|    | ⟨A^(R)⟩_ρ = Tr(ρ A)          |       (Exact Trace Invariance)        |  ⟨A^(R')⟩ = ⟨A^(R)⟩     ||
 |    +-----------------------------+                                       +------------------------+|
 |                   |                                                                   |            |
 |                   +-----------------------------------+-------------------------------+            |
@@ -488,17 +488,17 @@ At exawatt-scale operational tiers, stimulated Brillouin scattering generates in
 |                      CLOSED-LOOP SHBT-MAR-312X POWER-TO-SOLITON & ROTATOR PIPELINE                    |
 |                                                                                                       |
 |  +-------------------------------------------------------------------------------------------------+  |
-|  |                 SHBT-MAR-312X Autopoietic Mass-Annihilation Reactor (950.00 kg, 0.3500 m³)     |  |
+|  |                 SHBT-MAR-312X Autopoietic Mass-Annihilation Reactor (950.00 kg, 0.3500 m³)      |  |
 |  |  - Fuel: 41 × 376.99 kg Metamaterial Core Cells (15,456.59 kg ADM fuel mass)                    |  |
-|  |  - Solid-State 4D Weyl-PTC SHBT-DEC-X Direct Conversion: η_DEC-X = 0.99200 (99.200%)          |  |
-|  |  - Sensible Thermal Leakage: f_sensible = 2.130395×10⁻⁹ (cold mass T_op = 24.85 K ≤ 192.50 K)    |  |
+|  |  - Solid-State 4D Weyl-PTC SHBT-DEC-X Direct Conversion: η_DEC-X = 0.99200 (99.200%)            |  |
+|  |  - Sensible Thermal Leakage: f_sensible = 2.130395×10⁻⁹ (cold mass T_op = 24.85 K ≤ 192.50 K)   |  |
 |  +--------------------------------------------+----------------------------------------------------+  |
 |                                               |                                                       |
 |                                               v                                                       |
 |  +-------------------------------------------------------------------------------------------------+  |
 |  |                  Direct Boundary-Conformal CFT Bus (B_direct^MAR-X) & LANR Rail                 |  |
-|  |  - Direct Bus Conversion Efficiency: η_direct = 0.99850 (99.850%)                             |  |
-|  |  - Net Actuation Conversion: η_act = 0.99200 × 0.99850 = 0.990512 (99.0512%)                  |  |
+|  |  - Direct Bus Conversion Efficiency: η_direct = 0.99850 (99.850%)                               |  |
+|  |  - Net Actuation Conversion: η_act = 0.99200 × 0.99850 = 0.990512 (99.0512%)                    |  |
 |  |  - LANR Power Generator: +999.054 kW DC at 4.2 K vs. 906.000 kW CFT Debt (+93.054 kW Surplus)   |  |
 |  +--------------------------------------------+----------------------------------------------------+  |
 |                                               |                                                       |
@@ -507,8 +507,8 @@ At exawatt-scale operational tiers, stimulated Brillouin scattering generates in
 |  |           Monolithic 8×8 InP/InGaAs HBT & InP/InGaAsP PIC Boundary Character Rotator            |  |
 |  |  - 64 Independent Actuation Channels (8x8 Grid, 127 μm Interposer / 50 μm Active Mesa Pitch)    |  |
 |  |  - 1550.00 nm DFB Master Carrier (15.0 mW CW) ⟶ 6-Stage MMI Splitter Tree (0.42 dB/stage)      |  |
-|  |  - InGaAsP MZI IQ Modulators (V_π = 1.65 V, L_int = 3.20 mm)                                   |  |
-|  |  - Linear Collector Bias Mapping: V_mn ∈ [3.800 V, 7.400 V] via 16-Bit IQ Words [0, 65535]     |  |
+|  |  - InGaAsP MZI IQ Modulators (V_π = 1.65 V, L_int = 3.20 mm)                                    |  |
+|  |  - Linear Collector Bias Mapping: V_mn ∈ [3.800 V, 7.400 V] via 16-Bit IQ Words [0, 65535]      |  |
 |  |  - K_p = 1.85 V/rad PID Phase Lock ⟶ σ_φ ≤ 5.05×10⁻⁵ rad, Coherence C ≥ 0.9995 (0.9999987)     |  |
 |  |  - Timing Jitter: 0.201 fs (< 1.707 fs limit); Routing Bandwidth: 2.560 Tbps (64 × 40 Gbps)     |  |
 |  +--------------------------------------------+----------------------------------------------------+  |
@@ -517,21 +517,21 @@ At exawatt-scale operational tiers, stimulated Brillouin scattering generates in
 |  +-------------------------------------------------------------------------------------------------+  |
 |  |              Sapphire / Helium-4 Quarter-Wave Acoustic Tamping & Airbridge Decoupling           |  |
 |  |  - Densified-Silica Quarter-Wave Layer: Z_m = 1.1512 MRayl, d_m = 6.395 nm at f_ac = 85.0 GHz   |  |
-|  |  - Power Reflectance: R_acoustic = 8.78×10⁻¹⁰ ≤ 1.0×10⁻⁶; Peak Stress: 124.60 MPa ≤ 350.00 MPa |  |
+|  |  - Power Reflectance: R_acoustic = 8.78×10⁻¹⁰ ≤ 1.0×10⁻⁶; Peak Stress: 124.60 MPa ≤ 350.00 MPa  |  |
 |  |  - Suspended Au/InP Micro-Airbridges: f_res = 19.82 MHz ⟶ Clock Isolation 3,632.69× ≥ 3,500×   |  |
-|  |  - EP2 Pt-Weyl Crowbar: 1.701 ps Trip Latency ⟶ 48.0 T SMES 99.880% Inductive Recovery           |  |
+|  |  - EP2 Pt-Weyl Crowbar: 1.701 ps Trip Latency ⟶ 48.0 T SMES 99.880% Inductive Recovery         |  |
 |  +--------------------------------------------+----------------------------------------------------+  |
 |                                               |                                                       |
 |                                               v                                                       |
 |  +-------------------------------------------------------------------------------------------------+  |
-|  |                   Macroscopic Alcubierre / EW-312 Warp Soliton β^x(t, x)                     |  |
-|  |  - 5th-Order Minimum-Jerk Trajectory: s(τ) = 10τ³ − 15τ⁴ + 6τ⁵                    |  |
-|  |  - Residual Acceleration: a_res ≤ 1.0×10⁻⁷ m/s² (< 1.0×10⁻⁶ m/s² limit)                          |  |
+|  |                   Macroscopic Alcubierre / EW-312 Warp Soliton β^x(t, x)                        |  |
+|  |  - 5th-Order Minimum-Jerk Trajectory: s(τ) = 10τ³ − 15τ⁴ + 6τ⁵                                  |  | 
+|  |  - Residual Acceleration: a_res ≤ 1.0×10⁻⁷ m/s² (< 1.0×10⁻⁶ m/s² limit)                         |  |
 |  |  - Tier 1 Continuous Cruise: v_s = 99.3c (992.00 TW Net Electrical Power)                       |  |
 |  |  - Tier 2 Sustained Burst:   v_s = 754.9c (7.541 PW Net Electrical Power)                       |  |
 |  |  - Tier 3 Exawatt Impulse:   v_s = 99,308c (992.00 PW Net Electrical Power)                     |  |
 |  |  - Tier 4 Hyper-Impulse:     v_s = 2,482,950c (24.80 EW Net Electrical Power)                   |  |
-|  |  - Andromeda Galaxy (M31, 2.537 Mly) Transit: 8.957 Hours Crew Proper Time (α_cabin = 10⁻³)  |  |
+|  |  - Andromeda Galaxy (M31, 2.537 Mly) Transit: 8.957 Hours Crew Proper Time (α_cabin = 10⁻³)     |  |
 |  +-------------------------------------------------------------------------------------------------+  |
 +-------------------------------------------------------------------------------------------------------+
 ```
@@ -600,9 +600,9 @@ Implemented in `crates/warp-power-battery/src/power_arbiter.rs` (`DualReactorPow
 |   [1] INTERSTELLAR TRAVERSAL & BOOTSTRAP                [2] STELLAR BONDI-HOYLE SIPHON THROAT         |
 |   +-----------------------------------------+           +-----------------------------------------+   |
 |   | 5th-Gen SHBT-MAR-312X (Discrete Core)   |           | Target Star / Degenerate Remnant        |   |
-|   | * 41 × 376.99 kg Bipartite Wafers       |           | * Ṁ_harvest ≥ 20.0 M_☉/yr        |   |
-|   | * P_gross = 25.00 EW (2,482,950*c* Warp)  |           | * ≤ 18.2625 days / M_☉ (248.8×)      |   |
-|   | * 5-Zone Weyl SHBT-DEC-X (η = 99.20%) |           | * Single-Throat Inflow: 1.256×10⁸ kg/s    |   |
+|   | * 41 × 376.99 kg Bipartite Wafers       |           | * Ṁ_harvest ≥ 20.0 M_☉/yr              |   |
+|   | * P_gross = 25.00 EW (2,482,950*c* Warp)|           | * ≤ 18.2625 days / M_☉ (248.8×)        |   |
+|   | * 5-Zone Weyl SHBT-DEC-X (η = 99.20%)   |           | * Single-Throat Inflow: 1.256×10⁸ kg/s  |   |
 |   +--------------------+--------------------+           +--------------------+--------------------+   |
 |                        |                                                     |                        |
 |                        | (Hot-Standby / Bootstrap)                           |                        |
@@ -613,19 +613,19 @@ Implemented in `crates/warp-power-battery/src/power_arbiter.rs` (`DualReactorPow
 |                        v                                       v                           |          |
 |   +--------------------------------------------------------------------------+             |          |
 |   |                 6th-Gen SHBT-MAR-OMEGA Conformal Throat                  |             |          |
-|   | * Lindblad Unspooling over 346 Dynkin Slots (P_π ≤ 10⁻¹²⁰)            |             |          |
-|   | * Gross Power: P_gross = ṁ_Ω c² = 10.00 ZW (1.00 × 10²² W)     |             |          |
-|   | * Direct 346-Slot CFT Coupling: η_direct = 99.981146% (9.9981146 ZW)   |             |          |
-|   | * 16-Layer Sp(16, ℤ) Fracton Shunt: f_sens = 2.45×10⁻¹⁷ (245.0 kW @ 20 K)  |             |          |
+|   | * Lindblad Unspooling over 346 Dynkin Slots (P_π ≤ 10⁻¹²⁰)               |             |          |
+|   | * Gross Power: P_gross = ṁ_Ω c² = 10.00 ZW (1.00 × 10²² W)               |             |          |
+|   | * Direct 346-Slot CFT Coupling: η_direct = 99.981146% (9.9981146 ZW)     |             |          |
+|   | * 16-Layer Sp(16, ℤ) Fracton Shunt: f_sens = 2.45×10⁻¹⁷ (245.0 kW @ 20 K)|             |          |
 |   | * 312-Channel CCZ4 Stress Cloak: σ_vM = 7.85×10⁻⁹ MPa < 1.0×10⁻⁶ MPa     |             |          |
 |   +------------------------------------+-------------------------------------+             |          |
 |                                        |                                                   |          |
 |                                        v                                                   v          |
 |   +-------------------------------------------------------------------------------------------------+ |
 |   |            DualReactorPowerArbiter (0x70000270) & In-Line SHBT-LOGOS-312 Folding                | |
-|   | * States: CruiseTraversal ⟶ SiphonApproach ⟶ OmegaIgnition ⟶ HarvestHandoff ⟶ HarvestActive | |
+|   | * States: CruiseTraversal ⟶ SiphonApproach ⟶ OmegaIgnition ⟶ HarvestHandoff ⟶ HarvestActive| |
 |   | * Emergency Fallback to MAR-312X in < 1.701 ps on throat trip                                   | |
-|   | * Space Group 227 (Fd-3m ¹²C) & 229 (Im-3m ⁵⁷Fe): ρ_disloc = 0.0 cm⁻², Q_int = 0.0 J/bit   | |
+|   | * Space Group 227 (Fd-3m ¹²C) & 229 (Im-3m ⁵⁷Fe): ρ_disloc = 0.0 cm⁻², Q_int = 0.0 J/bit        | |
 |   +-------------------------------------------------------------------------------------------------+ |
 +=======================================================================================================+
 ```
