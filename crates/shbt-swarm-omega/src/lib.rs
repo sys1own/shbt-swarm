@@ -35,6 +35,8 @@ pub mod universal_harvest;
 pub use universal_harvest::*;
 pub mod coulomb_melt;
 pub use coulomb_melt::*;
+pub mod pasta_decompress;
+pub use pasta_decompress::*;
 
 
 

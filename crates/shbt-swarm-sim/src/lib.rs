@@ -7,12 +7,14 @@
 //! (`M = 1, 1000, 10000, 100000, 510000`), and Phase 4 MAR-312X multi-physics digital twin.
 
 pub mod reactor_twin;
+pub mod omega_twin;
 pub mod galactic_twin;
 pub mod apotheosis_twin;
 pub mod galactic_multiphysics;
 pub mod symplectic_cascade;
 pub mod multi_rate_patch;
 
+pub use omega_twin::*;
 pub use reactor_twin::*;
 pub use galactic_twin::*;
 pub use apotheosis_twin::*;

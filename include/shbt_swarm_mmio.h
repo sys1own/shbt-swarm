@@ -15,14 +15,30 @@
 #include "shbt_nested_sim_abi.h"
 
 #define SHBT_SWARM_MMIO_MAGIC           0x53484254UL /* "SHBT" */
-#define SHBT_SWARM_ABI_VERSION          0x000C0312U
+#define SHBT_SWARM_ABI_VERSION          0x000D0312U /* ABI v13.0 */
 #define SHBT_SWARM_ABI_VERSION_V12      0x000C0312UL
-#define SHBT_SWARM_FORMAL_PROOFS_COUNT  100U
-#define SHBT_SWARM_HIL_GATES_COUNT      344U
-#define SHBT_SWARM_MMIO_TOTAL_SIZE      640U
+#define SHBT_SWARM_ABI_VERSION_V13      0x000D0312UL
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT  105U        /* 105 Formal Z3 Theorems */
+#define SHBT_SWARM_HIL_GATES_COUNT      360U        /* 360 HIL Verification Gates */
+#define SHBT_SWARM_MMIO_TOTAL_SIZE      704U
 #define SHBT_SWARM_CACHE_LINE_BYTES     64U
 #define SHBT_MMIO_BASE_MAR_OMEGA        0x7F000600ULL
 #define SHBT_MMIO_BASE_UNIVERSAL_HARVEST 0x7F000700ULL
+#define SHBT_SWARM_DIVERTOR_BASE_ADDR   0x7F000800UL
+
+/* Continuous RMHD Divertor Bitmask Flags & Command Opcodes */
+#define DIV_STATUS_LAMINAR             (1u << 0)
+#define DIV_STATUS_SEPARATRIX_LOCKED   (1u << 1)
+#define DIV_STATUS_CCZ4_DAMPING_ACTIVE (1u << 2)
+#define DIV_STATUS_FRENKEL_SAFE        (1u << 3)
+#define DIV_STATUS_CHOKE_ALARM         (1u << 4)
+#define DIV_STATUS_FEEDSTOCK_OPTIMAL   (1u << 5)
+
+#define DIV_CMD_NOP                    0x00000000u
+#define DIV_CMD_LOCK_SEPARATRIX        0x00000001u
+#define DIV_CMD_ENGAGE_CCZ4_DAMPING    0x00000002u
+#define DIV_CMD_TRIM_X_POINT           0x00000004u
+#define DIV_CMD_EMERGENCY_SCRAM        0x00000080u
 
 /* Dual-Reactor Power Arbiter State Flags (Cache Line 0) */
 #define SHBT_POWER_BUS_MAR312X_ACTIVE       (1ULL << 0)
@@ -632,8 +648,27 @@ typedef struct __attribute__((packed, gcc_struct, aligned(64))) {
 _Static_assert(sizeof(shbt_logos_ctrl_t) == 256, "shbt_logos_ctrl_t master bank must be exactly 256 bytes");
 
 
+#ifndef SHBT_ALIGN64
+#define SHBT_ALIGN64 __attribute__((aligned(64)))
+#endif
+
+/* === Cache Line 10 (0x0280..0x02BF, 64 Bytes): Continuous RMHD Divertor & Constellation Aperture === */
+typedef struct SHBT_ALIGN64 {
+    volatile uint32_t divertor_separatrix_psi_q16;   /* 0x0280: Separatrix flux (Q16.16 Wb, nom ~0.08504 Wb = 0x000015C5) */
+    volatile uint32_t divertor_reynolds_margin_reg;  /* 0x0284: Turbulence margin (Re_crit - Re) in Q16.16 */
+    volatile uint64_t divertor_feedstock_split_fp;   /* 0x0288: Feedstock split ratio (1 - f_slip) in Q32.32 */
+    volatile uint32_t divertor_status_latch;         /* 0x0290: Status and fault telemetry latch */
+    volatile uint32_t divertor_b_field_guide_q16;    /* 0x0294: Measured guide field in Q16.16 T (nom 48.0 T = 0x00300000) */
+    volatile uint64_t divertor_shear_stress_eff_fp;  /* 0x0298: Effective shear stress sigma_eff in Q32.32 Pa */
+    volatile uint64_t divertor_mass_inflow_rate_fp;  /* 0x02A0: Siphoned mass inflow rate M_dot in Q32.32 kg/s (1.256e8 kg/s) */
+    volatile uint64_t divertor_throat_divert_rate_fp;/* 0x02A8: Diverted throat mass rate m_dot_Omega in Q32.32 kg/s (111,265.01 kg/s) */
+    volatile uint32_t divertor_kh_growth_rate_q16;   /* 0x02B0: Kelvin-Helmholtz growth rate (1e-12 s^-1 units) */
+    volatile uint32_t divertor_control_command;      /* 0x02B4: Divertor command register */
+    uint64_t          reserved_cl10_pad;             /* 0x02B8: Padding to complete exactly 64 bytes */
+} shbt_mmio_cacheline_10_divertor_t;
+
 /* ==========================================================================
- * SHBT-MMIO-SWARM v10 REGISTER BLOCK (512 BYTES / 8 CACHE LINES)
+ * SHBT-MMIO-SWARM v13 REGISTER BLOCK (704 BYTES / 11 CACHE LINES)
  * Physical Base Address: 0x80000000
  * ========================================================================== */
 typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
@@ -670,9 +705,9 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     uint64_t pcss_crowbar_latency_ps;         /* 0x00B8: <= 2500 ps (2.5 ns) */
 
     /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
-    uint32_t abi_version;                     /* 0x00C0: 0x000B0312 */
-    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 94 */
-    uint32_t hil_gates_pass_count;            /* 0x00C8: 320 */
+    uint32_t abi_version;                     /* 0x00C0: 0x000D0312 */
+    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 105 */
+    uint32_t hil_gates_pass_count;            /* 0x00C8: 360 */
     uint32_t active_phase_mask;               /* 0x00CC: 0x0000007F (Phases 1..6) */
     uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
     uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */
@@ -734,11 +769,18 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     uint32_t hil_gates_pass_mask;             /* 0x0270: 0x00FFFFFF (24/24 MAR-OMEGA gates) */
     uint32_t hil_status_code;                 /* 0x0274: 0x00000344 (344/344 PASS) */
     uint64_t crc64_iso_checksum;              /* 0x0278: CRC-64-ISO hardware seal */
+
+    /* === CACHELINE 10 (Offsets 0x0280 .. 0x02BF): Continuous RMHD Divertor & Constellation Aperture (64 bytes) === */
+    shbt_mmio_cacheline_10_divertor_t cl10_divertor;
 } shbt_swarm_mmio_regs_t;
 
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
-_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 640,
-               "shbt_swarm_mmio_regs_t must occupy exactly 640 bytes (10 cache lines)");
+_Static_assert(sizeof(shbt_mmio_cacheline_10_divertor_t) == 64,
+               "Cache Line 10 must be 64 bytes");
+_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 704,
+               "Total MMIO structure must be exactly 704 bytes (11 cache lines)");
+_Static_assert(offsetof(shbt_swarm_mmio_regs_t, cl10_divertor) == 0x0280,
+               "cl10_divertor must be at offset 0x0280");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, abi_version) == 0x00C0,
                "abi_version offset mismatch");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, chiral_ee_q16) == 0x0100,
@@ -1136,11 +1178,11 @@ typedef struct __attribute__((aligned(64))) shbt_universal_harvest_aperture {
     union { uint64_t logos_active_space_groups; uint64_t crystal_space_group_mask; };
 } shbt_universal_harvest_aperture_t;
 
-/* --- Master 640-Byte Microkernel Contract (ABI v12.0, 10 Cache Lines) --- */
-typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_v12 {
+/* --- Master 704-Byte Microkernel Contract (ABI v13.0, 11 Cache Lines) --- */
+typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_v13 {
     /* Cache Line 0 (0x000 - 0x03F): Microkernel Header & Global Control */
     uint32_t magic;                                      /* 0x53484254 ("SHBT") */
-    uint32_t abi_version;                                /* 0x000C0312 (ABI v12.0) */
+    uint32_t abi_version;                                /* 0x000D0312 (ABI v13.0) */
     uint64_t symplectic_tick_counter;                    /* Monotonic symplectic step counter */
     union { uint64_t global_status_flags; uint64_t power_bus_arbiter_flags; };
     uint64_t global_fault_mask;                          /* Hardware fault syndrome register */
@@ -1165,7 +1207,12 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_v12 {
     union { uint64_t hardware_timer_ps; uint64_t monotonic_timestamp_ns; };
     union { uint64_t crc64_iso_checksum; uint64_t aperture_crc64_iso; };
     union { uint8_t line9_reserved[32]; uint8_t reserved_cl9[32]; };
-} shbt_swarm_mmio_v12_t;
+
+    /* Cache Line 10 (0x280 - 0x2BF): Continuous RMHD Divertor & Constellation Aperture (64B) */
+    shbt_mmio_cacheline_10_divertor_t divertor;
+} shbt_swarm_mmio_v13_t;
+
+typedef shbt_swarm_mmio_v13_t shbt_swarm_mmio_v12_t;
 
 #ifdef __cplusplus
 }
@@ -1186,14 +1233,16 @@ _Static_assert(sizeof(shbt_stellar_aperture_mmio_t) == 1472,
 _Static_assert(sizeof(shbt_patch_aperture_hw_t) == 64,
                "shbt_patch_aperture_hw_t must be exactly 64 bytes");
 
-/* --- Strict Compile-Time ABI v12.0 Layout & Alignment Validations --- */
+/* --- Strict Compile-Time ABI v13.0 Layout & Alignment Validations --- */
 _Static_assert(sizeof(shbt_mar_omega_aperture_t) == 256U, "MAR-OMEGA aperture must occupy 256 bytes (4 cache lines)");
 _Static_assert(sizeof(shbt_universal_harvest_aperture_t) == 256U, "Universal Harvest aperture must occupy 256 bytes (4 cache lines)");
-_Static_assert(sizeof(shbt_swarm_mmio_v12_t) == 640U, "ABI v12.0 MMIO struct must equal 640 bytes (10 cache lines)");
-_Static_assert(alignof(shbt_swarm_mmio_v12_t) == 64U, "ABI v12.0 MMIO struct must be 64-byte aligned");
-_Static_assert(offsetof(shbt_swarm_mmio_v12_t, mar_omega) == 64U, "MAR-OMEGA aperture must start at Cache Line 1 (0x040)");
-_Static_assert(offsetof(shbt_swarm_mmio_v12_t, harvest) == 320U, "Universal Harvest aperture must start at Cache Line 5 (0x140)");
-_Static_assert(offsetof(shbt_swarm_mmio_v12_t, harvest_engine) == 320U, "Universal Harvest aperture must start at Cache Line 5 (offset 0x140)");
+_Static_assert(sizeof(shbt_mmio_cacheline_10_divertor_t) == 64U, "Cache Line 10 Divertor must equal 64 bytes (1 cache line)");
+_Static_assert(sizeof(shbt_swarm_mmio_v13_t) == 704U, "ABI v13.0 MMIO struct must equal 704 bytes (11 cache lines)");
+_Static_assert(alignof(shbt_swarm_mmio_v13_t) == 64U, "ABI v13.0 MMIO struct must be 64-byte aligned");
+_Static_assert(offsetof(shbt_swarm_mmio_v13_t, mar_omega) == 64U, "MAR-OMEGA aperture must start at Cache Line 1 (0x040)");
+_Static_assert(offsetof(shbt_swarm_mmio_v13_t, harvest) == 320U, "Universal Harvest aperture must start at Cache Line 5 (0x140)");
+_Static_assert(offsetof(shbt_swarm_mmio_v13_t, harvest_engine) == 320U, "Universal Harvest aperture must start at Cache Line 5 (offset 0x140)");
+_Static_assert(offsetof(shbt_swarm_mmio_v13_t, divertor) == 640U, "Divertor aperture must start at Cache Line 10 (0x0280)");
 
 #endif /* SHBT_SWARM_MMIO_H */
 

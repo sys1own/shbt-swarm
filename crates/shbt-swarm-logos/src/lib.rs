@@ -13,6 +13,8 @@ pub mod dce_suppress;
 pub mod takagi_taupin;
 pub mod fracton_drain;
 pub mod continuous_ribbon;
+pub mod condensation_shunt;
+pub use condensation_shunt::*;
 pub use continuous_ribbon::{
     ContinuousRibbonState, FibonacciCategory, Matrix2x2, MultiverseTargetConstants,
     BALLISTIC_TRANSIT_TIME_AS, H_TAU, KZ_KAPPA, PHI, SQRT_TAU_0, TAU_0,

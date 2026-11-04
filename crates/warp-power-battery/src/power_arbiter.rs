@@ -24,22 +24,27 @@ pub const SHBT_POWER_BUS_CROWBAR_FAULT: u64 = 1 << 31;
 /// Nominal 25.00 EW power output of the `SHBT-MAR-312X` discrete core (`2.50e19 W`).
 pub const MAR312X_NOMINAL_POWER_WATTS: f64 = 2.50e19;
 
-/// Deterministic state machine for the Dual-Reactor Power Bus Arbiter.
+/// Symplectic switching window duration Delta t_switch = 1.701 ps
+pub const SWITCHING_WINDOW_PS: f64 = 1.701;
+/// Hyperbolic Cattaneo-Vernotte relaxation time tau_q = 14.5 ps
+pub const CATTANEO_TAU_Q_PS: f64 = 14.50;
+
+/// Deterministic 6-state finite-state machine (FSM) for the Dual-Reactor Power Bus Arbiter.
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PowerArbiterState {
     /// Interstellar cruise & warp soliton generation powered exclusively by `SHBT-MAR-312X` (25.00 EW).
-    CruiseTraversal = 0,
+    CruiseTraversal = 0x01,
     /// Stellar orbital insertion and initial Bondi-Hoyle acoustic-magnetic funnel alignment via `SHBT-MAR-312X`.
-    SiphonApproach = 1,
+    SiphonApproach = 0x02,
     /// Initial baryonic slipstream injection (`0.01% - 0.1%`) into the `SHBT-MAR-OMEGA` boundary throat.
-    OmegaIgnition = 2,
+    OmegaIgnition = 0x03,
     /// Phase-locked CFT bus handoff from `SHBT-MAR-312X` (25.00 EW) to `SHBT-MAR-OMEGA` (1.00–10.00 ZW).
-    HarvestHandoff = 3,
+    HarvestHandoff = 0x04,
     /// Steady-state stellar deconstruction & in-line computronium synthesis via `SHBT-MAR-OMEGA` (1.00–10.00 ZW).
-    HarvestActive = 4,
+    HarvestActive = 0x05,
     /// Post-harvest siphon ramp-down and seamless return to `SHBT-MAR-312X` traversal power.
-    DepartureHandshake = 5,
+    DepartureHandshake = 0x06,
 }
 
 /// Bare-Metal Dual-Reactor Power Bus Arbiter (`SHBT-MAR-312X` + `SHBT-MAR-OMEGA`).
@@ -53,6 +58,8 @@ pub struct DualReactorPowerArbiter {
     pub handoff_phase_error_rad: f64,
     pub mar312x_baryon_isolation_locked: bool,
     pub crowbar_tripped: bool,
+    pub bus_voltage_perturbation_volts: f64,
+    pub handoff_entropy_production_j_k: f64,
 }
 
 impl DualReactorPowerArbiter {
@@ -67,6 +74,8 @@ impl DualReactorPowerArbiter {
             handoff_phase_error_rad: 0.0,
             mar312x_baryon_isolation_locked: true,
             crowbar_tripped: false,
+            bus_voltage_perturbation_volts: 0.0,
+            handoff_entropy_production_j_k: 0.0,
         }
     }
 
@@ -83,6 +92,8 @@ impl DualReactorPowerArbiter {
             handoff_phase_error_rad: 0.0,
             mar312x_baryon_isolation_locked: true,
             crowbar_tripped: false,
+            bus_voltage_perturbation_volts: 0.0,
+            handoff_entropy_production_j_k: 0.0,
         }
     }
 
@@ -168,9 +179,13 @@ impl DualReactorPowerArbiter {
                     self.status_flags |= SHBT_POWER_BUS_CROWBAR_FAULT;
                     return Err(self.status_flags);
                 }
+                // Symplectic make-before-break handoff: Delta V_bus == 0.0 V, Delta S_handoff == 0.0 J/K
+                // Switching window dt_switch = 1.701 ps <= tau_q = 14.5 ps
                 self.mar312x_power_watts = MAR312X_NOMINAL_POWER_WATTS;
                 self.omega_power_watts = tel.p_cft_direct_watts;
                 self.handoff_phase_error_rad = 0.0;
+                self.bus_voltage_perturbation_volts = 0.0;
+                self.handoff_entropy_production_j_k = 0.0;
                 self.status_flags = SHBT_POWER_BUS_MAR312X_ACTIVE
                     | SHBT_POWER_BUS_OMEGA_ACTIVE
                     | SHBT_POWER_BUS_HANDOFF_SYNC

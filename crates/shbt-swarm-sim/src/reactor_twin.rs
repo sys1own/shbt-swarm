@@ -280,4 +280,139 @@ mod tests {
         let (ng, ns, n2) = twin.export_rotator_eda_artifacts(&mut gds, &mut step, &mut s2p).unwrap();
         assert!(ng > 0 && ns > 0 && n2 > 0);
     }
+
+    #[test]
+    fn test_reactor_twin_dispatcher_dual_modes() {
+        let mut disp_omega = ReactorTwinDispatcher::new_omega();
+        let tel_omega = disp_omega.step(1.0);
+        assert!(tel_omega.is_active_continuous);
+        assert!((tel_omega.gross_power_watts - 10.00e21).abs() < 1e15);
+
+        let mut disp_312x = ReactorTwinDispatcher::new_legacy_312x();
+        let tel_312x = disp_312x.step(1.0);
+        assert!(!tel_312x.is_active_continuous);
+        assert_eq!(tel_312x.gross_power_watts, 2.45e9);
+    }
+}
+
+use crate::omega_twin::{
+    step_omega_pipeline, OmegaSimulationParams, OmegaSimulationState, OmegaStageOutputs,
+};
+
+/// 5th-Gen Discrete Core MAR-312X state representation
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Mar312xState {
+    pub cores_remaining: u32,
+    pub active_core_energy_joules: f64,
+    pub dec_x_rail_voltage_mv: f64,
+    pub hbt_pic_bias_volts: f64,
+    pub gross_power_watts: f64,
+}
+
+impl Default for Mar312xState {
+    fn default() -> Self {
+        Self {
+            cores_remaining: 41,
+            active_core_energy_joules: 33.8822e18,
+            dec_x_rail_voltage_mv: 2.700,
+            hbt_pic_bias_volts: 5.600,
+            gross_power_watts: 2.45e9,
+        }
+    }
+}
+
+/// Unified Reactor Twin state enum supporting dual architectures
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum ReactorTwinState {
+    DiscreteMar312x(Mar312xState),
+    ContinuousOmega(OmegaSimulationState),
+    DualArbitration {
+        mar312x: Mar312xState,
+        omega: OmegaSimulationState,
+        blend_factor: f64, // s in [0.0, 1.0]
+    },
+}
+
+/// Unified telemetry output packet
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct UnifiedReactorTelemetry {
+    pub gross_power_watts: f64,
+    pub net_actuator_power_watts: f64,
+    pub sensible_heat_watts: f64,
+    pub bus_voltage_perturbation_volts: f64,
+    pub is_active_continuous: bool,
+}
+
+/// Unified reactor dispatcher
+#[derive(Clone, Debug)]
+pub struct ReactorTwinDispatcher {
+    pub state: ReactorTwinState,
+    pub omega_params: OmegaSimulationParams,
+}
+
+impl ReactorTwinDispatcher {
+    pub fn new_omega() -> Self {
+        Self {
+            state: ReactorTwinState::ContinuousOmega(OmegaSimulationState::default()),
+            omega_params: OmegaSimulationParams::default(),
+        }
+    }
+
+    pub fn new_legacy_312x() -> Self {
+        Self {
+            state: ReactorTwinState::DiscreteMar312x(Mar312xState::default()),
+            omega_params: OmegaSimulationParams::default(),
+        }
+    }
+
+    /// Advance the simulation by timestep `dt`
+    pub fn step(&mut self, dt: f64) -> UnifiedReactorTelemetry {
+        match &mut self.state {
+            ReactorTwinState::DiscreteMar312x(st) => {
+                let power = st.gross_power_watts;
+                st.active_core_energy_joules -= power * dt;
+                UnifiedReactorTelemetry {
+                    gross_power_watts: power,
+                    net_actuator_power_watts: power * 0.9920,
+                    sensible_heat_watts: power * 0.0080,
+                    bus_voltage_perturbation_volts: 0.0,
+                    is_active_continuous: false,
+                }
+            }
+            ReactorTwinState::ContinuousOmega(omega_st) => {
+                let out: OmegaStageOutputs = step_omega_pipeline(omega_st, &self.omega_params, dt);
+                UnifiedReactorTelemetry {
+                    gross_power_watts: out.stage1_p_gross,
+                    net_actuator_power_watts: out.stage2_p_direct,
+                    sensible_heat_watts: out.stage4_p_sensible,
+                    bus_voltage_perturbation_volts: 0.0,
+                    is_active_continuous: true,
+                }
+            }
+            ReactorTwinState::DualArbitration {
+                mar312x,
+                omega,
+                blend_factor,
+            } => {
+                let out = step_omega_pipeline(omega, &self.omega_params, dt);
+                mar312x.active_core_energy_joules -=
+                    mar312x.gross_power_watts * (1.0 - *blend_factor) * dt;
+
+                let blended_gross = (1.0 - *blend_factor) * mar312x.gross_power_watts
+                    + (*blend_factor) * out.stage1_p_gross;
+                let blended_net = (1.0 - *blend_factor) * (mar312x.gross_power_watts * 0.9920)
+                    + (*blend_factor) * out.stage2_p_direct;
+                let blended_sensible = (1.0 - *blend_factor) * (mar312x.gross_power_watts * 0.0080)
+                    + (*blend_factor) * out.stage4_p_sensible;
+
+                UnifiedReactorTelemetry {
+                    gross_power_watts: blended_gross,
+                    net_actuator_power_watts: blended_net,
+                    sensible_heat_watts: blended_sensible,
+                    bus_voltage_perturbation_volts: 0.0,
+                    is_active_continuous: *blend_factor >= 0.5,
+                }
+            }
+        }
+    }
 }

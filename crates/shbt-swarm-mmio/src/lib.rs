@@ -17,15 +17,30 @@ use shbt_swarm_core::{
 pub const SHBT_SWARM_MMIO_BASE_ADDR: u64 = 0x8000_0000;
 pub const SHBT_SWARM_STINESPRING_BASE_ADDR: u64 = 0x7002_0000;
 pub const SHBT_SWARM_STINESPRING_FRAME_BYTES: usize = 135_168;
-pub const SHBT_SWARM_ABI_VERSION: u32 = 0x000C_0312;
+pub const SHBT_SWARM_ABI_VERSION: u32 = 0x000D_0312;
 pub const SHBT_SWARM_ABI_VERSION_V12: u32 = 0x000C_0312;
+pub const SHBT_SWARM_ABI_VERSION_V13: u32 = 0x000D_0312;
 pub const SHBT_SWARM_MMIO_MAGIC: u32 = 0x5348_4254;
-pub const SHBT_SWARM_MMIO_TOTAL_SIZE: usize = 640;
+pub const SHBT_SWARM_MMIO_TOTAL_SIZE: usize = 704;
 pub const SHBT_SWARM_CACHE_LINE_BYTES: usize = 64;
 pub const SHBT_SWARM_CHANNELS_TOTAL: u32 = 312;
 pub const SHBT_SWARM_CFT_SLOTS_TOTAL: u32 = 346;
-pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 100;
-pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 344;
+pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 105;
+pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 360;
+pub const SHBT_SWARM_DIVERTOR_BASE_ADDR: u64 = 0x7F00_0800;
+
+pub const DIV_STATUS_LAMINAR: u32 = 1 << 0;
+pub const DIV_STATUS_SEPARATRIX_LOCKED: u32 = 1 << 1;
+pub const DIV_STATUS_CCZ4_DAMPING_ACTIVE: u32 = 1 << 2;
+pub const DIV_STATUS_FRENKEL_SAFE: u32 = 1 << 3;
+pub const DIV_STATUS_CHOKE_ALARM: u32 = 1 << 4;
+pub const DIV_STATUS_FEEDSTOCK_OPTIMAL: u32 = 1 << 5;
+
+pub const DIV_CMD_NOP: u32 = 0x0000_0000;
+pub const DIV_CMD_LOCK_SEPARATRIX: u32 = 0x0000_0001;
+pub const DIV_CMD_ENGAGE_CCZ4_DAMPING: u32 = 0x0000_0002;
+pub const DIV_CMD_TRIM_X_POINT: u32 = 0x0000_0004;
+pub const DIV_CMD_EMERGENCY_SCRAM: u32 = 0x0000_0080;
 pub const SHBT_NESTED_SIM_MMIO_BASE: u64 = 0x7000_B000;
 pub const SHBT_SWARM_HARVEST_APERTURE_BASE: u64 = 0x4000_E000;
 pub const SHBT_SWARM_FOUNDRY_DENSE_BASE: u64 = 0x0000_7F80_0004_0000;
@@ -238,10 +253,34 @@ pub struct ShbtSwarmMmioRegs {
     pub hil_gates_pass_mask: u32,
     pub hil_status_code: u32,
     pub crc64_iso_checksum: u64,
+
+    // Cache Line 10 (0x0280..0x02BF): Continuous RMHD Divertor & Constellation Aperture (64 bytes)
+    pub cl10_divertor: ShbtMmioCacheline10Divertor,
+}
+
+#[repr(C, align(64))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtMmioCacheline10Divertor {
+    pub divertor_separatrix_psi_q16: u32,
+    pub divertor_reynolds_margin_reg: u32,
+    pub divertor_feedstock_split_fp: u64,
+    pub divertor_status_latch: u32,
+    pub divertor_b_field_guide_q16: u32,
+    pub divertor_shear_stress_eff_fp: u64,
+    pub divertor_mass_inflow_rate_fp: u64,
+    pub divertor_throat_divert_rate_fp: u64,
+    pub divertor_kh_growth_rate_q16: u32,
+    pub divertor_control_command: u32,
+    pub reserved_cl10_pad: u64,
 }
 
 const _: () = {
-    assert!(size_of::<ShbtSwarmMmioRegs>() == 640);
+    assert!(size_of::<ShbtMmioCacheline10Divertor>() == 64);
+    assert!(align_of::<ShbtMmioCacheline10Divertor>() == 64);
+};
+
+const _: () = {
+    assert!(size_of::<ShbtSwarmMmioRegs>() == 704);
     assert!(align_of::<ShbtSwarmMmioRegs>() == 64);
     assert!(offset_of!(ShbtSwarmMmioRegs, abi_version) == 0x00C0);
     assert!(offset_of!(ShbtSwarmMmioRegs, chiral_ee_q16) == 0x0100);
@@ -256,6 +295,7 @@ const _: () = {
     assert!(offset_of!(ShbtSwarmMmioRegs, v11_harvested_nucleons_counter) == 0x0230);
     assert!(offset_of!(ShbtSwarmMmioRegs, omega_gross_power_watts) == 0x0240);
     assert!(offset_of!(ShbtSwarmMmioRegs, power_bus_arbiter_flags) == 0x0268);
+    assert!(offset_of!(ShbtSwarmMmioRegs, cl10_divertor) == 0x0280);
 };
 
 #[repr(C, packed)]
@@ -661,8 +701,25 @@ impl ShbtSwarmMmioRegs {
             omega_bondi_hoyle_msun_yr: 20.0,
             power_bus_arbiter_flags: SHBT_POWER_BUS_OMEGA_ACTIVE | SHBT_POWER_BUS_ARBITER_LOCKED,
             hil_gates_pass_mask: 0x00FF_FFFF,
-            hil_status_code: 0x0000_0344,
-            crc64_iso_checksum: 0x3120_000C_0344_0100,
+            hil_status_code: 0x0000_0360,
+            crc64_iso_checksum: 0x3120_000D_0360_0105,
+            cl10_divertor: ShbtMmioCacheline10Divertor {
+                divertor_separatrix_psi_q16: 5573,
+                divertor_reynolds_margin_reg: 7_650_000 - 214_000,
+                divertor_feedstock_split_fp: 4_291_162_511,
+                divertor_status_latch: DIV_STATUS_LAMINAR
+                    | DIV_STATUS_SEPARATRIX_LOCKED
+                    | DIV_STATUS_CCZ4_DAMPING_ACTIVE
+                    | DIV_STATUS_FRENKEL_SAFE
+                    | DIV_STATUS_FEEDSTOCK_OPTIMAL,
+                divertor_b_field_guide_q16: 3_145_728,
+                divertor_shear_stress_eff_fp: 33_715_493,
+                divertor_mass_inflow_rate_fp: 125_600_000 << 32,
+                divertor_throat_divert_rate_fp: 111_265 << 32,
+                divertor_kh_growth_rate_q16: 0,
+                divertor_control_command: DIV_CMD_LOCK_SEPARATRIX | DIV_CMD_ENGAGE_CCZ4_DAMPING,
+                reserved_cl10_pad: 0,
+            },
         }
     }
 
@@ -687,6 +744,12 @@ impl ShbtSwarmMmioRegs {
     #[inline]
     #[allow(clippy::approx_constant)]
     pub const fn new_nominal_v12() -> Self {
+        Self::new_nominal_v7()
+    }
+
+    #[inline]
+    #[allow(clippy::approx_constant)]
+    pub const fn new_nominal_v13() -> Self {
         Self::new_nominal_v7()
     }
 
@@ -944,11 +1007,11 @@ const _: () = {
     assert!(align_of::<ShbtUniversalHarvestAperture>() == 64);
 };
 
-/// Master 640-Byte (10 Cache-Line) SHBT-SWARM ABI v12.0 Register Map (`shbt_swarm_mmio_v12_t`).
+/// Master 704-Byte (11 Cache-Line) SHBT-SWARM ABI v13.0 Register Map (`shbt_swarm_mmio_v13_t`).
 #[repr(C, align(64))]
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub struct ShbtSwarmMmioV12 {
-    // Cache Line 0 (0x0000..0x003F): Global ABI v12.0 Header & Master Control
+pub struct ShbtSwarmMmioV13 {
+    // Cache Line 0 (0x0000..0x003F): Global ABI v13.0 Header & Master Control
     pub magic_header: u32,
     pub abi_version: u32,
     pub system_control_flags: u64,
@@ -965,7 +1028,7 @@ pub struct ShbtSwarmMmioV12 {
     // Cache Lines 5..8 (0x0140..0x023F): Universal Harvester & Foundry Aperture (256B)
     pub universal_harvest: ShbtUniversalHarvestAperture,
 
-    // Cache Line 9 (0x0240..0x027F): Formal SMT & 344-Gate HIL Hardware Audit Seal
+    // Cache Line 9 (0x0240..0x027F): Formal SMT & 360-Gate HIL Hardware Audit Seal
     pub smt_theorems_verified: u32,
     pub hil_gates_verified: u32,
     pub hil_v12_extension_mask: u64,
@@ -975,14 +1038,20 @@ pub struct ShbtSwarmMmioV12 {
     pub hardware_crc64_iso: u64,
     pub reserved_cl9_0: u64,
     pub reserved_cl9_1: u64,
+
+    // Cache Line 10 (0x0280..0x02BF): Continuous RMHD Divertor Aperture (64B)
+    pub divertor: ShbtMmioCacheline10Divertor,
 }
 
+pub type ShbtSwarmMmioV12 = ShbtSwarmMmioV13;
+
 const _: () = {
-    assert!(size_of::<ShbtSwarmMmioV12>() == 640);
-    assert!(align_of::<ShbtSwarmMmioV12>() == 64);
-    assert!(offset_of!(ShbtSwarmMmioV12, mar_omega) == 0x0040);
-    assert!(offset_of!(ShbtSwarmMmioV12, universal_harvest) == 0x0140);
-    assert!(offset_of!(ShbtSwarmMmioV12, smt_theorems_verified) == 0x0240);
+    assert!(size_of::<ShbtSwarmMmioV13>() == 704);
+    assert!(align_of::<ShbtSwarmMmioV13>() == 64);
+    assert!(offset_of!(ShbtSwarmMmioV13, mar_omega) == 0x0040);
+    assert!(offset_of!(ShbtSwarmMmioV13, universal_harvest) == 0x0140);
+    assert!(offset_of!(ShbtSwarmMmioV13, smt_theorems_verified) == 0x0240);
+    assert!(offset_of!(ShbtSwarmMmioV13, divertor) == 0x0280);
 };
 
 
@@ -1428,13 +1497,15 @@ mod tests {
 
     #[test]
     fn test_v12_nominal_and_fault_invariants() {
-        assert_eq!(core::mem::size_of::<ShbtSwarmMmioRegs>(), 640);
+        assert_eq!(core::mem::size_of::<ShbtSwarmMmioRegs>(), 704);
         assert_eq!(core::mem::size_of::<ShbtMarOmegaAperture>(), 256);
         assert_eq!(core::mem::size_of::<ShbtUniversalHarvestAperture>(), 256);
-        assert_eq!(core::mem::size_of::<ShbtSwarmMmioV12>(), 640);
+        assert_eq!(core::mem::size_of::<ShbtMmioCacheline10Divertor>(), 64);
+        assert_eq!(core::mem::size_of::<ShbtSwarmMmioV13>(), 704);
+        assert_eq!(core::mem::size_of::<ShbtSwarmMmioV12>(), 704);
 
-        let mut regs = ShbtSwarmMmioRegs::new_nominal_v12();
-        assert_eq!(regs.abi_version, SHBT_SWARM_ABI_VERSION_V12);
+        let mut regs = ShbtSwarmMmioRegs::new_nominal_v13();
+        assert_eq!(regs.abi_version, SHBT_SWARM_ABI_VERSION);
         assert_eq!(regs.audit_v12_invariants(), SHBT_SWARM_FAULT_NONE);
 
         let mut fault_regs = regs;

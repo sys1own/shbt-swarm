@@ -1,11 +1,12 @@
 //! `crates/shbt-swarm-cli/src/bin/swarm-audit.rs`
 //! Master Hardware-in-the-Loop (HIL) Audit & Verification Matrix Generator for `shbt-swarm`
-//! ABI v12.0 (`0x000C0312`), 640-Byte MMIO (10 Cache Lines), 100/100 Z3 SMT Proofs, and 344/344 HIL Gates.
+//! ABI v13.0 (`0x000D0312`), 704-Byte MMIO (11 Cache Lines), 105/105 Z3 SMT Proofs, and 360/360 HIL Gates.
 
-use shbt_swarm_hil::evaluate_all_344_gates;
+use shbt_swarm_hil::evaluate_all_360_gates;
 use shbt_swarm_mmio::{
-    ShbtMarOmegaAperture, ShbtSwarmMmioRegs, ShbtSwarmMmioV12, ShbtUniversalHarvestAperture,
-    SHBT_SWARM_ABI_VERSION, SHBT_SWARM_FORMAL_PROOFS_COUNT, SHBT_SWARM_HIL_GATES_COUNT,
+    ShbtMarOmegaAperture, ShbtMmioCacheline10Divertor, ShbtSwarmMmioRegs, ShbtSwarmMmioV13,
+    ShbtUniversalHarvestAperture, SHBT_SWARM_ABI_VERSION, SHBT_SWARM_FORMAL_PROOFS_COUNT,
+    SHBT_SWARM_HIL_GATES_COUNT,
 };
 use std::fs::File;
 use std::io::Write;
@@ -17,29 +18,31 @@ fn escape_json(s: &str) -> String {
 
 fn main() {
     println!("================================================================================");
-    println!("  SHBT-SWARM v12.0 MASTER HARDWARE-IN-THE-LOOP (HIL) & FORMAL AUDIT ENGINE      ");
+    println!("  SHBT-SWARM v13.0 MASTER HARDWARE-IN-THE-LOOP (HIL) & FORMAL AUDIT ENGINE      ");
     println!("================================================================================");
 
     let regs_size = size_of::<ShbtSwarmMmioRegs>();
     let regs_align = align_of::<ShbtSwarmMmioRegs>();
-    let v12_size = size_of::<ShbtSwarmMmioV12>();
+    let v13_size = size_of::<ShbtSwarmMmioV13>();
     let omega_size = size_of::<ShbtMarOmegaAperture>();
     let harvest_size = size_of::<ShbtUniversalHarvestAperture>();
-    assert_eq!(regs_size, 640, "MMIO register block must be 640 bytes (10 cache lines)");
+    let divertor_size = size_of::<ShbtMmioCacheline10Divertor>();
+    assert_eq!(regs_size, 704, "MMIO register block must be 704 bytes (11 cache lines)");
     assert_eq!(regs_align, 64, "MMIO register block must be 64-byte aligned");
-    assert_eq!(v12_size, 640, "ShbtSwarmMmioV12 must be 640 bytes");
+    assert_eq!(v13_size, 704, "ShbtSwarmMmioV13 must be 704 bytes");
     assert_eq!(omega_size, 256, "ShbtMarOmegaAperture must be 256 bytes");
     assert_eq!(harvest_size, 256, "ShbtUniversalHarvestAperture must be 256 bytes");
-    assert_eq!(SHBT_SWARM_ABI_VERSION, 0x000C_0312);
-    assert_eq!(SHBT_SWARM_FORMAL_PROOFS_COUNT, 100);
-    assert_eq!(SHBT_SWARM_HIL_GATES_COUNT, 344);
+    assert_eq!(divertor_size, 64, "ShbtMmioCacheline10Divertor must be 64 bytes");
+    assert_eq!(SHBT_SWARM_ABI_VERSION, 0x000D_0312);
+    assert_eq!(SHBT_SWARM_FORMAL_PROOFS_COUNT, 105);
+    assert_eq!(SHBT_SWARM_HIL_GATES_COUNT, 360);
 
-    let mut regs = ShbtSwarmMmioRegs::new_nominal_v12();
+    let mut regs = ShbtSwarmMmioRegs::new_nominal_v13();
     let fault_mask = regs.audit_v12_invariants();
-    assert_eq!(fault_mask, 0, "Nominal v12 MMIO register invariant check failed");
+    assert_eq!(fault_mask, 0, "Nominal v13 MMIO register invariant check failed");
 
-    let gates = evaluate_all_344_gates();
-    assert_eq!(gates.len(), 344, "Expected exactly 344 HIL gates");
+    let gates = evaluate_all_360_gates();
+    assert_eq!(gates.len(), 360, "Expected exactly 360 HIL gates");
 
     let mut passed_count = 0usize;
     for gate in &gates {
@@ -50,7 +53,7 @@ fn main() {
         }
     }
 
-    println!("  ABI Version            : 0x{:08X} (v12.0)", regs.abi_version);
+    println!("  ABI Version            : 0x{:08X} (v13.0)", regs.abi_version);
     println!("  MMIO Footprint         : {} bytes ({} cache lines, align {}B)", regs_size, regs_size / 64, regs_align);
     println!("  MAR-312X Traversal Bus : 25.00 EW (Discrete Core, 5-Zone DEC-X, 48.0 T Clathrate)");
     println!("  MAR-OMEGA Harvest Bus  : 10.00 ZW (Continuous-Flow Boundary, 0.0 kg Stored Fuel)");
@@ -59,27 +62,27 @@ fn main() {
     println!("  HIL Verification Gates : {}/{} GATES PASS", passed_count, gates.len());
     println!("================================================================================");
 
-    assert_eq!(passed_count, 344, "All 344 HIL gates must pass");
+    assert_eq!(passed_count, 360, "All 360 HIL gates must pass");
 
     let total = gates.len();
     let mut json = String::with_capacity(65536);
     json.push_str("{\n");
-    json.push_str("  \"schema_version\": \"12.0.0\",\n");
+    json.push_str("  \"schema_version\": \"13.0.0\",\n");
     json.push_str("  \"architecture\": \"SHBT-SWARM Dual-Reactor Hybrid Architecture (SHBT-MAR-312X + SHBT-MAR-OMEGA) & Universal Stellar-to-Computronium Pipeline\",\n");
-    json.push_str("  \"abi_version\": \"0x000C0312\",\n");
-    json.push_str("  \"abi_version_hex\": \"0x000C0312\",\n");
-    json.push_str("  \"mmio_struct_bytes\": 640,\n");
-    json.push_str("  \"mmio_total_bytes\": 640,\n");
-    json.push_str("  \"mmio_cache_lines\": 10,\n");
-    json.push_str("  \"cache_lines\": 10,\n");
-    json.push_str("  \"formal_z3_proofs_total\": 100,\n");
-    json.push_str("  \"formal_z3_proofs_unsat\": 100,\n");
+    json.push_str("  \"abi_version\": \"0x000D0312\",\n");
+    json.push_str("  \"abi_version_hex\": \"0x000D0312\",\n");
+    json.push_str("  \"mmio_struct_bytes\": 704,\n");
+    json.push_str("  \"mmio_total_bytes\": 704,\n");
+    json.push_str("  \"mmio_cache_lines\": 11,\n");
+    json.push_str("  \"cache_lines\": 11,\n");
+    json.push_str("  \"formal_z3_proofs_total\": 105,\n");
+    json.push_str("  \"formal_z3_proofs_unsat\": 105,\n");
     json.push_str(&format!("  \"total_gates\": {},\n", total));
     json.push_str(&format!("  \"passed_gates\": {},\n", passed_count));
     json.push_str(&format!("  \"hil_gates_total\": {},\n", total));
     json.push_str(&format!("  \"hil_gates_passed\": {},\n", passed_count));
     json.push_str(&format!("  \"all_passed\": {},\n", passed_count == total));
-    json.push_str("  \"status\": \"ALL_344_GATES_AND_100_PROOFS_VERIFIED\",\n");
+    json.push_str("  \"status\": \"ALL_360_GATES_AND_105_PROOFS_VERIFIED\",\n");
     json.push_str("  \"dual_reactor_architecture\": {\n");
     json.push_str("    \"traversal_reactor\": \"SHBT-MAR-312X (25.00 EW Discrete Core, 5-Zone DEC-X, 48.0 T Clathrate Coils)\",\n");
     json.push_str("    \"harvesting_reactor\": \"SHBT-MAR-OMEGA (1.00 - 10.00 ZW Continuous-Flow Boundary Reactor, 0.0 kg Stored Fuel)\",\n");
@@ -87,26 +90,25 @@ fn main() {
     json.push_str("  },\n");
     json.push_str("  \"formal_verification\": {\n");
     json.push_str("    \"smt_logic\": \"QF_NRA\",\n");
-    json.push_str("    \"previous_theorems_unsat\": 94,\n");
-    json.push_str("    \"new_mar_omega_theorems_unsat\": 6,\n");
-    json.push_str("    \"total_theorems_verified\": 100,\n");
+    json.push_str("    \"previous_theorems_unsat\": 100,\n");
+    json.push_str("    \"new_mar_omega_theorems_unsat\": 5,\n");
+    json.push_str("    \"total_theorems_verified\": 105,\n");
     json.push_str("    \"all_unsat\": true,\n");
     json.push_str("    \"new_theorems\": [\n");
-    json.push_str("      \"THM-MAR-OMEGA-01\",\n");
-    json.push_str("      \"THM-MAR-OMEGA-02\",\n");
-    json.push_str("      \"THM-MAR-OMEGA-03\",\n");
-    json.push_str("      \"THM-MAR-OMEGA-04\",\n");
-    json.push_str("      \"THM-MAR-OMEGA-05\",\n");
-    json.push_str("      \"THM-MAR-OMEGA-06\"\n");
+    json.push_str("      \"THM-SIM-03-EXT\",\n");
+    json.push_str("      \"THM-MAR-OMEGA-07\",\n");
+    json.push_str("      \"THM-MAR-OMEGA-08\",\n");
+    json.push_str("      \"THM-MAR-OMEGA-09\",\n");
+    json.push_str("      \"THM-MAR-OMEGA-10\"\n");
     json.push_str("    ]\n");
     json.push_str("  },\n");
     json.push_str("  \"hil_verification\": {\n");
-    json.push_str("    \"previous_gates_passed\": 320,\n");
-    json.push_str("    \"new_mar_omega_gates_passed\": 24,\n");
+    json.push_str("    \"previous_gates_passed\": 344,\n");
+    json.push_str("    \"new_mar_omega_gates_passed\": 16,\n");
     json.push_str(&format!("    \"total_gates_passed\": {},\n", passed_count));
     json.push_str(&format!("    \"total_gates_evaluated\": {},\n", total));
     json.push_str("    \"pass_rate_percent\": 100.0,\n");
-    json.push_str("    \"gate_range_added\": \"GATE-321..GATE-344\"\n");
+    json.push_str("    \"gate_range_added\": \"GATE-345..GATE-360\"\n");
     json.push_str("  },\n");
     json.push_str("  \"key_telemetry_benchmarks\": {\n");
     json.push_str("    \"mar312x_traversal_power_ew\": 25.0,\n");

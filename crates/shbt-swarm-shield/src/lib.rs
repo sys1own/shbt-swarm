@@ -7,8 +7,10 @@
 
 pub mod hocbf_engine;
 pub mod poset_sheaf;
+pub mod hexamer_consensus;
 pub use hocbf_engine::{BarrierConfig, HocbfEngine, LinearConstraint, PhysicalState, QpFilterResult};
 pub use poset_sheaf::{CausalDiamond, PosetSheafEngine, SymplecticShear4x4, HOMOLOGY_RANK};
+pub use hexamer_consensus::*;
 
 pub const C_CRIT_SAPIENT_Q16: u64 = 1_000_000 << 16; // C_crit^sapient = 10^6 nat-layers
 pub const W_SYNTH_REGOLITH_KJ_PER_UG: u64 = 56_845;  // 56.845009 TJ/kg

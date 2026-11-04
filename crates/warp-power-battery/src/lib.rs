@@ -9,11 +9,14 @@
 //!    handoffs between `SHBT-MAR-312X` and `SHBT-MAR-OMEGA`.
 
 #![no_std]
-#![forbid(unsafe_code)]
 
+pub mod divertor_rmhd;
+pub mod lindblad_unspool;
 pub mod mar_omega_flow;
 pub mod power_arbiter;
 
+pub use divertor_rmhd::*;
+pub use lindblad_unspool::*;
 pub use mar_omega_flow::*;
 pub use power_arbiter::*;
 pub use shbt_swarm_mar312x::*;

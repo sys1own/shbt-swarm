@@ -949,6 +949,8 @@ pub struct GalacticMultiphysicsEngine {
     pub wd_melter: shbt_swarm_omega::coulomb_melt::CoulombCrystalMelter,
     pub rd_braker: shbt_swarm_omega::red_dwarf_dynamo::RedDwarfDynamoBraker,
     pub cfl_hadronizer: shbt_swarm_foundry::cfl_hadronize::CflQuarkHadronizer,
+    pub omega_state: crate::omega_twin::OmegaSimulationState,
+    pub omega_params: crate::omega_twin::OmegaSimulationParams,
 }
 
 impl GalacticMultiphysicsEngine {
@@ -964,6 +966,35 @@ impl GalacticMultiphysicsEngine {
             wd_melter: shbt_swarm_omega::coulomb_melt::CoulombCrystalMelter::new_carbon_oxygen_wd(),
             rd_braker: shbt_swarm_omega::red_dwarf_dynamo::RedDwarfDynamoBraker::new_m_dwarf(),
             cfl_hadronizer: shbt_swarm_foundry::cfl_hadronize::CflQuarkHadronizer::new_neutron_star_core(),
+            omega_state: crate::omega_twin::OmegaSimulationState {
+                simulation_time: 0.0,
+                mass_ingestion_rate: 111_265.01,
+                gross_power_watts: 10.00e21,
+                direct_cft_power_watts: 10.00e21 * crate::omega_twin::DIRECT_COUPLING_EFFICIENCY,
+                thermal_waste_power_watts: 10.00e21 * crate::omega_twin::WASTE_COUPLING_FRACTION,
+                holographic_bit_budget: 0.0,
+                synthetic_seed_mass_kg: 0.0,
+                cryostat_heat_flux_watts: 244_999.0,
+                superhydride_coil_temp_k: 20.0,
+                actuator_pinch_power: 2.7995e21,
+                actuator_melt_power: 1.4497e21,
+                actuator_hadron_power: 1.8497e21,
+                actuator_warp_power: 3.8993e21,
+                von_mises_shear_stress_mpa: crate::omega_twin::RESIDUAL_VON_MISES_MPA,
+                is_cryogenically_stable: true,
+                is_cloaking_active: true,
+            },
+            omega_params: crate::omega_twin::OmegaSimulationParams {
+                ambient_plasma_density: 1.45e-3,
+                relative_inflow_velocity: 1.25e6,
+                plasma_sound_speed: 4.50e5,
+                dynamic_slipstream_throttle: 5.25e-4,
+                target_gross_power: 10.00e21,
+                allocation_pinch: 0.280,
+                allocation_melt: 0.145,
+                allocation_hadron: 0.185,
+                allocation_warp: 0.390,
+            },
         }
     }
 
@@ -975,6 +1006,11 @@ impl GalacticMultiphysicsEngine {
             warp_power_battery::power_arbiter::PowerArbiterState::HarvestActive,
             commanded_siphon_kg_s,
             &self.reactor,
+        );
+        let _omega_out = crate::omega_twin::step_omega_pipeline(
+            &mut self.omega_state,
+            &self.omega_params,
+            1.0e-12,
         );
         let r_tel = self.reactor.evaluate_flow_step(commanded_siphon_kg_s);
         let h_tel = self
@@ -995,6 +1031,8 @@ impl GalacticMultiphysicsEngine {
             && w_tel.detonation_suppressed
             && d_tel.superflare_suppressed
             && c_tel.hadronization_clean
+            && self.omega_state.is_cryogenically_stable
+            && self.omega_state.is_cloaking_active
             && (drift <= 1.0e-19);
 
         GalacticTickSnapshot {
