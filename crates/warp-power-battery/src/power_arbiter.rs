@@ -110,7 +110,7 @@ impl DualReactorPowerArbiter {
         !self.crowbar_tripped
             && self.mar312x_baryon_isolation_locked
             && self.mar312x_power_watts >= MAR312X_NOMINAL_POWER_WATTS
-            && self.handoff_phase_error_rad.abs() <= 1.0e-15
+            && shbt_swarm_core::shbt_abs!(self.handoff_phase_error_rad) <= 1.0e-15
             && (self.status_flags & SHBT_POWER_BUS_CROWBAR_FAULT) == 0
     }
 

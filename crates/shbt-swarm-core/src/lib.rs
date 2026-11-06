@@ -5,6 +5,14 @@
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
+#[macro_export]
+macro_rules! shbt_abs {
+    ($x:expr) => {{
+        let __shbt_abs_x = $x;
+        if __shbt_abs_x < 0.0 { -__shbt_abs_x } else { __shbt_abs_x }
+    }};
+}
+
 pub mod cayley;
 pub mod ecc;
 pub mod hyperframe;

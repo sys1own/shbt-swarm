@@ -319,7 +319,7 @@ mod tests {
         let u_nom = 5.0;
         let res = engine.filter_control(&safe_state, u_nom, -50.0, 50.0);
         assert!(res.is_safe);
-        assert!((res.u_filtered - u_nom).abs() < 1.0e-6);
+        assert!(shbt_swarm_core::shbt_abs!((res.u_filtered - u_nom)) < 1.0e-6);
         assert_eq!(res.slack_applied, 0.0);
         assert!(engine.check_nagumo_transversality(&safe_state, res.u_filtered));
     }

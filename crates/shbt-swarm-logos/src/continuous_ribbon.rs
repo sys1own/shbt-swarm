@@ -419,8 +419,8 @@ mod tests {
         // Check isospectrality: Tr(A_0) == Tr(A_1) == -0.6
         let tr_a0 = a0.m[0][0].add(a0.m[1][1]).re;
         let tr_a1 = a1.m[0][0].add(a1.m[1][1]).re;
-        assert!((tr_a0 - (-0.6)).abs() < 1e-12);
-        assert!((tr_a1 - (-0.6)).abs() < 1e-12);
+        assert!(shbt_swarm_core::shbt_abs!((tr_a0 - (-0.6))) < 1e-12);
+        assert!(shbt_swarm_core::shbt_abs!((tr_a1 - (-0.6))) < 1e-12);
     }
 
     #[test]
@@ -435,7 +435,7 @@ mod tests {
         let result_holonomy = state.modulate_constants_ballistic(target, 128);
 
         // Verify exact framing cancellation
-        assert!(state.framing_anomaly.abs() < 1e-15);
+        assert!(shbt_swarm_core::shbt_abs!(state.framing_anomaly) < 1e-15);
         assert_eq!(state.internal_dissipation_joules, 0.0);
 
         // Verify holonomy is unitary: W^\dagger * W == Identity

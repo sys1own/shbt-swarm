@@ -57,12 +57,12 @@ impl UnitaryBranchCoalescer {
         let merged_canonical = c1 * c1 + c2 * c2;
         let merged_ancilla = -c2 * c1 + c1 * c2;
 
-        let is_unitary = (m_unit_00 - 1.0).abs() < 1.0e-14 && m_unit_01.abs() < 1.0e-14;
+        let is_unitary = shbt_swarm_core::shbt_abs!((m_unit_00 - 1.0)) < 1.0e-14 && shbt_swarm_core::shbt_abs!(m_unit_01) < 1.0e-14;
 
         BranchCoalescenceReport {
             is_unitary,
             canonical_branch_norm: merged_canonical,
-            ancilla_leakage_norm: merged_ancilla.abs(),
+            ancilla_leakage_norm: shbt_swarm_core::shbt_abs!(merged_ancilla),
             entropy_debt_jk: 0.0,
             landauer_heat_joules: 0.0,
             ego_fidelity_defect: 0.0,

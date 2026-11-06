@@ -218,10 +218,10 @@ mod tests {
     #[test]
     fn test_virial_hoop_stress_and_safety_factor() {
         let stress = calculate_magnetic_hoop_stress_mpa(B_OPERATING_TESLA);
-        assert!((stress - 916.732).abs() < 0.05);
+        assert!(shbt_swarm_core::shbt_abs!((stress - 916.732)) < 0.05);
 
         let sf = calculate_mechanical_safety_factor(B_OPERATING_TESLA);
         assert!(sf >= 5.230);
-        assert!((sf - 5.236).abs() < 0.01);
+        assert!(shbt_swarm_core::shbt_abs!((sf - 5.236)) < 0.01);
     }
 }

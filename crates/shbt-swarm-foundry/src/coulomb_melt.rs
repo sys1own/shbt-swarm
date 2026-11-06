@@ -205,7 +205,7 @@ pub fn libm_exp(x: f64) -> f64 {
     for i in 1..50 {
         term *= x / (i as f64);
         sum += term;
-        if term.abs() < 1.0e-16 {
+        if shbt_swarm_core::shbt_abs!(term) < 1.0e-16 {
             break;
         }
     }

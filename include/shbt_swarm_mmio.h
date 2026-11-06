@@ -2,7 +2,7 @@
  * include/shbt_swarm_mmio.h
  * Bare-Metal C11 Register, Cognitive, Universal Synthesis & MAR-312X Reactor Specification
  * Phase 4: Exotic-Material Autopoietic Mass-Annihilation Reactor (SHBT-MAR-312X)
- * Base Physical Address: 0x70000000 (128-Byte Dual-Cacheline Contract)
+ * Base Physical Address: 0x70000000 / 0x80000000 (704-Byte 11-Cacheline ABI v13.0 Contract)
  */
 
 #ifndef SHBT_SWARM_MMIO_H
@@ -759,15 +759,15 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     uint64_t v11_harvested_nucleons_counter;  /* 0x0230: Transmuted/harvested baryons */
     uint64_t v11_reserved_tail;               /* 0x0238: 8 bytes pad to 0x0240 */
 
-    /* === CACHELINE 9 (Offsets 0x0240 .. 0x027F): ABI v12 MAR-OMEGA Continuous Reactor & HIL Audit (64 bytes) === */
+    /* === CACHELINE 9 (Offsets 0x0240 .. 0x027F): ABI v13 MAR-OMEGA Continuous Reactor & HIL Audit (64 bytes) === */
     double   omega_gross_power_watts;         /* 0x0240: [1.0e21, 1.0e22] W (1-10 ZW) */
     double   omega_cft_direct_eff;            /* 0x0248: >= 0.99980 (0.99981146) */
     double   omega_cryo_sensible_watts;       /* 0x0250: <= 500,000.0 W (245.0 kW at 10 ZW) */
     double   omega_throat_shear_mpa;          /* 0x0258: < 1.0e-6 MPa (7.85e-9 MPa) */
     double   omega_bondi_hoyle_msun_yr;       /* 0x0260: >= 20.0 M_sun/yr */
     uint64_t power_bus_arbiter_flags;         /* 0x0268: Dual-Reactor Arbiter state flags */
-    uint32_t hil_gates_pass_mask;             /* 0x0270: 0x00FFFFFF (24/24 MAR-OMEGA gates) */
-    uint32_t hil_status_code;                 /* 0x0274: 0x00000344 (344/344 PASS) */
+    uint32_t hil_gates_pass_mask;             /* 0x0270: 32-bit HIL pass-mask window (360/360 PASS) */
+    uint32_t hil_status_code;                 /* 0x0274: 0x00000360 (360/360 PASS) */
     uint64_t crc64_iso_checksum;              /* 0x0278: CRC-64-ISO hardware seal */
 
     /* === CACHELINE 10 (Offsets 0x0280 .. 0x02BF): Continuous RMHD Divertor & Constellation Aperture (64 bytes) === */
@@ -915,7 +915,7 @@ _Static_assert(sizeof(shbt_dense_matter_mmio_t) == 160,
  * DENSE MATTER DECONSTRUCTION & GALACTIC ASTRODYNAMICS APERTURES
  * ========================================================================== */
 
-#define SHBT_MMIO_ABI_VERSION         0x000C0312U
+#define SHBT_MMIO_ABI_VERSION         0x000D0312U
 #define SHBT_MMIO_DENSE_BASE          0x7F000000ULL
 #define SHBT_MMIO_QUENCH_BASE         0x7F000100ULL
 #define SHBT_MMIO_SHUNT_BASE          0x7F000200ULL
@@ -1094,7 +1094,7 @@ typedef struct __attribute__((packed, aligned(8))) {
 } shbt_patch_aperture_hw_t;
 
 /* ==========================================================================
- * ABI v12.0 MAR-OMEGA CONTINUOUS REACTOR & UNIVERSAL HARVEST APERTURES
+ * ABI v13.0 MAR-OMEGA CONTINUOUS REACTOR & UNIVERSAL HARVEST APERTURES
  * ========================================================================== */
 
 /* --- Cache Line 1..4: MAR-OMEGA Control Aperture (256 Bytes @ 0x7F000600) --- */

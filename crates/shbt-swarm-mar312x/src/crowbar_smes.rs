@@ -91,10 +91,10 @@ mod tests {
         let e_stored = calculate_smes_stored_energy_joules(SMES_B_FIELD_TESLA, SMES_VOLUME_M3);
         // At 48 T, energy density is 9.16732e8 J/m^3. For 0.0418 m^3: 38.319e6 J = 38.319 MJ.
         let e_mj = e_stored / 1.0e6;
-        assert!((e_mj - 38.319).abs() < 0.01);
+        assert!(shbt_swarm_core::shbt_abs!((e_mj - 38.319)) < 0.01);
 
         let (rec, diss) = calculate_smes_quench_recovery(e_stored);
-        assert!((rec / e_stored - 0.99880).abs() < 1e-6);
+        assert!(shbt_swarm_core::shbt_abs!((rec / e_stored - 0.99880)) < 1e-6);
         assert!(diss < 0.0012 * e_stored + 1.0);
     }
 

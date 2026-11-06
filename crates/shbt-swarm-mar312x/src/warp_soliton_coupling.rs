@@ -231,7 +231,7 @@ impl Mar312xSolitonDriveBridge {
         metric_detuning: f64,
     ) -> Result<ShiftVectorSolitonState, u32> {
         // 1. Check metric detuning interlock.
-        if metric_detuning.abs() > METRIC_DETUNING_LIMIT {
+        if shbt_swarm_core::shbt_abs!(metric_detuning) > METRIC_DETUNING_LIMIT {
             let quench = self.trip_crowbar(FAULT_CROWBAR_TRIPPED);
             self.fault_flags |= quench.fault_flags;
             return Err(self.fault_flags);
@@ -267,7 +267,7 @@ impl Mar312xSolitonDriveBridge {
         // For normalized displacement profile or scaled by coordinate dilation,
         // s''(tau) over t_ramp_s yields a bounded residual acceleration.
         let s_ddot = Self::minimum_jerk_s_ddot(tau, t_ramp_s);
-        let a_res = (s_ddot.abs() * 1.0e-8).min(MAX_RESIDUAL_ACCELERATION_MPS2);
+        let a_res = (shbt_swarm_core::shbt_abs!(s_ddot) * 1.0e-8).min(MAX_RESIDUAL_ACCELERATION_MPS2);
 
         // 5. Shift-vector amplitude beta^x:
         // beta^x = -v_s(t) * C(sigma_phi) * exp(Delta_mod / 2).
@@ -316,9 +316,9 @@ mod tests {
         let bridge = Mar312xSolitonDriveBridge::new();
         // Test at Tier 4 (25.00 EW = 25.0e18 W).
         let budget = bridge.compute_actuation_budget(25.0e18).unwrap();
-        assert!((budget.decx_output_w - 24.8e18).abs() < 1.0e14);
-        assert!((budget.direct_bus_power_w - 24.7628e18).abs() < 1.0e15);
-        assert!((budget.net_actuation_w - 24.7628e18).abs() < 1.0e15);
+        assert!(shbt_swarm_core::shbt_abs!((budget.decx_output_w - 24.8e18)) < 1.0e14);
+        assert!(shbt_swarm_core::shbt_abs!((budget.direct_bus_power_w - 24.7628e18)) < 1.0e15);
+        assert!(shbt_swarm_core::shbt_abs!((budget.net_actuation_w - 24.7628e18)) < 1.0e15);
         assert_eq!(budget.lanr_rail_w, 999_054.0);
         assert_eq!(budget.landauer_debt_w, 906_000.0);
         assert_eq!(budget.landauer_surplus_w, 93_054.0);
@@ -330,10 +330,10 @@ mod tests {
         assert_eq!(Mar312xSolitonDriveBridge::minimum_jerk_s(0.0), 0.0);
         assert_eq!(Mar312xSolitonDriveBridge::minimum_jerk_s(1.0), 1.0);
         let s_mid = Mar312xSolitonDriveBridge::minimum_jerk_s(0.5);
-        assert!((s_mid - 0.5).abs() < 1.0e-12);
+        assert!(shbt_swarm_core::shbt_abs!((s_mid - 0.5)) < 1.0e-12);
 
         let ddot_mid = Mar312xSolitonDriveBridge::minimum_jerk_s_ddot(0.5, 10.0);
-        assert!(ddot_mid.abs() < 1.0e-12);
+        assert!(shbt_swarm_core::shbt_abs!(ddot_mid) < 1.0e-12);
     }
 
     #[test]
@@ -345,7 +345,7 @@ mod tests {
 
         let coord_hours = (M31_DISTANCE_LIGHT_YEARS / TIER4_VELOCITY_C) * 8766.0;
         let proper_hours = coord_hours * ALPHA_CABIN_ENCLAVE;
-        assert!((proper_hours - M31_TRANSIT_HOURS_TIER4).abs() < 0.01);
+        assert!(shbt_swarm_core::shbt_abs!((proper_hours - M31_TRANSIT_HOURS_TIER4)) < 0.01);
     }
 
     #[test]

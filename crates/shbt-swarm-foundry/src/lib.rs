@@ -414,7 +414,7 @@ mod tests {
         let state = engine.evaluate_condensate(&pdf, 0.0);
 
         assert!(state.delta_h_vis > 0.0);
-        assert!((state.framing_defect).abs() <= 1e-14);
+        assert!(shbt_swarm_core::shbt_abs!((state.framing_defect)) <= 1e-14);
         assert_eq!(state.electric_weyl_norm, 0.0);
         assert!(state.framing_closed);
     }

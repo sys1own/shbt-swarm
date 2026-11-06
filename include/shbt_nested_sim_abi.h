@@ -1,6 +1,6 @@
 /* File: include/shbt_nested_sim_abi.h
  * Architecture: SHBT-APOTHEOSIS-312 / Phase 6.1 (SHBT-RECURSIVE-MULTIVERSE)
- * Standard: ISO/IEC 9899:2011 (C11) Freestanding Microkernel ABI v7.1
+ * Standard: ISO/IEC 9899:2011 (C11) Freestanding Microkernel ABI v13.0
  */
 #ifndef SHBT_NESTED_SIM_ABI_H
 #define SHBT_NESTED_SIM_ABI_H
@@ -9,7 +9,8 @@
 #include <stddef.h>
 #include <stdatomic.h>
 
-#define SHBT_ABI_V7_BASE                 UINT64_C(0x70000000)
+#define SHBT_ABI_V13_BASE                 UINT64_C(0x70000000)
+#define SHBT_ABI_V7_BASE                  SHBT_ABI_V13_BASE /* legacy alias */
 #define SHBT_NESTED_SIM_MMIO_BASE        UINT64_C(0x7000B000)
 
 /* MMIO Register Offsets */

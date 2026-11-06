@@ -191,8 +191,8 @@ mod tests {
     fn test_borrmann_cavity_squeezing() {
         let cavity = BorrmannCavityConfig::default();
         let db = cavity.calculate_squeezing_db();
-        assert!((db - 33.18).abs() < 0.01);
-        assert!((cavity.anomalous_absorption_factor() - 0.0005).abs() < 1e-9);
+        assert!(shbt_swarm_core::shbt_abs!((db - 33.18)) < 0.01);
+        assert!(shbt_swarm_core::shbt_abs!((cavity.anomalous_absorption_factor() - 0.0005)) < 1e-9);
         assert!(cavity.borrmann_depth >= 1500.0);
     }
 }

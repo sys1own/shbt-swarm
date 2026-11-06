@@ -135,7 +135,7 @@ mod tests {
     fn test_q_factor_below_bound() {
         let q = EddingtonBypassEngine::compute_q_factor();
         assert!(q <= Q_S_QUENCHING_BOUND);
-        assert!((q - Q_S_EXACT).abs() < 1e-18);
+        assert!(shbt_swarm_core::shbt_abs!((q - Q_S_EXACT)) < 1e-18);
     }
 
     #[test]

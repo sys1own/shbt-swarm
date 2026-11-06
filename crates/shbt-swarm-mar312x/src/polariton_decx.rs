@@ -91,7 +91,7 @@ impl DecxConversionEngine {
         // GATE-MARX-01: Aggregate loss must match certified 0.800%
         let total_loss = zone_losses::TOTAL_CASCADE_LOSS;
         let efficiency = 1.0 - total_loss;
-        if (efficiency - TARGET_CONVERSION_EFFICIENCY).abs() > 1.0e-7 {
+        if shbt_swarm_core::shbt_abs!((efficiency - TARGET_CONVERSION_EFFICIENCY)) > 1.0e-7 {
             return Err(ConverterFault::EfficiencyViolation);
         }
 
@@ -166,7 +166,7 @@ mod tests {
         let engine = DecxConversionEngine::new(seed, cavity);
 
         let audit = engine.process_energy_cascade().expect("Cascade failed");
-        assert!((audit.certified_efficiency - 0.99200).abs() < 1e-6);
-        assert!((audit.zone5_net_electrical_output_joules - TARGET_NET_ELECTRICAL_ENERGY_JOULES).abs() < 1e12);
+        assert!(shbt_swarm_core::shbt_abs!((audit.certified_efficiency - 0.99200)) < 1e-6);
+        assert!(shbt_swarm_core::shbt_abs!((audit.zone5_net_electrical_output_joules - TARGET_NET_ELECTRICAL_ENERGY_JOULES)) < 1e12);
     }
 }

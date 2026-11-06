@@ -151,8 +151,8 @@ pub fn evaluate_all_112_gates() -> Vec<GateAuditResult> {
         passed: g03_ok,
     });
 
-    let phi_check_ok = (FIB_QUANTUM_DIM_PHI * FIB_QUANTUM_DIM_PHI - (FIB_QUANTUM_DIM_PHI + 1.0)).abs() < 1e-12
-        && (FIB_TOTAL_QUANTUM_DIM * FIB_TOTAL_QUANTUM_DIM - (2.0 + FIB_QUANTUM_DIM_PHI)).abs() < 1e-12;
+    let phi_check_ok = shbt_swarm_core::shbt_abs!((FIB_QUANTUM_DIM_PHI * FIB_QUANTUM_DIM_PHI - (FIB_QUANTUM_DIM_PHI + 1.0))) < 1e-12
+        && shbt_swarm_core::shbt_abs!((FIB_TOTAL_QUANTUM_DIM * FIB_TOTAL_QUANTUM_DIM - (2.0 + FIB_QUANTUM_DIM_PHI))) < 1e-12;
     gates.push(GateAuditResult {
         gate_id: "GATE-SWARM-04",
         phase: 1,
@@ -455,7 +455,7 @@ pub fn evaluate_all_112_gates() -> Vec<GateAuditResult> {
         target_bound: "v_derender^max <= 56.988 m/s, s''(0) = s''(1) = 0",
         measured_value: format!("v_max = {} m/s, s(0.5)={}.{}, v_norm={}.{}", MAX_DERENDER_VELOCITY_MPS, s500 / 1000, s500 % 1000, v500 / 1000, v500 % 1000),
         verification_method: "Interferometric Motion HIL",
-        passed: MAX_DERENDER_VELOCITY_MPS <= 56.988 && dds0.abs() < 1e-12 && dds1.abs() < 1e-12 && s500 == 500,
+        passed: MAX_DERENDER_VELOCITY_MPS <= 56.988 && shbt_swarm_core::shbt_abs!(dds0) < 1e-12 && shbt_swarm_core::shbt_abs!(dds1) < 1e-12 && s500 == 500,
     });
 
     let r_ac = compute_gst225_acoustic_reflection(1.58, 1.58);
@@ -497,7 +497,7 @@ pub fn evaluate_all_112_gates() -> Vec<GateAuditResult> {
         target_bound: "alpha = d_tau/dt > 1, ||grad_i alpha||_interior == 0",
         measured_value: format!("5.0 yr -> {:.2} h at alpha=1000, ||grad alpha|| = {}", enclave_hrs, grad_alpha),
         verification_method: "Optical Atomic Clock Diff",
-        passed: stage4_ok && (enclave_hrs - 43.83).abs() < 0.01 && grad_alpha == 0.0,
+        passed: stage4_ok && shbt_swarm_core::shbt_abs!((enclave_hrs - 43.83)) < 0.01 && grad_alpha == 0.0,
     });
 
     let sz_mmio = core::mem::size_of::<ShbtSwarmMmioRegs>();
@@ -1496,8 +1496,8 @@ pub fn evaluate_all_112_gates() -> Vec<GateAuditResult> {
         target_bound: "46.12 s (M0) / 12.22 s (X2) at M=10,000 nodes",
         measured_value: format!("{:.2} s (M0) / {:.2} s (X2) at M=10,000", m10k_sim.tier4_forge_m0_seconds, m10k_sim.tier4_forge_x2_seconds),
         verification_method: "MERA-DAG Fleet Digital Twin",
-        passed: (m10k_sim.tier4_forge_m0_seconds - 46.1249).abs() < 0.01
-            && (m10k_sim.tier4_forge_x2_seconds - 12.2220).abs() < 0.01,
+        passed: shbt_swarm_core::shbt_abs!((m10k_sim.tier4_forge_m0_seconds - 46.1249)) < 0.01
+            && shbt_swarm_core::shbt_abs!((m10k_sim.tier4_forge_x2_seconds - 12.2220)) < 0.01,
     });
 
     let cfg_41 = Mar312xExoticNacelleConfig { loaded_cores: 41 };
@@ -1576,7 +1576,7 @@ pub fn evaluate_all_112_gates() -> Vec<GateAuditResult> {
         target_bound: "V_mn in [3.800 V, 7.400 V], K_p = 1.85 V/rad PID lock",
         measured_value: format!("V_mn in [{:.3} V, {:.3} V], K_p = {:.2} V/rad", V_ON_VOLTS, V_SAT_VOLTS, PID_KP_V_PER_RAD),
         verification_method: "Z3 THM-MARX-06 + HIL Transceiver",
-        passed: v_in_window && (PID_KP_V_PER_RAD - 1.85).abs() < 1e-6,
+        passed: v_in_window && shbt_swarm_core::shbt_abs!((PID_KP_V_PER_RAD - 1.85)) < 1e-6,
     });
 
     // GATE-SWARM-HBT-03: Phase Jitter & Optical Coherence
@@ -1619,7 +1619,7 @@ pub fn evaluate_all_112_gates() -> Vec<GateAuditResult> {
         target_bound: "f_bridge = 19.82 MHz, isolation ratio >= 3500.0x against 72.0 GHz clock",
         measured_value: format!("f_bridge = {:.2} MHz, isolation = {:.2}x >= 3500.0x", f_bridge, iso),
         verification_method: "Euler-Bernoulli Beam Model + Z3",
-        passed: (f_bridge - 19.82).abs() < 0.05 && iso >= 3500.0,
+        passed: shbt_swarm_core::shbt_abs!((f_bridge - 19.82)) < 0.05 && iso >= 3500.0,
     });
 
     // GATE-SWARM-HBT-06: Closed-Loop Actuation Power & Landauer Surplus
@@ -1633,8 +1633,8 @@ pub fn evaluate_all_112_gates() -> Vec<GateAuditResult> {
         target_bound: "eta_act == 0.990512, LANR 999.054 kW covers 906.000 kW debt (+93.054 kW)",
         measured_value: format!("eta_act = {:.6} ({:.4}%), surplus = +{:.3} kW", NET_ACTUATION_EFFICIENCY, NET_ACTUATION_EFFICIENCY * 100.0, budget.landauer_surplus_w / 1000.0),
         verification_method: "Z3 THM-MARX-07 + Bus Telemetry",
-        passed: (NET_ACTUATION_EFFICIENCY - 0.990512).abs() < 1e-9
-            && (budget.landauer_surplus_w - 93_054.0).abs() < 1e-6,
+        passed: shbt_swarm_core::shbt_abs!((NET_ACTUATION_EFFICIENCY - 0.990512)) < 1e-9
+            && shbt_swarm_core::shbt_abs!((budget.landauer_surplus_w - 93_054.0)) < 1e-6,
     });
 
     // GATE-SWARM-HBT-07: Minimum-Jerk Soliton & Andromeda Transit
@@ -1649,7 +1649,7 @@ pub fn evaluate_all_112_gates() -> Vec<GateAuditResult> {
         verification_method: "Z3 THM-MARX-07 + Kinematic Twin",
         passed: step_state.residual_acceleration_mps2 <= MAX_RESIDUAL_ACCELERATION_MPS2
             && step_state.target_velocity_c == 2_482_950.0
-            && (M31_TRANSIT_HOURS_TIER4 - 8.957).abs() < 0.01,
+            && shbt_swarm_core::shbt_abs!((M31_TRANSIT_HOURS_TIER4 - 8.957)) < 0.01,
     });
 
     // GATE-SWARM-HBT-08: Pt-Weyl Crowbar Ultrafast Quench & SMES Recovery
@@ -1665,8 +1665,8 @@ pub fn evaluate_all_112_gates() -> Vec<GateAuditResult> {
         passed: quench.trip_latency_fs <= 1_701
             && quench.smes_recovered_ratio >= 0.9988
             && quench.collector_bias_clamped_v < V_ON_VOLTS
-            && (quench.acoustic_holdoff_ns - 110.00).abs() < 1e-6
-            && (quench.restoration_ns - 9.24).abs() < 1e-6,
+            && shbt_swarm_core::shbt_abs!((quench.acoustic_holdoff_ns - 110.00)) < 1e-6
+            && shbt_swarm_core::shbt_abs!((quench.restoration_ns - 9.24)) < 1e-6,
     });
 
     gates
@@ -2051,7 +2051,7 @@ pub fn evaluate_all_144_gates() -> Vec<GateAuditResult> {
         target_bound: "3.031e43 GoI passes/s, 1.08e92 ops/s (1% galactic mass computronium)",
         measured_value: format!("3.031e{} passes/s, {:.3e} ops/s (Margolus-Levitin saturated)", exp_goi, ops_ml),
         verification_method: "Z3 THM-LOGOS-01 + GoI Benchmark",
-        passed: exp_goi == 43 && (ops_ml - 1.08e92).abs() < 1e85,
+        passed: exp_goi == 43 && shbt_swarm_core::shbt_abs!((ops_ml - 1.08e92)) < 1e85,
     });
 
     // GATE-LOGOS-12: SHBT-OMNIBUS 3-stage polariton EPR squeezing & Verlinde splitting error
@@ -2206,7 +2206,7 @@ pub fn evaluate_all_160_gates() -> Vec<GateAuditResult> {
         target_bound: "alpha_obs == 10^12 (31,688.7 yr/s), h_syn_cbf >= 0",
         measured_value: format!("alpha_obs = {:.2e} (31,688.7 yr/s), h_syn_cbf = {:.2} >= 0", alpha_val, h_syn_val),
         verification_method: "Z3 THM-APOTH-01 + Relativistic Lapse Ramp",
-        passed: (alpha_val - 1.0e12).abs() < 1.0 && h_syn_val >= 0.0,
+        passed: shbt_swarm_core::shbt_abs!((alpha_val - 1.0e12)) < 1.0 && h_syn_val >= 0.0,
     });
 
     // GATE-APOTH-06: Deity-Mode 234-Layer MERA Law-Rewriting (346 Dynkin slots, t_prop == 17.01 as)
@@ -2826,7 +2826,7 @@ pub fn evaluate_all_208_gates() -> Vec<GateAuditResult> {
         target_bound: "G_space == 0 (flat connection on amorphous matter manifold)",
         measured_value: format!("G_space = 0, residual defect = {:.2e} <= 1.0e-14", am_state.framing_defect),
         verification_method: "Z3 THM-FOUNDRY-06-EXT + BF Topological Gauge Sim",
-        passed: am_state.framing_closed && (am_state.framing_defect).abs() <= 1e-14,
+        passed: am_state.framing_closed && shbt_swarm_core::shbt_abs!((am_state.framing_defect)) <= 1e-14,
     });
 
     // GATE-194: Continuous Sugawara Shift Conformal Weight Quadrature
@@ -2852,7 +2852,7 @@ pub fn evaluate_all_208_gates() -> Vec<GateAuditResult> {
         target_bound: "delta h_braid * 124 + Delta h_vis == 0 (|defect| <= 1.0e-14)",
         measured_value: format!("delta h_braid = {:.8}, net defect = {:.2e}", am_state.delta_h_braid, sum_framing),
         verification_method: "Artin Braid Group Framing HIL",
-        passed: sum_framing.abs() <= 1e-14,
+        passed: shbt_swarm_core::shbt_abs!(sum_framing) <= 1e-14,
     });
 
     // GATE-196: Electric Weyl Curvature Nullification
@@ -3081,7 +3081,7 @@ pub fn execute_v7_extension_gates(regs: &mut shbt_swarm_mmio::ShbtSwarmMmioRegs)
     // 2. Phase 2 AI: GATE-212..GATE-214
     let lle = shbt_swarm_ai::lugiato_ep2::LugiatoEp2Cavity::new_default();
     let (disc_re, disc_im) = lle.symmetric_ep2_discriminant(1.0e11);
-    let g212 = disc_re.abs() == 0.0 && disc_im.abs() == 0.0 && (lle.inference_latency_ps() - 54.432).abs() < 1e-6;
+    let g212 = shbt_swarm_core::shbt_abs!(disc_re) == 0.0 && shbt_swarm_core::shbt_abs!(disc_im) == 0.0 && shbt_swarm_core::shbt_abs!((lle.inference_latency_ps() - 54.432)) < 1e-6;
     let phase_margin = lle.phase_locking_margin_rad(1.0e11);
     regs.kerr_phase_margin_rad = phase_margin;
     let g213 = lle.lyapunov_time_derivative(1.0e11, 1.0) < 0.0
@@ -3140,7 +3140,7 @@ pub fn execute_v7_extension_gates(regs: &mut shbt_swarm_mmio::ShbtSwarmMmioRegs)
 
     // 6. Phase 5A Omega: GATE-224..GATE-226
     let siphon = shbt_swarm_omega::blandford_znajek_null::KerrErgosphereSiphon::new_default();
-    let g224 = (siphon.field_angular_velocity() - siphon.frame_dragging_omega()).abs() == 0.0;
+    let g224 = shbt_swarm_core::shbt_abs!((siphon.field_angular_velocity() - siphon.frame_dragging_omega())) == 0.0;
     let p_jet = siphon.radial_poynting_flux_watts();
     regs.smbh_poynting_leakage_watts = p_jet;
     let g225 = p_jet == 0.0 && siphon.horizon_area_derivative() >= 0.0;
@@ -3153,7 +3153,7 @@ pub fn execute_v7_extension_gates(regs: &mut shbt_swarm_mmio::ShbtSwarmMmioRegs)
     let logos = shbt_swarm_logos::acceleration_mossbauer::MossbauerStarkCompensator::new_default();
     let stark_hz = logos.required_stark_detuning_hz(9.80665e4);
     regs.mossbauer_stark_detuning_hz = stark_hz;
-    let g227 = logos.residual_detuning_rad_per_s(9.80665e4).abs() == 0.0;
+    let g227 = shbt_swarm_core::shbt_abs!(logos.residual_detuning_rad_per_s(9.80665e4)) == 0.0;
     let (f_m, tau_b) = logos.compensated_mossbauer_metrics(9.80665e4);
     regs.logos_mossbauer_factor_fm = f_m;
     regs.logos_borrmann_tau = tau_b;
@@ -3167,7 +3167,7 @@ pub fn execute_v7_extension_gates(regs: &mut shbt_swarm_mmio::ShbtSwarmMmioRegs)
     let binding = shbt_swarm_apotheosis::phenomenal_binding::PhenomenalBindingEngine::new_default();
     regs.phenomenal_binding_purity = binding.unified_qualia_purity();
     let g230 = binding.verify_pentagon_hexagon_coherence()
-        && (regs.phenomenal_binding_purity - 1.0).abs() < 1e-6
+        && shbt_swarm_core::shbt_abs!((regs.phenomenal_binding_purity - 1.0)) < 1e-6
         && binding.topological_entanglement_entropy_nats() > 0.481;
 
     let coalescer = shbt_swarm_apotheosis::branch_coalescence::UnitaryBranchCoalescer::new_default();
@@ -3663,10 +3663,10 @@ pub fn execute_v9_extension_gates(regs: &mut shbt_swarm_mmio::ShbtSwarmMmioRegs)
         lambda_ratio: 1.000000,
     };
     let w_hol = ribbon.modulate_constants_ballistic(target_c, 128);
-    let g265 = ribbon.framing_anomaly.abs() < 1e-14;
+    let g265 = shbt_swarm_core::shbt_abs!(ribbon.framing_anomaly) < 1e-14;
     let g266 = ribbon.internal_dissipation_joules == 0.0;
     let g267 = shbt_swarm_logos::BALLISTIC_TRANSIT_TIME_AS == 17.01;
-    let g268 = (ribbon.accumulated_twist + ribbon.accumulated_writhe).abs() < 1e-14;
+    let g268 = shbt_swarm_core::shbt_abs!((ribbon.accumulated_twist + ribbon.accumulated_writhe)) < 1e-14;
     let id_chk = w_hol.conjugate_transpose().mul(w_hol);
     let g269 = id_chk.m[0][0].sub(shbt_swarm_logos::continuous_ribbon::Complex64::ONE).norm_sqr() < 1e-8;
     let f_mat = shbt_swarm_logos::FibonacciCategory::f_matrix();
@@ -3674,9 +3674,9 @@ pub fn execute_v9_extension_gates(regs: &mut shbt_swarm_mmio::ShbtSwarmMmioRegs)
     let g270 = f2.m[0][0].sub(shbt_swarm_logos::continuous_ribbon::Complex64::ONE).norm_sqr() < 1e-12;
     let a0 = shbt_swarm_logos::FibonacciCategory::a0_matrix();
     let a1 = shbt_swarm_logos::FibonacciCategory::a1_matrix();
-    let g271 = (a0.m[0][0].add(a0.m[1][1]).re - (-0.6)).abs() < 1e-12 && (a1.m[0][0].add(a1.m[1][1]).re - (-0.6)).abs() < 1e-12;
+    let g271 = shbt_swarm_core::shbt_abs!((a0.m[0][0].add(a0.m[1][1]).re - (-0.6))) < 1e-12 && shbt_swarm_core::shbt_abs!((a1.m[0][0].add(a1.m[1][1]).re - (-0.6))) < 1e-12;
     regs.continuous_ribbon_discretization_error = 0.0;
-    regs.ribbon_kz_connection_residual = ribbon.framing_anomaly.abs();
+    regs.ribbon_kz_connection_residual = shbt_swarm_core::shbt_abs!(ribbon.framing_anomaly);
     let g272 = (regs.audit_v9_invariants() & shbt_swarm_mmio::SHBT_SWARM_FAULT_DISCRETIZATION_NONZERO) == 0;
 
     // 5. Gates 273..280: Relativistic QRF Covariance Engine (THM-STEN-11-EXT, THM-STEN-12-EXT, THM-STEN-13-EXT)
@@ -3895,7 +3895,7 @@ pub fn execute_v10_extension_gates(regs: &mut shbt_swarm_mmio::ShbtSwarmMmioRegs
     let a_syn = vlasov.compute_synthetic_acceleration([8.0, 0.0, 0.0]);
     let g300 = a_syn[0] != 0.0;
 
-    let target_v = (8.0 * a_syn[0].abs()).sqrt();
+    let target_v = (8.0 * shbt_swarm_core::shbt_abs!(a_syn[0])).sqrt();
     let metrics = vlasov.evaluate_stability_invariants(8.0, target_v, 20.0);
     let g301 = metrics.circular_velocity_drift <= shbt_swarm_omega::VIRIAL_DRIFT_TOLERANCE;
 

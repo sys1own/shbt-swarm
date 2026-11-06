@@ -320,6 +320,6 @@ mod tests {
 
         // Harvest 10% of baryonic mass into dark ledger
         let harvest_fraction = clamp_engine.harvest_and_clamp(0.10 * baryon_mass).unwrap();
-        assert!((harvest_fraction - 0.10).abs() < 1e-9);
+        assert!(shbt_swarm_core::shbt_abs!((harvest_fraction - 0.10)) < 1e-9);
     }
 }

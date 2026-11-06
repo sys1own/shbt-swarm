@@ -1,4 +1,4 @@
-//! `shbt-swarm-mmio`: Bare-Metal Microkernel ABI v12 (`0x000C0312`) Register Specification.
+//! `shbt-swarm-mmio`: Bare-Metal Microkernel ABI v13.0 (`0x000D0312`) Register Specification.
 //! Zero-allocation `#![no_std]` FFI bindings matching `include/shbt_swarm_mmio.h`.
 
 #![no_std]
@@ -49,6 +49,16 @@ pub const SHBT_CANONICAL_KL: u32 = 26;
 pub const SHBT_CANONICAL_KQ: u32 = 8;
 pub const SHBT_CANONICAL_K_COS: u32 = 312;
 pub const SHBT_DYNKIN_SLOTS_TOTAL: u32 = 346;
+
+#[inline]
+const fn abs_f64(x: f64) -> f64 {
+    if x < 0.0 { -x } else { x }
+}
+
+#[inline]
+const fn abs_f32(x: f32) -> f32 {
+    if x < 0.0 { -x } else { x }
+}
 
 pub const SHBT_DCA_BASE_ADDR: u64 = 0x7F00_0400;
 pub const SHBT_STELLAR_APERTURE_BASE_ADDR: u64 = 0x7F00_0500;
@@ -243,7 +253,7 @@ pub struct ShbtSwarmMmioRegs {
     pub v11_harvested_nucleons_counter: u64,
     pub v11_reserved_tail: u64,
 
-    // Cache Line 9 (0x0240..0x027F): ABI v12 MAR-OMEGA Continuous Reactor & HIL Audit (64 bytes)
+    // Cache Line 9 (0x0240..0x027F): ABI v13 MAR-OMEGA Continuous Reactor & HIL Audit (64 bytes)
     pub omega_gross_power_watts: f64,
     pub omega_cft_direct_eff: f64,
     pub omega_cryo_sensible_watts: f64,
@@ -416,7 +426,7 @@ macro_rules! const_assert {
     };
 }
 
-pub const SHBT_MMIO_ABI_VERSION: u32 = 0x000C_0312;
+pub const SHBT_MMIO_ABI_VERSION: u32 = 0x000D_0312;
 pub const SHBT_MMIO_DENSE_BASE: u64 = 0x7F00_0000;
 pub const SHBT_MMIO_QUENCH_BASE: u64 = 0x7F00_0100;
 pub const SHBT_MMIO_SHUNT_BASE: u64 = 0x7F00_0200;
@@ -781,7 +791,7 @@ impl ShbtSwarmMmioRegs {
         {
             faults |= SHBT_SWARM_FAULT_FLUX_JUMP;
         }
-        if self.smbh_poynting_leakage_watts.abs() > 1.0e-12 {
+        if abs_f64(self.smbh_poynting_leakage_watts) > 1.0e-12 {
             faults |= SHBT_SWARM_FAULT_POYNTING_JET;
         }
         if self.logos_mossbauer_factor_fm < SHBT_SWARM_MOSSBAUER_FACTOR_MIN
@@ -791,8 +801,8 @@ impl ShbtSwarmMmioRegs {
         {
             faults |= SHBT_SWARM_FAULT_MOSSBAUER_DETUNE;
         }
-        if (self.phenomenal_binding_purity - 1.0).abs() > 1.0e-6
-            || self.branch_prune_entropy_debt.abs() > 0.0
+        if abs_f32(self.phenomenal_binding_purity - 1.0) > 1.0e-6
+            || abs_f32(self.branch_prune_entropy_debt) > 0.0
         {
             faults |= SHBT_SWARM_FAULT_BINDING_DECOHERENCE;
         }
@@ -815,7 +825,7 @@ impl ShbtSwarmMmioRegs {
         if self.continuous_ribbon_discretization_error != 0.0 || self.continuous_ribbon_discretization_error.is_nan() {
             faults |= SHBT_SWARM_FAULT_DISCRETIZATION_NONZERO;
         }
-        if (self.qrf_superposed_sheaf_spectral_radius - 1.0).abs() > 1.0e-6 || self.qrf_superposed_sheaf_spectral_radius.is_nan() {
+        if abs_f32(self.qrf_superposed_sheaf_spectral_radius - 1.0) > 1.0e-6 || self.qrf_superposed_sheaf_spectral_radius.is_nan() {
             faults |= SHBT_SWARM_FAULT_SHEAF_SPECTRUM_DIV;
         }
         if self.qrf_microcausality_trace_fidelity < 0.999999 || self.qrf_microcausality_trace_fidelity.is_nan() {

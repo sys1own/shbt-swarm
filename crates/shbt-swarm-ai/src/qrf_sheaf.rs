@@ -97,7 +97,7 @@ impl QrfState {
             sum += self.branches[idx].prob_weight;
             idx += 1;
         }
-        if (sum - 1.0).abs() > 1.0e-7 {
+        if shbt_swarm_core::shbt_abs!((sum - 1.0)) > 1.0e-7 {
             return Err(QrfError::NormConservationViolation);
         }
         Ok(())

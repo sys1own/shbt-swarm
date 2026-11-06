@@ -179,6 +179,6 @@ mod tests {
         assert!(res.lattice_temperature_kelvin <= T_LATTICE_MAX_PERMISSIBLE);
         assert!(res.lattice_temperature_kelvin >= T_LATTICE_NOMINAL_KELVIN);
         assert!(res.quantum_coherence_verified);
-        assert!((res.shunted_to_dark_ledger_watts + res.shunted_to_propulsion_watts - res.total_input_power_watts * 0.999_999_997_43).abs() < 1.0);
+        assert!(shbt_swarm_core::shbt_abs!((res.shunted_to_dark_ledger_watts + res.shunted_to_propulsion_watts - res.total_input_power_watts * 0.999_999_997_43)) < 1.0);
     }
 }

@@ -48,19 +48,19 @@ impl CausalDecouplingBifurcation {
         if !self.latch_tripped {
             return Err(DeflectionError::ProtectiveLatchDisengaged);
         }
-        if self.external_lapse_g00.abs() > 1e-15 {
+        if shbt_swarm_core::shbt_abs!(self.external_lapse_g00) > 1e-15 {
             return Err(DeflectionError::ExternalLapseNonZero);
         }
-        if self.proper_acceleration.abs() > 1e-15 {
+        if shbt_swarm_core::shbt_abs!(self.proper_acceleration) > 1e-15 {
             return Err(DeflectionError::ProperAccelerationNonZero);
         }
-        if self.nociceptive_entropy_rate.abs() > 1e-15 {
+        if shbt_swarm_core::shbt_abs!(self.nociceptive_entropy_rate) > 1e-15 {
             return Err(DeflectionError::NociceptiveEntropyGenerated);
         }
         if self.phi_integrated <= 0.0 {
             return Err(DeflectionError::IntegratedInformationVanished);
         }
-        if self.euler_characteristic_boundary.abs() > 1e-15 {
+        if shbt_swarm_core::shbt_abs!(self.euler_characteristic_boundary) > 1e-15 {
             return Err(DeflectionError::EulerCharacteristicPerturbed);
         }
         Ok(self.phi_integrated)

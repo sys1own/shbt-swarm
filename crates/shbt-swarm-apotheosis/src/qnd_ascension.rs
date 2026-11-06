@@ -73,7 +73,7 @@ impl LindbladianPurifier {
         if tau_s > TAU_SYNC_MAX_SECONDS {
             return Err(QndError::SynchronizationTimescaleExceeded);
         }
-        if self.commutator_norm.abs() > 1e-15 {
+        if shbt_swarm_core::shbt_abs!(self.commutator_norm) > 1e-15 {
             return Err(QndError::NonDemolitionCommutatorBreach);
         }
         if self.subjective_entropy_rate > 1e-15 {

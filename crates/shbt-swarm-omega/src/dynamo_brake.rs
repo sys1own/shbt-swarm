@@ -79,7 +79,7 @@ impl DynkinBrakingRouter {
             return Err(DynamoError::DynkinSlotMismatch);
         }
         let tau_b = self.boundary_torque();
-        if tau_b.abs() > 1e-15 {
+        if shbt_swarm_core::shbt_abs!(tau_b) > 1e-15 {
             return Err(DynamoError::NonZeroBoundaryTorque);
         }
         let tau_d = self.disk_torque();

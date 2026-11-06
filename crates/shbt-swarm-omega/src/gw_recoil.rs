@@ -33,12 +33,12 @@ impl SymTensor3 {
     }
 
     pub fn max_norm(&self) -> f64 {
-        let mut m = self.xx.abs();
-        if self.xy.abs() > m { m = self.xy.abs(); }
-        if self.xz.abs() > m { m = self.xz.abs(); }
-        if self.yy.abs() > m { m = self.yy.abs(); }
-        if self.yz.abs() > m { m = self.yz.abs(); }
-        if self.zz.abs() > m { m = self.zz.abs(); }
+        let mut m = shbt_swarm_core::shbt_abs!(self.xx);
+        if shbt_swarm_core::shbt_abs!(self.xy) > m { m = shbt_swarm_core::shbt_abs!(self.xy); }
+        if shbt_swarm_core::shbt_abs!(self.xz) > m { m = shbt_swarm_core::shbt_abs!(self.xz); }
+        if shbt_swarm_core::shbt_abs!(self.yy) > m { m = shbt_swarm_core::shbt_abs!(self.yy); }
+        if shbt_swarm_core::shbt_abs!(self.yz) > m { m = shbt_swarm_core::shbt_abs!(self.yz); }
+        if shbt_swarm_core::shbt_abs!(self.zz) > m { m = shbt_swarm_core::shbt_abs!(self.zz); }
         m
     }
 }

@@ -456,12 +456,12 @@ mod tests {
         assert_eq!(AGGREGATE_ROUTING_TBPS, 2.560);
 
         let (x0, y0) = InPInGaAsHbtPicArray::centered_coords_um(0, 0);
-        assert!((x0 - (-175.0)).abs() < 1e-9);
-        assert!((y0 - (-175.0)).abs() < 1e-9);
+        assert!(shbt_swarm_core::shbt_abs!((x0 - (-175.0))) < 1e-9);
+        assert!(shbt_swarm_core::shbt_abs!((y0 - (-175.0))) < 1e-9);
 
         let (x7, y7) = InPInGaAsHbtPicArray::centered_coords_um(7, 7);
-        assert!((x7 - 175.0).abs() < 1e-9);
-        assert!((y7 - 175.0).abs() < 1e-9);
+        assert!(shbt_swarm_core::shbt_abs!((x7 - 175.0)) < 1e-9);
+        assert!(shbt_swarm_core::shbt_abs!((y7 - 175.0)) < 1e-9);
     }
 
     #[test]
@@ -469,10 +469,10 @@ mod tests {
         let f0 = AIRBRIDGE_UNSTRESSED_F0_MHZ;
         let sigma_ratio = AIRBRIDGE_PRESTRESS_RATIO;
         let f_bridge = f0 * sqrt_f64(1.0 - sigma_ratio);
-        assert!((f_bridge - AIRBRIDGE_RESONANCE_MHZ).abs() < 0.05);
+        assert!(shbt_swarm_core::shbt_abs!((f_bridge - AIRBRIDGE_RESONANCE_MHZ)) < 0.05);
 
         let isolation = (HBT_MASTER_CLOCK_GHZ * 1000.0) / f_bridge;
-        assert!((isolation - AIRBRIDGE_ISOLATION_RATIO).abs() < 1.0);
+        assert!(shbt_swarm_core::shbt_abs!((isolation - AIRBRIDGE_ISOLATION_RATIO)) < 1.0);
     }
 
     #[test]

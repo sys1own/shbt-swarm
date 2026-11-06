@@ -37,10 +37,10 @@ impl PhenomenalBindingEngine {
         let f2_10 = f[1][0] * f[0][0] + f[1][1] * f[1][0];
         let f2_11 = f[1][0] * f[0][1] + f[1][1] * f[1][1];
 
-        (f2_00 - 1.0).abs() < 1.0e-14
-            && f2_01.abs() < 1.0e-14
-            && f2_10.abs() < 1.0e-14
-            && (f2_11 - 1.0).abs() < 1.0e-14
+        shbt_swarm_core::shbt_abs!((f2_00 - 1.0)) < 1.0e-14
+            && shbt_swarm_core::shbt_abs!(f2_01) < 1.0e-14
+            && shbt_swarm_core::shbt_abs!(f2_10) < 1.0e-14
+            && shbt_swarm_core::shbt_abs!((f2_11 - 1.0)) < 1.0e-14
     }
 
     #[inline]

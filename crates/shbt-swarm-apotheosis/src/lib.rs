@@ -393,7 +393,7 @@ mod tests {
         let tau_peak = 0.5 - 1.0 / (2.0 * 3.0f64.sqrt());
         let (_s_peak, d2s_peak) = evaluate_eikonal_ramp(tau_peak).unwrap();
         assert!(d2s_peak <= SHBT_MAX_EIKONAL_ACCEL + 1e-6);
-        assert!((d2s_peak - SHBT_MAX_EIKONAL_ACCEL).abs() < 1e-4);
+        assert!(shbt_swarm_core::shbt_abs!((d2s_peak - SHBT_MAX_EIKONAL_ACCEL)) < 1e-4);
 
         assert!(evaluate_eikonal_ramp(-0.1).is_err());
         assert!(evaluate_eikonal_ramp(1.1).is_err());

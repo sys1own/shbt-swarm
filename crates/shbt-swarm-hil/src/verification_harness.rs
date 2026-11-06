@@ -286,7 +286,7 @@ pub fn run_full_hil_verification_harness() -> [HilGateResult; NEW_MAR_OMEGA_GATE
                 let dec = shbt_swarm_omega::pasta_decompress::PastaDecompressor::new();
                 let st = dec.decompress_step(1.8e14, 1.0e-4, 200.0);
                 match st {
-                    Ok(s) => (s.bogoliubov_u_sq + s.bogoliubov_v_sq - 1.0).abs() < 1e-9,
+                    Ok(s) => shbt_swarm_core::shbt_abs!((s.bogoliubov_u_sq + s.bogoliubov_v_sq - 1.0)) < 1e-9,
                     Err(_) => false,
                 }
             },
@@ -327,7 +327,7 @@ pub fn run_full_hil_verification_harness() -> [HilGateResult; NEW_MAR_OMEGA_GATE
                 let shunt = shbt_swarm_logos::condensation_shunt::CondensationShuntController::new();
                 match shunt.execute_shunt_cycle(shbt_swarm_logos::condensation_shunt::P_ENTHALPY_NOMINAL_WATTS) {
                     Ok(st) => st.quantum_coherence_verified
-                        && (st.shunted_to_dark_ledger_watts - st.total_input_power_watts * 0.999_999_997_43 * (23.0 / 33.0)).abs() < 1.0,
+                        && shbt_swarm_core::shbt_abs!((st.shunted_to_dark_ledger_watts - st.total_input_power_watts * 0.999_999_997_43 * (23.0 / 33.0))) < 1.0,
                     Err(_) => false,
                 }
             },
@@ -363,7 +363,7 @@ pub fn run_full_hil_verification_harness() -> [HilGateResult; NEW_MAR_OMEGA_GATE
                     Ok(res) => res.consensus_locked
                         && res.iterations_completed == 6
                         && res.convergence_time_ps <= 54.432
-                        && (res.total_gross_power_watts - 1.0e22).abs() < 1e8
+                        && shbt_swarm_core::shbt_abs!((res.total_gross_power_watts - 1.0e22)) < 1e8
                         && res.com_drift_norm_m <= 1.0e-15,
                     Err(_) => false,
                 }

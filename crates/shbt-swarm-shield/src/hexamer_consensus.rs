@@ -228,7 +228,7 @@ mod tests {
         assert!(result.consensus_locked);
         assert_eq!(result.iterations_completed, 6);
         assert!(result.convergence_time_ps <= TAU_CONSENSUS_MAX_PICOSECONDS);
-        assert!((result.total_gross_power_watts - TOTAL_GROSS_POWER_TARGET_WATTS).abs() < 1e6);
+        assert!(shbt_swarm_core::shbt_abs!((result.total_gross_power_watts - TOTAL_GROSS_POWER_TARGET_WATTS)) < 1e6);
         assert!(result.com_drift_norm_m <= MAX_COM_DISPLACEMENT_METERS);
     }
 }

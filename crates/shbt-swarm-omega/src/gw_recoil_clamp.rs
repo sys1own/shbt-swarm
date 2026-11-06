@@ -106,11 +106,11 @@ impl SymTensor3 {
 
     #[inline(always)]
     pub fn norm_inf(&self) -> f64 {
-  let mut m = if self.xx.abs() > self.xy.abs() { self.xx.abs() } else { self.xy.abs() };
-  if self.xz.abs() > m { m = self.xz.abs(); }
-  if self.yy.abs() > m { m = self.yy.abs(); }
-  if self.yz.abs() > m { m = self.yz.abs(); }
-  if self.zz.abs() > m { m = self.zz.abs(); }
+  let mut m = if shbt_swarm_core::shbt_abs!(self.xx) > shbt_swarm_core::shbt_abs!(self.xy) { shbt_swarm_core::shbt_abs!(self.xx) } else { shbt_swarm_core::shbt_abs!(self.xy) };
+  if shbt_swarm_core::shbt_abs!(self.xz) > m { m = shbt_swarm_core::shbt_abs!(self.xz); }
+  if shbt_swarm_core::shbt_abs!(self.yy) > m { m = shbt_swarm_core::shbt_abs!(self.yy); }
+  if shbt_swarm_core::shbt_abs!(self.yz) > m { m = shbt_swarm_core::shbt_abs!(self.yz); }
+  if shbt_swarm_core::shbt_abs!(self.zz) > m { m = shbt_swarm_core::shbt_abs!(self.zz); }
   m
     }
 }

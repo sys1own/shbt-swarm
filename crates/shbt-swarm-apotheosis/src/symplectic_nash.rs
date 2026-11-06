@@ -35,16 +35,16 @@ impl SymplecticNashProjector {
 
     /// Verifies symplectic Nash resolution and unitary phase linking
     pub fn verify_consensus(&self) -> Result<f64, NashError> {
-        if self.intent_commutator_norm.abs() < 1e-15 {
+        if shbt_swarm_core::shbt_abs!(self.intent_commutator_norm) < 1e-15 {
             return Err(NashError::IntentsAlreadyCommute);
         }
         if !self.p_nash_applied {
             return Err(NashError::ProjectionNotApplied);
         }
-        if (self.wilson_phase_norm - 1.0).abs() > 1e-15 {
+        if shbt_swarm_core::shbt_abs!((self.wilson_phase_norm - 1.0)) > 1e-15 {
             return Err(NashError::WilsonPhaseNonUnitary);
         }
-        if self.kolmogorov_complexity_deriv.abs() > 1e-15 {
+        if shbt_swarm_core::shbt_abs!(self.kolmogorov_complexity_deriv) > 1e-15 {
             return Err(NashError::KolmogorovComplexityDiverged);
         }
         Ok(self.wilson_phase_norm)

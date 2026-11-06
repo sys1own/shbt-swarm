@@ -1,6 +1,6 @@
 # Architectural Specification: sys1own/shbt-swarm
 
-This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, Dual-Reactor Hybrid Power Architecture (`SHBT-MAR-312X` discrete traversal reactor + `SHBT-MAR-OMEGA` continuous-flow boundary annihilation reactor + `DualReactorPowerArbiter`), 17-crate Rust workspace architecture, C11 bare-metal microkernel ABI v12.0 (`0x000D0312` at physical addresses `0x70000000` / `0x80000000`, `0x70020000`, `0x40008000`, `0x4000A000`, `0x4000C000`, `0x4000E000`, `0x7F000400`, `0x7F000500`, `0x7F000600`, `0x7F000700`, `0x8F000100`, and `0x00007F8000040000ULL`), closed-loop multiphysics simulation contracts, and the 344-gate verification / 100-theorem formal proof ledger.
+This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, Dual-Reactor Hybrid Power Architecture (`SHBT-MAR-312X` discrete traversal reactor + `SHBT-MAR-OMEGA` continuous-flow boundary annihilation reactor + `DualReactorPowerArbiter`), 17-crate Rust workspace architecture, C11 bare-metal microkernel ABI v13.0 (`0x000D0312` at physical addresses `0x70000000` / `0x80000000`, `0x70020000`, `0x40008000`, `0x4000A000`, `0x4000C000`, `0x4000E000`, `0x7F000400`, `0x7F000500`, `0x7F000600`, `0x7F000700`, `0x8F000100`, and `0x00007F8000040000ULL`), closed-loop multiphysics simulation contracts, and the 360-gate verification / 105-theorem formal proof ledger.
 
 ---
 
@@ -152,7 +152,7 @@ graph TD
 
 ### The 17 Workspace Crates & First-Principles Modules
 
-1. **`crates/shbt-swarm-core` (`shbt-swarm-mmio`)**: Core `#![no_std]` primitives, fixed-point Q16.16 and Q16.48 arithmetic, SIMD vector types, endian-safe serialization, and ABI v12.0 640-byte MMIO register contracts (`ShbtSwarmMmioRegs`, `ShbtMarOmegaAperture`, `ShbtUniversalHarvestAperture`, `ShbtSwarmMmioV12`).
+1. **`crates/shbt-swarm-core` (`shbt-swarm-mmio`)**: Core `#![no_std]` primitives, fixed-point Q16.16 and Q16.48 arithmetic, SIMD vector types, endian-safe serialization, and ABI v13.0 704-byte MMIO register contracts (`ShbtSwarmMmioRegs`, `ShbtMarOmegaAperture`, `ShbtUniversalHarvestAperture`, `ShbtSwarmMmioV12`).
 2. **`crates/shbt-swarm-bio`**: Biogenic payload synthesis and molecular assembly. Contains **`floquet_homochirality.rs`** executing Floquet-Kondepudi-Nelson microscopic Z^0 electroweak parity selection and homochiral lock.
 3. **`crates/shbt-swarm-cloner`**: Autonomous Von Neumann quine replication engines implementing Pathway A (Tomita-Takesaki copy), Pathway B (Verlinde template imprint), and Pathway C (cryogenic state capture).
 4. **`crates/shbt-swarm-ai`**: 101-layer TTN-MERA holographic world model, optical PT-GoI resolvent solver, Connes relative modular flow, and **`qrf_sheaf.rs`** implementing Relativistic Quantum Reference Frame covariance under metric superposition, unipotent simplicial sheaf consensus, and relative-degree r=2 active-set QP HOCBF filtering.
@@ -186,7 +186,7 @@ The bare-metal C11 microkernel contract provides deterministic, memory-mapped re
 #include <stddef.h>
 
 #define SHBT_SWARM_ABI_VERSION          0x000D0312U
-#define SHBT_SWARM_FORMAL_PROOFS_COUNT  100U
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT  105U
 #define SHBT_SWARM_HIL_GATES_COUNT      360U
 
 #define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL /* Base aperture (0x70000000 - 0x700002BF, 704 B, 11 cache lines) */
@@ -202,6 +202,7 @@ The bare-metal C11 microkernel contract provides deterministic, memory-mapped re
 #define SHBT_SWARM_STELLAR_APERTURE_BASE 0x7F000500UL         /* Multi-Channel Stellar Aperture (1472 B) */
 #define SHBT_SWARM_MAR_OMEGA_APERTURE_BASE 0x7F000600UL       /* Continuous-Flow SHBT-MAR-OMEGA Reactor Aperture (256 B) */
 #define SHBT_SWARM_UNIV_HARVEST_APERTURE_BASE 0x7F000700UL    /* Universal Stellar Harvesting & CFL Hadronization Aperture (256 B) */
+#define SHBT_SWARM_DIVERTOR_APERTURE_BASE 0x7F000800UL      /* RMHD Divertor & Constellation Consensus Aperture (64 B) */
 #define SHBT_SWARM_PATCH_APERTURE_BASE  0x8F000100UL          /* Multi-Rate Symplectic Patch Aperture (64 B) */
 
 #define SHBT_FRAME_BYTES                2112U
@@ -317,7 +318,7 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     volatile uint64_t v11_harvested_nucleons_counter;  /* 0x0230: Transmuted/harvested baryons */
     volatile uint64_t v11_reserved_tail;               /* 0x0238: 8 bytes pad to 0x0240 */
 
-    /* === CACHELINE 9 (Offsets 0x0240 .. 0x027F): ABI v12 SHBT-MAR-OMEGA & Hybrid Power Bus Arbiter (64 bytes) === */
+    /* === CACHELINE 9 (Offsets 0x0240 .. 0x027F): ABI v13 SHBT-MAR-OMEGA, Divertor & Hybrid Power Bus Arbiter (64 bytes) === */
     volatile double   mar_omega_gross_power_zw;        /* 0x0240: 1.00 .. 10.00 ZW (10^21 .. 10^22 W) */
     volatile double   mar_omega_slipstream_ratio;      /* 0x0248: f_slip in [1.0e-4, 1.0e-3] */
     volatile double   mar_omega_cryo_sensible_kw;      /* 0x0250: <= 245.00 kW at 10 ZW (15.0 mK) */
@@ -493,7 +494,7 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, power_bus_arbiter_mode) == 0x027
 | `0x0230` | `v11_harvested_nucleons_counter` | `uint64_t` | RO | `0` | Cumulative harvested/transmuted baryons counter |
 | `0x0238` | `v11_reserved_tail` | `uint64_t` | RO | `0x00000000` | Alignment padding to 576 bytes (0x0240) |
 
-#### Cache Line 9 (Offsets `0x0240` .. `0x027F`): ABI v12 SHBT-MAR-OMEGA & Hybrid Power Bus Arbiter
+#### Cache Line 9 (Offsets `0x0240` .. `0x027F`): ABI v13 SHBT-MAR-OMEGA, Divertor & Hybrid Power Bus Arbiter
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Quantity & Invariant |
 | --- | --- | --- | --- | --- | --- |
@@ -506,6 +507,24 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, power_bus_arbiter_mode) == 0x027
 | `0x0270` | `power_bus_arbiter_mode` | `uint32_t` | RW | `0x0000000E` | Dual-Reactor Bus Arbiter status (`SHBT_POWER_BUS_ARBITER_NOMINAL`) |
 | `0x0274` | `mar_omega_cft_bus_slot_count` | `uint32_t` | RO | `346` | 346-slot CFT boundary coupling lock (`== 346`, `eta_bus^Omega = 99.981146%`) |
 | `0x0278` | `v12_synthesized_qubits_log10` | `uint64_t` | RO | `42` | Log10 synthesized diamondoid computronium qubits (`>= 42`, `10^42 qubits/M_sun`) |
+
+#### Cache Line 10 (Offsets `0x0280` .. `0x02BF`): ABI v13 RMHD Divertor & Constellation Consensus Aperture
+
+| Offset | Field Name | Type | Access | Reset Value | Physical Quantity & Invariant |
+| --- | --- | --- | --- | --- | --- |
+| `0x0280` | `divertor_separatrix_psi_q16` | `uint32_t` | RO | `0xD98A` | RMHD separatrix flux `psi_sep = 0.0850433 Wb` (Q16.16) |
+| `0x0284` | `divertor_reynolds_margin_reg` | `uint32_t` | RO | `0x0001` | Hartmann laminar bound `Re < Re_crit` margin latch |
+| `0x0288` | `divertor_feedstock_split_fp` | `uint64_t` | RO | `0x3FE1` | D-T/He-3 feedstock split fixed-point ledger |
+| `0x0290` | `divertor_status_latch` | `uint32_t` | RO | `0x0000` | `DIV_STATUS_*` laminar/separatrix/CCZ4/Frenkel/choke bits |
+| `0x0294` | `divertor_b_field_guide_q16` | `uint32_t` | RO | `0x0000` | Guiding-field trim word for separatrix X-point |
+| `0x0298` | `divertor_shear_stress_eff_fp` | `uint64_t` | RO | `0x0000` | Effective divertor shear stress after CCZ4 damping |
+| `0x02A0` | `divertor_mass_inflow_rate_fp` | `uint64_t` | RO | `0x0000` | Divertor mass inflow rate ledger |
+| `0x02A8` | `divertor_throat_divert_rate_fp` | `uint64_t` | RO | `0x0000` | Throat-to-divertor throughput rate |
+| `0x02B0` | `divertor_kh_growth_rate_q16` | `uint32_t` | RO | `0x0000` | Kelvin-Helmholtz growth-rate clamp (`== 0` nominal) |
+| `0x02B4` | `divertor_control_command` | `uint32_t` | RW | `0x00000000` | `DIV_CMD_*` separatrix lock / CCZ4 damping / scram |
+| `0x02B8` | `reserved_cl10_pad` | `uint64_t` | RO | `0x00000000` | Alignment padding to Cache Line 10 boundary |
+
+Peripheral aperture `0x7F000800` (`SHBT_SWARM_DIVERTOR_BASE_ADDR`) mirrors this cache line for RMHD divertor and hexameric constellation consensus telemetry, including 346-slot GKSL pion/bremsstrahlung suppression (`P_Brem == 0.0 W`), Bogoliubov pasta decompression unitarity (`|u_k|^2 + |v_k|^2 == 1.0`), 710 GW diamond condensation fracton drain (`<n_phonon>_ss <= 1e-8`), `Sp(12, Z)` consensus (`tau <= 54.432 ps`), and `||Delta x_CoM|| <= 1e-15 m`.
 
 ### 3.4 Hardware Fault Bitmasks (64-Bit Invariants)
 
@@ -842,7 +861,7 @@ _Static_assert(sizeof(shbt_galactic_mmio_t) == 120, "shbt_galactic_mmio_t must b
 
 ### 3.11 256-Byte Continuous-Flow SHBT-MAR-OMEGA Reactor Aperture (`0x7F000600`)
 
-The C11 microkernel ABI v12.0 defines a dedicated 256-byte (4-cache-line) MMIO aperture mapped at physical address `0x7F000600` (`shbt_mar_omega_aperture_t`) and embedded at offset `0x0040` of `shbt_swarm_mmio_v12_t` for real-time control and telemetry of the 6th-Generation Continuous-Flow Boundary Annihilation Reactor (`SHBT-MAR-OMEGA`):
+The C11 microkernel ABI v13.0 defines a dedicated 256-byte (4-cache-line) MMIO aperture mapped at physical address `0x7F000600` (`shbt_mar_omega_aperture_t`) and embedded at offset `0x0040` of `shbt_swarm_mmio_v13_t` for real-time control and telemetry of the 6th-Generation Continuous-Flow Boundary Annihilation Reactor (`SHBT-MAR-OMEGA`):
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Description & Invariant |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -876,7 +895,7 @@ The C11 microkernel ABI v12.0 defines a dedicated 256-byte (4-cache-line) MMIO a
 
 ### 3.12 256-Byte Universal Stellar Harvesting & CFL Hadronization Aperture (`0x7F000700`)
 
-The C11 microkernel ABI v12.0 defines a dedicated 256-byte (4-cache-line) MMIO aperture mapped at physical address `0x7F000700` (`shbt_universal_harvest_aperture_t`) and embedded at offset `0x0140` of `shbt_swarm_mmio_v12_t` for full-spectrum stellar deconstruction (≤ 18.26 days/*M*<sub>☉</sub>), degenerate core melting, CFL quark hadronization, and continuous in-line `SHBT-LOGOS-312` computronium folding:
+The C11 microkernel ABI v13.0 defines a dedicated 256-byte (4-cache-line) MMIO aperture mapped at physical address `0x7F000700` (`shbt_universal_harvest_aperture_t`) and embedded at offset `0x0140` of `shbt_swarm_mmio_v13_t` for full-spectrum stellar deconstruction (≤ 18.26 days/*M*<sub>☉</sub>), degenerate core melting, CFL quark hadronization, and continuous in-line `SHBT-LOGOS-312` computronium folding:
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Description & Invariant |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -2346,7 +2365,7 @@ Platform correctness is certified across a dual formal testing and hardware-qual
 
 ### 7.1 Formal Z3 SMT Verification Suite (105/105 UNSAT)
 
-The complete mathematical safety fabric is certified through 100 formal Z3 SMT theorems across 29 verification modules in `formal/`, all evaluated to UNSAT with zero negation counter-models:
+The complete mathematical safety fabric is certified through 105 formal Z3 SMT theorems across 29 verification modules in `formal/`, all evaluated to UNSAT with zero negation counter-models:
 
 1. `formal/verify_swarm_cloning.py` (4 theorems: `THM-CLONE-01`..`04`): Categorical no-cloning, ADM mass conservation, modular framing lock, and (B - L) conservation.
 2. `formal/verify_swarm_ai_safety.py` (10 theorems: `THM-AI-01`..`06`, `THM-AI-01-EXT`, `02-EXT`, `04-EXT`, `05-EXT`): PT-GoI resolvent bounds, Connes cocycle isentropy, spacelike no-signaling, and HOCBF forward invariance.
@@ -2378,7 +2397,7 @@ The complete mathematical safety fabric is certified through 100 formal Z3 SMT t
 28. `formal/verify_nsc_losscone_symplectic.py` (2 theorems: `THM-OMEGA-25-EXT`, `THM-SIM-02-EXT`): Nuclear star cluster Fokker-Planck loss-cone topological barrier and multi-rate symplectic cascade co-simulation.
 29. `formal/verify_mar_omega_closure.py` (6 theorems: `THM-MAR-OMEGA-01`..`06`): Continuous-flow `SHBT-MAR-OMEGA` `1.00 - 10.00 ZW` slipstream power balance (`0.0 kg` discrete fuel), 16-layer `Sp(16, Z)` fracton cryogenic shunt (`<= 245.0 kW` at `10 ZW`, `15.0 mK`), 312-channel CCZ4 throat stress cloaking (`< 10^-6 MPa`), full-spectrum stellar deconstruction (`>= 20.0 M_sun/yr`, `<= 18.2625 d/M_sun`), White Dwarf instanton elevation (`S_inst >= 250.0`), and CFL diquark isothermal hadronization (`Q_hadron == 0.0 J/fm^3`).
 
-### 7.2 Master Hardware-in-the-Loop Gate Harness (344/344 PASS)
+### 7.2 Master Hardware-in-the-Loop Gate Harness (360/360 PASS)
 
 Executed deterministically by `crates/shbt-swarm-hil` (`swarm-audit` CLI runner):
 
@@ -2394,7 +2413,7 @@ Executed deterministically by `crates/shbt-swarm-hil` (`swarm-audit` CLI runner)
 * `GATE-233` .. `GATE-250`: Compact Stellar Deconstruction & Galactic Symplectic Kinematics (detailed below).
 * `GATE-SWARM-251` .. `GATE-SWARM-304`: Full constellation verification suite spanning zero-Coriolis Elysium manifolds, closed biosphere Lyapunov functions, Takagi-Taupin attosecond diffraction, Bondi-Sachs shear recoil clamping, continuous Fibonacci ribbon field theory, relativistic QRF covariance, and supercomoving virial clamping.
 * `GATE-SWARM-305` .. `GATE-SWARM-320`: Compact Degenerate Melting, Stellar Stabilization & Multi-Rate Symplectic Kinematics (BCC Coulomb crystal melting, CFL diquark hadronization, M-dwarf convective dynamo quenching, pair-instability suppression, NSC loss-cone barrier, and multi-scale symplectic integrator co-simulation).
-* `GATE-SWARM-321` .. `GATE-SWARM-344`: Continuous-Flow `SHBT-MAR-OMEGA` (`1.00 - 10.00 ZW`), `DualReactorPowerArbiter` Handoff, Full-Spectrum Stellar Extraction (`<= 18.26 d/M_sun`), and ABI v13.0 (`0x000D0312`) Hardware Invariants (detailed below).
+* `GATE-SWARM-321` .. `GATE-SWARM-360`: Continuous-Flow `SHBT-MAR-OMEGA` (`1.00 - 10.00 ZW`), `DualReactorPowerArbiter` Handoff, Full-Spectrum Stellar Extraction (`<= 18.26 d/M_sun`), and ABI v13.0 (`0x000D0312`) Hardware Invariants (detailed below).
 
 #### Dedicated Compact Deconstruction & Galactic Kinematics Gate Catalog (`GATE-233` .. `GATE-250`):
 
@@ -2445,6 +2464,22 @@ Executed deterministically by `crates/shbt-swarm-hil` (`swarm-audit` CLI runner)
 | `GATE-SWARM-340` | `shbt-swarm-sim` | `THM-SIM-02-EXT` | Symplectic 4th-order Yoshida energy drift `<= 1.0e-12` | `0.000000` | `> 1.0e-12` |
 | `GATE-SWARM-341` | `shbt-swarm-sim` | `THM-OMEGA-21-EXT` | 312-hub CCZ4 GW recoil drift `<= 1.0e-15 m` | `0.000000 m` | `> 1.0e-15 m` |
 | `GATE-SWARM-342` | `warp-power-battery` | `THM-MAR-OMEGA-01` | `DualReactorPowerArbiter` handoff & `MAR-312X` hot-standby | `0x0000000E` | Bus drop / fault |
-| `GATE-SWARM-343` | `shbt-swarm-mmio` | `THM-MAR-OMEGA-01` | ABI v13.0 (`0x000D0312`) 640-byte register & aperture lock | `640 B / 0x000D0312` | Size/offset mismatch |
+| `GATE-SWARM-343` | `shbt-swarm-mmio` | `THM-MAR-OMEGA-01` | ABI v13.0 (`0x000D0312`) 704-byte register & aperture lock | `704 B / 0x000D0312` | Size/offset mismatch |
 | `GATE-SWARM-344` | `shbt-swarm-hil` | `THM-MAR-OMEGA-06` | Zero-fault 64-bit hardware status mask `== 0x00000000` | `0x0000000000000000` | Non-zero fault bit |
+| `GATE-SWARM-345` | `WP-4.14 Relativistic Grad-Shafranov Separatrix Lock` | `THM-MAR-OMEGA-07` | psi_sep == 0.0850433 Wb, r_sep = 59.527 mm | `0.0850433 Wb verified` | Trip on invariant breach |
+| `GATE-SWARM-346` | `WP-4.14 Hartmann-Scaled Laminar Stability Boundary` | `THM-MAR-OMEGA-07` | Re < Re_crit (2.14e8 < 7.65e9) | `2.14e8 verified` | Trip on invariant breach |
+| `GATE-SWARM-347` | `WP-4.14 Anti-Phase CCZ4 Wall Shear Cancellation` | `THM-MAR-OMEGA-07` | sigma_eff <= 7.85e-9 MPa < 1.0e-6 MPa | `7.85e-9 MPa verified` | Trip on invariant breach |
+| `GATE-SWARM-348` | `WP-4.14 Divertor Dynamic Feedstock Split Guarantee` | `THM-MAR-OMEGA-07` | feedstock_split >= 0.9990 | `0.999114 verified` | Trip on invariant breach |
+| `GATE-SWARM-349` | `WP-4.15 346-Slot GKSL Trace Preservation Invariant` | `THM-MAR-OMEGA-08` | sum rho_k == 1.0 | `1.000000 verified` | Trip on invariant breach |
+| `GATE-SWARM-350` | `WP-4.15 Floquet Dynamic Debye Screening Mass` | `THM-MAR-OMEGA-08` | mu_D >= 15.0 fm^-1 (2.96 GeV) | `15.0 fm^-1 verified` | Trip on invariant breach |
+| `GATE-SWARM-351` | `WP-4.15 Potential Clamping & Pion Spray Suppression` | `THM-MAR-OMEGA-08` | P_pi <= 10^-120, V_max <= 60.8 MeV | `10^-120 verified` | Trip on invariant breach |
+| `GATE-SWARM-352` | `WP-4.15 Quad-Symmetric D4h Bremsstrahlung Null` | `THM-MAR-OMEGA-08` | P_brem == 0.0 W | `0.0 W verified` | Trip on invariant breach |
+| `GATE-SWARM-353` | `WP-4.16 Symplectic Make-Before-Break Switching Window` | `THM-SIM-03-EXT` | dt_switch <= 1.701 ps <= tau_q (14.5 ps) | `1.701 ps verified` | Trip on invariant breach |
+| `GATE-SWARM-354` | `WP-4.16 Arbiter Iso-Potential & Isentropic Invariants` | `THM-SIM-03-EXT` | Delta V_bus == 0.0 V, Delta S_handoff == 0.0 J/K | `0.0 V / 0.0 J/K verified` | Trip on invariant breach |
+| `GATE-SWARM-355` | `WP-5.19 Pasta Decompression Bogoliubov Unitarity` | `THM-MAR-OMEGA-09` | |u_k|^2 + |v_k|^2 == 1.0 | `1.000000000 verified` | Trip on invariant breach |
+| `GATE-SWARM-356` | `WP-5.19 Conformal Debye Screening Lepton Quench` | `THM-MAR-OMEGA-09` | Phi_nu == 0.0 cm^-2 s^-1, s_eff >= 61.205 MeV^2 | `0.0 cm^-2 s^-1 verified` | Trip on invariant breach |
+| `GATE-SWARM-357` | `WP-5.19 Non-Equilibrium Pasta Adiabatic Index` | `THM-MAR-OMEGA-09` | Gamma_1 >= 4/3 + 10^-6 across all 5 topologies | `1.333334 verified` | Trip on invariant breach |
+| `GATE-SWARM-358` | `WP-5.20 710 GW Condensation Enthalpy Fracton Shunt` | `THM-MAR-OMEGA-10` | 710 GW bulk enthalpy shunted into Sp(16,Z) & eta_D=23/33 | `710 GW verified` | Trip on invariant breach |
+| `GATE-SWARM-359` | `WP-5.20 Computronium Acoustic Phonon Clamping` | `THM-MAR-OMEGA-10` | <n_phonon>_ss <= 1.00e-8, T_lattice <= 25.0 K | `20.0 K verified` | Trip on invariant breach |
+| `GATE-SWARM-360` | `WP-4.17 Hexameric Sp(12,Z) Unipotent Sheaf Consensus` | `THM-SIM-03-EXT` | tau_consensus <= 54.432 ps, sum P_i == 10 ZW, ||Delta x_CoM|| <= 1e-15 m | `54.432 ps verified` | Trip on invariant breach |
 

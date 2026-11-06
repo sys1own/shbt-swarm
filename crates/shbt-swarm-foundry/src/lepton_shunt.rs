@@ -54,7 +54,7 @@ impl LeptonShuntCore {
         commanded_theta: f64,
     ) -> LeptonShuntTelemetry {
         let half_pi = core::f64::consts::FRAC_PI_2;
-        let is_locked = (commanded_theta - half_pi).abs() < 1.0e-12;
+        let is_locked = shbt_swarm_core::shbt_abs!((commanded_theta - half_pi)) < 1.0e-12;
         let neutrino_flux = if is_locked {
             0.0
         } else {

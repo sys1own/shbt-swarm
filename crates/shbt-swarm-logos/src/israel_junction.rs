@@ -89,17 +89,17 @@ impl IsraelDarmoisJunctionEngine {
     pub fn verify_junction_continuity(&self) -> Result<f64, JunctionError> {
         let p_0 = Self::poly_p(0.0);
         let p_1 = Self::poly_p(1.0);
-        if p_0.abs() > 1e-15 || (p_1 - 1.0).abs() > 1e-15 {
+        if shbt_swarm_core::shbt_abs!(p_0) > 1e-15 || shbt_swarm_core::shbt_abs!((p_1 - 1.0)) > 1e-15 {
             return Err(JunctionError::ExtrinsicCurvatureDiscontinuity);
         }
         let dp_0 = Self::dpoly_p(0.0);
         let dp_1 = Self::dpoly_p(1.0);
-        if dp_0.abs() > 1e-15 || dp_1.abs() > 1e-15 {
+        if shbt_swarm_core::shbt_abs!(dp_0) > 1e-15 || shbt_swarm_core::shbt_abs!(dp_1) > 1e-15 {
             return Err(JunctionError::ExtrinsicCurvatureDiscontinuity);
         }
         let d2p_0 = Self::d2poly_p(0.0);
         let d2p_1 = Self::d2poly_p(1.0);
-        if d2p_0.abs() > 1e-15 || d2p_1.abs() > 1e-15 {
+        if shbt_swarm_core::shbt_abs!(d2p_0) > 1e-15 || shbt_swarm_core::shbt_abs!(d2p_1) > 1e-15 {
             return Err(JunctionError::ExtrinsicCurvatureDiscontinuity);
         }
         let stress = self.proper_tidal_stress(1.0);

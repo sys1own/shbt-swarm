@@ -196,7 +196,7 @@ impl PastaDecompressor {
         let topology = PastaTopology::from_density(rho_current);
         let (u_sq, v_sq) = self.compute_bogoliubov_coefficients(k_mode, h_rate, 938.272);
 
-        let norm_diff = (u_sq + v_sq - 1.0).abs();
+        let norm_diff = shbt_swarm_core::shbt_abs!((u_sq + v_sq - 1.0));
         if norm_diff > 1.0e-9 {
             return Err("Fermionic Bogoliubov unitarity violation: |u|^2 + |v|^2 != 1");
         }
@@ -249,7 +249,7 @@ mod tests {
 
         let state = decompressor.decompress_step(rho, h_rate, k_mode).expect("Decompression step failed");
         assert_eq!(state.current_topology, PastaTopology::SpaghettiRods);
-        assert!((state.bogoliubov_u_sq + state.bogoliubov_v_sq - 1.0).abs() < 1e-9);
+        assert!(shbt_swarm_core::shbt_abs!((state.bogoliubov_u_sq + state.bogoliubov_v_sq - 1.0)) < 1e-9);
         assert!(state.debye_screening_mev2 >= 61.205);
         assert_eq!(state.neutrino_flux_cm2_s, 0.0);
         assert!(state.adiabatic_index_gamma1 >= CHANDRASEKHAR_LIMIT + GAMMA_STABILITY_MARGIN);

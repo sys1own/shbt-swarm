@@ -249,7 +249,7 @@ pub fn export_step_buf(
 /// matched against nominal 50.0 Ohm reference.
 #[inline]
 pub fn s11_return_loss_db(z0: f64) -> f64 {
-    let gamma = ((z0 - 50.0) / (z0 + 50.0)).abs();
+    let gamma = shbt_swarm_core::shbt_abs!(((z0 - 50.0) / (z0 + 50.0)));
     if gamma <= 1.0e-12 {
         -240.0
     } else {
@@ -290,7 +290,7 @@ pub fn export_s2p_buf(
     z0: f64,
     freqs_ghz: &[f64],
 ) -> Result<usize, EdaExportError> {
-    if (z0 - INTERPOSER_TARGET_Z0).abs() > INTERPOSER_TOLERANCE_OHM {
+    if shbt_swarm_core::shbt_abs!((z0 - INTERPOSER_TARGET_Z0)) > INTERPOSER_TOLERANCE_OHM {
         return Err(EdaExportError::ImpedanceOutOfTolerance);
     }
     if freqs_ghz.is_empty() {
