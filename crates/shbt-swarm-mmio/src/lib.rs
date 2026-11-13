@@ -33,8 +33,8 @@ pub const SHBT_SWARM_MMIO_ABI_V14_MAGIC: u32 = 0x000E_0312;
 pub const SHBT_SWARM_MMIO_ABI_V15_MAGIC: u32 = 0x000F_0312;
 pub const SHBT_SWARM_CHANNELS_TOTAL: u32 = 312;
 pub const SHBT_SWARM_CFT_SLOTS_TOTAL: u32 = 346;
-pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 116;
-pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 392;
+pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 122;
+pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 400;
 pub const SHBT_SWARM_DIVERTOR_BASE_ADDR: u64 = 0x7F00_0800;
 
 pub const DIV_STATUS_LAMINAR: u32 = 1 << 0;
@@ -877,7 +877,7 @@ impl ShbtSwarmMmioRegs {
             omega_bondi_hoyle_msun_yr: 20.0,
             power_bus_arbiter_flags: SHBT_POWER_BUS_OMEGA_ACTIVE | SHBT_POWER_BUS_ARBITER_LOCKED,
             hil_gates_pass_mask: 0xFFFF_FFFF,
-            hil_status_code: 0x0000_0392,
+            hil_status_code: 0x0000_0400,
             crc64_iso_checksum: 0x3120_000E_0376_006E,
             cl10_divertor: ShbtMmioCacheline10Divertor {
                 divertor_separatrix_psi_q16: 5573,

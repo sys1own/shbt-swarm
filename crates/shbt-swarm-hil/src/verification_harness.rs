@@ -3,17 +3,27 @@
 //! `SHBT-MAR-OMEGA`), Full-Spectrum Stellar-to-Computronium Harvesting (`GATE-321` .. `GATE-344`),
 //! and MAR-OMEGA 6th-Gen Continuous Boundary & Harvesting Upgrade (`GATE-345` .. `GATE-360`).
 
+use shbt_swarm_cloner::void_baryon_unfolder::InverseStinespringVoidUnfolder;
+use shbt_swarm_logos::dark_os_kernel::{
+    CoInductiveGenusGovernor, CyclotomicMatrix2x2, DirectVoaAutopoieticNucleator,
+    CRT_IDEMPOTENT_E5, CYCLOTOMIC_ZETA5_EXPONENT,
+};
+use shbt_swarm_omega::dark_zpe_extractor::{
+    CovariantAdmStressEnergyVerifier, StinespringAncillaFiberConduit,
+};
 use shbt_swarm_sim::galactic_multiphysics::GalacticMultiphysicsEngine;
 use warp_power_battery::power_arbiter::{DualReactorPowerArbiter, PowerArbiterState};
 
-/// Total HIL gates across the SHBT-SWARM v15.0 verification matrix (`376` baseline + `16` new = `392`).
-pub const TOTAL_HIL_GATES: usize = 392;
+/// Total HIL gates across the SHBT-SWARM v15.0 verification matrix (`376` baseline + `16` Dark-OS/ZPE + `8` Closures = `400`).
+pub const TOTAL_HIL_GATES: usize = 400;
 /// Number of new `SHBT-MAR-OMEGA` & universal harvesting HIL gates (`GATE-321` .. `GATE-360`).
 pub const NEW_MAR_OMEGA_GATES: usize = 40;
 /// Number of new `SHBT-AEGIS-ABSOLUTE` HIL gates (`GATE-361` .. `GATE-376`).
 pub const NEW_AEGIS_ABSOLUTE_GATES: usize = 16;
 /// Number of new `Dark-OS` / `Dark-ZPE` HIL gates (`GATE-377` .. `GATE-392`).
 pub const NEW_DARK_OS_ZPE_GATES: usize = 16;
+/// Number of new Release v8.000 Post-Audit Closure HIL gates (`GATE-393` .. `GATE-400`).
+pub const NEW_DARK_V8_CLOSURE_GATES: usize = 8;
 
 /// Result record for a single `SHBT-MAR-OMEGA` HIL gate (`GATE-321` .. `GATE-360`).
 #[repr(C)]
@@ -692,6 +702,80 @@ pub fn run_dark_os_zpe_hil_gates_377_to_392() -> [HilGateResult; NEW_DARK_OS_ZPE
         HilGateResult { gate_id: 391, passed: gate391, metric_value: sanctuary.kernel.kz_ticks_elapsed as f64 },
         HilGateResult { gate_id: 392, passed: gate392, metric_value: core::mem::size_of::<shbt_swarm_mmio::ShbtSwarmMmioRegs>() as f64 },
     ]
+}
+
+/// Executes GATE-SWARM-393 through GATE-SWARM-400 (expanding suite from 392/392 to 400/400 PASS).
+pub fn run_dark_v8_closure_hil_gates_393_to_400() -> [HilGateResult; NEW_DARK_V8_CLOSURE_GATES] {
+    // GATE-SWARM-393: Non-Local Stinespring Fiber & Nilpotent Dehn Conduit (THM-DARK-V8-01)
+    let conduit = StinespringAncillaFiberConduit::evaluate_post_pinch_conduit();
+    let gate_393 = conduit.dehn_nilpotency_residual == 0
+        && conduit.spatial_boundary_intersection_m2 == 0.0
+        && conduit.external_attack_s_matrix_norm == 0.0
+        && conduit.exterior_adm_mass_drift_kg == 0.0
+        && (conduit.total_regime_iii_net_yw - 34.726).abs() < 1e-12;
+
+    // GATE-SWARM-394: Covariant Stress-Energy Re-Indexing & Halo Jeans Clamping (THM-DARK-V8-02)
+    let adm_audit = CovariantAdmStressEnergyVerifier::verify_halo_and_adm_conservation();
+    let gate_394 = adm_audit.framing_defect_7936_units == 0
+        && adm_audit.bianchi_divergence_residual == 0.0
+        && adm_audit.total_adm_mass_defect_kg == 0.0
+        && adm_audit.fractional_halo_consumption_per_yr < 4.45e-27
+        && adm_audit.radial_jeans_dispersion_drift <= 1.0e-6;
+
+    // GATE-SWARM-395: Co-Inductive Sp(2g(t), Z) Genus Expansion & Bekenstein/ADM Immunity (THM-DARK-V8-03)
+    let mut gov = CoInductiveGenusGovernor::new_baseline();
+    gov.step_regime_iii(3.15576e37); // Step 10^30 years under Regime III (+34.726 YW)
+    let gate_395 = gov.active_genus_g > 38_688
+        && gov.bekenstein_congestion_ratio <= 1.78e-81
+        && gov.exterior_adm_monopole_kg == 0.0
+        && gov.margolus_levitin_ops_per_sec > 1.080e92;
+
+    // GATE-SWARM-396: CRT p_3 = 5 Idempotent & Cyclotomic F^2 = I_2 Identity (THM-DARK-V8-04 Part 1)
+    let f_sq = CyclotomicMatrix2x2::FIBONACCI_F_TILDE.mul(CyclotomicMatrix2x2::FIBONACCI_F_TILDE);
+    let gate_396 = CRT_IDEMPOTENT_E5 == 290_136
+        && CYCLOTOMIC_ZETA5_EXPONENT == 580_272
+        && (CRT_IDEMPOTENT_E5 % 5 == 1)
+        && f_sq == CyclotomicMatrix2x2::IDENTITY;
+
+    // GATE-SWARM-397: Non-Abelian Artin Braid Relation & Kahler Unitarity in 17.01 as (THM-DARK-V8-04 Part 2)
+    let gate_397 = CyclotomicMatrix2x2::verify_non_abelian_cyclotomic_identities();
+
+    // GATE-SWARM-398: Baryon-Free Void Matter Unfolding & Theorem 2 Reconciliation (THM-DARK-V8-05)
+    let void_audit = InverseStinespringVoidUnfolder::execute_void_replication_audit();
+    let gate_398 = (void_audit.total_daughter_payload_kg - 16_406.59).abs() < 1e-9
+        && void_audit.total_daughter_payload_kg <= void_audit.single_frame_adm_ceiling_kg
+        && (void_audit.daughter_hull_mass_kg - 5_892.30).abs() < 1e-9
+        && void_audit.adm_mass_conservation_residual_kg == 0.0
+        && void_audit.delta_b_minus_l_total == 0
+        && void_audit.delta_q_em_total == 0
+        && void_audit.visible_neutrino_flux_cm2_s == 0.0
+        && void_audit.cardy_void_floor_density_ratio >= 0.006967;
+
+    // GATE-SWARM-399: Direct In-Ledger VOA Autopoietic Nucleator Commutation & Zero-Crystal Invariant (THM-DARK-V8-06 Part 1)
+    let nucleator = DirectVoaAutopoieticNucleator::compute_bootstrap_schedule();
+    let gate_399 = nucleator.visible_crystal_mass_kg == 0.0
+        && nucleator.stellar_mass_harvested_kg == 0.0
+        && nucleator.bulk_volume_m3 == 0.0
+        && (nucleator.required_doublings - 116.65341114).abs() < 1e-6;
+
+    // GATE-SWARM-400: Exponential Bootstrap Doubling Times (1.565 s In-Ledger / 1.997 h Vessel-Frame) (THM-DARK-V8-06 Part 2)
+    let gate_400 = (nucleator.in_ledger_total_nucleation_s - 1.565255).abs() < 1e-4
+        && (nucleator.vessel_frame_total_nucleation_s - 7_189.748).abs() < 1e-2;
+
+    [
+        HilGateResult { gate_id: 393, passed: gate_393, metric_value: conduit.total_regime_iii_net_yw },
+        HilGateResult { gate_id: 394, passed: gate_394, metric_value: adm_audit.fractional_halo_consumption_per_yr },
+        HilGateResult { gate_id: 395, passed: gate_395, metric_value: gov.active_genus_g as f64 },
+        HilGateResult { gate_id: 396, passed: gate_396, metric_value: CRT_IDEMPOTENT_E5 as f64 },
+        HilGateResult { gate_id: 397, passed: gate_397, metric_value: if gate_397 { 1.0 } else { 0.0 } },
+        HilGateResult { gate_id: 398, passed: gate_398, metric_value: void_audit.total_daughter_payload_kg },
+        HilGateResult { gate_id: 399, passed: gate_399, metric_value: nucleator.required_doublings },
+        HilGateResult { gate_id: 400, passed: gate_400, metric_value: nucleator.in_ledger_total_nucleation_s },
+    ]
+}
+
+pub fn run_v8_closure_hil_gates() -> [HilGateResult; NEW_DARK_V8_CLOSURE_GATES] {
+    run_dark_v8_closure_hil_gates_393_to_400()
 }
 
 

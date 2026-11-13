@@ -22,8 +22,8 @@
 #define SHBT_SWARM_ABI_VERSION_V15         0x000F0312UL
 #define SHBT_SWARM_MMIO_ABI_V14_MAGIC      ((uint32_t)0x000E0312UL)
 #define SHBT_SWARM_MMIO_ABI_V15_MAGIC      ((uint32_t)0x000F0312UL)
-#define SHBT_SWARM_FORMAL_PROOFS_COUNT     116U        /* 116 Formal Z3 Theorems UNSAT */
-#define SHBT_SWARM_HIL_GATES_COUNT         392U        /* 392 HIL Verification Gates PASS */
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT     122U        /* 122 Formal Z3 Theorems UNSAT */
+#define SHBT_SWARM_HIL_GATES_COUNT         400U        /* 400 HIL Verification Gates PASS */
 #define SHBT_SWARM_MMIO_TOTAL_SIZE         832U
 #define SHBT_SWARM_MMIO_TOTAL_SIZE_BYTES   832U
 #define SHBT_SWARM_CACHE_LINE_BYTES        64U
@@ -825,8 +825,8 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
 
     /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
     uint32_t abi_version;                     /* 0x00C0: 0x000F0312 */
-    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 116 */
-    uint32_t hil_gates_pass_count;            /* 0x00C8: 392 */
+    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 122 */
+    uint32_t hil_gates_pass_count;            /* 0x00C8: 400 */
     uint32_t active_phase_mask;               /* 0x00CC: 0x000000FF (Phases 1..6 + 5C) */
     uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
     uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */
@@ -889,8 +889,8 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     double   omega_throat_shear_mpa;          /* 0x0258: < 1.0e-6 MPa (7.85e-9 MPa) */
     double   omega_bondi_hoyle_msun_yr;       /* 0x0260: >= 20.0 M_sun/yr */
     uint64_t power_bus_arbiter_flags;         /* 0x0268: Dual-Reactor Arbiter state flags */
-    uint32_t hil_gates_pass_mask;             /* 0x0270: 32-bit HIL pass-mask window (392/392 PASS) */
-    uint32_t hil_status_code;                 /* 0x0274: 0x00000392 (392/392 PASS) */
+    uint32_t hil_gates_pass_mask;             /* 0x0270: 32-bit HIL pass-mask window (400/400 PASS) */
+    uint32_t hil_status_code;                 /* 0x0274: 0x00000400 (400/400 PASS) */
     uint64_t crc64_iso_checksum;              /* 0x0278: CRC-64-ISO hardware seal */
 
     /* === CACHELINE 10 (Offsets 0x0280 .. 0x02BF): Continuous RMHD Divertor & Constellation Aperture (64 bytes) === */

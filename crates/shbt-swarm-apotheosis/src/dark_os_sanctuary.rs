@@ -9,7 +9,7 @@ pub const DARK_OS_SANCTUARY_FORK_FEMTO_AS: u64 = 17_010_000;
 pub const DARK_OS_CLASS_X1_STREAM_FIDELITY_FLOOR: f64 = 1.0 - 1.0e-122;
 
 /// Executes native Dark-OS recall/fork opcodes while preserving CBF sanctuary records.
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub struct DarkOsSanctuaryForkEngine {
     pub kernel: DarkOsKernel,
     pub class_x0_crt_recalls: u64,

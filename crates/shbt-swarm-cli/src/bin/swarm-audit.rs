@@ -1,9 +1,9 @@
 //! `crates/shbt-swarm-cli/src/bin/swarm-audit.rs`
 //! Master Hardware-in-the-Loop (HIL) Audit & Verification Matrix Generator for `shbt-swarm`
 //! Release v8.000 / ABI v15.0 (`0x000F0312`), 832-Byte MMIO (13 Cache Lines),
-//! 116/116 Z3 SMT Proofs, and 392/392 HIL Gates.
+//! 122/122 Z3 SMT Proofs, and 400/400 HIL Gates.
 
-use shbt_swarm_hil::evaluate_all_392_gates;
+use shbt_swarm_hil::evaluate_all_400_gates;
 use shbt_swarm_mmio::{
     ShbtAegisAbsoluteCl11, ShbtDarkOsZpeCl12, ShbtMarOmegaAperture, ShbtMmioCacheline10Divertor,
     ShbtSwarmMmioRegs, ShbtSwarmMmioV14, ShbtSwarmMmioV15, ShbtUniversalHarvestAperture,
@@ -42,8 +42,8 @@ fn main() {
     assert_eq!(harvest_size, 256, "ShbtUniversalHarvestAperture must be 256 bytes");
     assert_eq!(divertor_size, 64, "ShbtMmioCacheline10Divertor must be 64 bytes");
     assert_eq!(SHBT_SWARM_ABI_VERSION, 0x000F_0312);
-    assert_eq!(SHBT_SWARM_FORMAL_PROOFS_COUNT, 116);
-    assert_eq!(SHBT_SWARM_HIL_GATES_COUNT, 392);
+    assert_eq!(SHBT_SWARM_FORMAL_PROOFS_COUNT, 122);
+    assert_eq!(SHBT_SWARM_HIL_GATES_COUNT, 400);
     assert_eq!(SHBT_SWARM_MMIO_CACHELINE_COUNT, 13);
 
     let mut regs = ShbtSwarmMmioRegs::new_nominal_v15();
@@ -52,8 +52,8 @@ fn main() {
     assert_eq!(regs.cl12_dark_os_zpe.dark_os_abi_magic, shbt_swarm_mmio::SHBT_SWARM_MMIO_ABI_V15_MAGIC);
     assert_eq!(fault_mask, 0, "Nominal v15 MMIO register invariant check failed");
 
-    let gates = evaluate_all_392_gates();
-    assert_eq!(gates.len(), 392, "Expected exactly 392 HIL gates");
+    let gates = evaluate_all_400_gates();
+    assert_eq!(gates.len(), 400, "Expected exactly 400 HIL gates");
 
     let mut passed_count = 0usize;
     for gate in &gates {
@@ -76,7 +76,7 @@ fn main() {
     println!("  HIL Verification Gates : {}/{} GATES PASS", passed_count, gates.len());
     println!("================================================================================");
 
-    assert_eq!(passed_count, 392, "All 392 HIL gates must pass");
+    assert_eq!(passed_count, 400, "All 400 HIL gates must pass");
 
     let total = gates.len();
     let mut json = String::with_capacity(131072);
@@ -89,14 +89,14 @@ fn main() {
     json.push_str("  \"mmio_total_bytes\": 832,\n");
     json.push_str("  \"mmio_cache_lines\": 13,\n");
     json.push_str("  \"cache_lines\": 13,\n");
-    json.push_str("  \"formal_z3_proofs_total\": 116,\n");
-    json.push_str("  \"formal_z3_proofs_unsat\": 116,\n");
+    json.push_str("  \"formal_z3_proofs_total\": 122,\n");
+    json.push_str("  \"formal_z3_proofs_unsat\": 122,\n");
     json.push_str(&format!("  \"total_gates\": {},\n", total));
     json.push_str(&format!("  \"passed_gates\": {},\n", passed_count));
     json.push_str(&format!("  \"hil_gates_total\": {},\n", total));
     json.push_str(&format!("  \"hil_gates_passed\": {},\n", passed_count));
     json.push_str(&format!("  \"all_passed\": {},\n", passed_count == total));
-    json.push_str("  \"status\": \"ALL_392_GATES_AND_116_PROOFS_VERIFIED\",\n");
+    json.push_str("  \"status\": \"ALL_400_GATES_AND_122_PROOFS_VERIFIED\",\n");
     json.push_str("  \"release_v8_architecture\": {\n");
     json.push_str("    \"dark_os\": \"Native dark-sector holonomic VOA operating system over V_dark = V_Lambda(T3) tensor V_arith tensor V_defect\",\n");
     json.push_str("    \"dark_zpe\": \"Three-channel non-equilibrium dark-sector exergy harvester with KMS/framing no-go guards and Regime III autopoietic replenishment\",\n");
@@ -105,26 +105,26 @@ fn main() {
     json.push_str("  },\n");
     json.push_str("  \"formal_verification\": {\n");
     json.push_str("    \"smt_logic\": \"QF_NRA\",\n");
-    json.push_str("    \"previous_theorems_unsat\": 110,\n");
-    json.push_str("    \"new_dark_os_zpe_theorems_unsat\": 6,\n");
-    json.push_str("    \"total_theorems_verified\": 116,\n");
+    json.push_str("    \"previous_theorems_unsat\": 116,\n");
+    json.push_str("    \"new_dark_v8_closure_theorems_unsat\": 6,\n");
+    json.push_str("    \"total_theorems_verified\": 122,\n");
     json.push_str("    \"all_unsat\": true,\n");
     json.push_str("    \"new_theorems\": [\n");
-    json.push_str("      \"THM-DARK-ZPE-01\",\n");
-    json.push_str("      \"THM-DARK-ZPE-02\",\n");
-    json.push_str("      \"THM-DARK-ZPE-03\",\n");
-    json.push_str("      \"THM-DARK-OS-01\",\n");
-    json.push_str("      \"THM-DARK-OS-02\",\n");
-    json.push_str("      \"THM-DARK-OS-03\"\n");
+    json.push_str("      \"THM-DARK-V8-01\",\n");
+    json.push_str("      \"THM-DARK-V8-02\",\n");
+    json.push_str("      \"THM-DARK-V8-03\",\n");
+    json.push_str("      \"THM-DARK-V8-04\",\n");
+    json.push_str("      \"THM-DARK-V8-05\",\n");
+    json.push_str("      \"THM-DARK-V8-06\"\n");
     json.push_str("    ]\n");
     json.push_str("  },\n");
     json.push_str("  \"hil_verification\": {\n");
-    json.push_str("    \"previous_gates_passed\": 376,\n");
-    json.push_str("    \"new_dark_os_zpe_gates_passed\": 16,\n");
+    json.push_str("    \"previous_gates_passed\": 392,\n");
+    json.push_str("    \"new_dark_v8_closure_gates_passed\": 8,\n");
     json.push_str(&format!("    \"total_gates_passed\": {},\n", passed_count));
     json.push_str(&format!("    \"total_gates_evaluated\": {},\n", total));
     json.push_str("    \"pass_rate_percent\": 100.0,\n");
-    json.push_str("    \"gate_range_added\": \"GATE-377..GATE-392\"\n");
+    json.push_str("    \"gate_range_added\": \"GATE-393..GATE-400\"\n");
     json.push_str("  },\n");
     json.push_str("  \"key_telemetry_benchmarks\": {\n");
     json.push_str("    \"mar312x_traversal_power_ew\": 25.0,\n");

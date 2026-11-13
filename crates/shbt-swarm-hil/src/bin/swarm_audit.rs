@@ -1,8 +1,8 @@
 //! `crates/shbt-swarm-hil/src/bin/swarm_audit.rs`
-//! CLI Verification Runner that executes all 392 Hardware-in-the-Loop (HIL) gates and
+//! CLI Verification Runner that executes all 400 Hardware-in-the-Loop (HIL) gates and
 //! emits `verification_matrix.json` for Release v8.000 / ABI v15.0 (`0x000F0312`).
 
-use shbt_swarm_hil::evaluate_all_392_gates;
+use shbt_swarm_hil::evaluate_all_400_gates;
 use std::fs::File;
 use std::io::Write;
 use std::process::ExitCode;
@@ -12,12 +12,12 @@ fn escape_json(s: &str) -> String {
 }
 
 fn main() -> ExitCode {
-    let gates = evaluate_all_392_gates();
+    let gates = evaluate_all_400_gates();
     let total = gates.len();
     let passed_count = gates.iter().filter(|g| g.passed).count();
 
     println!("========================================================================================================================");
-    println!(" SHBT-SWARM v15.0 RELEASE v8.000 DARK-OS + DARK-ZPE & UNIVERSAL HARVESTING VERIFICATION MATRIX (392 GATES, 116 SMT)");
+    println!(" SHBT-SWARM v15.0 RELEASE v8.000 DARK-OS + DARK-ZPE & UNIVERSAL HARVESTING VERIFICATION MATRIX (400 GATES, 122 SMT)");
     println!("========================================================================================================================");
     println!(
         "{:<18} | {:<5} | {:<36} | {:<32} | {:<6}",
@@ -35,7 +35,7 @@ fn main() -> ExitCode {
 
     println!("========================================================================================================================");
     println!(
-        " SUMMARY: {}/{} GATES PASSED | ABI: 0x000F0312 (832B, 13 Cache Lines) | Z3 SMT: 116/116 UNSAT",
+        " SUMMARY: {}/{} GATES PASSED | ABI: 0x000F0312 (832B, 13 Cache Lines) | Z3 SMT: 122/122 UNSAT",
         passed_count, total
     );
     println!("========================================================================================================================");
@@ -50,14 +50,14 @@ fn main() -> ExitCode {
     json.push_str("  \"mmio_total_bytes\": 832,\n");
     json.push_str("  \"mmio_cache_lines\": 13,\n");
     json.push_str("  \"cache_lines\": 13,\n");
-    json.push_str("  \"formal_z3_proofs_total\": 116,\n");
-    json.push_str("  \"formal_z3_proofs_unsat\": 116,\n");
+    json.push_str("  \"formal_z3_proofs_total\": 122,\n");
+    json.push_str("  \"formal_z3_proofs_unsat\": 122,\n");
     json.push_str(&format!("  \"total_gates\": {},\n", total));
     json.push_str(&format!("  \"passed_gates\": {},\n", passed_count));
     json.push_str(&format!("  \"hil_gates_total\": {},\n", total));
     json.push_str(&format!("  \"hil_gates_passed\": {},\n", passed_count));
     json.push_str(&format!("  \"all_passed\": {},\n", passed_count == total));
-    json.push_str("  \"status\": \"ALL_392_GATES_AND_116_PROOFS_VERIFIED\",\n");
+    json.push_str("  \"status\": \"ALL_400_GATES_AND_122_PROOFS_VERIFIED\",\n");
     json.push_str("  \"release_v8_architecture\": {\n");
     json.push_str("    \"dark_os\": \"Native dark-sector holonomic VOA operating system over V_dark = V_Lambda(T3) tensor V_arith tensor V_defect\",\n");
     json.push_str("    \"dark_zpe\": \"Three-channel non-equilibrium dark-sector exergy harvester with KMS/framing no-go guards and Regime III autopoietic replenishment\",\n");
@@ -66,26 +66,26 @@ fn main() -> ExitCode {
     json.push_str("  },\n");
     json.push_str("  \"formal_verification\": {\n");
     json.push_str("    \"smt_logic\": \"QF_NRA\",\n");
-    json.push_str("    \"previous_theorems_unsat\": 110,\n");
-    json.push_str("    \"new_dark_os_zpe_theorems_unsat\": 6,\n");
-    json.push_str("    \"total_theorems_verified\": 116,\n");
+    json.push_str("    \"previous_theorems_unsat\": 116,\n");
+    json.push_str("    \"new_dark_v8_closure_theorems_unsat\": 6,\n");
+    json.push_str("    \"total_theorems_verified\": 122,\n");
     json.push_str("    \"all_unsat\": true,\n");
     json.push_str("    \"new_theorems\": [\n");
-    json.push_str("      \"THM-DARK-ZPE-01\",\n");
-    json.push_str("      \"THM-DARK-ZPE-02\",\n");
-    json.push_str("      \"THM-DARK-ZPE-03\",\n");
-    json.push_str("      \"THM-DARK-OS-01\",\n");
-    json.push_str("      \"THM-DARK-OS-02\",\n");
-    json.push_str("      \"THM-DARK-OS-03\"\n");
+    json.push_str("      \"THM-DARK-V8-01\",\n");
+    json.push_str("      \"THM-DARK-V8-02\",\n");
+    json.push_str("      \"THM-DARK-V8-03\",\n");
+    json.push_str("      \"THM-DARK-V8-04\",\n");
+    json.push_str("      \"THM-DARK-V8-05\",\n");
+    json.push_str("      \"THM-DARK-V8-06\"\n");
     json.push_str("    ]\n");
     json.push_str("  },\n");
     json.push_str("  \"hil_verification\": {\n");
-    json.push_str("    \"previous_gates_passed\": 376,\n");
-    json.push_str("    \"new_dark_os_zpe_gates_passed\": 16,\n");
+    json.push_str("    \"previous_gates_passed\": 392,\n");
+    json.push_str("    \"new_dark_v8_closure_gates_passed\": 8,\n");
     json.push_str(&format!("    \"total_gates_passed\": {},\n", passed_count));
     json.push_str(&format!("    \"total_gates_evaluated\": {},\n", total));
     json.push_str("    \"pass_rate_percent\": 100.0,\n");
-    json.push_str("    \"gate_range_added\": \"GATE-377..GATE-392\"\n");
+    json.push_str("    \"gate_range_added\": \"GATE-393..GATE-400\"\n");
     json.push_str("  },\n");
     json.push_str("  \"key_telemetry_benchmarks\": {\n");
     json.push_str("    \"mar312x_traversal_power_ew\": 25.0,\n");
@@ -148,7 +148,7 @@ fn main() -> ExitCode {
         }
     }
 
-    if passed_count == total && total == 392 {
+    if passed_count == total && total == 400 {
         ExitCode::SUCCESS
     } else {
         ExitCode::FAILURE

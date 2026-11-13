@@ -9,10 +9,12 @@
 pub mod pathway_a;
 pub mod pathway_b;
 pub mod ship_ledger;
+pub mod void_baryon_unfolder;
 
 pub use pathway_a::*;
 pub use pathway_b::*;
 pub use ship_ledger::*;
+pub use void_baryon_unfolder::*;
 use shbt_swarm_core::*;
 
 /// Theorem 1.1 & Theorem 1.2 Hardware Guards:

@@ -20,6 +20,9 @@ z3-proofs:
 	$(PYTHON) formal/verify_omega_megastructures.py
 	$(PYTHON) formal/verify_logos_hypercomputer.py
 	$(PYTHON) formal/verify_mar_omega_closure.py
+	$(PYTHON) formal/verify_aegis_absolute_isolation.py
+	$(PYTHON) formal/verify_dark_os_and_zpe.py
+	$(PYTHON) formal/verify_dark_v8_closures.py
 
 rust-test:
 	cargo check --workspace --all-targets
