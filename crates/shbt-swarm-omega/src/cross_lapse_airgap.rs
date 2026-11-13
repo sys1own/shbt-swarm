@@ -22,6 +22,8 @@ pub struct CrossLapseAirgapFuse {
     pub bogoliubov_beta_sq_integral: f64,
     pub ghost_potential_spoof_frac: f64,
     pub fuse_armed: bool,
+    pub exterior_h1_cycles_fused: bool,
+    pub interior_h1_bus_cycles_locked: bool,
 }
 
 impl CrossLapseAirgapFuse {
@@ -35,6 +37,8 @@ impl CrossLapseAirgapFuse {
             bogoliubov_beta_sq_integral: 0.0,
             ghost_potential_spoof_frac: 0.0,
             fuse_armed: true,
+            exterior_h1_cycles_fused: false,
+            interior_h1_bus_cycles_locked: false,
         }
     }
 
@@ -64,6 +68,23 @@ impl CrossLapseAirgapFuse {
         }
         self.status_latch |= SHBT_OMEGA_CROSS_LAPSE_AIRGAP_LOCK;
         Ok(())
+    }
+
+    #[inline]
+    pub fn sever_exterior_cycles_and_lock_interior_bus(&mut self) -> Result<(), u32> {
+        if !self.fuse_armed {
+            self.fault_mask |= SHBT_SWARM_FAULT_CBF_BREACH;
+            return Err(SHBT_SWARM_FAULT_CBF_BREACH);
+        }
+        self.exterior_h1_cycles_fused = true;
+        self.interior_h1_bus_cycles_locked = true;
+        self.status_latch |= SHBT_OMEGA_CROSS_LAPSE_AIRGAP_LOCK;
+        Ok(())
+    }
+
+    #[inline]
+    pub fn verify_cycle_partition(&self) -> bool {
+        self.exterior_h1_cycles_fused && self.interior_h1_bus_cycles_locked && self.fuse_armed
     }
 }
 

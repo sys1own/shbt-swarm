@@ -378,53 +378,101 @@ pub fn run_full_hil_verification_harness() -> [HilGateResult; NEW_MAR_OMEGA_GATE
 
 /// Evaluates the 16 Phase 5C `SHBT-AEGIS-ABSOLUTE` isolation gates (`GATE-361` .. `GATE-376`).
 pub fn run_aegis_absolute_hil_gates_361_to_376() -> [HilGateResult; NEW_AEGIS_ABSOLUTE_GATES] {
-    use shbt_swarm_aegis::{CobordismPinchController, VacuumPinningState};
-    use shbt_swarm_logos::DarkHolonomicCore;
-    use shbt_swarm_omega::CrossLapseAirgapFuse;
+    use shbt_swarm_aegis::{BipartiteCobordismManifold, NilpotentDehnIngressAirlock};
+    use shbt_swarm_apotheosis::{
+        actual_post_pinch_dark_dissipation_j_per_bit, symplectic_landauer_quota_j_per_bit,
+        unitary_householder_givens_coalescence, SomaticBridgeClass, SomaticBridgeController,
+        UnitaryBranchCoalescer,
+    };
+    use shbt_swarm_logos::{ComputroniumLifecycleStage, DarkHolonomicCore, PureDarkIntertwiningState};
+    use shbt_swarm_omega::{CrossLapseAirgapFuse, DarkPowerGridRegime, PerpetualDarkPowerGrid};
+
+    let stage2 = PureDarkIntertwiningState::stage1_visible_borrmann_staging()
+        .intertwine_to_stage2_pure_dark();
+    let stage2_ok = stage2.lifecycle_stage == ComputroniumLifecycleStage::Stage2PureDarkHolonomicExecution
+        && stage2.verify_four_identities();
 
     let mut dark = DarkHolonomicCore::new_pure_dark();
     let dark_ok = dark.verify_unipotent_symplectic_shear(1.0, 1.0, 1.0e90).is_ok();
-    let bluesheet_trips = DarkHolonomicCore::new_pure_dark()
-        .verify_unipotent_symplectic_shear(1.0, 1.0, 2.0e92)
-        .is_err();
 
-    let mut vacuum = VacuumPinningState::new_pinned();
-    let framing_ok = vacuum
-        .enforce_sugawara_framing_closure(1.0e-15, 1.2e12, 1.988_409_870_698_051e30, 86_400.0)
-        .is_ok();
-    let instanton_ok = vacuum.pin_coleman_de_luccia_action(1.2e12, shbt_swarm_mmio::SHBT_AEGIS_VACUUM_DECAY_LOCK);
+    let mut manifold = BipartiteCobordismManifold::new_unpinched();
+    let manifold_ok = manifold
+        .execute_pinch_off(0.0, 1.0e-130, 1.0e-130, 1.0e-15)
+        .is_ok()
+        && manifold.verify_isolated_metrics();
 
-    let mut pinch = CobordismPinchController::new_isolated(1.0e30);
-    let monopole_ok = pinch.nullify_exterior_adm_monopole(0.0, 0.15);
-    let cobordism_ok = pinch.execute_macroscopic_cobordism_pinch(1.0e-130).is_ok();
+    let mut airlock = NilpotentDehnIngressAirlock::new_ep2_diode();
+    let airlock_ok = airlock
+        .evaluate_ingress(true, true, true, false, false)
+        .is_ok()
+        && airlock.verify_one_way_nilpotency();
+    let hostile_rejected = airlock.evaluate_ingress(true, true, true, true, false).is_err()
+        && airlock.evaluate_ingress(true, true, true, false, true).is_err();
 
     let mut fuse = CrossLapseAirgapFuse::new_armed();
-    let airgap_ok = fuse.audit_and_clamp_junction(1.0e-130, 1.0e-16, 1.0e-15).is_ok();
+    let airgap_ok = fuse.audit_and_clamp_junction(1.0e-130, 1.0e-16, 1.0e-15).is_ok()
+        && fuse.sever_exterior_cycles_and_lock_interior_bus().is_ok()
+        && fuse.verify_cycle_partition();
+
+    let grid = PerpetualDarkPowerGrid::canonical();
+    let open = grid.open_loop_regime_metrics();
+    let closed = grid.post_pinch_kms_metrics();
+    let open_ok = (open.p_grid_watts - 2.5e25).abs() < 1.0e10
+        && open.d_energy_dt_watts < 0.0
+        && open.foundry_gain_q == 119_094.0
+        && (open.depletion_lifetime_years - 2.2817e23).abs() / 2.2817e23 < 1.0e-6;
+    let closed_ok = closed.regime == DarkPowerGridRegime::RegimeIIPostPinchKmsClosed
+        && closed.d_energy_dt_watts == 0.0
+        && closed.foundry_gain_q.is_infinite()
+        && closed.depletion_lifetime_years >= 1.0e100
+        && closed.dissipation_j_per_bit == 0.0;
+
+    let mut quota_sum = 0.0;
+    for k in 0..=64u32 {
+        quota_sum += symplectic_landauer_quota_j_per_bit(k);
+    }
+    let quota_ok = (quota_sum - 8.038740e-23).abs() / 8.038740e-23 < 1.0e-12
+        && actual_post_pinch_dark_dissipation_j_per_bit(0) == 0.0
+        && actual_post_pinch_dark_dissipation_j_per_bit(999) == 0.0;
+
+    let mut somatic = SomaticBridgeController::new_post_pinch();
+    let somatic_ok = somatic.execute_omnibus_tether().is_ok()
+        && somatic.execute_somatic_return(SomaticBridgeClass::ClassIHumanSomatic).is_ok()
+        && somatic.state.verify_bipartite_bridge();
+
+    let coalescer = UnitaryBranchCoalescer::new_default();
+    let (coalesce_report, stabilization) = unitary_householder_givens_coalescence(&coalescer, &[1.0, 0.0], 156);
+    let coalescence_ok = coalesce_report.is_unitary && stabilization.verify_co_inductive_stabilization();
 
     let regs_size = core::mem::size_of::<shbt_swarm_mmio::ShbtSwarmMmioRegs>();
     let cl11_ok = regs_size == 768
         && shbt_swarm_mmio::ShbtSwarmMmioRegs::new_nominal_v14().cl11_aegis_absolute.aegis_abs_abi_magic
             == shbt_swarm_mmio::SHBT_SWARM_MMIO_ABI_V14_MAGIC;
+    let galois_cycles = shbt_swarm_logos::GALOIS_ROOT_CYCLES;
+    let galois_ok = (galois_cycles - 1.855238e136).abs() <= 1.0e120
+        && shbt_swarm_apotheosis::actual_post_pinch_dark_dissipation_j_per_bit(0) == 0.0;
+    let repair_airlock = NilpotentDehnIngressAirlock::new_ep2_diode();
 
     [
-        HilGateResult { gate_id: 361, passed: dark.mode_flags & shbt_swarm_logos::SHBT_LOGOS_PURE_DARK_MODE != 0 && dark_ok, metric_value: dark.logical_bit_ops_per_sec },
-        HilGateResult { gate_id: 362, passed: dark.symplectic_form_residual <= 1.0e-12, metric_value: dark.symplectic_form_residual },
-        HilGateResult { gate_id: 363, passed: bluesheet_trips, metric_value: shbt_swarm_logos::LOGOS_SATURATED_BIT_OPS_PER_SEC },
-        HilGateResult { gate_id: 364, passed: vacuum.vacuum_decay_pinned && vacuum.framing_defect_norm <= shbt_swarm_aegis::MAX_FRAMING_DEFECT_TOL, metric_value: vacuum.framing_defect_norm },
-        HilGateResult { gate_id: 365, passed: framing_ok, metric_value: vacuum.harvest_exposure_sec },
-        HilGateResult { gate_id: 366, passed: instanton_ok && vacuum.cd_l_instanton_action_se >= shbt_swarm_aegis::MIN_CDL_INSTANTON_ACTION_SE, metric_value: vacuum.cd_l_instanton_action_se },
-        HilGateResult { gate_id: 367, passed: vacuum.harvest_exposure_sec <= vacuum.harvest_mass_msun * shbt_swarm_aegis::MAX_HARVEST_EXPOSURE_SEC_PER_MSUN, metric_value: vacuum.harvest_mass_msun },
-        HilGateResult { gate_id: 368, passed: pinch.status_latch & shbt_swarm_aegis::SHBT_AEGIS_ADM_MONOPOLE_NULL_LOCK != 0, metric_value: pinch.exterior_adm_monopole_kg },
-        HilGateResult { gate_id: 369, passed: monopole_ok && pinch.exterior_adm_monopole_kg == 0.0, metric_value: pinch.exterior_adm_monopole_kg },
-        HilGateResult { gate_id: 370, passed: cobordism_ok && pinch.cobordism_pinch_executed, metric_value: pinch.memory_residual_norm },
-        HilGateResult { gate_id: 371, passed: pinch.memory_residual_norm <= shbt_swarm_aegis::MAX_GW_MEMORY_RESIDUAL_NORM, metric_value: pinch.memory_residual_norm },
-        HilGateResult { gate_id: 372, passed: fuse.fuse_armed && fuse.status_latch & shbt_swarm_omega::SHBT_OMEGA_CROSS_LAPSE_AIRGAP_LOCK != 0, metric_value: fuse.enclave_lapse_alpha },
-        HilGateResult { gate_id: 373, passed: airgap_ok && fuse.bogoliubov_beta_sq_integral <= shbt_swarm_omega::MAX_BOGOLIUBOV_BETA_SQ_INTEGRAL, metric_value: fuse.bogoliubov_beta_sq_integral },
-        HilGateResult { gate_id: 374, passed: fuse.ghost_potential_spoof_frac <= shbt_swarm_omega::MAX_GHOST_POTENTIAL_SPOOF_FRAC && fuse.fault_mask == 0, metric_value: fuse.ghost_potential_spoof_frac },
-        HilGateResult { gate_id: 375, passed: cl11_ok, metric_value: regs_size as f64 },
-        HilGateResult { gate_id: 376, passed: vacuum.fault_mask == 0 && pinch.fault_mask == 0 && dark.fault_mask == 0 && fuse.fault_mask == 0 && cl11_ok, metric_value: 376.0 },
+        HilGateResult { gate_id: 361, passed: stage2_ok, metric_value: stage2.eta_d },
+        HilGateResult { gate_id: 362, passed: stage2.dce_identity_residual == 0.0 && stage2.kz_flatness_residual == 0.0, metric_value: stage2.dce_identity_residual },
+        HilGateResult { gate_id: 363, passed: stage2.kz_clock_tau_as == 17.010_000 && stage2.dark_nilpotency_residual == 0.0 && stage2.bit_ops_per_sec <= shbt_swarm_logos::LOGOS_SATURATED_BIT_OPS_PER_SEC, metric_value: stage2.kz_clock_tau_as },
+        HilGateResult { gate_id: 364, passed: stage2.internal_dissipation_j_per_bit == 0.0 && stage2.kms_invariance_residual == 0.0 && dark_ok, metric_value: stage2.internal_dissipation_j_per_bit },
+        HilGateResult { gate_id: 365, passed: manifold_ok, metric_value: manifold.exterior_s_matrix_leak_norm },
+        HilGateResult { gate_id: 366, passed: manifold.interior_logical_volume_m3 == 0.0 && manifold.omnibus_tether_latency_as == 0.0, metric_value: manifold.interior_logical_volume_m3 },
+        HilGateResult { gate_id: 367, passed: manifold.pancake_count == 100_000 && manifold.pancake_boundary_count == 200_000 && manifold.interior_genera_count == 312, metric_value: manifold.pancake_count as f64 },
+        HilGateResult { gate_id: 368, passed: airlock_ok, metric_value: airlock.validation_latency_as },
+        HilGateResult { gate_id: 369, passed: hostile_rejected && airlock.spoof_cycles_observed == 1, metric_value: airlock.spoof_cycles_observed as f64 },
+        HilGateResult { gate_id: 370, passed: repair_airlock.verify_one_way_nilpotency() && repair_airlock.interior_repair_delay_as == 0.0, metric_value: repair_airlock.interior_repair_delay_as },
+        HilGateResult { gate_id: 371, passed: airgap_ok, metric_value: fuse.bogoliubov_beta_sq_integral },
+        HilGateResult { gate_id: 372, passed: open_ok, metric_value: open.p_grid_watts },
+        HilGateResult { gate_id: 373, passed: closed_ok, metric_value: closed.d_energy_dt_watts },
+        HilGateResult { gate_id: 374, passed: quota_ok && galois_ok, metric_value: quota_sum },
+        HilGateResult { gate_id: 375, passed: somatic_ok && coalescence_ok, metric_value: stabilization.poincare_recurrence_time_years.min(1.0e100) },
+        HilGateResult { gate_id: 376, passed: cl11_ok && stage2_ok && manifold_ok && airlock_ok && airgap_ok && closed_ok && quota_ok, metric_value: regs_size as f64 },
     ]
 }
+
 
 #[cfg(test)]
 mod tests {

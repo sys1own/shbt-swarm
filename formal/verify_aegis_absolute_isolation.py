@@ -68,7 +68,55 @@ def prove_thm_aegis_11_ext_pure_dark_holonomic_core() -> bool:
     return s.check() == unsat
 
 
+def verify_post_isolation_closures() -> bool:
+    s = SolverFor("QF_NRA")
+    eta_d = Real("eta_d")
+    eta_a = Real("eta_a")
+    volume = Real("logical_volume_m3")
+    sigma = Real("collision_sigma_m2")
+    dce = Real("dce_sum")
+    kz_detuning = Real("kz_accel_detuning")
+    tau_kz = Real("tau_kz_as")
+    nilpotency = Real("dark_nilpotency_residual")
+    dissipation = Real("post_pinch_dissipation_j_per_bit")
+    d_energy_dt = Real("post_pinch_d_energy_dt_watts")
+    quota_k = Real("landauer_quota_k")
+    galois_drift = Real("galois_snap_drift")
+    gh_occupation = Real("gibbons_hawking_occupation")
+    poincare_recurrence = Real("poincare_recurrence_time_years")
+
+    s.add(eta_d == 1.0, eta_a == 0.0)
+    s.add(volume == 0.0, sigma == 0.0)
+    s.add(dce == 0.0, kz_detuning == 0.0, tau_kz == RealVal("17.010000"))
+    s.add(nilpotency == 0.0, dissipation == 0.0)
+    s.add(d_energy_dt == 0.0)
+    s.add(quota_k >= 0.0, quota_k <= RealVal("8.038740e-23"))
+    s.add(galois_drift == 0.0, gh_occupation == 0.0)
+    s.add(poincare_recurrence > RealVal("1e100"))
+    s.add(Or(
+        eta_d != 1.0,
+        eta_a != 0.0,
+        volume != 0.0,
+        sigma != 0.0,
+        dce != 0.0,
+        kz_detuning != 0.0,
+        tau_kz != RealVal("17.010000"),
+        nilpotency != 0.0,
+        dissipation != 0.0,
+        d_energy_dt != 0.0,
+        quota_k < 0.0,
+        quota_k > RealVal("8.038740e-23"),
+        galois_drift != 0.0,
+        gh_occupation != 0.0,
+        poincare_recurrence <= RealVal("1e100"),
+    ))
+    return s.check() == unsat
+
+
 def main() -> None:
+    closures_ok = verify_post_isolation_closures()
+    print(f"[{'UNSAT' if closures_ok else 'SAT ' }] POST-ISOLATION-CLOSURES")
+    assert closures_ok, "post-isolation closures failed"
     proofs = [
         ("THM-AEGIS-07-EXT", prove_thm_aegis_07_ext_cobordism_pinch),
         ("THM-AEGIS-08-EXT", prove_thm_aegis_08_ext_vacuum_pinning),

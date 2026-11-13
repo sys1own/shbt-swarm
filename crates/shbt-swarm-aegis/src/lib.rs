@@ -2,17 +2,22 @@
 #![forbid(unsafe_code)]
 #![allow(unused_parens)]
 
-//! Phase 5A `shbt-swarm-aegis`: 4-Layer Kardashev Type III Perimeter Defense & Ethical CBF Triage
+//! Phase 5A/5C `shbt-swarm-aegis`: 6-Layer Kardashev Type III Perimeter Defense, Bipartite Cobordism & One-Way Dehn Ingress
 //! Strictly grounded in C_SHBT = Fib (x) C_GKO(26, 8, 312), eta_A = 10/33, eta_D = 23/33.
 
 pub mod vacuum_pinning;
 pub mod cobordism_pinch;
+pub mod dehn_ingress_airlock;
 pub use cobordism_pinch::{
     CobordismPinchController, MAX_GW_MEMORY_RESIDUAL_NORM, SHBT_AEGIS_ADM_MONOPOLE_NULL_LOCK,
 };
 pub use vacuum_pinning::{
     VacuumPinningState, MAX_FRAMING_DEFECT_TOL, MAX_HARVEST_EXPOSURE_SEC_PER_MSUN,
     MIN_CDL_INSTANTON_ACTION_SE, SHBT_AEGIS_VACUUM_DECAY_LOCK,
+};
+pub use dehn_ingress_airlock::{
+    BipartiteCobordismManifold, NilpotentDehnIngressAirlock, BIPARTITE_PANCAKE_COUNT,
+    BIPARTITE_INTERIOR_GENERA_COUNT, DEHN_INGRESS_VALIDATION_LATENCY_AS,
 };
 
 pub const BYZANTINE_LOCKOUT_FEMTO_S: u64 = 1_701;   // 1.701 ps
@@ -51,6 +56,8 @@ pub struct AegisOmegaController {
     pub l4_range_noise_fm: u32,
     pub layer5_vacuum_pinning: VacuumPinningState,
     pub layer6_cobordism_pinch: CobordismPinchController,
+    pub bipartite_cobordism_manifold: BipartiteCobordismManifold,
+    pub dehn_ingress_airlock: NilpotentDehnIngressAirlock,
 }
 
 pub type AegisAbsoluteController = AegisOmegaController;
@@ -72,6 +79,8 @@ impl AegisOmegaController {
             l4_range_noise_fm: MAX_RANGE_NOISE_FM_RT_HZ,
             layer5_vacuum_pinning: VacuumPinningState::new_pinned(),
             layer6_cobordism_pinch: CobordismPinchController::new_isolated(1.0e30),
+            bipartite_cobordism_manifold: BipartiteCobordismManifold::new_unpinched(),
+            dehn_ingress_airlock: NilpotentDehnIngressAirlock::new_ep2_diode(),
         }
     }
 
@@ -163,6 +172,13 @@ impl AegisOmegaController {
         self.layer6_cobordism_pinch.execute_macroscopic_cobordism_pinch(
             cobordism_pinch::MAX_GW_MEMORY_RESIDUAL_NORM,
         )?;
+        self.bipartite_cobordism_manifold.execute_pinch_off(
+            0.0,
+            1.0e-130,
+            cobordism_pinch::MAX_GW_MEMORY_RESIDUAL_NORM,
+            1.0e-15,
+        )?;
+        self.dehn_ingress_airlock.evaluate_ingress(true, true, true, false, false)?;
         Ok(())
     }
 }

@@ -91,14 +91,13 @@ impl GalacticSynthesisSimulation {
         if self.power_grid.compute_burn_lifetime_years() < 1.0e100 {
             return Err("Power grid burn lifetime below 10^100 years perpetual bound");
         }
-        if self.causal_horizon_isolated {
-            if !self.aegis.layer6_cobordism_pinch.cobordism_pinch_executed
+        if self.causal_horizon_isolated
+            && (!self.aegis.layer6_cobordism_pinch.cobordism_pinch_executed
                 || self.logos_core.dark_holonomic.logical_bit_ops_per_sec
                     != shbt_swarm_logos::OPS_MARGOLUS_LEVITIN
-                || self.vacuum_pinning_nodes_transient != 0
-            {
-                return Err("Phase 5C causal horizon isolation invariants violated");
-            }
+                || self.vacuum_pinning_nodes_transient != 0)
+        {
+            return Err("Phase 5C causal horizon isolation invariants violated");
         }
         Ok(())
     }

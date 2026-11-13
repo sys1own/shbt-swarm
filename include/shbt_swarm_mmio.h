@@ -88,6 +88,11 @@
 #define SHBT_AEGIS_VACUUM_DECAY_LOCK        ((uint32_t)0x00000020UL)
 #define SHBT_AEGIS_ADM_MONOPOLE_NULL_LOCK   ((uint32_t)0x00000040UL)
 #define SHBT_OMEGA_CROSS_LAPSE_AIRGAP_LOCK  ((uint32_t)0x00000080UL)
+#define SHBT_AEGIS_LAYER_ALL_6_ACTIVE       ((uint32_t)0x0000003FUL)
+#define SHBT_AEGIS_COBORDISM_PINCH_LOCKED   ((uint32_t)0x00000080UL)
+#define SHBT_AEGIS_DEHN_INGRESS_DIODE_EN    ((uint32_t)0x00000100UL)
+#define SHBT_OMEGA_KMS_REACTIVE_CLOSED      ((uint32_t)0x00000200UL)
+#define SHBT_LOGOS_STAGE2_PURE_DARK_LOCK    ((uint32_t)0x00000400UL)
 
 /* Phase 5C SHBT-AEGIS-ABSOLUTE Fault Bitmasks */
 #ifndef SHBT_SWARM_FAULT_CBF_VIOLATION
@@ -730,6 +735,31 @@ static inline uint8_t shbt_hamming72_64_syndrome(uint64_t word) {
     return (uint8_t)(syn | (overall << 7));
 }
 
+/* === Cache Line 5 foundry / Elysium biosphere overlay types === */
+typedef struct SHBT_ALIGN64 {
+    volatile uint32_t cl5_foundry_mode;
+    volatile uint32_t cl5_foundry_fault;
+    volatile uint64_t cl5_foundry_throughput;
+    volatile uint64_t cl5_foundry_exergy_q32_32;
+    volatile uint64_t cl5_foundry_dissipation;
+    volatile uint32_t cl5_foundry_status;
+    volatile uint32_t cl5_foundry_reserved0;
+    volatile uint64_t cl5_foundry_reserved1;
+    volatile uint64_t cl5_foundry_reserved2;
+    volatile uint64_t cl5_foundry_reserved3;
+} shbt_swarm_cl5_foundry_t;
+
+typedef struct SHBT_ALIGN64 {
+    volatile double elysium_pocket_lapse_alpha;
+    volatile double elysium_coriolis_residual_norm;
+    volatile double elysium_weyl_electric_norm;
+    volatile double elysium_israel_splice_stress;
+    volatile double biosphere_lyapunov_v;
+    volatile double biosphere_lyapunov_v_dot;
+    volatile double biosphere_chnops_conservation_margin;
+    volatile double biosphere_dark_shunt_flow_fraction;
+} shbt_swarm_cl5_elysium_biosphere_t;
+
 /* ==========================================================================
  * SHBT-MMIO-SWARM v14 REGISTER BLOCK (768 BYTES / 12 CACHE LINES)
  * Physical Base Address: 0x80000000
@@ -789,8 +819,12 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     float    branch_prune_entropy_debt;       /* 0x0134: Unitary prune entropy == 0.0 */
     uint64_t v7_reserved_tail;                /* 0x0138: Cache-line closure to 0x0140 */
 
-    /* --- Cache Line 5 (0x0140..0x017F): ABI v8 Reserved Pad (64 bytes) --- */
-    uint64_t reserved_v8_pad[8];              /* 0x0140..0x017F: 64 bytes pad */
+    /* === Cache Line 5 (0x0140..0x017F): ABI v14.0 Foundry / Elysium Biosphere Overlay (64 bytes) === */
+    union {
+        uint64_t reserved_v8_pad[8];                    /* 0x0140..0x017F: legacy 64-byte pad alias */
+        shbt_swarm_cl5_foundry_t cl5_foundry;           /* Foundry overlay */
+        shbt_swarm_cl5_elysium_biosphere_t elysium_biosphere; /* Zero-Coriolis Elysium overlay */
+    };
 
     /* === CACHELINE 6 (Offsets 0x0180 .. 0x01BF): Target Research Closures (64 bytes) === */
     double   gw_memory_residual_strain_norm;          /* 0x0180: <= 1.0e-120 */
@@ -845,6 +879,10 @@ _Static_assert(sizeof(shbt_mmio_cacheline_10_divertor_t) == 64,
                "Cache Line 10 must be 64 bytes");
 _Static_assert(sizeof(shbt_aegis_absolute_cl11_t) == 64,
                "Cache Line 11 must be 64 bytes");
+_Static_assert(sizeof(shbt_swarm_cl5_foundry_t) == 64,
+               "Cache Line 5 foundry overlay must be 64 bytes");
+_Static_assert(sizeof(shbt_swarm_cl5_elysium_biosphere_t) == 64,
+               "Cache Line 5 Elysium biosphere overlay must be 64 bytes");
 _Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 768,
                "Total MMIO structure must be exactly 768 bytes (12 cache lines)");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, cl10_divertor) == 0x0280,

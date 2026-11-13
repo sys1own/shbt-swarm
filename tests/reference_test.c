@@ -13,6 +13,12 @@
 #include "../include/shbt_nested_sim_abi.h"
 #include "../kernel/include/shbt_ecc.h"
 
+/* The standalone `gcc tests/reference_test.c` verification command has no separate
+ * kernel library link step, so compile the freestanding kernel translation units
+ * directly into this test binary. */
+#include "../kernel/src/shbt_ecc.c"
+#include "../kernel/src/shbt_swarm_kernel.c"
+
 static shbt_unified_stinespring_hyperframe_t g_test_hyperframe;
 static shbt_swarm_mmio_t g_test_mmio;
 
@@ -24,6 +30,8 @@ int main(void) {
     assert(sizeof(shbt_swarm_mmio_t) == 128U);
     assert(sizeof(shbt_mmio_cacheline_10_divertor_t) == 64U);
     assert(sizeof(shbt_aegis_absolute_cl11_t) == 64U);
+    assert(sizeof(shbt_swarm_cl5_foundry_t) == 64U);
+    assert(sizeof(shbt_swarm_cl5_elysium_biosphere_t) == 64U);
     assert(sizeof(shbt_swarm_mmio_regs_t) == 768U);
     assert(sizeof(shbt_mar_omega_aperture_t) == 256U);
     assert(sizeof(shbt_universal_harvest_aperture_t) == 256U);
@@ -75,6 +83,11 @@ int main(void) {
     assert(SHBT_APOTH_MMIO_BASE == 0x4000C000UL);
     assert(SHBT_OMNIBUS_HYPERFRAME_DMA_BASE == 0x70020000UL);
     assert(SHBT_APOTH_EGRESS_SAFEWORD_IRQ == 0x80000000UL);
+    assert(SHBT_AEGIS_LAYER_ALL_6_ACTIVE == 0x0000003FUL);
+    assert(SHBT_AEGIS_COBORDISM_PINCH_LOCKED == 0x00000080UL);
+    assert(SHBT_AEGIS_DEHN_INGRESS_DIODE_EN == 0x00000100UL);
+    assert(SHBT_OMEGA_KMS_REACTIVE_CLOSED == 0x00000200UL);
+    assert(SHBT_LOGOS_STAGE2_PURE_DARK_LOCK == 0x00000400UL);
     assert(SHBT_APOTH_CMD_ASCEND == 0x00000001UL);
     assert(SHBT_APOTH_CMD_DESCEND_SOMATIC == 0x00000002UL);
     assert(SHBT_APOTH_CMD_DEITY_LAW_REWRITE == 0x00000004UL);

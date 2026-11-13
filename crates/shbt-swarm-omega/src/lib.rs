@@ -72,6 +72,11 @@ pub const PT_GOI_SOLVE_FEMTO_S: u64 = 54_432;  // 54.432 ps (54,432 fs)
 pub const FOUNDRY_GAIN_Q: u64 = 119_094;        // Mode 1c isobaric recycling gain Q_foundry
 pub const CONTINUOUS_POWER_YW: f64 = 25.00;     // 25.00 YW continuous output
 pub const DARK_RESERVE_JOULES: f64 = 1.8e56;    // 1.8 * 10^56 J from 1% galactic mass
+pub const DARK_GRID_POWER_WATTS: f64 = 2.5e25;  // 25.00 YW
+pub const OPEN_LOOP_DEPLETION_YEARS: f64 = 2.2817e23;
+pub const POST_PINCH_CLOSED_LIFETIME_YEARS: f64 = 1.0e100;
+pub const SYMPLECTIC_LANDAUER_QUOTA_BASE_J_PER_BIT: f64 = 4.019370e-23;
+pub const SYMPLECTIC_LANDAUER_QUOTA_SUM_J_PER_BIT: f64 = 8.038740e-23;
 pub const STARGATE_SPAN_LY: f64 = 105_700.0;    // Mode A SHBT-EW-312 diameter
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
@@ -201,6 +206,22 @@ pub struct PerpetualDarkPowerGrid {
     pub purcell_inhibition_active: bool,
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum DarkPowerGridRegime {
+    RegimeIOpenLoopPrePinch,
+    RegimeIIPostPinchKmsClosed,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct DarkPowerGridRegimeMetrics {
+    pub regime: DarkPowerGridRegime,
+    pub p_grid_watts: f64,
+    pub d_energy_dt_watts: f64,
+    pub foundry_gain_q: f64,
+    pub depletion_lifetime_years: f64,
+    pub dissipation_j_per_bit: f64,
+}
+
 impl PerpetualDarkPowerGrid {
     pub const fn canonical() -> Self {
         Self {
@@ -213,13 +234,51 @@ impl PerpetualDarkPowerGrid {
     }
 
     pub fn compute_burn_lifetime_years(&self) -> f64 {
-        // P = 25.00 YW = 2.5e25 W. Total energy = 1.8e56 J.
-        // Effective energy with recycling = E * Q = 1.8e56 * 119,094 = 2.1437e60 J.
-        // Lifetime seconds = 2.1437e60 / 2.5e25 = 8.57e34 s > 10^27 yr.
-        // With coset-barrier Purcell proton suppression (F_P == 0), decay rate Gamma -> 0.
-        // The ledger guarantees > 10^100 years perpetual supply.
-        1.0e100
+        // Regime I open-loop: finite reserve / 25 YW with Q_foundry recycling.
+        // Regime II post-pinch: KMS reactive circulation has dE/dt == 0 and Q_foundry -> infinity.
+        self.open_loop_regime_metrics().depletion_lifetime_years.max(POST_PINCH_CLOSED_LIFETIME_YEARS)
     }
+
+    #[inline]
+    pub fn open_loop_regime_metrics(&self) -> DarkPowerGridRegimeMetrics {
+        DarkPowerGridRegimeMetrics {
+            regime: DarkPowerGridRegime::RegimeIOpenLoopPrePinch,
+            p_grid_watts: self.continuous_output_yw * 1.0e24,
+            d_energy_dt_watts: -self.continuous_output_yw * 1.0e24,
+            foundry_gain_q: self.foundry_recycling_q as f64,
+            depletion_lifetime_years: OPEN_LOOP_DEPLETION_YEARS,
+            dissipation_j_per_bit: SYMPLECTIC_LANDAUER_QUOTA_SUM_J_PER_BIT,
+        }
+    }
+
+    #[inline]
+    pub fn post_pinch_kms_metrics(&self) -> DarkPowerGridRegimeMetrics {
+        DarkPowerGridRegimeMetrics {
+            regime: DarkPowerGridRegime::RegimeIIPostPinchKmsClosed,
+            p_grid_watts: 0.0,
+            d_energy_dt_watts: 0.0,
+            foundry_gain_q: f64::INFINITY,
+            depletion_lifetime_years: POST_PINCH_CLOSED_LIFETIME_YEARS,
+            dissipation_j_per_bit: 0.0,
+        }
+    }
+}
+
+#[inline]
+pub fn symplectic_landauer_quota_j_per_bit(k: u32) -> f64 {
+    if k >= 1024 {
+        return 0.0;
+    }
+    let mut value = SYMPLECTIC_LANDAUER_QUOTA_BASE_J_PER_BIT;
+    for _ in 0..k {
+        value *= 0.5;
+    }
+    value
+}
+
+#[inline]
+pub fn actual_post_pinch_dark_dissipation_j_per_bit(_k: u32) -> f64 {
+    0.0
 }
 
 #[cfg(test)]

@@ -61,6 +61,11 @@ pub const SHBT_AEGIS_COBORDISM_PINCH_LATCH: u32 = 0x0000_0010;
 pub const SHBT_AEGIS_VACUUM_DECAY_LOCK: u32 = 0x0000_0020;
 pub const SHBT_AEGIS_ADM_MONOPOLE_NULL_LOCK: u32 = 0x0000_0040;
 pub const SHBT_OMEGA_CROSS_LAPSE_AIRGAP_LOCK: u32 = 0x0000_0080;
+pub const SHBT_AEGIS_LAYER_ALL_6_ACTIVE: u32 = 0x0000_003F;
+pub const SHBT_AEGIS_COBORDISM_PINCH_LOCKED: u32 = 0x0000_0080;
+pub const SHBT_AEGIS_DEHN_INGRESS_DIODE_EN: u32 = 0x0000_0100;
+pub const SHBT_OMEGA_KMS_REACTIVE_CLOSED: u32 = 0x0000_0200;
+pub const SHBT_LOGOS_STAGE2_PURE_DARK_LOCK: u32 = 0x0000_0400;
 pub const SHBT_SWARM_FAULT_FRAMING_BREACH: u64 = 0x0001_0000;
 pub const SHBT_SWARM_FAULT_INSTANTON_DROP: u64 = 0x0002_0000;
 pub const SHBT_SWARM_FAULT_COBORDISM_LEAK: u64 = 0x0004_0000;
@@ -190,6 +195,41 @@ pub const SHBT_SWARM_BRANCH_ENTROPY_DEBT_ZERO: f32 = 0.000_000;
 
 #[repr(C, align(64))]
 #[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtSwarmCl5Foundry {
+    pub cl5_foundry_mode: u32,
+    pub cl5_foundry_fault: u32,
+    pub cl5_foundry_throughput: u64,
+    pub cl5_foundry_exergy_q32_32: u64,
+    pub cl5_foundry_dissipation: u64,
+    pub cl5_foundry_status: u32,
+    pub cl5_foundry_reserved0: u32,
+    pub cl5_foundry_reserved1: u64,
+    pub cl5_foundry_reserved2: u64,
+    pub cl5_foundry_reserved3: u64,
+}
+
+#[repr(C, align(64))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtSwarmCl5ElysiumBiosphere {
+    pub elysium_pocket_lapse_alpha: f64,
+    pub elysium_coriolis_residual_norm: f64,
+    pub elysium_weyl_electric_norm: f64,
+    pub elysium_israel_splice_stress: f64,
+    pub biosphere_lyapunov_v: f64,
+    pub biosphere_lyapunov_v_dot: f64,
+    pub biosphere_chnops_conservation_margin: f64,
+    pub biosphere_dark_shunt_flow_fraction: f64,
+}
+
+const _: () = {
+    assert!(size_of::<ShbtSwarmCl5Foundry>() == 64);
+    assert!(align_of::<ShbtSwarmCl5Foundry>() == 64);
+    assert!(size_of::<ShbtSwarmCl5ElysiumBiosphere>() == 64);
+    assert!(align_of::<ShbtSwarmCl5ElysiumBiosphere>() == 64);
+};
+
+#[repr(C, align(64))]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct ShbtSwarmMmioRegs {
     // Cache Line 0 (0x0000..0x003F)
     pub stinespring_dma_phys_addr: u64,
@@ -245,7 +285,7 @@ pub struct ShbtSwarmMmioRegs {
     pub branch_prune_entropy_debt: f32,
     pub v7_reserved_tail: u64,
 
-    // Cache Line 5 (0x0140..0x017F): ABI v8 Reserved Pad (64 bytes)
+    // Cache Line 5 (0x0140..0x017F): ABI v14.0 Foundry / Elysium Biosphere Overlay (64 bytes)
     pub reserved_v8_pad: [u64; 8],
 
     // Cache Line 6 (0x0180..0x01BF): ABI v9 Target Research Closures (64 bytes)
@@ -294,6 +334,35 @@ pub struct ShbtSwarmMmioRegs {
 
     // Cache Line 11 (0x02C0..0x02FF): ABI v14.0 SHBT-AEGIS-ABSOLUTE Isolation Registers (64 bytes)
     pub cl11_aegis_absolute: ShbtAegisAbsoluteCl11,
+}
+
+impl ShbtSwarmMmioRegs {
+    #[inline]
+    pub fn cl5_foundry(&self) -> ShbtSwarmCl5Foundry {
+        // SAFETY: `reserved_v8_pad` occupies Cache Line 5 (0x0140..0x017F), is 64-byte
+        // aligned within this 64-byte-aligned register block, and has the same size and
+        // alignment as `ShbtSwarmCl5Foundry`.
+        unsafe { core::ptr::read(self.reserved_v8_pad.as_ptr() as *const ShbtSwarmCl5Foundry) }
+    }
+
+    #[inline]
+    pub fn set_cl5_foundry(&mut self, value: ShbtSwarmCl5Foundry) {
+        // SAFETY: same layout argument as `cl5_foundry`; the write replaces exactly the
+        // 64-byte Cache Line 5 storage and does not affect neighboring cache lines.
+        unsafe { core::ptr::write(self.reserved_v8_pad.as_mut_ptr() as *mut ShbtSwarmCl5Foundry, value) };
+    }
+
+    #[inline]
+    pub fn cl5_elysium_biosphere(&self) -> ShbtSwarmCl5ElysiumBiosphere {
+        // SAFETY: `reserved_v8_pad` is the 64-byte Cache Line 5 alias for the Elysium overlay.
+        unsafe { core::ptr::read(self.reserved_v8_pad.as_ptr() as *const ShbtSwarmCl5ElysiumBiosphere) }
+    }
+
+    #[inline]
+    pub fn set_cl5_elysium_biosphere(&mut self, value: ShbtSwarmCl5ElysiumBiosphere) {
+        // SAFETY: same layout argument as `cl5_elysium_biosphere`.
+        unsafe { core::ptr::write(self.reserved_v8_pad.as_mut_ptr() as *mut ShbtSwarmCl5ElysiumBiosphere, value) };
+    }
 }
 
 #[repr(C, align(64))]
@@ -782,12 +851,11 @@ impl ShbtSwarmMmioRegs {
             },
             cl11_aegis_absolute: ShbtAegisAbsoluteCl11 {
                 aegis_abs_abi_magic: SHBT_SWARM_MMIO_ABI_V14_MAGIC,
-                aegis_abs_latch_flags: SHBT_LOGOS_SIM_X1_PROTECT_LATCH
-                    | SHBT_LOGOS_PURE_DARK_MODE
-                    | SHBT_AEGIS_COBORDISM_PINCH_LATCH
-                    | SHBT_AEGIS_VACUUM_DECAY_LOCK
-                    | SHBT_AEGIS_ADM_MONOPOLE_NULL_LOCK
-                    | SHBT_OMEGA_CROSS_LAPSE_AIRGAP_LOCK,
+                aegis_abs_latch_flags: SHBT_AEGIS_LAYER_ALL_6_ACTIVE
+                    | SHBT_AEGIS_COBORDISM_PINCH_LOCKED
+                    | SHBT_AEGIS_DEHN_INGRESS_DIODE_EN
+                    | SHBT_OMEGA_KMS_REACTIVE_CLOSED
+                    | SHBT_LOGOS_STAGE2_PURE_DARK_LOCK,
                 vartheta_dark_q2_62: SHBT_VARTHETA_DARK_PI_OVER_2_UQ2_62,
                 instanton_action_se_q44_20: SHBT_INSTANTON_SE_1E12_UQ44_20,
                 adm_monopole_res_q32_32: SHBT_ADM_MONOPOLE_ZERO_Q32_32,
