@@ -35,6 +35,8 @@ pub struct GalacticSynthesisSimulation {
     pub aegis: AegisOmegaController,
     pub logos_core: LogosCoreController,
     pub omnibus: OmnibusFabricController,
+    pub vacuum_pinning_nodes_transient: u32,
+    pub causal_horizon_isolated: bool,
 }
 
 impl Default for GalacticSynthesisSimulation {
@@ -67,6 +69,8 @@ impl GalacticSynthesisSimulation {
             aegis: AegisOmegaController::canonical(),
             logos_core: LogosCoreController::canonical(),
             omnibus: OmnibusFabricController::canonical(),
+            vacuum_pinning_nodes_transient: 312,
+            causal_horizon_isolated: false,
         }
     }
 
@@ -87,6 +91,36 @@ impl GalacticSynthesisSimulation {
         if self.power_grid.compute_burn_lifetime_years() < 1.0e100 {
             return Err("Power grid burn lifetime below 10^100 years perpetual bound");
         }
+        if self.causal_horizon_isolated {
+            if !self.aegis.layer6_cobordism_pinch.cobordism_pinch_executed
+                || self.logos_core.dark_holonomic.logical_bit_ops_per_sec
+                    != shbt_swarm_logos::OPS_MARGOLUS_LEVITIN
+                || self.vacuum_pinning_nodes_transient != 0
+            {
+                return Err("Phase 5C causal horizon isolation invariants violated");
+            }
+        }
+        Ok(())
+    }
+
+    /// Executes the Phase 5A->5C transition: transient vacuum pinning nodes fold into
+    /// pure-dark holonomic computronium and the exterior horizon is pinched off.
+    pub fn execute_phase5c_causal_horizon_isolation(
+        &mut self,
+        harvest_mass_kg: f64,
+        harvest_window_sec: f64,
+    ) -> Result<(), &'static str> {
+        self.aegis
+            .execute_harvest_to_isolation_transition(harvest_mass_kg, harvest_window_sec)
+            .map_err(|_| "AEGIS-ABSOLUTE harvest-to-isolation transition failed")?;
+        self.logos_core
+            .rotate_to_pure_dark_holonomic_execution()
+            .map_err(|_| "Pure dark holonomic execution rotation failed")?;
+        let mut fuse = shbt_swarm_omega::CrossLapseAirgapFuse::new_armed();
+        fuse.audit_and_clamp_junction(1.0e-130, 1.0e-16, 1.0e-15)
+            .map_err(|_| "Cross-lapse airgap fuse audit failed")?;
+        self.vacuum_pinning_nodes_transient = 0;
+        self.causal_horizon_isolated = true;
         Ok(())
     }
 }
@@ -100,6 +134,21 @@ mod tests {
         assert_eq!(SwarmOperationalMode::default(), SwarmOperationalMode::GalacticSynthesis);
         let sim = GalacticSynthesisSimulation::default();
         assert_eq!(sim.mode, SwarmOperationalMode::GalacticSynthesis);
+        assert!(sim.verify_galactic_invariants().is_ok());
+    }
+
+    #[test]
+    fn test_phase5c_transition_folds_vacuum_nodes() {
+        let mut sim = GalacticSynthesisSimulation::canonical();
+        assert_eq!(sim.vacuum_pinning_nodes_transient, 312);
+        assert!(sim
+            .execute_phase5c_causal_horizon_isolation(
+                1.988_409_870_698_051e39,
+                18.26 * 86_400.0,
+            )
+            .is_ok());
+        assert!(sim.causal_horizon_isolated);
+        assert_eq!(sim.vacuum_pinning_nodes_transient, 0);
         assert!(sim.verify_galactic_invariants().is_ok());
     }
 }

@@ -41,7 +41,7 @@ pub enum AegisError {
     SensorSqueezingDegraded,
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub struct AegisOmegaController {
     pub l1_dark_cloak_sigma_coll: u64, // Must be 0 m^2
     pub l2_causal_ds2_2pn: i64,        // Must be <= 0
@@ -49,7 +49,11 @@ pub struct AegisOmegaController {
     pub l3_trusted_cayley_hash: [u64; 4],
     pub l4_tmsv_squeeze_mdb: u32,
     pub l4_range_noise_fm: u32,
+    pub layer5_vacuum_pinning: VacuumPinningState,
+    pub layer6_cobordism_pinch: CobordismPinchController,
 }
+
+pub type AegisAbsoluteController = AegisOmegaController;
 
 impl AegisOmegaController {
     /// Canonical baseline configuration for SHBT-AEGIS-OMEGA perimeter
@@ -66,6 +70,8 @@ impl AegisOmegaController {
             ],
             l4_tmsv_squeeze_mdb: TMSV_SQUEEZE_MILLI_DB,
             l4_range_noise_fm: MAX_RANGE_NOISE_FM_RT_HZ,
+            layer5_vacuum_pinning: VacuumPinningState::new_pinned(),
+            layer6_cobordism_pinch: CobordismPinchController::new_isolated(1.0e30),
         }
     }
 
@@ -123,6 +129,42 @@ impl AegisOmegaController {
             })
         }
     }
+
+    /// Unified Phase 5A->5C transition: verify Layers 1-5 during bounded harvest,
+    /// then engage Layer 6 ADM monopole nullification and 17.01 as pinch-off.
+    pub fn execute_harvest_to_isolation_transition(
+        &mut self,
+        harvest_mass_kg: f64,
+        harvest_window_sec: f64,
+    ) -> Result<(), u32> {
+        if self.l1_dark_cloak_sigma_coll != 0
+            || self.l2_causal_ds2_2pn > 0
+            || !self.l2_shift_vector_collapsed
+        {
+            return Err(vacuum_pinning::SHBT_SWARM_FAULT_CBF_VIOLATION);
+        }
+        if self.l4_tmsv_squeeze_mdb < TMSV_SQUEEZE_MILLI_DB
+            || self.l4_range_noise_fm > MAX_RANGE_NOISE_FM_RT_HZ
+        {
+            return Err(vacuum_pinning::SHBT_SWARM_FAULT_CBF_BREACH);
+        }
+        self.layer5_vacuum_pinning.enforce_sugawara_framing_closure(
+            0.0,
+            vacuum_pinning::MIN_CDL_INSTANTON_ACTION_SE,
+            harvest_mass_kg,
+            harvest_window_sec,
+        )?;
+        if !self.layer6_cobordism_pinch.nullify_exterior_adm_monopole(
+            0.0,
+            cobordism_pinch::CCZ4_GUNDLACH_KAPPA_1,
+        ) {
+            return Err(cobordism_pinch::SHBT_SWARM_FAULT_COBORDISM_LEAK);
+        }
+        self.layer6_cobordism_pinch.execute_macroscopic_cobordism_pinch(
+            cobordism_pinch::MAX_GW_MEMORY_RESIDUAL_NORM,
+        )?;
+        Ok(())
+    }
 }
 
 #[cfg(test)]
@@ -157,6 +199,19 @@ mod tests {
                 intercept_us: INTERCEPT_TIME_MICRO_S,
                 adm_delta: 0
             }
+        );
+    }
+
+    #[test]
+    fn test_aegis_absolute_transition_engages_layer6() {
+        let mut aegis = AegisOmegaController::canonical();
+        assert!(aegis
+            .execute_harvest_to_isolation_transition(1.988_409_870_698_051e39, 18.26 * 86_400.0)
+            .is_ok());
+        assert!(aegis.layer6_cobordism_pinch.cobordism_pinch_executed);
+        assert_ne!(
+            aegis.layer6_cobordism_pinch.status_latch & cobordism_pinch::SHBT_AEGIS_COBORDISM_PINCH_LATCH,
+            0
         );
     }
 

@@ -177,4 +177,5 @@ fn main() {
     file.write_all(json.as_bytes())
         .expect("Failed to write verification_matrix.json");
     println!("  [OK] Wrote verification_matrix.json ({} bytes)", json.len());
+
 }

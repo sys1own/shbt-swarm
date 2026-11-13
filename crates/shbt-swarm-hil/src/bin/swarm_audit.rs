@@ -1,9 +1,9 @@
 //! `crates/shbt-swarm-hil/src/bin/swarm_audit.rs`
-//! CLI Verification Runner that executes all 344 Hardware-in-the-Loop (HIL) and
+//! CLI Verification Runner that executes all 376 Hardware-in-the-Loop (HIL) and
 //! Formal Verification Gates (`100/100 Z3 SMT UNSAT`), prints a formatted summary table,
-//! and emits `verification_matrix.json` for ABI v12.0 (`0x000C0312`).
+//! and emits `verification_matrix.json` for ABI v14.0 (`0x000E0312`).
 
-use shbt_swarm_hil::evaluate_all_344_gates;
+use shbt_swarm_hil::evaluate_all_376_gates;
 use std::fs::File;
 use std::io::Write;
 use std::process::ExitCode;
@@ -13,12 +13,12 @@ fn escape_json(s: &str) -> String {
 }
 
 fn main() -> ExitCode {
-    let gates = evaluate_all_344_gates();
+    let gates = evaluate_all_376_gates();
     let total = gates.len();
     let passed_count = gates.iter().filter(|g| g.passed).count();
 
     println!("========================================================================================================================");
-    println!(" SHBT-SWARM v12.0 DUAL-REACTOR (MAR-312X + MAR-OMEGA) & UNIVERSAL HARVESTING VERIFICATION MATRIX (344 GATES, 100 SMT)");
+    println!(" SHBT-SWARM v14.0 DUAL-REACTOR (MAR-312X + MAR-OMEGA) & UNIVERSAL HARVESTING VERIFICATION MATRIX (376 GATES, 110 SMT)");
     println!("========================================================================================================================");
     println!(
         "{:<18} | {:<5} | {:<36} | {:<32} | {:<6}",
@@ -36,7 +36,7 @@ fn main() -> ExitCode {
 
     println!("========================================================================================================================");
     println!(
-        " SUMMARY: {}/{} GATES PASSED | ABI: 0x000C0312 (640B, 10 Cache Lines) | Z3 SMT: 100/100 UNSAT",
+        " SUMMARY: {}/{} GATES PASSED | ABI: 0x000E0312 (768B, 12 Cache Lines) | Z3 SMT: 110/110 UNSAT",
         passed_count, total
     );
     println!("========================================================================================================================");
@@ -151,7 +151,7 @@ fn main() -> ExitCode {
         }
     }
 
-    if passed_count == total && total == 344 {
+    if passed_count == total && total == 376 {
         ExitCode::SUCCESS
     } else {
         ExitCode::FAILURE

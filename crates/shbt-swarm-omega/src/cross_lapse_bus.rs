@@ -160,6 +160,7 @@ pub struct CrossLapseBusChannel {
     pub wall_stage3: HannPlanckLapseWall,
     pub current_metric: GordonOpticalMetric,
     pub residual_beta_integral: f64,
+    pub airgap_fuse: crate::cross_lapse_airgap::CrossLapseAirgapFuse,
 }
 
 #[allow(clippy::new_without_default)]
@@ -201,6 +202,7 @@ impl CrossLapseBusChannel {
             wall_stage3,
             current_metric: initial_metric,
             residual_beta_integral: 0.0,
+            airgap_fuse: crate::cross_lapse_airgap::CrossLapseAirgapFuse::new_armed(),
         }
     }
 
@@ -243,6 +245,28 @@ impl CrossLapseBusChannel {
     #[inline(always)]
     pub fn verify_quenched_beta(&self) -> bool {
         self.residual_beta_integral < 1.0e-34
+    }
+
+    /// Sever and lock the Israel-Darmois optical junction with the Phase 5C airgap fuse.
+    pub fn sever_and_lock_cross_lapse_junction(
+        &mut self,
+        bogoliubov_beta_sq_integral: f64,
+        ghost_potential_spoof_frac: f64,
+        framing_defect: f64,
+    ) -> Result<(), u32> {
+        self.airgap_fuse.audit_and_clamp_junction(
+            bogoliubov_beta_sq_integral,
+            ghost_potential_spoof_frac,
+            framing_defect,
+        )
+    }
+
+    #[inline]
+    pub fn airgap_fuse_locked(&self) -> bool {
+        self.airgap_fuse.fuse_armed
+            && (self.airgap_fuse.status_latch
+                & crate::cross_lapse_airgap::SHBT_OMEGA_CROSS_LAPSE_AIRGAP_LOCK)
+                != 0
     }
 }
 
@@ -351,5 +375,8 @@ mod tests {
         // Step transport across coordinate radius
         bus.step_transport(50.0, 1.0e-9);
         assert!(bus.verify_quenched_beta());
+        assert!(bus.airgap_fuse.fuse_armed);
+        assert!(bus.sever_and_lock_cross_lapse_junction(1.0e-130, 1.0e-16, 1.0e-15).is_ok());
+        assert!(bus.airgap_fuse_locked());
     }
 }

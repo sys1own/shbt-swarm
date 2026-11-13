@@ -79,10 +79,11 @@ pub enum LogosError {
     BulkMicrocausalityViolated,
     QosBandwidthAllocationInvalid,
     ClassX1SentientThreadUnprotected,
+    DarkHolonomicExecutionFault,
 }
 
 /// Monolithic 230-Space-Group Borrmann X-Ray Computronium Core Controller
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub struct LogosCoreController {
     pub t_prop_femto_as: u64,
     pub f_native_ghz: u64,
@@ -97,6 +98,7 @@ pub struct LogosCoreController {
     pub grad_alpha_core_norm: u64,
     pub weyl_shear_core_norm: u64,
     pub framing_defect_delta_fr: u64,
+    pub dark_holonomic: DarkHolonomicCore,
 }
 
 impl LogosCoreController {
@@ -115,6 +117,7 @@ impl LogosCoreController {
             grad_alpha_core_norm: 0,
             weyl_shear_core_norm: 0,
             framing_defect_delta_fr: 0,
+            dark_holonomic: DarkHolonomicCore::new_pure_dark(),
         }
     }
 
@@ -127,6 +130,9 @@ impl LogosCoreController {
         }
         if self.dynkin_slots != DYNKIN_SLOTS_FULL || self.gko_channels != GKO_CHANNELS_FULL {
             return Err(LogosError::DynkinGkoChannelMismatch);
+        }
+        if self.dark_holonomic.fault_mask != 0 {
+            return Err(LogosError::DarkHolonomicExecutionFault);
         }
         if self.t_prop_femto_as != T_PROP_LOGOS_FEMTO_AS
             && self.t_prop_femto_as != T_PROP_X_SUB_FEMTO_AS
@@ -168,6 +174,13 @@ impl LogosCoreController {
 
         let channels_per_cell = (self.dynkin_slots as u128) * (self.gko_channels as u128);
         Ok(channels_per_cell * (alpha_tot as u128))
+    }
+
+    /// Rotates completed Borrmann staging into pure-dark holonomic execution.
+    pub fn rotate_to_pure_dark_holonomic_execution(&mut self) -> Result<(), LogosError> {
+        self.dark_holonomic
+            .verify_unipotent_symplectic_shear(1.0, 1.0, OPS_MARGOLUS_LEVITIN)
+            .map_err(|_| LogosError::DarkHolonomicExecutionFault)
     }
 }
 

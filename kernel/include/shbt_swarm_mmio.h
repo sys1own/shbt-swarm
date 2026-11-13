@@ -768,10 +768,10 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     uint64_t pcss_crowbar_latency_ps;         /* 0x00B8: <= 2500 ps (2.5 ns) */
 
     /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
-    uint32_t abi_version;                     /* 0x00C0: 0x000D0312 */
-    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 105 */
-    uint32_t hil_gates_pass_count;            /* 0x00C8: 360 */
-    uint32_t active_phase_mask;               /* 0x00CC: 0x0000007F (Phases 1..6) */
+    uint32_t abi_version;                     /* 0x00C0: 0x000E0312 */
+    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 110 */
+    uint32_t hil_gates_pass_count;            /* 0x00C8: 376 */
+    uint32_t active_phase_mask;               /* 0x00CC: 0x000000FF (Phases 1..6 + 5C) */
     uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
     uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */
 
@@ -829,8 +829,8 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     double   omega_throat_shear_mpa;          /* 0x0258: < 1.0e-6 MPa (7.85e-9 MPa) */
     double   omega_bondi_hoyle_msun_yr;       /* 0x0260: >= 20.0 M_sun/yr */
     uint64_t power_bus_arbiter_flags;         /* 0x0268: Dual-Reactor Arbiter state flags */
-    uint32_t hil_gates_pass_mask;             /* 0x0270: 32-bit HIL pass-mask window (360/360 PASS) */
-    uint32_t hil_status_code;                 /* 0x0274: 0x00000360 (360/360 PASS) */
+    uint32_t hil_gates_pass_mask;             /* 0x0270: 32-bit HIL pass-mask window (376/376 PASS) */
+    uint32_t hil_status_code;                 /* 0x0274: 0x00000376 (376/376 PASS) */
     uint64_t crc64_iso_checksum;              /* 0x0278: CRC-64-ISO hardware seal */
 
     /* === CACHELINE 10 (Offsets 0x0280 .. 0x02BF): Continuous RMHD Divertor & Constellation Aperture (64 bytes) === */

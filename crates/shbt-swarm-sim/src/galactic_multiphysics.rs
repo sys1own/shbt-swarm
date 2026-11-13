@@ -632,6 +632,12 @@ pub fn step_galactic_multiphysics_twin() -> Result<GalacticMultiphysicsTwinRepor
         return Err("Multi-rate symplectic 2-form or shadow energy drift breach");
     }
 
+    crate::galactic_twin::GalacticSynthesisSimulation::canonical()
+        .execute_phase5c_causal_horizon_isolation(
+            1.988_409_870_698_051e39,
+            18.26 * 86_400.0,
+        )?;
+
     Ok(GalacticMultiphysicsTwinReport {
         stellar_adiabatic_gamma: gamma_1,
         dynamo_dissipation_watts: q_thermal,
