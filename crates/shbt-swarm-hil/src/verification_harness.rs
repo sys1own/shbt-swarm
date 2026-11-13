@@ -460,7 +460,7 @@ pub fn run_aegis_absolute_hil_gates_361_to_376() -> [HilGateResult; NEW_AEGIS_AB
         HilGateResult { gate_id: 364, passed: stage2.internal_dissipation_j_per_bit == 0.0 && stage2.kms_invariance_residual == 0.0 && dark_ok, metric_value: stage2.internal_dissipation_j_per_bit },
         HilGateResult { gate_id: 365, passed: manifold_ok, metric_value: manifold.exterior_s_matrix_leak_norm },
         HilGateResult { gate_id: 366, passed: manifold.interior_logical_volume_m3 == 0.0 && manifold.omnibus_tether_latency_as == 0.0, metric_value: manifold.interior_logical_volume_m3 },
-        HilGateResult { gate_id: 367, passed: manifold.pancake_count == 100_000 && manifold.pancake_boundary_count == 200_000 && manifold.interior_genera_count == 312, metric_value: manifold.pancake_count as f64 },
+        HilGateResult { gate_id: 367, passed: manifold.pocket_count == 100_000 && manifold.pocket_boundary_count == 200_000 && manifold.interior_genera_count == 312, metric_value: manifold.pocket_count as f64 },
         HilGateResult { gate_id: 368, passed: airlock_ok, metric_value: airlock.validation_latency_as },
         HilGateResult { gate_id: 369, passed: hostile_rejected && airlock.spoof_cycles_observed == 1, metric_value: airlock.spoof_cycles_observed as f64 },
         HilGateResult { gate_id: 370, passed: repair_airlock.verify_one_way_nilpotency() && repair_airlock.interior_repair_delay_as == 0.0, metric_value: repair_airlock.interior_repair_delay_as },

@@ -3733,9 +3733,9 @@
     {
       "gate_id": "GATE-SWARM-367",
       "phase": 4,
-      "subsystem": "WP-5C.7 100k Elysium Pancakes & 312 Interior Genera",
-      "invariant_criterion": "100000 pancakes, 312 genera",
-      "target_bound": "100000 pancakes, 312 genera",
+      "subsystem": "WP-5C.7 100k Elysium Pocket Manifolds & 312 Interior Genera",
+      "invariant_criterion": "100000 pockets, 312 genera",
+      "target_bound": "100000 pockets, 312 genera",
       "measured_value": "census verified",
       "verification_method": "Z3 POST-ISOLATION-CLOSURES",
       "passed": true

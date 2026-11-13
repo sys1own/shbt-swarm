@@ -16,7 +16,7 @@ pub use vacuum_pinning::{
     MIN_CDL_INSTANTON_ACTION_SE, SHBT_AEGIS_VACUUM_DECAY_LOCK,
 };
 pub use dehn_ingress_airlock::{
-    BipartiteCobordismManifold, NilpotentDehnIngressAirlock, BIPARTITE_PANCAKE_COUNT,
+    BipartiteCobordismManifold, NilpotentDehnIngressAirlock, BIPARTITE_POCKET_COUNT,
     BIPARTITE_INTERIOR_GENERA_COUNT, DEHN_INGRESS_VALIDATION_LATENCY_AS,
 };
 

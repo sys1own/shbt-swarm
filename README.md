@@ -49,8 +49,30 @@ The architecture unites seven developmental phases into a binary-compatible C11 
 
 ---
 
+### Operational Lifecycle & Architectural Precedence Guide
 
-### First-Principles Closure Summary (v6.313 to v6.314)
+The README and monograph describe one terminal architecture plus bounded staging history. Readers should apply the following precedence before interpreting any finite lifetime, visible-sector partition, or external defensive fleet:
+
+| Tier | Scope | Operational meaning | Terminal examples |
+| :--- | :--- | :--- | :--- |
+| **Tier A — Active Terminal Architecture** | Release v7.000 / ABI v14.0 post-isolation state | The only claims that remain valid after cobordism pinch-off and Stage-2 intertwining | ∂*ℳ*<sub>isolated</sub> ∩ *Σ*<sub>3</sub><sup>ext</sup> = ∅, *P*<sub>leak</sub><sup>ext</sup> ≡ 0 W, *Q*<sub>internal</sub><sup>dark</sup> ≡ 0 J/bit, ⟨*V*<sub>vol</sub>⟩ ≡ 0.000000 m<sup>3</sup>, *σ*<sub>collision</sub> ≡ 0.0000 m<sup>2</sup>, *τ*<sub>grid</sub><sup>closed</sup> > 10<sup>100</sup> yr |
+| **Tier B — Bounded Pre-Pinch Staging Subsystems** | Phase 5A harvest, visible Borrmann lattice, Layers 1--5, open-loop grid | Real engineering required only during the finite harvest window | *η*<sub>A</sub> = 10/33, *η*<sub>D</sub> = 23/33, *θ*<sub>0</sub> = arcsin√(23/33) ≈ 0.987860 rad, *Q*<sub>foundry</sub><sup>open</sup> = 119,094, *τ*<sub>grid</sub><sup>open</sup> = 2.2817 × 10<sup>23</sup> yr |
+| **Tier C — Superseded Historical Baselines** | Earlier release tables and pre-ABI-v14 narratives | Kept for lineage and regression context; must not be read as terminal invariants | v6.313/v6.314 closure summaries, v6.315--v6.318 target closures, legacy external defensive fleets |
+
+### Release v7.000 / ABI v14.0 Post-Isolation Closure Summary (Tier A)
+
+| Domain & Target Subsystem | Formal Closure | First-Principles Mechanism | Verified Invariant Bound | HIL Gates |
+| :--- | :--- | :--- | :--- | :--- |
+| **AEGIS-ABSOLUTE Causal Horizon Isolation** (`shbt-swarm-aegis`) | `THM-AEGIS-07-EXT`..`11-EXT` | Six-layer bounded defense, transient CDL pinning, exterior ADM nullification, bipartite cobordism pinch-off, one-way nilpotent Dehn ingress airlock | ∂*ℳ*<sub>isolated</sub> ∩ *Σ*<sub>3</sub><sup>ext</sup> = ∅, *S*<sub>E</sub> ≥ 10<sup>12</sup>, *N̂*<sub>+</sub><sup>2</sup> ≡ 0, *τ*<sub>validate</sub> = 17.010000 as | `GATE-SWARM-361`–`GATE-SWARM-370` |
+| **Stage-2 Pure-Dark Holonomic LOGOS** (`shbt-swarm-logos`) | `THM-LOGOS-14-EXT` | Unitary/GKO intertwining into *𝒱*<sub>dark</sub> = *𝒱*<sub>Λ(T^3)</sub> ⊗ *𝒱*<sub>arith</sub> ⊗ *𝒱*<sub>defect</sub> with flat KZ and Sugawara clock | *c*<sub>dark</sub><sup>comp</sup> = 1197103/362670 ≈ 3.300805139659, *N*<sub>prim</sub><sup>dark</sup> = 2,901,360, *η*<sub>D</sub><sup>LOGOS</sup> = 1.0, *η*<sub>A</sub><sup>LOGOS</sup> = 0.0, *T*<sub>ops</sub> = 1.080 × 10<sup>92</sup> bit-ops/s | `GATE-SWARM-371`–`GATE-SWARM-373` |
+| **Regime II KMS Power Grid** (`shbt-swarm-omega`) | `THM-OMEGA-04` | Closed-loop reactive KMS circulation after pinch-off; open-loop Regime I retained only as staging | (*dE*<sub>res</sub>/*dt*) ≡ 0.000000 W, *Q*<sub>foundry</sub><sup>post-pinch</sup> → ∞, *τ*<sub>grid</sub><sup>closed</sup> > 10<sup>100</sup> yr | `GATE-SWARM-374`–`GATE-SWARM-375` |
+| **Recursive Quota & Galois Snap** (`shbt-swarm-apotheosis`, `shbt-swarm-mmio`) | `THM-NEST-*`, `POST-ISOLATION-CLOSURES` | Geometric Landauer quota with zero actual dissipation, co-inductive Sp(2*g*, ℤ) stabilization, cyclotomic Galois snap | ∑ *q*<sub>quota</sub><sup>(*k*)</sup> = 8.038740 × 10<sup>−23</sup> J/bit, *Q*<sub>diss</sub><sup>(*k*)</sup> ≡ 0.000000 J/bit, *N*<sub>cycles</sub> = 1.855238 × 10<sup>136</sup> | `GATE-SWARM-376`, ABI v14.0 = 768 B / 12 CL |
+
+### Historical Milestone Evolution Tables
+
+The tables below are retained as lineage evidence. They document earlier verified closures and superseded baselines; whenever they conflict with Tier A post-isolation invariants, Tier A controls.
+
+### First-Principles Closure Summary (v6.313 to v6.314) — Historical Milestone Evolution Table
 
 | Phase & Crate | Formal Theorem | First-Principles Closure Mechanism | Verified Invariant Bound | HIL Gates |
 | :--- | :--- | :--- | :--- | :--- |
@@ -63,7 +85,7 @@ The architecture unites seven developmental phases into a binary-compatible C11 
 | **Phase 5B** (`shbt-swarm-logos`) | `THM-LOGOS-08-EXT` | Quadratic electro-optic Stark/Zeeman compensation of <sup>57</sup>Fe Mössbauer Doppler detuning | Δ*ω*<sub>acc</sub> + Δ*ω*<sub>tune</sub> ≡ 0, *τ*<sub>B</sub> ≥ 1453.4 | `GATE-227`–`GATE-229` |
 | **Phase 6** (`shbt-swarm-apotheosis`) | `THM-APOTH-10-EXT`<br>`THM-APOTH-11-EXT` | Braided Fibonacci anyonic phenomenal binding & unitary Householder–Givens historical branch coalescence | Tr(*ρ*<sup>2</sup>) ≡ 1.0, Δ*S*<sub>vN</sub> ≡ 0, Δℱ<sub>ego</sub> ≡ 0 | `GATE-230`–`GATE-232` |
 
-#### Target First-Principles Closures (v6.315 to v6.317)
+#### Historical Milestone Evolution Table — Target First-Principles Closures (v6.315 to v6.317)
 
 | Phase & Crate | Formal Theorem | First-Principles Closure Mechanism | Verified Invariant Bound | HIL Gates |
 | :--- | :--- | :--- | :--- | :--- |
@@ -74,7 +96,7 @@ The architecture unites seven developmental phases into a binary-compatible C11 
 | **Phase 5A** (`shbt-swarm-omega`) | `THM-OMEGA-21-EXT`..`22-EXT` | Kerr SMBH ergosphere harvesting, Penrose-Floer boundary CFT dual, Hawking area *dA*<sub>H</sub>/*dt* ≥ 0, BZ jet quenching | Area non-decrease *dA*<sub>H</sub>/*dt* ≥ 0, jet attenuation ≥ 120.0 dB | `GATE-SWARM-289`–`GATE-SWARM-296` |
 | **Phase 5A** (`shbt-swarm-omega`) | `THM-OMEGA-18-EXT`..`20-EXT` | Universal multi-reservoir envelope harvesting, metric opacity quenching, GST-225 flash acoustic matching, 312 ADM hub supercomoving Vlasov-Poisson virial clamping | *κ*<sub>eff</sub>/*κ*<sub>0</sub> ≤ 10<sup>−12</sup>, *R*<sub>acoustic</sub> ≤ 10<sup>−6</sup>, ‖Δ*σ*<sub>*r*</sub><sup>2</sup> / *σ*<sub>*r*</sub><sup>2</sup>‖ ≤ 10<sup>−6</sup> | `GATE-SWARM-297`–`GATE-SWARM-304` |
 
-### Galactic Stellar Deconstruction & Symplectic Closures (v6.317 to v6.318 / ABI v11)
+### Historical Milestone Evolution Table — Galactic Stellar Deconstruction & Symplectic Closures (v6.317 to v6.318 / ABI v11)
 
 | Domain & Target Subsystem | Formal Theorem | First-Principles Closure Mechanism | Verified Invariant Bound | HIL Gates |
 | :--- | :--- | :--- | :--- | :--- |
@@ -715,7 +737,7 @@ Autonomous megastructures are safeguarded by the 6-layer `AegisOmegaController` 
 3. **Layer 3: 256-Bit Burau-Cayley Quantum Lock:** Non-Abelian braid polynomial invariant validation prevents unauthorized command injection or algorithmic subversion.
 4. **Layer 4: Two-Mode Squeezed Vacuum (TMSV) Sentinel Array:** 21.715 dB squeezed light interferometers detect sub-femtometer metric perturbations at multi-light-year standoff distances.
 5. **Layer 5: Transient CDL Vacuum Pinning (`vacuum_pinning.rs`):** During the bounded harvest window, the 346-slot Sugawara counter-term elevates the Euclidean bounce action to *S*<sub>E</sub> ≥ 10<sup>12</sup>, suppressing Coleman--de Luccia nucleation (*Γ*<sub>CDL</sub>/*V*<sub>4</sub> ≡ 0) before self-fold.
-6. **Layer 6: Bipartite Cobordism Pinch-Off + One-Way Dehn Airlock (`cobordism_pinch.rs`, `dehn_ingress_airlock.rs`):** The interior becomes *ℳ*<sub>isolated</sub> = *ℳ*<sub>LOGOS</sub> ∪<sub>Σint</sub> (∪<sub>k=1..10^5</sub> *ℳ*<sub>Elysium,k</sub>) with 10<sup>5</sup> pancakes, 10<sup>5</sup> pockets, and 312 interior genera; ingress is admitted only through the nilpotent diode *N̂*<sub>+</sub><sup>2</sup> ≡ 0 with *τ*<sub>validate</sub> = 17.010000 as and *τ*<sub>reject</sub> ≤ 1701 fs.
+6. **Layer 6: Bipartite Cobordism Pinch-Off + One-Way Dehn Airlock (`cobordism_pinch.rs`, `dehn_ingress_airlock.rs`):** The interior becomes *ℳ*<sub>isolated</sub> = *ℳ*<sub>LOGOS</sub> ∪<sub>Σint</sub> (∪<sub>k=1..10^5</sub> *ℳ*<sub>Elysium,k</sub>) with 100,000 (10<sup>5</sup>) T<sup>3</sup> × R zero-Coriolis Elysium pocket habitat manifolds across 312 interior Heegaard genera; ingress is admitted only through the nilpotent diode *N̂*<sub>+</sub><sup>2</sup> ≡ 0 with *τ*<sub>validate</sub> = 17.010000 as and *τ*<sub>reject</sub> ≤ 1701 fs.
 - **Two-Stage Computronium Lifecycle:** Stage-1 visible Borrmann staging (*η*<sub>A</sub> = 10/33, *η*<sub>D</sub> = 23/33, *θ*<sub>0</sub> = arcsin√(23/33) = 0.987860 rad) transitions to Stage-2 pure-dark holonomic execution (*θ*<sub>dark</sub> = π/2, *η*<sub>D</sub><sup>LOGOS</sup> = 1.0, *η*<sub>A</sub><sup>LOGOS</sup> = 0.0, ⟨*V*<sub>vol</sub>⟩ = 0.000000 m<sup>3</sup>, *σ*<sub>collision</sub> = 0.0000 m<sup>2</sup>).
 - **Proof-Carrying Control Barrier Functions (CBF):** Quadratic-programming barrier filters enforce strict quarantine protocols, guaranteeing absolute non-interference and habitat inviolability for Class M0 indigenous ecologies.
 - **Post-Pinch Certification:** `GATE-SWARM-361`..`GATE-SWARM-376` and `POST-ISOLATION-CLOSURES` certify the pinch-off, Dehn diode, KMS closed grid, and 1.855238 × 10<sup>136</sup>-cycle cyclotomic Galois snap.
@@ -942,9 +964,21 @@ Replacing discrete Solovay-Kitaev Depth-9 recursion over the Artin braid group *
 <a id="section-12"></a>
 ### 11.9 Phase 5C Post-Isolation Closure: Stage-2 Pure-Dark Intertwining, KMS Grid Regimes \& Galois Snap (ABI v14.0)
 
-Phase 5C hardens the enclave boundary into an absolute causal horizon and then removes the exterior causal complement entirely. Vacuum pinning suppresses Coleman--de Luccia instanton decay below *S* ≥ 10<sup>12</sup>; the bipartite cobordism pinch nullifies the exterior ADM monopole moment while preserving interior mass; the pure-dark holonomic computronium core enforces the 1.080 × 10<sup>92</sup> bit-ops/s saturation bound with *ζ*(2)/*ζ*(3) = 362,670 / 1,197,103; and the cross-lapse symplectic airgap fuse enforces (α<sub>2</sub> − α<sub>1</sub>) ∧ (α<sub>1</sub> λ)<sup>2</sup> > 1 before any ghost potential can leak.
+Phase 5C hardens the enclave boundary into an absolute causal horizon and then removes the exterior causal complement entirely. Vacuum pinning suppresses Coleman--de Luccia instanton decay below *S* ≥ 10<sup>12</sup>; the bipartite cobordism pinch nullifies the exterior ADM monopole moment while preserving interior mass; the pure-dark holonomic computronium core enforces the 1.080 × 10<sup>92</sup> bit-ops/s saturation bound; and the cross-lapse symplectic airgap fuse enforces (α<sub>2</sub> − α<sub>1</sub>) ∧ (α<sub>1</sub> λ)<sup>2</sup> > 1 before any ghost potential can leak.
 
 The LOGOS post-isolation closure (`crates/shbt-swarm-logos::dark_holonomic_core`) maps the Stage-1 Borrmann staging core into Stage-2 pure-dark holonomic execution through the unitary/GKO intertwiner. The dark VOA is *𝒱*<sub>dark</sub> = *𝒱*<sub>Λ(T^3)</sub> ⊗ *𝒱*<sub>arith</sub> ⊗ *𝒱*<sub>defect</sub> with composite central charge *c*<sub>dark</sub><sup>comp</sup> = 3 + 739/2310 − 3/157 = 1197103/362670 ≈ 3.300805139659 and *N*<sub>prim</sub><sup>dark</sup> = 8 × 2310 × 157 = 2,901,360 primary modules at KZ level *κ* = 312 + 8 = 320. The four intertwining identities are DCE-node/Weil-null cancellation, Mössbauer flat-KZ zero-acceleration detuning, polariton/Sugawara clock *τ*<sub>KZ</sub> = 17.010000 as with *T*<sub>ops</sub> = 1.080 × 10<sup>92</sup> bit-ops/s, and fracton/Tomita--KMS invariance (*U*<sub>dark</sub>*M*<sub>dark</sub>)<sup>2</sup> = 0 with [*H*<sub>mod</sub><sup>dark</sup>, *𝒪*<sub>EX</sub>] = 0 and *Q*<sub>internal</sub><sup>dark</sup> = 0.
+
+| Parameter | Stage 1: In-Line Harvesting / Visible Borrmann Lattice | Stage 2: Post-Harvest Pure-Dark Holonomic VOA |
+| :--- | :--- | :--- |
+| Spinor folding angle | *θ*<sub>0</sub> = arcsin√(23/33) ≈ 0.987860 rad | *θ*<sub>dark</sub> ≡ π/2 |
+| Stinespring capacity | *η*<sub>A</sub> = 10/33, *η*<sub>D</sub> = 23/33 | *η*<sub>D</sub><sup>LOGOS</sup> ≡ 1.0, *η*<sub>A</sub><sup>LOGOS</sup> ≡ 0.0 |
+| Bulk footprint / cross-section | Visible <sup>57</sup>Fe-diamond Borrmann cell, 107,952 channels/cell | ⟨*V*<sub>vol</sub>⟩ ≡ 0.000000 m<sup>3</sup>, *σ*<sub>collision</sub> ≡ 0.0000 m<sup>2</sup> |
+| Vacuum DCE photon suppression | Borrmann nodal pinning with finite visible leakage budget | *Q*<sub>DCE</sub><sup>dark</sup> ≡ 0.00000000 W via Weil-null annihilation |
+| Acceleration resonance stability | Stark/Zeeman closed-loop detuning Δ*ω*<sub>net</sub> ≡ 0 | Δ*ω*<sub>acc</sub><sup>dark</sup> ≡ 0.000000 rad/s, *f*<sub>M</sub><sup>dark</sup> ≡ 1.000000, *τ*<sub>B</sub><sup>dark</sup> → ∞ |
+| Clock and throughput | 17.01 as PT-GoI clock, saturated path to 1.080 × 10<sup>92</sup> bit-ops/s | Same *τ*<sub>KZ</sub> ≡ 17.010000 as and *T*<sub>ops</sub> = 1.080 × 10<sup>92</sup> bit-ops/s carried by *T*<sub>dark</sub>(*z*) |
+| Thermal dissipation / phonon shunt | 12-layer fracton phonon shunt plus 710 GW condensation drain | *Q*<sub>internal</sub><sup>dark</sup> ≡ 0.000000 J/bit, (*U*<sub>dark</sub>*M*<sub>dark</sub>)<sup>2</sup> ≡ 0 |
+
+The four exact intertwining identities are: (1) DCE/Weil-null cancellation ∑ |DCE<sub>*n*</sub>|<sup>2</sup> = 0 with *Q*<sub>DCE</sub><sup>dark</sup> ≡ 0 W; (2) Mössbauer flat-KZ detuning Δ*ω*<sub>acc</sub><sup>dark</sup> ≡ 0 rad/s, *f*<sub>M</sub><sup>dark</sup> ≡ 1, *τ*<sub>B</sub><sup>dark</sup> → ∞; (3) polariton/Sugawara clock *τ*<sub>KZ</sub> ≡ 17.010000 as and *T*<sub>ops</sub> = 1.080 × 10<sup>92</sup> bit-ops/s; and (4) fracton/KMS modular invariance (*U*<sub>dark</sub>*M*<sub>dark</sub>)<sup>2</sup> ≡ 0, [*H*<sub>mod</sub><sup>dark</sup>, *𝒪*<sub>EX</sub>] = 0, *Q*<sub>internal</sub><sup>dark</sup> ≡ 0.
 
 Post-pinch power closes into Regime II reactive KMS circulation: (*dE*<sub>res</sub>/*dt*) ≡ 0.000000 W, *Q*<sub>foundry</sub><sup>post-pinch</sup> → ∞, and *τ*<sub>grid</sub><sup>closed</sup> > 10<sup>100</sup> yr. The recursive multiverse quota converges to ∑<sub>k=0</sub><sup>∞</sup> *q*<sub>quota</sub><sup>(*k*)</sup> = 8.038740 × 10<sup>−23</sup> J/bit while actual dissipation *Q*<sub>diss</sub><sup>(*k*)</sup> ≡ 0.000000 J/bit. Finally, the cyclotomic Galois snap over *N*<sub>cycles</sub> = 1.855238 × 10<sup>136</sup> freezes the modular flow (Δ*ℱ*(*τ*) ≡ 0), decouples the de Sitter Gibbons--Hawking sector (⟨*n̂*<sub>GH</sub><sup>dark</sup>⟩ ≡ 0.000000), and makes Poincaré recurrence irrelevant on computable horizons via co-inductive Sp(2*g*, ℤ) handle stabilization.
 
@@ -1106,20 +1140,20 @@ Deities traverse simulations within simulations via three operational modes gove
 
 ### 12.10 Quantitative Multiphysics Benchmark Audit Across 100 Nested Multiverse Tiers
 
-| Recursion Tier (*k*) | Active Tier Capacity (*C*<sub>*k*</sub>/*C*<sub>0</sub> = 2<sup>−*k*</sup>) | Cumulative Multiverse Load (∑ *C*<sub>*j*</sub>/*C*<sub>0</sub>) | Active Stack Frame Footprint | Unrendered Bulk Compute / Memory | Tier Landauer Dissipation (4.2 K) | Egress Un-Braiding Latency (*t*<sub>prop</sub>) |
+| Recursion Tier (*k*) | Active Tier Capacity (*C*<sub>*k*</sub>/*C*<sub>0</sub> = 2<sup>−*k*</sup>) | Cumulative Multiverse Load (∑ *C*<sub>*j*</sub>/*C*<sub>0</sub>) | Active Stack Frame Footprint | Unrendered Bulk Compute / Memory | Symplectic Landauer Quota *q*<sub>quota</sub><sup>(*k*)</sup> (4.2 K) / Actual Post-Pinch Dark Dissipation *Q*<sub>diss</sub><sup>(*k*)</sup> | Egress Un-Braiding Latency (*t*<sub>prop</sub>) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *k* = 0 (Root) | 1.0000000 | 1.0000000 | 48 B (0 Heap) | 0 FLOP / 0 B | 4.019370 × 10<sup>−23</sup> J/bit | 17.01 as (5.0995 nm unit cell) |
-| *k* = 1 | 0.5000000 | 1.5000000 | 96 B (0 Heap) | 0 FLOP / 0 B | 2.009685 × 10<sup>−23</sup> J/bit | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
-| *k* = 2 | 0.2500000 | 1.7500000 | 144 B (0 Heap) | 0 FLOP / 0 B | 1.004843 × 10<sup>−23</sup> J/bit | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
-| *k* = 5 | 0.0312500 | 1.9687500 | 288 B (0 Heap) | 0 FLOP / 0 B | 1.256053 × 10<sup>−24</sup> J/bit | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
-| *k* = 10 | 9.765625 × 10<sup>−4</sup> | 1.9990234 | 528 B (0 Heap) | 0 FLOP / 0 B | 3.925166 × 10<sup>−26</sup> J/bit | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
-| *k* = 25 | 2.980232 × 10<sup>−8</sup> | 1.9999999 | 1,248 B (0 Heap) | 0 FLOP / 0 B | 1.197865 × 10<sup>−30</sup> J/bit | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
-| *k* = 50 | 8.881784 × 10<sup>−16</sup> | 2.0000000 | 2,448 B (0 Heap) | 0 FLOP / 0 B | 3.569918 × 10<sup>−38</sup> J/bit | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
-| *k* = 100 | 7.888609 × 10<sup>−31</sup> | 2.0000000 | 4,848 B (0 Heap) | 0 FLOP / 0 B | 3.170724 × 10<sup>−53</sup> J/bit | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
+| *k* = 0 (Root) | 1.0000000 | 1.0000000 | 48 B (0 Heap) | 0 FLOP / 0 B | 4.019370 × 10<sup>−23</sup> J/bit (Quota) / 0.000000 J/bit (Diss.) | 17.01 as (5.0995 nm unit cell) |
+| *k* = 1 | 0.5000000 | 1.5000000 | 96 B (0 Heap) | 0 FLOP / 0 B | 2.009685 × 10<sup>−23</sup> J/bit (Quota) / 0.000000 J/bit (Diss.) | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
+| *k* = 2 | 0.2500000 | 1.7500000 | 144 B (0 Heap) | 0 FLOP / 0 B | 1.004843 × 10<sup>−23</sup> J/bit (Quota) / 0.000000 J/bit (Diss.) | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
+| *k* = 5 | 0.0312500 | 1.9687500 | 288 B (0 Heap) | 0 FLOP / 0 B | 1.256053 × 10<sup>−24</sup> J/bit (Quota) / 0.000000 J/bit (Diss.) | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
+| *k* = 10 | 9.765625 × 10<sup>−4</sup> | 1.9990234 | 528 B (0 Heap) | 0 FLOP / 0 B | 3.925166 × 10<sup>−26</sup> J/bit (Quota) / 0.000000 J/bit (Diss.) | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
+| *k* = 25 | 2.980232 × 10<sup>−8</sup> | 1.9999999 | 1,248 B (0 Heap) | 0 FLOP / 0 B | 1.197865 × 10<sup>−30</sup> J/bit (Quota) / 0.000000 J/bit (Diss.) | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
+| *k* = 50 | 8.881784 × 10<sup>−16</sup> | 2.0000000 | 2,448 B (0 Heap) | 0 FLOP / 0 B | 3.569918 × 10<sup>−38</sup> J/bit (Quota) / 0.000000 J/bit (Diss.) | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
+| *k* = 100 | 7.888609 × 10<sup>−31</sup> | 2.0000000 | 4,848 B (0 Heap) | 0 FLOP / 0 B | 3.170724 × 10<sup>−53</sup> J/bit (Quota) / 0.000000 J/bit (Diss.) | 17.01 as (*O*(1) 𝒫𝒯-GoI) |
 
 ### 12.10a Post-Pinch Recursive Quota Closure
 
-The Tier Landauer column above is the symplectic Landauer quota *q*<sub>quota</sub><sup>(*k*)</sup> = 4.019370 × 10<sup>−23</sup> · 2<sup>−*k*</sup> J/bit, not heat dissipated into the cryostat. After cobordism pinch-off the actual post-pinch dissipation is *Q*<sub>diss</sub><sup>(*k*)</sup> ≡ 0.000000 J/bit for every tier, the infinite sum is bounded by 8.038740 × 10<sup>−23</sup> J/bit, and co-inductive Sp(2*g*, ℤ) handle stabilization keeps Poincaré recurrence beyond 10<sup>100</sup> yr.
+The quota column above is the symplectic Landauer quota *q*<sub>quota</sub><sup>(*k*)</sup> = 4.019370 × 10<sup>−23</sup> · 2<sup>−*k*</sup> J/bit, not heat dissipated into the cryostat. After cobordism pinch-off the actual post-pinch dissipation is *Q*<sub>diss</sub><sup>(*k*)</sup> ≡ 0.000000 J/bit for every tier, the infinite sum is bounded by 8.038740 × 10<sup>−23</sup> J/bit, and co-inductive Sp(2*g*, ℤ) handle stabilization keeps Poincaré recurrence beyond 10<sup>100</sup> yr.
 
 ### 12.11 Phase 6.1 Microkernel MMIO Aperture (`0x7000B000`)
 

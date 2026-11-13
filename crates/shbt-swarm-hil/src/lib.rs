@@ -4342,7 +4342,7 @@ pub fn evaluate_all_376_gates() -> Vec<GateAuditResult> {
         (5, "WP-5C.6 Tomita-KMS Invariance & Zero Dark Dissipation", "Q_internal=0 J/bit", "0.0 J/bit verified", "Z3 POST-ISOLATION-CLOSURES"),
         (4, "WP-5C.7 Bipartite Cobordism Pinch-Off", "Sigma_int pinch, exterior S-matrix null", "pinch locked", "Z3 POST-ISOLATION-CLOSURES"),
         (4, "WP-5C.7 Zero Logical Volume Interior", "<V_vol> = 0.000000 m^3", "0.0 m^3 verified", "Z3 POST-ISOLATION-CLOSURES"),
-        (4, "WP-5C.7 100k Elysium Pancakes & 312 Interior Genera", "100000 pancakes, 312 genera", "census verified", "Z3 POST-ISOLATION-CLOSURES"),
+        (4, "WP-5C.7 100k Elysium Pocket Manifolds & 312 Interior Genera", "100000 pockets, 312 genera", "census verified", "Z3 POST-ISOLATION-CLOSURES"),
         (4, "WP-5C.8 One-Way Nilpotent Dehn Ingress Airlock", "N_+^2 = 0, forward-only", "diode armed", "Z3 POST-ISOLATION-CLOSURES"),
         (4, "WP-5C.8 Hostile Egress Rejection", "spoof/framing/ADM ingress rejected", "rejected", "Z3 POST-ISOLATION-CLOSURES"),
         (4, "WP-5C.8 Zero-Reconfiguration Interior Repair", "repair delay = 0.0 as", "0.0 as verified", "Z3 POST-ISOLATION-CLOSURES"),

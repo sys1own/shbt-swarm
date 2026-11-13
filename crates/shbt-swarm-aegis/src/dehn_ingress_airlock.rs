@@ -1,8 +1,8 @@
 //! Phase 5C one-way nilpotent Dehn-surgery ingress airlock and bipartite cobordism manifold.
 #![forbid(unsafe_code)]
 
-pub const BIPARTITE_PANCAKE_COUNT: u32 = 100_000;
-pub const BIPARTITE_PANCAKE_BOUNDARY_COUNT: u32 = 200_000;
+pub const BIPARTITE_POCKET_COUNT: u32 = 100_000;
+pub const BIPARTITE_POCKET_BOUNDARY_COUNT: u32 = 200_000;
 pub const BIPARTITE_COBORDISM_DIMENSION: u32 = 11;
 pub const BIPARTITE_INTERIOR_GENERA_COUNT: u32 = 312;
 pub const BIPARTITE_ELYSIUM_POCKETS_COUNT: u32 = 100_000;
@@ -29,8 +29,8 @@ pub const SHBT_SWARM_FAULT_DEHN_INGRESS: u32 = 0x0000_0009;
 pub struct BipartiteCobordismManifold {
     pub status_latch: u32,
     pub fault_mask: u32,
-    pub pancake_count: u32,
-    pub pancake_boundary_count: u32,
+    pub pocket_count: u32,
+    pub pocket_boundary_count: u32,
     pub cobordism_dimension: u32,
     pub interior_genera_count: u32,
     pub elysium_pockets_count: u32,
@@ -50,8 +50,8 @@ impl BipartiteCobordismManifold {
         Self {
             status_latch: 0,
             fault_mask: 0,
-            pancake_count: BIPARTITE_PANCAKE_COUNT,
-            pancake_boundary_count: BIPARTITE_PANCAKE_BOUNDARY_COUNT,
+            pocket_count: BIPARTITE_POCKET_COUNT,
+            pocket_boundary_count: BIPARTITE_POCKET_BOUNDARY_COUNT,
             cobordism_dimension: BIPARTITE_COBORDISM_DIMENSION,
             interior_genera_count: BIPARTITE_INTERIOR_GENERA_COUNT,
             elysium_pockets_count: BIPARTITE_ELYSIUM_POCKETS_COUNT,
