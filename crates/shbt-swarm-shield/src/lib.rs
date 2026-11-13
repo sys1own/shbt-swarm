@@ -4,6 +4,9 @@
 
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
+#![allow(unused_parens)]
+#![allow(clippy::manual_range_contains)]
+#![allow(clippy::excessive_precision)]
 
 pub mod hocbf_engine;
 pub mod poset_sheaf;

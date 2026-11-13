@@ -55,6 +55,13 @@ pub struct ShuntTelemetry {
     pub quench_cycles: AtomicU64,
 }
 
+impl Default for ShuntTelemetry {
+    #[inline]
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ShuntTelemetry {
     pub const fn new() -> Self {
         Self {

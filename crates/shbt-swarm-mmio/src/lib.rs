@@ -1,9 +1,10 @@
-//! `shbt-swarm-mmio`: Bare-Metal Microkernel ABI v13.0 (`0x000D0312`) Register Specification.
+//! `shbt-swarm-mmio`: Bare-Metal Microkernel ABI v14.0 (`0x000E0312`) Register Specification.
 //! Zero-allocation `#![no_std]` FFI bindings matching `include/shbt_swarm_mmio.h`.
 
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
 #![allow(dead_code, unused_imports)]
+#![allow(unused_parens)]
 
 use core::mem::{align_of, offset_of, size_of};
 use core::ptr::{read_volatile, write_volatile};
@@ -17,16 +18,21 @@ use shbt_swarm_core::{
 pub const SHBT_SWARM_MMIO_BASE_ADDR: u64 = 0x8000_0000;
 pub const SHBT_SWARM_STINESPRING_BASE_ADDR: u64 = 0x7002_0000;
 pub const SHBT_SWARM_STINESPRING_FRAME_BYTES: usize = 135_168;
-pub const SHBT_SWARM_ABI_VERSION: u32 = 0x000D_0312;
+pub const SHBT_SWARM_ABI_VERSION: u32 = 0x000E_0312;
 pub const SHBT_SWARM_ABI_VERSION_V12: u32 = 0x000C_0312;
 pub const SHBT_SWARM_ABI_VERSION_V13: u32 = 0x000D_0312;
+pub const SHBT_SWARM_ABI_VERSION_V14: u32 = 0x000E_0312;
 pub const SHBT_SWARM_MMIO_MAGIC: u32 = 0x5348_4254;
-pub const SHBT_SWARM_MMIO_TOTAL_SIZE: usize = 704;
+pub const SHBT_SWARM_MMIO_TOTAL_SIZE: usize = 768;
+pub const SHBT_SWARM_MMIO_TOTAL_SIZE_BYTES: usize = 768;
 pub const SHBT_SWARM_CACHE_LINE_BYTES: usize = 64;
+pub const SHBT_SWARM_MMIO_CACHELINE_BYTES: usize = 64;
+pub const SHBT_SWARM_MMIO_CACHELINE_COUNT: usize = 12;
+pub const SHBT_SWARM_MMIO_ABI_V14_MAGIC: u32 = 0x000E_0312;
 pub const SHBT_SWARM_CHANNELS_TOTAL: u32 = 312;
 pub const SHBT_SWARM_CFT_SLOTS_TOTAL: u32 = 346;
-pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 105;
-pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 360;
+pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 110;
+pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 376;
 pub const SHBT_SWARM_DIVERTOR_BASE_ADDR: u64 = 0x7F00_0800;
 
 pub const DIV_STATUS_LAMINAR: u32 = 1 << 0;
@@ -49,6 +55,25 @@ pub const SHBT_CANONICAL_KL: u32 = 26;
 pub const SHBT_CANONICAL_KQ: u32 = 8;
 pub const SHBT_CANONICAL_K_COS: u32 = 312;
 pub const SHBT_DYNKIN_SLOTS_TOTAL: u32 = 346;
+pub const SHBT_LOGOS_SIM_X1_PROTECT_LATCH: u32 = 0x0000_0002;
+pub const SHBT_LOGOS_PURE_DARK_MODE: u32 = 0x0000_0008;
+pub const SHBT_AEGIS_COBORDISM_PINCH_LATCH: u32 = 0x0000_0010;
+pub const SHBT_AEGIS_VACUUM_DECAY_LOCK: u32 = 0x0000_0020;
+pub const SHBT_AEGIS_ADM_MONOPOLE_NULL_LOCK: u32 = 0x0000_0040;
+pub const SHBT_OMEGA_CROSS_LAPSE_AIRGAP_LOCK: u32 = 0x0000_0080;
+pub const SHBT_SWARM_FAULT_FRAMING_BREACH: u64 = 0x0001_0000;
+pub const SHBT_SWARM_FAULT_INSTANTON_DROP: u64 = 0x0002_0000;
+pub const SHBT_SWARM_FAULT_COBORDISM_LEAK: u64 = 0x0004_0000;
+pub const SHBT_SWARM_FAULT_PSEUDO_ANOSOV_TWIST: u64 = 0x0008_0000;
+pub const SHBT_SWARM_FAULT_EP2_NILPOTENCY_LOSS: u64 = 0x0010_0000;
+pub const SHBT_SWARM_FAULT_BLUESHEET_SURGE: u64 = 0x0020_0000;
+pub const SHBT_SWARM_FAULT_WEYL_CROWBAR_TRIP: u64 = 1 << 31;
+pub const SHBT_VARTHETA_DARK_PI_OVER_2_UQ2_62: u64 = 0x6487_ED51_10B4_611A;
+pub const SHBT_INSTANTON_SE_1E12_UQ44_20: u64 = 0x000E_8D4A_5100_0000;
+pub const SHBT_ADM_MONOPOLE_ZERO_Q32_32: i64 = 0;
+pub const SHBT_LOG10_S_MATRIX_ZERO_SENTINEL: i64 = -35_184_372_088_832_000;
+pub const SHBT_LOG10_BOGOLIUBOV_FLOOR_Q16_48: i64 = -33_776_997_205_278_720;
+pub const SHBT_DARK_GRID_1P8E56J_UQ32_32: u64 = 0x0ABA_9500_0000_0000;
 
 #[inline]
 const fn abs_f64(x: f64) -> f64 {
@@ -266,6 +291,9 @@ pub struct ShbtSwarmMmioRegs {
 
     // Cache Line 10 (0x0280..0x02BF): Continuous RMHD Divertor & Constellation Aperture (64 bytes)
     pub cl10_divertor: ShbtMmioCacheline10Divertor,
+
+    // Cache Line 11 (0x02C0..0x02FF): ABI v14.0 SHBT-AEGIS-ABSOLUTE Isolation Registers (64 bytes)
+    pub cl11_aegis_absolute: ShbtAegisAbsoluteCl11,
 }
 
 #[repr(C, align(64))]
@@ -289,8 +317,29 @@ const _: () = {
     assert!(align_of::<ShbtMmioCacheline10Divertor>() == 64);
 };
 
+#[repr(C, align(64))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtAegisAbsoluteCl11 {
+    pub aegis_abs_abi_magic: u32,
+    pub aegis_abs_latch_flags: u32,
+    pub vartheta_dark_q2_62: u64,
+    pub instanton_action_se_q44_20: u64,
+    pub adm_monopole_res_q32_32: i64,
+    pub s_matrix_leak_log10_q16_48: i64,
+    pub bogoliubov_airgap_q16_48: i64,
+    pub dark_grid_exergy_q32_32: u64,
+    pub cl11_secded_syndrome: u64,
+}
+
 const _: () = {
-    assert!(size_of::<ShbtSwarmMmioRegs>() == 704);
+    assert!(size_of::<ShbtAegisAbsoluteCl11>() == 64);
+    assert!(align_of::<ShbtAegisAbsoluteCl11>() == 64);
+    assert!(offset_of!(ShbtAegisAbsoluteCl11, aegis_abs_abi_magic) == 0x00);
+    assert!(offset_of!(ShbtAegisAbsoluteCl11, cl11_secded_syndrome) == 0x38);
+};
+
+const _: () = {
+    assert!(size_of::<ShbtSwarmMmioRegs>() == 768);
     assert!(align_of::<ShbtSwarmMmioRegs>() == 64);
     assert!(offset_of!(ShbtSwarmMmioRegs, abi_version) == 0x00C0);
     assert!(offset_of!(ShbtSwarmMmioRegs, chiral_ee_q16) == 0x0100);
@@ -306,6 +355,7 @@ const _: () = {
     assert!(offset_of!(ShbtSwarmMmioRegs, omega_gross_power_watts) == 0x0240);
     assert!(offset_of!(ShbtSwarmMmioRegs, power_bus_arbiter_flags) == 0x0268);
     assert!(offset_of!(ShbtSwarmMmioRegs, cl10_divertor) == 0x0280);
+    assert!(offset_of!(ShbtSwarmMmioRegs, cl11_aegis_absolute) == 0x02C0);
 };
 
 #[repr(C, packed)]
@@ -711,8 +761,8 @@ impl ShbtSwarmMmioRegs {
             omega_bondi_hoyle_msun_yr: 20.0,
             power_bus_arbiter_flags: SHBT_POWER_BUS_OMEGA_ACTIVE | SHBT_POWER_BUS_ARBITER_LOCKED,
             hil_gates_pass_mask: 0x00FF_FFFF,
-            hil_status_code: 0x0000_0360,
-            crc64_iso_checksum: 0x3120_000D_0360_0105,
+            hil_status_code: 0x0000_0178,
+            crc64_iso_checksum: 0x3120_000E_0178_0110,
             cl10_divertor: ShbtMmioCacheline10Divertor {
                 divertor_separatrix_psi_q16: 5573,
                 divertor_reynolds_margin_reg: 7_650_000 - 214_000,
@@ -729,6 +779,22 @@ impl ShbtSwarmMmioRegs {
                 divertor_kh_growth_rate_q16: 0,
                 divertor_control_command: DIV_CMD_LOCK_SEPARATRIX | DIV_CMD_ENGAGE_CCZ4_DAMPING,
                 reserved_cl10_pad: 0,
+            },
+            cl11_aegis_absolute: ShbtAegisAbsoluteCl11 {
+                aegis_abs_abi_magic: SHBT_SWARM_MMIO_ABI_V14_MAGIC,
+                aegis_abs_latch_flags: SHBT_LOGOS_SIM_X1_PROTECT_LATCH
+                    | SHBT_LOGOS_PURE_DARK_MODE
+                    | SHBT_AEGIS_COBORDISM_PINCH_LATCH
+                    | SHBT_AEGIS_VACUUM_DECAY_LOCK
+                    | SHBT_AEGIS_ADM_MONOPOLE_NULL_LOCK
+                    | SHBT_OMEGA_CROSS_LAPSE_AIRGAP_LOCK,
+                vartheta_dark_q2_62: SHBT_VARTHETA_DARK_PI_OVER_2_UQ2_62,
+                instanton_action_se_q44_20: SHBT_INSTANTON_SE_1E12_UQ44_20,
+                adm_monopole_res_q32_32: SHBT_ADM_MONOPOLE_ZERO_Q32_32,
+                s_matrix_leak_log10_q16_48: SHBT_LOG10_S_MATRIX_ZERO_SENTINEL,
+                bogoliubov_airgap_q16_48: SHBT_LOG10_BOGOLIUBOV_FLOOR_Q16_48,
+                dark_grid_exergy_q32_32: SHBT_DARK_GRID_1P8E56J_UQ32_32,
+                cl11_secded_syndrome: 0,
             },
         }
     }
@@ -760,6 +826,12 @@ impl ShbtSwarmMmioRegs {
     #[inline]
     #[allow(clippy::approx_constant)]
     pub const fn new_nominal_v13() -> Self {
+        Self::new_nominal_v7()
+    }
+
+    #[inline]
+    #[allow(clippy::approx_constant)]
+    pub const fn new_nominal_v14() -> Self {
         Self::new_nominal_v7()
     }
 
@@ -1053,10 +1125,24 @@ pub struct ShbtSwarmMmioV13 {
     pub divertor: ShbtMmioCacheline10Divertor,
 }
 
+/// Legacy 704-byte ABI v13.0 aperture retained for compatibility.
+pub type ShbtSwarmMmioV13Legacy = ShbtSwarmMmioV13;
+
+/// Master 768-byte ABI v14.0 aperture with Cache Line 11 appended.
+#[repr(C, align(64))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtSwarmMmioV14 {
+    pub legacy_v13: ShbtSwarmMmioV13,
+    pub cl11_aegis_absolute: ShbtAegisAbsoluteCl11,
+}
+
 pub type ShbtSwarmMmioV12 = ShbtSwarmMmioV13;
 
 const _: () = {
     assert!(size_of::<ShbtSwarmMmioV13>() == 704);
+    assert!(size_of::<ShbtSwarmMmioV14>() == 768);
+    assert!(align_of::<ShbtSwarmMmioV14>() == 64);
+    assert!(offset_of!(ShbtSwarmMmioV14, cl11_aegis_absolute) == 0x02C0);
     assert!(align_of::<ShbtSwarmMmioV13>() == 64);
     assert!(offset_of!(ShbtSwarmMmioV13, mar_omega) == 0x0040);
     assert!(offset_of!(ShbtSwarmMmioV13, universal_harvest) == 0x0140);
@@ -1507,12 +1593,15 @@ mod tests {
 
     #[test]
     fn test_v12_nominal_and_fault_invariants() {
-        assert_eq!(core::mem::size_of::<ShbtSwarmMmioRegs>(), 704);
+        assert_eq!(core::mem::size_of::<ShbtSwarmMmioRegs>(), 768);
         assert_eq!(core::mem::size_of::<ShbtMarOmegaAperture>(), 256);
         assert_eq!(core::mem::size_of::<ShbtUniversalHarvestAperture>(), 256);
         assert_eq!(core::mem::size_of::<ShbtMmioCacheline10Divertor>(), 64);
+        assert_eq!(core::mem::size_of::<ShbtAegisAbsoluteCl11>(), 64);
         assert_eq!(core::mem::size_of::<ShbtSwarmMmioV13>(), 704);
+        assert_eq!(core::mem::size_of::<ShbtSwarmMmioV14>(), 768);
         assert_eq!(core::mem::size_of::<ShbtSwarmMmioV12>(), 704);
+        assert_eq!(core::mem::offset_of!(ShbtSwarmMmioRegs, cl11_aegis_absolute), 0x02C0);
 
         let mut regs = ShbtSwarmMmioRegs::new_nominal_v13();
         assert_eq!(regs.abi_version, SHBT_SWARM_ABI_VERSION);

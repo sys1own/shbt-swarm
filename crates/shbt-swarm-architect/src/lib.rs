@@ -5,6 +5,7 @@
 
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
+#![allow(unused_parens)]
 
 /// Standard Earth habitat gravity in micrometers/s^2: 9.80665 m/s^2 = 9_806_650 um/s^2
 pub const EARTH_GRAV_UMS2: i64 = 9_806_650;

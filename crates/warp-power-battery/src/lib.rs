@@ -1,3 +1,4 @@
+#![allow(unused_parens)]
 //! `warp-power-battery`: Dual-Reactor Hybrid Power Architecture (`SHBT-MAR-312X` + `SHBT-MAR-OMEGA`).
 //!
 //! 1. **SHBT-MAR-312X**: 25.00 EW discrete core (376.99 kg bipartite wafers, 5-zone Weyl DEC-X duct,
@@ -9,6 +10,8 @@
 //!    handoffs between `SHBT-MAR-312X` and `SHBT-MAR-OMEGA`.
 
 #![no_std]
+#![allow(clippy::if_same_then_else)]
+#![allow(clippy::should_implement_trait)]
 
 pub mod divertor_rmhd;
 pub mod lindblad_unspool;

@@ -1,5 +1,6 @@
 #![no_std]
 #![forbid(unsafe_code)]
+#![allow(unused_parens)]
 
 //! Phase 5B `shbt-swarm-logos`: Monolithic Galactic Hyper-Computing (`SHBT-LOGOS-312` & `SHBT-OMNIBUS`)
 //! Strictly grounded in C_SHBT = Fib (x) C_GKO(26, 8, 312), eta_A = 10/33, eta_D = 23/33.
@@ -14,6 +15,8 @@ pub mod takagi_taupin;
 pub mod fracton_drain;
 pub mod continuous_ribbon;
 pub mod condensation_shunt;
+pub mod dark_holonomic_core;
+pub use dark_holonomic_core::*;
 pub use condensation_shunt::*;
 pub use continuous_ribbon::{
     ContinuousRibbonState, FibonacciCategory, Matrix2x2, MultiverseTargetConstants,

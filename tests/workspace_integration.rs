@@ -164,3 +164,16 @@ fn integration_verify_all_344_gates() {
 
 
 
+
+#[test]
+fn integration_verify_all_376_gates() {
+    let gates = shbt_swarm_hil::evaluate_all_376_gates();
+    assert_eq!(gates.len(), 376);
+    for gate in &gates {
+        assert!(
+            gate.passed,
+            "Integration gate {} failed with value: {}",
+            gate.gate_id, gate.measured_value
+        );
+    }
+}

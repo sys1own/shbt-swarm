@@ -1,8 +1,19 @@
 #![no_std]
 #![forbid(unsafe_code)]
+#![allow(unused_parens)]
 
 //! Phase 5A `shbt-swarm-aegis`: 4-Layer Kardashev Type III Perimeter Defense & Ethical CBF Triage
 //! Strictly grounded in C_SHBT = Fib (x) C_GKO(26, 8, 312), eta_A = 10/33, eta_D = 23/33.
+
+pub mod vacuum_pinning;
+pub mod cobordism_pinch;
+pub use cobordism_pinch::{
+    CobordismPinchController, MAX_GW_MEMORY_RESIDUAL_NORM, SHBT_AEGIS_ADM_MONOPOLE_NULL_LOCK,
+};
+pub use vacuum_pinning::{
+    VacuumPinningState, MAX_FRAMING_DEFECT_TOL, MAX_HARVEST_EXPOSURE_SEC_PER_MSUN,
+    MIN_CDL_INSTANTON_ACTION_SE, SHBT_AEGIS_VACUUM_DECAY_LOCK,
+};
 
 pub const BYZANTINE_LOCKOUT_FEMTO_S: u64 = 1_701;   // 1.701 ps
 pub const INTERCEPT_TIME_MICRO_S: u64 = 508;        // 0.508 ms

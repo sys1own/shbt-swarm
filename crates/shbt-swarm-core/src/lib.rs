@@ -4,6 +4,7 @@
 
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
+#![allow(unused_parens)]
 
 #[macro_export]
 macro_rules! shbt_abs {

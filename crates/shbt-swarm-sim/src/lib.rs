@@ -1,3 +1,4 @@
+#![allow(unused_parens)]
 //! `crates/shbt-swarm-sim/src/lib.rs`
 //! Multiphysics Digital Twin simulating the 5th-order minimum-jerk Eikonal foliation
 //! (`s(tau) = 10*tau^3 - 15*tau^4 + 6*tau^5`, `v_derender <= 56.988 m/s`,

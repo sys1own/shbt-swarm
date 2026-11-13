@@ -4,6 +4,8 @@
 
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
+#![allow(unused_parens)]
+#![allow(clippy::should_implement_trait)]
 
 pub mod tdgl_pinning;
 pub use tdgl_pinning::*;

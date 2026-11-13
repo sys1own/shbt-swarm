@@ -6,6 +6,7 @@
 
 #![no_std]
 #![forbid(unsafe_op_in_unsafe_fn)]
+#![allow(unused_parens)]
 
 pub mod chiral_electroweak;
 pub use chiral_electroweak::*;

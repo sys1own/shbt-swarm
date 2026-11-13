@@ -151,7 +151,7 @@ impl HexamerConsensusEngine {
         // i = 3: (-1.0, 0.0)
         // i = 4: (-0.5, -sqrt(3)/2)
         // i = 5: (0.5, -sqrt(3)/2)
-        const SQRT3_HALF: f64 = 0.86602540378443864676;
+        const SQRT3_HALF: f64 = 0.866_025_403_784_438_6;
         let ring_cos: [f64; 6] = [1.0, 0.5, -0.5, -1.0, -0.5, 0.5];
         let ring_sin: [f64; 6] = [0.0, SQRT3_HALF, SQRT3_HALF, 0.0, -SQRT3_HALF, -SQRT3_HALF];
 

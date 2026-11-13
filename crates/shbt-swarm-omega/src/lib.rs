@@ -1,5 +1,7 @@
 #![no_std]
 #![forbid(unsafe_code)]
+#![allow(unused_parens)]
+#![allow(clippy::manual_range_contains)]
 
 //! Phase 5A `shbt-swarm-omega`: Kardashev Type III Galactic Synthesis & Megastructure Core
 //! Strictly grounded in C_SHBT = Fib (x) C_GKO(26, 8, 312), eta_A = 10/33, eta_D = 23/33.
@@ -37,6 +39,8 @@ pub mod coulomb_melt;
 pub use coulomb_melt::*;
 pub mod pasta_decompress;
 pub use pasta_decompress::*;
+pub mod cross_lapse_airgap;
+pub use cross_lapse_airgap::*;
 
 
 

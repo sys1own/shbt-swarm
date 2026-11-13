@@ -72,6 +72,13 @@ pub struct DecompressionTelemetry {
     pub quenched_urca_events: AtomicU64,
 }
 
+impl Default for DecompressionTelemetry {
+    #[inline]
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl DecompressionTelemetry {
     pub const fn new() -> Self {
         Self {

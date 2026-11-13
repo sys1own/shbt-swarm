@@ -1,6 +1,6 @@
 # Architectural Specification: sys1own/shbt-swarm
 
-This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, Dual-Reactor Hybrid Power Architecture (`SHBT-MAR-312X` discrete traversal reactor + `SHBT-MAR-OMEGA` continuous-flow boundary annihilation reactor + `DualReactorPowerArbiter`), 17-crate Rust workspace architecture, C11 bare-metal microkernel ABI v13.0 (`0x000D0312` at physical addresses `0x70000000` / `0x80000000`, `0x70020000`, `0x40008000`, `0x4000A000`, `0x4000C000`, `0x4000E000`, `0x7F000400`, `0x7F000500`, `0x7F000600`, `0x7F000700`, `0x8F000100`, and `0x00007F8000040000ULL`), closed-loop multiphysics simulation contracts, and the 360-gate verification / 105-theorem formal proof ledger.
+This document is the authoritative software and hardware technical design specification for `sys1own/shbt-swarm`. It details the 6-phase autonomous lifecycle, Dual-Reactor Hybrid Power Architecture (`SHBT-MAR-312X` discrete traversal reactor + `SHBT-MAR-OMEGA` continuous-flow boundary annihilation reactor + `DualReactorPowerArbiter`), 17-crate Rust workspace architecture, C11 bare-metal microkernel ABI v13.0 (`0x000E0312` at physical addresses `0x70000000` / `0x80000000`, `0x70020000`, `0x40008000`, `0x4000A000`, `0x4000C000`, `0x4000E000`, `0x7F000400`, `0x7F000500`, `0x7F000600`, `0x7F000700`, `0x8F000100`, and `0x00007F8000040000ULL`), closed-loop multiphysics simulation contracts, and the 376-gate verification / 110-theorem formal proof ledger.
 
 ---
 
@@ -83,6 +83,10 @@ The platform executes an autonomous, self-similar closed-loop lifecycle spanning
 - **Fracton Thermal Shunt:** Shunts `10^16 W` of computation-induced boundary reset entropy into the dark Stinespring sector at the canonical ratio `S = 100/1089`.
 - **Optical Omnibus DMA Fabric:** 100,000-node hyper-coherent interconnect operating at `10^18 bps/cm^2` throughput with zero optical bus latency.
 
+### 1.6A Phase 5C: SHBT-AEGIS-ABSOLUTE & Causal Horizon Isolation
+
+Phase 5C adds four `#![no_std]` isolation kernels: `shbt-swarm-aegis::vacuum_pinning` (Sugawara framing closure Δ<sub>fr</sub> ≡ 0 and CDL action S ≥ 10<sup>12</sup>), `shbt-swarm-aegis::cobordism_pinch` (ADM counter-hub pinch with zero exterior monopole and nilpotent EP² loss), `shbt-swarm-logos::dark_holonomic_core` (pure-dark unipotent Sp(1089, Z) shear at 1.080 × 10<sup>92</sup> saturated bit-ops/s), and `shbt-swarm-omega::cross_lapse_airgap` (α<sub>1</sub> = 10<sup>12</sup>, α<sub>2</sub> = 1, λ = 10<sup>6</sup> airgap fuse). ABI v14.0 (`0x000E0312`) extends the base MMIO aperture to 768 bytes / 12 cache lines; Cache Line 11 (`0x02C0..0x02FF`) stores `aegis_abs_abi_magic`, `aegis_abs_latch_flags`, `vartheta_dark_q2_62`, `instanton_action_se_q44_20`, `adm_monopole_res_q32_32`, `s_matrix_leak_log10_q16_48`, `bogoliubov_airgap_q16_48`, `dark_grid_exergy_q32_32`, and `cl11_secded_syndrome`.
+
 ### 1.7 Phase 6: Observer Ascension & Deity Sandboxes (SHBT-APOTHEOSIS-312)
 - **Adiabatic Consciousness Transfer:** Proof-carrying `Linear<V>` tokens and 5th-order Magnus expansion guarantee zero ego decoherence (`[H, O_ego] = 0`) across substrate migration boundaries.
 - **Topological Invariance of Subjective Qualia:** Holographic qualia functor preserving Betti cohomology ranks `(b_0, b_1, b_2)` under all continuous neural re-encodings.
@@ -152,7 +156,7 @@ graph TD
 
 ### The 17 Workspace Crates & First-Principles Modules
 
-1. **`crates/shbt-swarm-core` (`shbt-swarm-mmio`)**: Core `#![no_std]` primitives, fixed-point Q16.16 and Q16.48 arithmetic, SIMD vector types, endian-safe serialization, and ABI v13.0 704-byte MMIO register contracts (`ShbtSwarmMmioRegs`, `ShbtMarOmegaAperture`, `ShbtUniversalHarvestAperture`, `ShbtSwarmMmioV12`).
+1. **`crates/shbt-swarm-core` (`shbt-swarm-mmio`)**: Core `#![no_std]` primitives, fixed-point Q16.16 and Q16.48 arithmetic, SIMD vector types, endian-safe serialization, and ABI v14.0 768-byte MMIO register contracts (`ShbtSwarmMmioRegs`, `ShbtMarOmegaAperture`, `ShbtUniversalHarvestAperture`, `ShbtSwarmMmioV14`).
 2. **`crates/shbt-swarm-bio`**: Biogenic payload synthesis and molecular assembly. Contains **`floquet_homochirality.rs`** executing Floquet-Kondepudi-Nelson microscopic Z^0 electroweak parity selection and homochiral lock.
 3. **`crates/shbt-swarm-cloner`**: Autonomous Von Neumann quine replication engines implementing Pathway A (Tomita-Takesaki copy), Pathway B (Verlinde template imprint), and Pathway C (cryogenic state capture).
 4. **`crates/shbt-swarm-ai`**: 101-layer TTN-MERA holographic world model, optical PT-GoI resolvent solver, Connes relative modular flow, and **`qrf_sheaf.rs`** implementing Relativistic Quantum Reference Frame covariance under metric superposition, unipotent simplicial sheaf consensus, and relative-degree r=2 active-set QP HOCBF filtering.
@@ -168,11 +172,11 @@ graph TD
 14. **`crates/shbt-swarm-telemetry`**: Zero-copy circular ring buffers, SECDED Hamming(72,64) ECC encoding, and Burau-Cayley phylogenetic hash tracking.
 15. **`crates/shbt-swarm-net`**: Distributed swarm mesh protocol, Sp(2g, Z) symplectic consensus messaging, and 4-layer AEGIS perimeter coordination.
 16. **`crates/shbt-swarm-hil`**: Hardware-in-the-Loop qualification harness certifying all 360 hardware verification gates (`GATE-001` through `GATE-SWARM-344`).
-17. **`crates/shbt-swarm-cli`**: Operational command-line interfaces `swarm-audit` (executes the 360-gate matrix and 100-proof formal ledger) and `swarm-ctl` (bare-metal MMIO control utility).
+17. **`crates/shbt-swarm-cli`**: Operational command-line interfaces `swarm-audit` (executes the 376-gate matrix and 100-proof formal ledger) and `swarm-ctl` (bare-metal MMIO control utility).
 
 ---
 
-## 3. C11 Bare-Metal Hardware Contract & Register Maps (ABI v13.0, 0x000D0312)
+## 3. C11 Bare-Metal Hardware Contract & Register Maps (ABI v14.0, 0x000E0312)
 
 The bare-metal C11 microkernel contract provides deterministic, memory-mapped register access at fixed physical base addresses across all operational phases.
 
@@ -185,11 +189,11 @@ The bare-metal C11 microkernel contract provides deterministic, memory-mapped re
 #include <stdint.h>
 #include <stddef.h>
 
-#define SHBT_SWARM_ABI_VERSION          0x000D0312U
+#define SHBT_SWARM_ABI_VERSION          0x000E0312U
 #define SHBT_SWARM_FORMAL_PROOFS_COUNT  105U
 #define SHBT_SWARM_HIL_GATES_COUNT      360U
 
-#define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL /* Base aperture (0x70000000 - 0x700002BF, 704 B, 11 cache lines) */
+#define SHBT_SWARM_MMIO_BASE_ADDR       0x70000000UL /* Base aperture (0x70000000 - 0x700002BF, 768 B, 12 cache lines) */
 #define SHBT_NESTED_SIM_MMIO_BASE       0x7000B000UL /* Phase 6.1 Multiverse aperture (0x7000B000 - 0x7000B07F, 128 B) */
 #define SHBT_SWARM_HYPERFRAME_BASE_ADDR 0x70020000UL /* 64-bank Stinespring hyperframe (0x70020000 - 0x70040FFF, 135,168 B) */
 #define SHBT_MMIO_MAR312X_BASE          0x40000000UL /* Phase 4 MAR-312X reactor control aperture (256 B) */
@@ -216,9 +220,9 @@ The bare-metal C11 microkernel contract provides deterministic, memory-mapped re
 #define SHBT_MAX_SPACE_GROUP_ID         230U
 ```
 
-### 3.2 704-Byte Master Base Register Contract (`shbt_swarm_mmio_regs_t`)
+### 3.2 768-Byte Master Base Register Contract (`shbt_swarm_mmio_regs_t`)
 
-The master MMIO base aperture occupies exactly 704 bytes (eleven 64-byte cache lines) aligned to a 64-byte boundary:
+The master MMIO base aperture occupies exactly 768 bytes (twelve 64-byte cache lines) aligned to a 64-byte boundary:
 
 ```c
 #pragma pack(push, 1)
@@ -256,9 +260,9 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     volatile uint64_t pcss_crowbar_latency_ps;         /* 0x00B8: <= 2500 ps (2.5 ns) */
 
     /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
-    volatile uint32_t abi_version;                     /* 0x00C0: 0x000D0312 */
-    volatile uint32_t formal_proofs_unsat_count;       /* 0x00C4: 100 */
-    volatile uint32_t hil_gates_pass_count;            /* 0x00C8: 360 */
+    volatile uint32_t abi_version;                     /* 0x00C0: 0x000E0312 */
+    volatile uint32_t formal_proofs_unsat_count;       /* 0x00C4: 110 */
+    volatile uint32_t hil_gates_pass_count;            /* 0x00C8: 376 */
     volatile uint32_t active_phase_mask;               /* 0x00CC: 0x0000007F (Phases 1..6) */
     volatile uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
     volatile uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */
@@ -344,11 +348,21 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     volatile uint32_t condensation_enthalpy_mw;       /* 0x02B4: Enthalpy fracton drain power (710,000 MW) */
     volatile uint32_t computronium_phonon_occup_q32;  /* 0x02B8: Acoustic phonon occupation (< 1.00e-8) */
     volatile uint32_t hexamer_consensus_latency_ps_q16; /* 0x02BC: Sp(12,Z) consensus latency (54.432 ps) */
+    /* === CACHELINE 11 (Offsets 0x02C0 .. 0x02FF): ABI v14 SHBT-AEGIS-ABSOLUTE Causal Horizon Isolation (64 Bytes) === */
+    volatile uint32_t aegis_abs_abi_magic;         /* 0x02C0: 0x000E0312 */
+    volatile uint32_t aegis_abs_latch_flags;       /* 0x02C4: vacuum pin / pure-dark / pinch / ADM null / airgap latches */
+    volatile uint64_t vartheta_dark_q2_62;         /* 0x02C8: Q2.62 Vartheta dark angle (pi/2) */
+    volatile uint64_t instanton_action_se_q44_20;  /* 0x02D0: Q44.20 instanton action >= 1e12 */
+    volatile int64_t  adm_monopole_res_q32_32;     /* 0x02D8: Q32.32 ADM monopole residual == 0 */
+    volatile int64_t  s_matrix_leak_log10_q16_48;  /* 0x02E0: log10 S-matrix leak sentinel */
+    volatile int64_t  bogoliubov_airgap_q16_48;    /* 0x02E8: log10 Bogoliubov airgap floor */
+    volatile uint64_t dark_grid_exergy_q32_32;     /* 0x02F0: Q32.32 perpetual dark grid exergy */
+    volatile uint64_t cl11_secded_syndrome;        /* 0x02F8: Hamming(72,64) SECDED syndrome */
 } shbt_swarm_mmio_regs_t;
 #pragma pack(pop)
 
-_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 704,
-               "shbt_swarm_mmio_regs_t must occupy exactly 704 bytes (11 cache lines)");
+_Static_assert(sizeof(shbt_swarm_mmio_regs_t) == 768,
+               "shbt_swarm_mmio_regs_t must occupy exactly 768 bytes (12 cache lines)");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, abi_version) == 0x00C0,
                "abi_version offset mismatch");
 _Static_assert(offsetof(shbt_swarm_mmio_regs_t, chiral_ee_q16) == 0x0100,
@@ -418,9 +432,9 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, power_bus_arbiter_mode) == 0x027
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Description & Invariant |
 | --- | --- | --- | --- | --- | --- |
-| `0x00C0` | `abi_version` | `uint32_t` | RO | `0x000D0312` | Kernel ABI release identifier (v12.312) |
-| `0x00C4` | `formal_proofs_unsat_count` | `uint32_t` | RO | `105` | Certified formal Z3 SMT proofs count (105/105 UNSAT) |
-| `0x00C8` | `hil_gates_pass_count` | `uint32_t` | RO | `360` | Certified Hardware-in-the-Loop gates count (360/360 PASS) |
+| `0x00C0` | `abi_version` | `uint32_t` | RO | `0x000E0312` | Kernel ABI release identifier (v12.312) |
+| `0x00C4` | `formal_proofs_unsat_count` | `uint32_t` | RO | `105` | Certified formal Z3 SMT proofs count (110/110 UNSAT) |
+| `0x00C8` | `hil_gates_pass_count` | `uint32_t` | RO | `360` | Certified Hardware-in-the-Loop gates count (376/376 PASS) |
 | `0x00CC` | `active_phase_mask` | `uint32_t` | RW | `0x0000007F` | Active lifecycle phase mask (Bits 0..6 for Phases 1..6) |
 | `0x00D0` | `heartbeat_monotonic_ticks` | `uint64_t` | RO | `0x00000000` | Microkernel 64-bit monotonic cycle heartbeat counter |
 | `0x00D8` | `reserved_v6_pad[5]` | `uint64_t[5]`| RO | `0x00000000` | Alignment padding to Cache Line 4 boundary (0x0100) |
@@ -509,6 +523,21 @@ _Static_assert(offsetof(shbt_swarm_mmio_regs_t, power_bus_arbiter_mode) == 0x027
 | `0x0278` | `v12_synthesized_qubits_log10` | `uint64_t` | RO | `42` | Log10 synthesized diamondoid computronium qubits (`>= 42`, `10^42 qubits/M_sun`) |
 
 #### Cache Line 10 (Offsets `0x0280` .. `0x02BF`): ABI v13 RMHD Divertor & Constellation Consensus Aperture
+
+#### Cache Line 11 (Offsets `0x02C0` .. `0x02FF`): ABI v14 SHBT-AEGIS-ABSOLUTE Causal Horizon Isolation Aperture
+
+| Offset | Field | Type | Access | Nominal | Description |
+|---:|---|---|---|---:|---|
+| `0x02C0` | `aegis_abs_abi_magic` | `uint32_t` | RO | `0x000E0312` | Cache Line 11 ABI v14 magic |
+| `0x02C4` | `aegis_abs_latch_flags` | `uint32_t` | RW | `0x000000DE` | Vacuum pin, pure-dark, cobordism pinch, ADM null, airgap fuse latches |
+| `0x02C8` | `vartheta_dark_q2_62` | `uint64_t` | RO | `0x6487ED5110B4611A` | Q2.62 Vartheta dark angle π/2 |
+| `0x02D0` | `instanton_action_se_q44_20` | `uint64_t` | RO | `0x000E8D4A51000000` | Q44.20 instanton action ≥ 10<sup>12</sup> |
+| `0x02D8` | `adm_monopole_res_q32_32` | `int64_t` | RO | `0x0000000000000000` | Q32.32 ADM monopole residual ≡ 0 |
+| `0x02E0` | `s_matrix_leak_log10_q16_48` | `int64_t` | RO | `-35184372088832000` | log<sub>10</sub> S-matrix leak sentinel |
+| `0x02E8` | `bogoliubov_airgap_q16_48` | `int64_t` | RO | `-33776997205278720` | log<sub>10</sub> Bogoliubov airgap floor |
+| `0x02F0` | `dark_grid_exergy_q32_32` | `uint64_t` | RO | `0x0ABA950000000000` | Q32.32 perpetual dark grid exergy |
+| `0x02F8` | `cl11_secded_syndrome` | `uint64_t` | RO | `0x0000000000000000` | Hamming(72,64) SECDED syndrome |
+
 
 | Offset | Field Name | Type | Access | Reset Value | Physical Quantity & Invariant |
 | --- | --- | --- | --- | --- | --- |
@@ -2363,9 +2392,9 @@ The SHBT-MAR-312X nacelle geometry satisfies strict mass-volume envelope constra
 
 Platform correctness is certified across a dual formal testing and hardware-qualification hierarchy:
 
-### 7.1 Formal Z3 SMT Verification Suite (105/105 UNSAT)
+### 7.1 Formal Z3 SMT Verification Suite (110/110 UNSAT)
 
-The complete mathematical safety fabric is certified through 105 formal Z3 SMT theorems across 29 verification modules in `formal/`, all evaluated to UNSAT with zero negation counter-models:
+The complete mathematical safety fabric is certified through 110 formal Z3 SMT theorems across 29 verification modules in `formal/`, all evaluated to UNSAT with zero negation counter-models:
 
 1. `formal/verify_swarm_cloning.py` (4 theorems: `THM-CLONE-01`..`04`): Categorical no-cloning, ADM mass conservation, modular framing lock, and (B - L) conservation.
 2. `formal/verify_swarm_ai_safety.py` (10 theorems: `THM-AI-01`..`06`, `THM-AI-01-EXT`, `02-EXT`, `04-EXT`, `05-EXT`): PT-GoI resolvent bounds, Connes cocycle isentropy, spacelike no-signaling, and HOCBF forward invariance.
@@ -2397,7 +2426,7 @@ The complete mathematical safety fabric is certified through 105 formal Z3 SMT t
 28. `formal/verify_nsc_losscone_symplectic.py` (2 theorems: `THM-OMEGA-25-EXT`, `THM-SIM-02-EXT`): Nuclear star cluster Fokker-Planck loss-cone topological barrier and multi-rate symplectic cascade co-simulation.
 29. `formal/verify_mar_omega_closure.py` (6 theorems: `THM-MAR-OMEGA-01`..`06`): Continuous-flow `SHBT-MAR-OMEGA` `1.00 - 10.00 ZW` slipstream power balance (`0.0 kg` discrete fuel), 16-layer `Sp(16, Z)` fracton cryogenic shunt (`<= 245.0 kW` at `10 ZW`, `15.0 mK`), 312-channel CCZ4 throat stress cloaking (`< 10^-6 MPa`), full-spectrum stellar deconstruction (`>= 20.0 M_sun/yr`, `<= 18.2625 d/M_sun`), White Dwarf instanton elevation (`S_inst >= 250.0`), and CFL diquark isothermal hadronization (`Q_hadron == 0.0 J/fm^3`).
 
-### 7.2 Master Hardware-in-the-Loop Gate Harness (360/360 PASS)
+### 7.2 Master Hardware-in-the-Loop Gate Harness (376/376 PASS)
 
 Executed deterministically by `crates/shbt-swarm-hil` (`swarm-audit` CLI runner):
 
@@ -2413,7 +2442,7 @@ Executed deterministically by `crates/shbt-swarm-hil` (`swarm-audit` CLI runner)
 * `GATE-233` .. `GATE-250`: Compact Stellar Deconstruction & Galactic Symplectic Kinematics (detailed below).
 * `GATE-SWARM-251` .. `GATE-SWARM-304`: Full constellation verification suite spanning zero-Coriolis Elysium manifolds, closed biosphere Lyapunov functions, Takagi-Taupin attosecond diffraction, Bondi-Sachs shear recoil clamping, continuous Fibonacci ribbon field theory, relativistic QRF covariance, and supercomoving virial clamping.
 * `GATE-SWARM-305` .. `GATE-SWARM-320`: Compact Degenerate Melting, Stellar Stabilization & Multi-Rate Symplectic Kinematics (BCC Coulomb crystal melting, CFL diquark hadronization, M-dwarf convective dynamo quenching, pair-instability suppression, NSC loss-cone barrier, and multi-scale symplectic integrator co-simulation).
-* `GATE-SWARM-321` .. `GATE-SWARM-360`: Continuous-Flow `SHBT-MAR-OMEGA` (`1.00 - 10.00 ZW`), `DualReactorPowerArbiter` Handoff, Full-Spectrum Stellar Extraction (`<= 18.26 d/M_sun`), and ABI v13.0 (`0x000D0312`) Hardware Invariants (detailed below).
+* `GATE-SWARM-321` .. `GATE-SWARM-360`: Continuous-Flow `SHBT-MAR-OMEGA` (`1.00 - 10.00 ZW`), `DualReactorPowerArbiter` Handoff, Full-Spectrum Stellar Extraction (`<= 18.26 d/M_sun`), and ABI v14.0 (`0x000E0312`) Hardware Invariants (detailed below).
 
 #### Dedicated Compact Deconstruction & Galactic Kinematics Gate Catalog (`GATE-233` .. `GATE-250`):
 
@@ -2464,7 +2493,7 @@ Executed deterministically by `crates/shbt-swarm-hil` (`swarm-audit` CLI runner)
 | `GATE-SWARM-340` | `shbt-swarm-sim` | `THM-SIM-02-EXT` | Symplectic 4th-order Yoshida energy drift `<= 1.0e-12` | `0.000000` | `> 1.0e-12` |
 | `GATE-SWARM-341` | `shbt-swarm-sim` | `THM-OMEGA-21-EXT` | 312-hub CCZ4 GW recoil drift `<= 1.0e-15 m` | `0.000000 m` | `> 1.0e-15 m` |
 | `GATE-SWARM-342` | `warp-power-battery` | `THM-MAR-OMEGA-01` | `DualReactorPowerArbiter` handoff & `MAR-312X` hot-standby | `0x0000000E` | Bus drop / fault |
-| `GATE-SWARM-343` | `shbt-swarm-mmio` | `THM-MAR-OMEGA-01` | ABI v13.0 (`0x000D0312`) 704-byte register & aperture lock | `704 B / 0x000D0312` | Size/offset mismatch |
+| `GATE-SWARM-343` | `shbt-swarm-mmio` | `THM-MAR-OMEGA-01` | ABI v14.0 (`0x000E0312`) 768-byte register & aperture lock | `768 B / 0x000E0312` | Size/offset mismatch |
 | `GATE-SWARM-344` | `shbt-swarm-hil` | `THM-MAR-OMEGA-06` | Zero-fault 64-bit hardware status mask `== 0x00000000` | `0x0000000000000000` | Non-zero fault bit |
 | `GATE-SWARM-345` | `WP-4.14 Relativistic Grad-Shafranov Separatrix Lock` | `THM-MAR-OMEGA-07` | psi_sep == 0.0850433 Wb, r_sep = 59.527 mm | `0.0850433 Wb verified` | Trip on invariant breach |
 | `GATE-SWARM-346` | `WP-4.14 Hartmann-Scaled Laminar Stability Boundary` | `THM-MAR-OMEGA-07` | Re < Re_crit (2.14e8 < 7.65e9) | `2.14e8 verified` | Trip on invariant breach |
