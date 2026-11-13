@@ -41,6 +41,8 @@ pub mod pasta_decompress;
 pub use pasta_decompress::*;
 pub mod cross_lapse_airgap;
 pub use cross_lapse_airgap::*;
+pub mod dark_zpe_extractor;
+pub use dark_zpe_extractor::*;
 
 
 
@@ -204,12 +206,14 @@ pub struct PerpetualDarkPowerGrid {
     pub foundry_recycling_q: u64,
     pub continuous_output_yw: f64,
     pub purcell_inhibition_active: bool,
+    pub zpe_extractor: DarkZpeExtractor,
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum DarkPowerGridRegime {
     RegimeIOpenLoopPrePinch,
     RegimeIIPostPinchKmsClosed,
+    RegimeIIIAutopoieticReplenishment,
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -230,6 +234,7 @@ impl PerpetualDarkPowerGrid {
             foundry_recycling_q: FOUNDRY_GAIN_Q,
             continuous_output_yw: CONTINUOUS_POWER_YW,
             purcell_inhibition_active: true,
+            zpe_extractor: DarkZpeExtractor::new(),
         }
     }
 
@@ -261,6 +266,25 @@ impl PerpetualDarkPowerGrid {
             depletion_lifetime_years: POST_PINCH_CLOSED_LIFETIME_YEARS,
             dissipation_j_per_bit: 0.0,
         }
+    }
+
+    /// Regime III autopoietic replenishment metrics from `Dark-ZPE` Channels 1-3.
+    #[inline]
+    pub fn regime_three_autopoietic_metrics(&self) -> DarkPowerGridRegimeMetrics {
+        DarkPowerGridRegimeMetrics {
+            regime: DarkPowerGridRegime::RegimeIIIAutopoieticReplenishment,
+            p_grid_watts: self.zpe_extractor.net_power_w(),
+            d_energy_dt_watts: self.zpe_extractor.net_power_w(),
+            foundry_gain_q: f64::INFINITY,
+            depletion_lifetime_years: POST_PINCH_CLOSED_LIFETIME_YEARS,
+            dissipation_j_per_bit: 0.0,
+        }
+    }
+
+    /// Runs one Dark-ZPE symplectic exergy governor cycle and returns Regime III lock.
+    #[inline]
+    pub fn step_dark_zpe_governor_cycle(&mut self) -> bool {
+        self.zpe_extractor.step_governor_cycle()
     }
 }
 

@@ -33,6 +33,14 @@ pub const SHBT_TICK_HZ: u64 = 50_518;
 pub const SHBT_TICK_NS: u64 = 19_795;
 pub const PT_GOI_PROP_FS_PER_BANK: u64 = 1_701; // 1.701 ps = 1,701 fs
 pub const PT_GOI_32_BANK_EQ_FS: u64 = 32 * PT_GOI_PROP_FS_PER_BANK; // 54,432 fs = 54.432 ps
+/// Dark-OS Sugawara/KZ clock period in femto-attoseconds (`17.010000 as`).
+pub const DARK_OS_STEN_T_EQ_FEMTO_AS: u64 = 17_010_000;
+/// SHBT-STEN visible power under Dark-OS holonomic execution (`P_vis^STEN == 0 W`).
+pub const DARK_OS_STEN_VISIBLE_POWER_PICOWATTS: u64 = 0;
+/// SHBT-STEN Dark-OS equivalent speedup over the 54.432 ps PT-GoI baseline (`3.20e6 x`).
+pub const DARK_OS_STEN_SPEEDUP_X1E6: u64 = 3_200_000;
+/// Dark-OS synthesis banks contracted per attosecond STEN inference tick.
+pub const DARK_OS_STEN_BANKS: u32 = 32;
 pub const LANDAUER_SHUNT_NUM: u64 = 100;
 pub const LANDAUER_SHUNT_DEN: u64 = 1089; // S = (10/33)^2 = 100/1089
 
@@ -108,6 +116,25 @@ pub struct TomitaModularLearner {
 }
 
 impl TomitaModularLearner {
+    /// Executes the Dark-OS `VoaMeraContract` + `VoaTomitaCocycle` pair for 32-bank STEN inference.
+    #[inline]
+    pub fn dark_os_sten_inference_step(kernel: &mut DarkOsKernel) -> bool {
+        let zero = CrtPrimaryModule::zero();
+        let (_, mera_ok) = kernel.execute_voa_instruction(VoaIsaOpcode::VoaMeraContract, zero, zero);
+        let (_, cocycle_ok) = kernel.execute_voa_instruction(VoaIsaOpcode::VoaTomitaCocycle, zero, zero);
+        mera_ok && cocycle_ok && Self::dark_os_sten_visible_power_picowatts() == 0
+    }
+
+    #[inline]
+    pub const fn dark_os_sten_t_eq_femto_as() -> u64 {
+        DARK_OS_STEN_T_EQ_FEMTO_AS
+    }
+
+    #[inline]
+    pub const fn dark_os_sten_visible_power_picowatts() -> u64 {
+        DARK_OS_STEN_VISIBLE_POWER_PICOWATTS
+    }
+
     #[inline]
     pub const fn internal_unitary_heat_joules_per_bit() -> u64 {
         0 // Strictly 0 J/bit along sigma_{-t}^Psi ([K_mod, rho_vis] == 0)

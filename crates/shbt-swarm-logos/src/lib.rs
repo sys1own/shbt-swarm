@@ -16,7 +16,9 @@ pub mod fracton_drain;
 pub mod continuous_ribbon;
 pub mod condensation_shunt;
 pub mod dark_holonomic_core;
+pub mod dark_os_kernel;
 pub use dark_holonomic_core::*;
+pub use dark_os_kernel::*;
 pub use condensation_shunt::*;
 pub use continuous_ribbon::{
     ContinuousRibbonState, FibonacciCategory, Matrix2x2, MultiverseTargetConstants,

@@ -22,6 +22,15 @@ pub const SHBT_SWARM_FAULT_EP2_NILPOTENCY_LOSS: u32 = 0x0010_0000;
 pub const SHBT_SWARM_FAULT_BLUESHEET_SURGE: u32 = 0x0020_0000;
 pub const SHBT_SWARM_FAULT_WEYL_CROWBAR_TRIP: u32 = 0x8000_0000;
 
+/// Dark-ZPE zero-feedstock cold-start excitation delivered to Layer-5 CDL pinning (`16.30 PW`).
+pub const DARK_ZPE_COLD_START_EXCITATION_MILLI_PW: u64 = 16_300;
+/// Layer-5 CDL instanton action floor supplied by Dark-ZPE (`S_E >= 10^12`).
+pub const DARK_ZPE_LAYER5_CDL_ACTION_SE: f64 = 1.0e12;
+/// Rosseland opacity quench ceiling `kappa_eff / kappa_0 <= 10^-12`.
+pub const DARK_ZPE_ROSSELAND_QUENCH_RATIO_MAX: f64 = 1.0e-12;
+/// Required stored feedstock for Dark-ZPE cold-start excitation (`M_stored == 0`).
+pub const DARK_ZPE_COLD_START_STORED_MASS_KG: f64 = 0.0;
+
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct VacuumPinningState {
     pub status_latch: u32,
@@ -75,6 +84,22 @@ impl VacuumPinningState {
         }
         self.status_latch |= SHBT_AEGIS_VACUUM_DECAY_LOCK;
         Ok(())
+    }
+
+    #[inline]
+    pub fn verify_dark_zpe_layer5_cold_start(
+        &self,
+        excitation_milli_pw: u64,
+        cd_l_instanton_action_se: f64,
+        rosseland_kappa_ratio: f64,
+        stored_feedstock_kg: f64,
+    ) -> bool {
+        excitation_milli_pw == DARK_ZPE_COLD_START_EXCITATION_MILLI_PW
+            && cd_l_instanton_action_se >= DARK_ZPE_LAYER5_CDL_ACTION_SE
+            && rosseland_kappa_ratio <= DARK_ZPE_ROSSELAND_QUENCH_RATIO_MAX
+            && stored_feedstock_kg == DARK_ZPE_COLD_START_STORED_MASS_KG
+            && self.vacuum_decay_pinned
+            && self.fault_mask == 0
     }
 
     #[inline]

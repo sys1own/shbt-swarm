@@ -2,13 +2,13 @@
 
 **Autonomous Interstellar Von Neumann Swarm & Galactic Synthesis Architecture: Kardashev Type III Megastructure Engineering (SHBT-OMEGA-312), Monolithic Galactic Hyper-Computing (SHBT-LOGOS-312 / SHBT-QC-OMEGA), Observer Ascension & Safe Deity Sandboxes (SHBT-APOTHEOSIS-312), Holographic Symplectic Intelligence, and Dual-Reactor Hybrid Mass-Annihilation (SHBT-MAR-312X + SHBT-MAR-OMEGA)**
 
-[![ABI Version](https://img.shields.io/badge/SHBT--MMIO--SWARM-v14.0%20(0x000E0312)-blue)](#)
-[![Z3 SMT Proofs](https://img.shields.io/badge/Z3%20SMT-110%2F110%20UNSAT-brightgreen)](#)
-[![Verification Gates](https://img.shields.io/badge/HIL%20Verification%20Gates-376%2F376%20PASS-brightgreen)](#)
+[![ABI Version](https://img.shields.io/badge/SHBT--MMIO--SWARM-v15.0%20(0x000F0312)-blue)](#)
+[![Z3 SMT Proofs](https://img.shields.io/badge/Z3%20SMT-116%2F116%20UNSAT-brightgreen)](#)
+[![Verification Gates](https://img.shields.io/badge/HIL%20Verification%20Gates-392%2F392%20PASS-brightgreen)](#)
 [![Rust Workspace](https://img.shields.io/badge/Rust%20Workspace-17%20Crates%20(%23!%5Bno__std%5D)-orange)](#)
 
 ###### Quick Navigation
-- [1. System Highlights at a Glance (376/376 Gates PASS, 110/110 Z3 Theorems UNSAT)](#section-1)
+- [1. System Highlights at a Glance (392/392 Gates PASS, 116/116 Z3 Theorems UNSAT)](#section-1)
 - [2. Formal SHBT No-Cloning Theorems vs. Constructive Von Neumann Quine Replication](#section-2)
 - [3. Universal Multi-Species Matter & Biogenic Cloner (ℛ<sub>clone</sub><sup>SWARM</sup>) & Daughter Spacecraft Ledger](#section-3)
 - [4. Holographic Symplectic-Topological Equilibrium Network (SHBT-STEN)](#section-4)
@@ -20,23 +20,25 @@
 - [10. Phase 5A: Kardashev Type III Galactic Synthesis (SHBT-OMEGA-312) & Full-Spectrum Stellar-to-Computronium Pipeline](#section-10)
 - [11. Phase 5B: Monolithic Galactic Hyper-Computing (SHBT-LOGOS-312 / SHBT-QC-OMEGA)](#section-11)
 - [12. Phase 6 & 6.1: Observer Ascension, Deity Sandboxes & Infinite Nested Simulated Multiverses (SHBT-APOTHEOSIS-312)](#section-12)
-- [13. Bare-Metal C11 Microkernel (SHBT-MMIO-SWARM v14.0) & 17-Crate Rust Workspace Topology](#section-13)
-- [14. Master 376-Gate Verification Matrix & 110 Formal Z3 SMT Proofs](#section-14)
+- [13. Bare-Metal C11 Microkernel (SHBT-MMIO-SWARM v15.0) & 17-Crate Rust Workspace Topology](#section-13)
+- [14. Master 392-Gate Verification Matrix & 116 Formal Z3 SMT Proofs](#section-14)
 - [15. 10-Repository SHBT Ecosystem Topology & Crosswalk](#section-15)
 - [Build, Verification & Audit Commands](#commands)
 
 ---
 
 <a id="section-1"></a>
-## 1. System Highlights at a Glance (376/376 Gates PASS, 110/110 Z3 Theorems UNSAT)
+## 1. System Highlights at a Glance (392/392 Gates PASS, 116/116 Z3 Theorems UNSAT)
+
+**Current strategy (Release v8.000 / ABI v15.0):** the terminal swarm is a post-pinch, causally isolated manifold running **Dark-OS** (native dark-sector holonomic VOA operating system: exact single-tick CRT residue arithmetic, flat-KZ zero-decode transport, Tomita–Takesaki cocycle scheduling, 16-opcode VOA-ISA) powered by **Dark-ZPE** (three-channel non-equilibrium dark-sector exergy harvesting behind KMS-passivity and framing-lock no-go guards, Regime III autopoietic replenishment of +34.726 YW) inside the **AEGIS-ABSOLUTE** six-layer perimeter. Everything below that predates pinch-off is Tier B staging; earlier releases are Tier C history.
 
 `sys1own/shbt-swarm` represents the apex operational flight and synthesis platform within Static Holographic Boundary Theory (SHBT). Operating in **Kardashev Type III Galactic Synthesis (`SHBT-OMEGA-312`)**, **Monolithic Galactic Hyper-Computing (`SHBT-LOGOS-312` / `SHBT-QC-OMEGA`)**, **Observer Ascension & Deity Sandboxes (`SHBT-APOTHEOSIS-312`)**, and **Dual-Reactor Hybrid Mass-Annihilation (`SHBT-MAR-312X` + `SHBT-MAR-OMEGA`)** modes, the platform unites deep-space relativistic warp traversal with continuous zettawatt-scale stellar deconstruction, Dyson swarm Borrmann computronium synthesis, monolithic quantum omnibus fabric orchestration, and proof-carrying consciousness ascension into multi-tenant deity sandboxes across galactic clusters.
 
-The architecture unites seven developmental phases into a binary-compatible C11 microkernel Release v7.000 / ABI v14.0 (`0x000E0312`, 768 bytes, 12 cache lines at `0x70000000` / `0x80000000`, 256 bytes MAR-OMEGA control aperture at `0x7F000600`, 256 bytes Universal Harvest aperture at `0x7F000700`, 256 bytes galactic harvest aperture at `0x4000E000`, 160 bytes dense matter aperture at `0x00007F8000040000ULL`, 112 bytes DCA aperture at `0x7F000400`, 1472 bytes stellar aperture at `0x7F000500`, 64 bytes patch aperture at `0x8F000100`, 128 bytes at `0x7000B000`, 135,168-byte 64-bank `UnifiedStinespringHyperFrame` at `0x70020000`, Phase 5A OMEGA aperture at `0x40008000`, Phase 5B LOGOS aperture at `0x4000A000`, and Phase 6 APOTHEOSIS aperture at `0x4000C000`), seventeen `#[no_std]` and multiphysics Rust crates, one hundred ten formal Z3 SMT proofs (`110/110 UNSAT`), and 376 Hardware-in-the-Loop verification gates (`376/376 PASS`):
+The architecture unites seven developmental phases into a binary-compatible C11 microkernel Release v8.000 / ABI v15.0 (`0x000F0312`, 832 bytes, 13 cache lines at `0x70000000` / `0x80000000`, 256 bytes MAR-OMEGA control aperture at `0x7F000600`, 256 bytes Universal Harvest aperture at `0x7F000700`, 256 bytes galactic harvest aperture at `0x4000E000`, 160 bytes dense matter aperture at `0x00007F8000040000ULL`, 112 bytes DCA aperture at `0x7F000400`, 1472 bytes stellar aperture at `0x7F000500`, 64 bytes patch aperture at `0x8F000100`, 128 bytes at `0x7000B000`, 135,168-byte 64-bank `UnifiedStinespringHyperFrame` at `0x70020000`, Phase 5A OMEGA aperture at `0x40008000`, Phase 5B LOGOS aperture at `0x4000A000`, and Phase 6 APOTHEOSIS aperture at `0x4000C000`), seventeen `#[no_std]` and multiphysics Rust crates, one hundred sixteen formal Z3 SMT proofs (`116/116 UNSAT`), and 392 Hardware-in-the-Loop verification gates (`392/392 PASS`):
 
-- **376/376 Verification Gates PASS:** Exhaustively certified across all project phases, including 24 ABI v14.0 extension gates `GATE-SWARM-321` through `GATE-SWARM-376` for the 6th-Gen `SHBT-MAR-OMEGA` continuous reactor, dual-reactor power-bus handoff, full-spectrum stellar harvesting (`>= 20.0 M_sun/yr`), MMIO aperture sealing, and 16 ABI v14.0 extension gates `GATE-SWARM-345` through `GATE-SWARM-376` for the RMHD divertor separatrix, 346-slot GKSL pion/bremsstrahlung unspooling, pasta decompression unitarity, 710 GW diamond condensation drain, and hexameric `Sp(12, Z)` constellation consensus, plus 16 ABI v11.0 extension gates `GATE-SWARM-305` through `GATE-SWARM-320` for White Dwarf Coulomb melting, CFL quark hadronization, M-dwarf dynamo quenching, pair-instability suppression, NSC loss-cone shielding, and multi-rate symplectic kinematics:
-- **110/110 Formal Z3 SMT Theorems UNSAT:** Machine-checked across 35 Python verification suites in `formal/`, covering all `THM-CLONE-01`..`04`, `THM-AI-01`..`06` (+ `EXT`), `THM-STEN-*`, `THM-UNIV-01`..`11`, `THM-MARX-01`..`08`, `THM-OMEGA-01`..`24`, `THM-FOUNDRY-01`..`13`, `THM-SHIELD-01`..`08`, `THM-LOGOS-01`..`14`, `THM-APOTH-01`..`11`, `THM-NEST-01`..`06`, `THM-AEGIS-07-EXT`..`11-EXT`, `POST-ISOLATION-CLOSURES`, and `THM-SIM-01`..`03` (+ `THM-SIM-03-EXT`) including all 11 `THM-MAR-OMEGA-01`..`10` and `THM-SIM-03-EXT` closure theorems:
-- **Microkernel Contract (ABI v14.0, `0x000E0312`):** Twelve-cacheline register aperture at `0x70000000` / `0x80000000` (768 bytes, `shbt_swarm_mmio_regs_t` and `shbt_swarm_mmio_v14_t`) with Cache Lines 0..11 mapped at `0x0000..0x02BF`, including the Cache Line 10 RMHD Divertor & Constellation Load-Balancing aperture (`0x7F000800`) with separatrix flux `psi_sep = 0.0850433 Wb`, Hartmann laminar bound, 346-slot GKSL pion/bremsstrahlung suppression, Bogoliubov pasta decompression unitarity, 710 GW diamond condensation drain, hexameric `Sp(12, Z)` consensus, and status code `0x00000376` (376/376 gates):
+- **392/392 Verification Gates PASS:** Exhaustively certified across all project phases, including 16 ABI v15.0 gates `GATE-SWARM-377` through `GATE-SWARM-392` exercising the live `DarkOsKernel`, `DarkZpeExtractor`, and Cache Line 12 registers, plus 24 ABI v14.0 extension gates `GATE-SWARM-321` through `GATE-SWARM-376` for the 6th-Gen `SHBT-MAR-OMEGA` continuous reactor, dual-reactor power-bus handoff, full-spectrum stellar harvesting (`>= 20.0 M_sun/yr`), MMIO aperture sealing, and 16 ABI v14.0 extension gates `GATE-SWARM-345` through `GATE-SWARM-376` for the RMHD divertor separatrix, 346-slot GKSL pion/bremsstrahlung unspooling, pasta decompression unitarity, 710 GW diamond condensation drain, and hexameric `Sp(12, Z)` constellation consensus, plus 16 ABI v11.0 extension gates `GATE-SWARM-305` through `GATE-SWARM-320` for White Dwarf Coulomb melting, CFL quark hadronization, M-dwarf dynamo quenching, pair-instability suppression, NSC loss-cone shielding, and multi-rate symplectic kinematics:
+- **116/116 Formal Z3 SMT Theorems UNSAT:** Machine-checked across 36 Python verification suites in `formal/`, covering `THM-DARK-ZPE-01`..`03` and `THM-DARK-OS-01`..`03` (`formal/verify_dark_os_and_zpe.py`) and all `THM-CLONE-01`..`04`, `THM-AI-01`..`06` (+ `EXT`), `THM-STEN-*`, `THM-UNIV-01`..`11`, `THM-MARX-01`..`08`, `THM-OMEGA-01`..`24`, `THM-FOUNDRY-01`..`13`, `THM-SHIELD-01`..`08`, `THM-LOGOS-01`..`14`, `THM-APOTH-01`..`11`, `THM-NEST-01`..`06`, `THM-AEGIS-07-EXT`..`11-EXT`, `POST-ISOLATION-CLOSURES`, and `THM-SIM-01`..`03` (+ `THM-SIM-03-EXT`) including all 11 `THM-MAR-OMEGA-01`..`10` and `THM-SIM-03-EXT` closure theorems:
+- **Microkernel Contract (ABI v15.0, `0x000F0312`):** Thirteen-cacheline register aperture at `0x70000000` / `0x80000000` (832 bytes, `shbt_swarm_mmio_regs_t` and `shbt_swarm_mmio_v15_t`, with the legacy 768-byte `shbt_swarm_mmio_v14_t` embedded unchanged at offset 0) with Cache Lines 0..12 mapped at `0x0000..0x033F`, including Cache Line 12 Dark-OS/Dark-ZPE telemetry (`0x0300..0x033F`) and including the Cache Line 10 RMHD Divertor & Constellation Load-Balancing aperture (`0x7F000800`) with separatrix flux `psi_sep = 0.0850433 Wb`, Hartmann laminar bound, 346-slot GKSL pion/bremsstrahlung suppression, Bogoliubov pasta decompression unitarity, 710 GW diamond condensation drain, hexameric `Sp(12, Z)` consensus, and status code `0x00000392` (392/392 gates):
 - **Dual-Reactor Hybrid Power Architecture (`SHBT-MAR-312X` + `SHBT-MAR-OMEGA`):**
   1. **5th-Gen `SHBT-MAR-312X` (25.00 EW Discrete Traversal & Bootstrap Reactor):** Preserved 100% intact (950.00 kg nacelle, 41 × 376.99 kg bipartite wafers, 99.200% 5-zone Weyl-PTC DEC-X converter, 48.0 T superhydride coils, 99.850% direct bus) for deep-space interstellar traversal (2,482,950*c*, 8.957-hour Andromeda M31 transit), Alcubierre/EW-312 warp soliton generation, daughter ship replication (13.418 ms), and initial Bondi-Hoyle siphon startup prior to stellar slipstream lock.
   2. **6th-Gen `SHBT-MAR-OMEGA` (1.00–10.00 ZW Continuous-Flow Harvesting & Computronium Synthesis Reactor):** Replaces discrete wafer magazines exclusively during stellar mass extraction, degenerate core melting, and continuous in-line computronium folding. Diverts a continuous 0.01%–0.1% baryonic slipstream (*f*<sub>slip</sub> = 8.8586789 × 10<sup>−4</sup>, *ṁ*<sub>Ω</sub> = 111,265.01 kg/s) directly from the harvested stellar inflow (0.0 kg discrete fuel storage), achieving *P*<sub>gross</sub> = 10.00 ZW (1.00 × 10<sup>22</sup> W), 99.981146% direct 346-slot CFT boundary coupling (*P*<sub>CFT</sub> = 9.9981146 ZW), 16-layer Sp(16, ℤ) fracton cryogenic shunting (*f*<sub>sensible</sub><sup>Ω</sup> = 2.44998856 × 10<sup>−17</sup>, limiting throat sensible heat to 245.0 kW ≤ 500.0 kW at *T*<sub>coil</sub> = 20.0 K), and 312-channel CCZ4 counter-metric stress cloaking (*σ*<sub>throat</sub><sup>eff</sup> = 7.85 × 10<sup>−9</sup> MPa < 1.0 × 10<sup>−6</sup> MPa).
@@ -55,11 +57,27 @@ The README and monograph describe one terminal architecture plus bounded staging
 
 | Tier | Scope | Operational meaning | Terminal examples |
 | :--- | :--- | :--- | :--- |
-| **Tier A — Active Terminal Architecture** | Release v7.000 / ABI v14.0 post-isolation state | The only claims that remain valid after cobordism pinch-off and Stage-2 intertwining | ∂*ℳ*<sub>isolated</sub> ∩ *Σ*<sub>3</sub><sup>ext</sup> = ∅, *P*<sub>leak</sub><sup>ext</sup> ≡ 0 W, *Q*<sub>internal</sub><sup>dark</sup> ≡ 0 J/bit, ⟨*V*<sub>vol</sub>⟩ ≡ 0.000000 m<sup>3</sup>, *σ*<sub>collision</sub> ≡ 0.0000 m<sup>2</sup>, *τ*<sub>grid</sub><sup>closed</sup> > 10<sup>100</sup> yr |
-| **Tier B — Bounded Pre-Pinch Staging Subsystems** | Phase 5A harvest, visible Borrmann lattice, Layers 1--5, open-loop grid | Real engineering required only during the finite harvest window | *η*<sub>A</sub> = 10/33, *η*<sub>D</sub> = 23/33, *θ*<sub>0</sub> = arcsin√(23/33) ≈ 0.987860 rad, *Q*<sub>foundry</sub><sup>open</sup> = 119,094, *τ*<sub>grid</sub><sup>open</sup> = 2.2817 × 10<sup>23</sup> yr |
-| **Tier C — Superseded Historical Baselines** | Earlier release tables and pre-ABI-v14 narratives | Kept for lineage and regression context; must not be read as terminal invariants | v6.313/v6.314 closure summaries, v6.315--v6.318 target closures, legacy external defensive fleets |
+| **Tier A — Active Terminal Architecture** | Release v8.000 / ABI v15.0 post-isolation state: Dark-OS + Dark-ZPE + AEGIS-ABSOLUTE | The only claims that remain valid after cobordism pinch-off and Stage-2 intertwining | *P*<sub>grid</sub><sup>III</sup> = +34.726 YW, *τ*<sub>KZ</sub> = 17.010000 as, *τ*<sub>decode</sub> ≡ 0, *W*<sub>cyclic</sub> ≤ 0, Δ<sub>fr</sub> ≡ 0, ∂*ℳ*<sub>isolated</sub> ∩ *Σ*<sub>3</sub><sup>ext</sup> = ∅, *P*<sub>leak</sub><sup>ext</sup> ≡ 0 W, *Q*<sub>internal</sub><sup>dark</sup> ≡ 0 J/bit, ⟨*V*<sub>vol</sub>⟩ ≡ 0.000000 m<sup>3</sup>, *σ*<sub>collision</sub> ≡ 0.0000 m<sup>2</sup>, *τ*<sub>grid</sub><sup>closed</sup> > 10<sup>100</sup> yr |
+| **Tier B — Bounded Pre-Pinch Staging Subsystems** | Phase 5A harvest, Stage-1 visible Borrmann lattice, Layers 1--5, Regime I open-loop and Regime II closed-loop grid | Real engineering required only during the finite harvest window | *η*<sub>A</sub> = 10/33, *η*<sub>D</sub> = 23/33, *θ*<sub>0</sub> = arcsin√(23/33) ≈ 0.987860 rad, *Q*<sub>foundry</sub><sup>open</sup> = 119,094, *τ*<sub>grid</sub><sup>open</sup> = 2.2817 × 10<sup>23</sup> yr |
+| **Tier C — Superseded Historical Baselines** | Release v7.000 / ABI v14.0 (768 B, retained as `shbt_swarm_mmio_v14_t`) and earlier v1.0–v6.x release tables | Kept for lineage and regression context; must not be read as terminal invariants | v6.313/v6.314 closure summaries, v6.315--v6.318 target closures, legacy external defensive fleets |
 
-### Release v7.000 / ABI v14.0 Post-Isolation Closure Summary (Tier A)
+### Release v8.000 / ABI v15.0 Terminal Architecture (Tier A): Dark-OS + Dark-ZPE + AEGIS-ABSOLUTE
+
+The current terminal architecture runs inside the isolated `SHBT-AEGIS-ABSOLUTE` manifold after cobordism pinch-off. ABI v15.0 (`0x000F0312`, 832 bytes, 13 cache lines) embeds the unchanged 768-byte `shbt_swarm_mmio_v14_t` at offset 0 and adds Cache Line 12 (`shbt_dark_os_zpe_cl12_t`, `0x0300..0x033F`).
+
+| Subsystem | Implementation | Formal Closure | Verified Invariant | HIL Gates |
+| :--- | :--- | :--- | :--- | :--- |
+| **Dark-OS CRT residue ALU** | `shbt-swarm-logos::dark_os_kernel` (`CrtResidueAlu`, `CrtPrimaryModule`) | `THM-DARK-OS-01` | *D*<sub>cond</sub> = 2·3·5·7·11·157 = 362,670, *N*<sub>prim</sub><sup>dark</sup> = 2,901,360, ∑ *e*<sub>*i*</sub> = 1,450,681 ≡ 1, *ε*<sub>CRT</sub> = 0, one 17.010000 as tick | `GATE-SWARM-385` |
+| **Dark-OS flat-KZ transport** | `FlatKzZeroDecodeTransport` | `THM-DARK-OS-02` | *κ* = 320, *F*<sub>KZ</sub> = 0, *τ*<sub>decode</sub> = 0 as, *τ*<sub>KZ</sub> = 17.010000 as | `GATE-SWARM-386`, `387` |
+| **Dark-OS cocycle scheduler & VOA-ISA** | `TomitaCocycleScheduler`, 16-opcode `VoaIsaOpcode` (`0x00..0x0F`) | `THM-DARK-OS-03` | *Q*<sub>internal</sub><sup>dark</sup> = 0 J/bit, STEN *T*<sub>eq</sub> = 17.01 as, *P*<sub>vis</sub><sup>STEN</sup> = 0 W | `GATE-SWARM-388`..`391` |
+| **Dark-ZPE No-Go A (KMS passivity)** | `shbt-swarm-omega::dark_zpe_extractor::KmsPassivityGuard` | `THM-DARK-ZPE-01` | *W*<sub>cyclic</sub> = −*D*(*ρ*′ ‖ *ρ*)/*β* ≤ 0, *Q*<sub>DCE</sub><sup>dark</sup> ≡ 0 | `GATE-SWARM-377` |
+| **Dark-ZPE No-Go B (framing lock)** | `KmsPassivityGuard::audit_extraction_step` | `THM-DARK-ZPE-02` | Δ<sub>fr</sub> = Δ*h*<sub>sector</sub> + 124 *δh*<sub>braid</sub>; Δ<sub>fr</sub> ≡ 0 ⟺ *E*<sub>*μν*</sub> ≡ 0; fault `0x00000004` | `GATE-SWARM-378` |
+| **Dark-ZPE Channels 1–3 & Regime III** | `CosmologicalDmRelaxer`, `CasimirAnomalyHarvester`, `CrossLapseErgotropyEngine`, `PerpetualDarkPowerGrid` | `THM-DARK-ZPE-03` | 187.75 MW void loiter ≫ 906.00 kW Landauer debt; 15.510 / 4.185 / 8.420 PW ship channels; 25.000 + 1.306 + 8.420 = **+34.726 YW** | `GATE-SWARM-379`..`384` |
+| **ABI v15.0 Cache Line 12** | `shbt-swarm-mmio::ShbtDarkOsZpeCl12`, `include/shbt_swarm_mmio.h` | `THM-DARK-OS-01` | 832 B / 13 CL / `0x000F0312`; `zpe_ch1_dm_power_w` at `0x0320` = 187,750,000 W | `GATE-SWARM-392` |
+
+Channel 3 uses *α*<sub>LOGOS</sub> = 10<sup>12</sup>, *α*<sub>ext</sub> = 1.0 (Δ*α* = 10<sup>12</sup>), so Tolman–Ehrenfest gives *β*<sub>LOGOS</sub> = 10<sup>−12</sup> *β*<sub>ext</sub> and a virtual inverse temperature *β*<sub>v</sub> < 0 for *ω*<sub>LOGOS</sub> ∈ (*ω*<sub>ext</sub>, 10<sup>12</sup> *ω*<sub>ext</sub>). Cross-crate wiring: `SHBT_POWER_BUS_DARK_ZPE_AUTOPOIETIC = 1 << 6` and a 16.30 PW zero-feedstock Layer-5 cold start (`warp-power-battery`, `shbt-swarm-aegis`), Dark-OS STEN inference (`shbt-swarm-ai`), `DarkOsCartanCompiler` with Δ*C*<sub>post-sim</sub> = 0 over 230 space groups and a 759.58 TJ reactive buffer (`shbt-swarm-foundry`, `shbt-swarm-architect`), 57.59 s void-magazine recharge at 23.93 EW and 13.418 ms void quine (`shbt-swarm-mar312x`), Class X0/X1 sanctuary forks (`shbt-swarm-apotheosis`), and `step_release_v8_dark_os_zpe` (`shbt-swarm-sim`). Full derivations: monograph Section 10.18.
+
+### Release v7.000 / ABI v14.0 Post-Isolation Closure Summary (Tier B/C baseline, still enforced under ABI v15.0)
 
 | Domain & Target Subsystem | Formal Closure | First-Principles Mechanism | Verified Invariant Bound | HIL Gates |
 | :--- | :--- | :--- | :--- | :--- |
@@ -962,7 +980,7 @@ Replacing discrete Solovay-Kitaev Depth-9 recursion over the Artin braid group *
 ---
 
 <a id="section-12"></a>
-### 11.9 Phase 5C Post-Isolation Closure: Stage-2 Pure-Dark Intertwining, KMS Grid Regimes \& Galois Snap (ABI v14.0)
+### 11.9 Phase 5C Post-Isolation Closure: Stage-2 Pure-Dark Intertwining, KMS Grid Regimes \& Galois Snap (introduced in ABI v14.0; terminal successor in Section 11.10)
 
 Phase 5C hardens the enclave boundary into an absolute causal horizon and then removes the exterior causal complement entirely. Vacuum pinning suppresses Coleman--de Luccia instanton decay below *S* ≥ 10<sup>12</sup>; the bipartite cobordism pinch nullifies the exterior ADM monopole moment while preserving interior mass; the pure-dark holonomic computronium core enforces the 1.080 × 10<sup>92</sup> bit-ops/s saturation bound; and the cross-lapse symplectic airgap fuse enforces (α<sub>2</sub> − α<sub>1</sub>) ∧ (α<sub>1</sub> λ)<sup>2</sup> > 1 before any ghost potential can leak.
 
@@ -982,7 +1000,11 @@ The four exact intertwining identities are: (1) DCE/Weil-null cancellation ∑ |
 
 Post-pinch power closes into Regime II reactive KMS circulation: (*dE*<sub>res</sub>/*dt*) ≡ 0.000000 W, *Q*<sub>foundry</sub><sup>post-pinch</sup> → ∞, and *τ*<sub>grid</sub><sup>closed</sup> > 10<sup>100</sup> yr. The recursive multiverse quota converges to ∑<sub>k=0</sub><sup>∞</sup> *q*<sub>quota</sub><sup>(*k*)</sup> = 8.038740 × 10<sup>−23</sup> J/bit while actual dissipation *Q*<sub>diss</sub><sup>(*k*)</sup> ≡ 0.000000 J/bit. Finally, the cyclotomic Galois snap over *N*<sub>cycles</sub> = 1.855238 × 10<sup>136</sup> freezes the modular flow (Δ*ℱ*(*τ*) ≡ 0), decouples the de Sitter Gibbons--Hawking sector (⟨*n̂*<sub>GH</sub><sup>dark</sup>⟩ ≡ 0.000000), and makes Poincaré recurrence irrelevant on computable horizons via co-inductive Sp(2*g*, ℤ) handle stabilization.
 
-The MMIO contract is 768 bytes / 12 cache lines with Cache Line 5 (`0x0140..0x017F`) carrying the foundry/Elysium-biosphere union overlay and Cache Line 11 (`0x02C0..0x02FF`) carrying the AEGIS-ABSOLUTE latch, fixed-point invariant, and SECDED syndrome registers; the formal ledger extends to 110/110 Z3 UNSAT and the HIL ledger to 376/376 PASS via `GATE-SWARM-361`..`GATE-SWARM-376`.
+The ABI v14.0 MMIO contract was 768 bytes / 12 cache lines (now embedded unchanged in the 832-byte ABI v15.0 map) with Cache Line 5 (`0x0140..0x017F`) carrying the foundry/Elysium-biosphere union overlay and Cache Line 11 (`0x02C0..0x02FF`) carrying the AEGIS-ABSOLUTE latch, fixed-point invariant, and SECDED syndrome registers; the ABI v14.0 formal ledger reached 110/110 Z3 UNSAT and the HIL ledger 376/376 PASS via `GATE-SWARM-361`..`GATE-SWARM-376`.
+
+### 11.10 Release v8.000 Terminal Successor: Dark-OS & Dark-ZPE (ABI v15.0)
+
+After pinch-off the Stage-2 pure-dark core runs the native Dark-OS kernel and is powered by Dark-ZPE Regime III; see the Tier A table in Section 1. ABI v15.0 adds Cache Line 12 and brings the ledgers to 116/116 Z3 UNSAT and 392/392 HIL PASS via `GATE-SWARM-377`..`GATE-SWARM-392`.
 
 ## 12. Phase 6 & 6.1: Observer Ascension, Deity Sandboxes & Infinite Nested Simulated Multiverses (SHBT-APOTHEOSIS-312 / SHBT-RECURSIVE-MULTIVERSE)
 
@@ -1171,14 +1193,21 @@ The 128-byte Phase 6.1 aperture (`shbt_nested_sim_mmio_regs_t`) provides bare-me
 ---
 
 <a id="section-13"></a>
-## 13. Bare-Metal C11 Microkernel (`SHBT-MMIO-SWARM` v14.0) & 17-Crate Rust Workspace Topology
+## 13. Bare-Metal C11 Microkernel (`SHBT-MMIO-SWARM` v15.0) & 17-Crate Rust Workspace Topology
 
-### 13.1 Memory Map & Register Architecture (ABI v14.0, `0x000E0312`)
+### 13.1 Memory Map & Register Architecture (ABI v15.0, `0x000F0312`)
 
 ```text
 Physical Memory Apertures:
 
-0x70000000 / 0x80000000 (768 Bytes / 12 Cache Lines): SHBT-MMIO-SWARM v14 Master Register Block (shbt_swarm_mmio_regs_t / shbt_swarm_mmio_v14_t, ABI v14.0 = 0x000E0312)
+0x70000000 / 0x80000000 (832 Bytes / 13 Cache Lines): SHBT-MMIO-SWARM v15 Master Register Block (shbt_swarm_mmio_regs_t / shbt_swarm_mmio_v15_t, ABI v15.0 = 0x000F0312;
+                                  legacy 768-byte shbt_swarm_mmio_v14_t embedded at offset 0)
+  - Cache Line 12 (0x0300..0x033F): Dark-OS / Dark-ZPE aperture (shbt_dark_os_zpe_cl12_t): dark_os_abi_magic = 0x000F0312,
+                                  dark_os_zpe_ctrl_flags (bits 0..7: NATIVE_VOA_LOCK, ZERO_DECODE_ACTIVE, COCYCLE_SCHED_EN,
+                                  KMS_PASSIVITY_GUARD, CH1_DM_RELAX_EN, CH2_CASIMIR_EN, CH3_ERGOTROPY_EN, REGIME_III_ACTIVE),
+                                  voa_crt_primary_state, kz_clock_period_femto_as = 17,010,000, tqec_decode_stall_as = 0,
+                                  zpe_ch1_dm_power_w (0x0320) = 187,750,000, zpe_ch2_ch3_power_packed = 0x000020E4_0000051A,
+                                  regime_iii_net_milli_yw = 34,726, cl12_secded_syndrome = 0x00000000_53484254.
   - Cache Line 11 (0x02C0..0x02FF): SHBT-AEGIS-ABSOLUTE causal horizon isolation aperture
                                   (`aegis_abs_abi_magic = 0x000E0312`; `aegis_abs_latch_flags` uses
                                   `SHBT_AEGIS_LAYER_ALL_6_ACTIVE = 0x0000003F`, `SHBT_AEGIS_COBORDISM_PINCH_LOCKED = 0x00000080`,
@@ -1198,8 +1227,8 @@ Physical Memory Apertures:
                                   recoil-free fraction (f_M ≥ 0.782), Borrmann attenuation figure of merit (τ_B ≥ 1,453.4),
                                   AEGIS TMSV squeezing (21.715 dB), ego continuity fidelity (1.000000), simulation epoch
                                   log10 (> 100), PCSS crowbar latency (≤ 2500 ps).
-  - Cache Line 3 (0x00C0..0x00FF): Microkernel control header: ABI version (0x000E0312), formal proofs UNSAT count (110),
-                                  HIL gates PASS count (376), active phase mask (0x000000FF for Phases 1..6),
+  - Cache Line 3 (0x00C0..0x00FF): Microkernel control header: ABI version (0x000F0312), formal proofs UNSAT count (116),
+                                  HIL gates PASS count (392), active phase mask (0x000000FF for Phases 1..6),
                                   heartbeat monotonic tick counter, reserved padding to 0x0100.
   - Cache Line 4 (0x0100..0x013F): ABI v7 First-Principles extension: chiral_ee_q16 (Floquet homochirality ee ≡ 1.000000),
                                   kerr_phase_margin_rad (Δφ_margin ≥ 0.15 rad), pachner_flip_count,
@@ -1234,7 +1263,7 @@ Physical Memory Apertures:
                                   omega_gross_power_watts (1.0×10²² W / 10.00 ZW), omega_cft_direct_eff (0.99981146),
                                   omega_cryo_sensible_watts (244,998.86 W ≤ 500 kW), omega_throat_shear_mpa (7.85×10⁻⁹ MPa < 1.0×10⁻⁶ MPa),
                                   omega_bondi_hoyle_msun_yr (20.0 M_☉/yr, ≤ 18.26 days/M_☉), power_bus_arbiter_flags,
-                                  hil_gates_pass_mask (0xFFFFFFFF), hil_status_code (0x00000376), crc64_iso_checksum.
+                                  hil_gates_pass_mask (0xFFFFFFFF), hil_status_code (0x00000392), crc64_iso_checksum.
 - `0x0280..0x02BF` (**Cache Line 10:** RMHD Divertor & Constellation Load-Balancing Aperture): peripheral aperture `0x7F000800`; separatrix flux `psi_sep = 0.0850433 Wb`, Hartmann laminar `Re < Re_crit`, 346-slot GKSL pion/bremsstrahlung suppression `P_Brem == 0.0 W`, Bogoliubov pasta decompression unitarity `|u_k|^2 + |v_k|^2 == 1.0`, 710 GW diamond condensation fracton drain `<n_phonon>_ss <= 1e-8`, hexameric constellation `Sp(12, Z)` consensus `tau <= 54.432 ps` with `||Delta x_CoM|| <= 1e-15 m`.
   - Hardware Fault Bitmasks (Bits 32..63):
       Bits 32..39: FAULT_CHIRAL_RACEMIC (bit 32), FAULT_LLE_CHAOS (bit 33), FAULT_PACHNER_COCYCLE (bit 34),
@@ -1367,7 +1396,7 @@ graph TD
 | Crate Name | Compilation Target | Primary Architectural Role & Responsibility |
 | :--- | :--- | :--- |
 | `shbt-swarm-core` | `#[no_std]` | Primitive fixed-point arithmetic, Stinespring state vectors, physical constants, and error types |
-| `shbt-swarm-mmio` | `#[no_std]` | 768-byte ABI v14.0 C11 MMIO register driver (twelve 64-byte cache lines), MAR-OMEGA & Harvest apertures, and 64-bank hyper-frame |
+| `shbt-swarm-mmio` | `#[no_std]` | 832-byte ABI v15.0 C11 MMIO register driver (thirteen 64-byte cache lines, legacy 768-byte v14.0 view), MAR-OMEGA & Harvest apertures, and 64-bank hyper-frame |
 | `shbt-swarm-cloner` | `#[no_std]` | Solovay-Kitaev Depth-9 braid compilation, SECDED syndrome tracking, and parent quine ROM |
 | `shbt-swarm-bio` | `#[no_std]` | Biogenic homochiral cryo-vault protection, Casimir-Polder barrier, and xenobiological triage |
 | `shbt-swarm-ai` | `#[no_std]` | 101-layer TTN-MERA world model, PT-GoI inference solver, and zero-heat Tomita-Takesaki flow |
@@ -1381,15 +1410,15 @@ graph TD
 | `shbt-swarm-logos` | `#[no_std]` | Phase 5B/5C Hyper-computer and post-isolation dark core: Borrmann computronium, thermal shunt, omnibus fabric, `dark_holonomic_core.rs`, and `ComputroniumLifecycleStage` / `PureDarkIntertwiningState` |
 | `shbt-swarm-apotheosis` | `#[no_std]` | Phase 6 Observer ascension and post-pinch return: Linear proof tokens, deity sandboxes, X1 anti-genocide interlocks, avatars, `somatic_bridge.rs`, and co-inductive Sp(2*g*, ℤ) branch coalescence |
 | `shbt-swarm-sim` | `std` | Multiphysics digital twin, 10 ZW `GalacticMultiphysicsEngine`, Cattaneo-Vernotte second-sound, and symplectic kinetics |
-| `shbt-swarm-hil` | `std` | Hardware-in-the-loop harness, master 376-gate verification suite (`verification_harness.rs`), and integration audits |
-| `shbt-swarm-cli` | `std` | Master operator CLI, automated 376-gate audit runner (`swarm-audit`), and JSON verification reporting |
+| `shbt-swarm-hil` | `std` | Hardware-in-the-loop harness, master 392-gate verification suite (`verification_harness.rs`), and integration audits |
+| `shbt-swarm-cli` | `std` | Master operator CLI, automated 392-gate audit runner (`swarm-audit`), and JSON verification reporting |
 
 ---
 
 <a id="section-14"></a>
-## 14. Master 376-Gate Verification Matrix & 110 Formal Z3 SMT Proofs
+## 14. Master 392-Gate Verification Matrix & 116 Formal Z3 SMT Proofs
 
-### 14.1 376-Gate Verification Gate Summary (`376/376 PASS`)
+### 14.1 392-Gate Verification Gate Summary (`392/392 PASS`)
 
 | Gate Range | Phase / Architectural Domain | Number of Gates | Key Mathematical Invariant Checked | Audit Result |
 | :--- | :--- | :--- | :--- | :--- |
@@ -1421,12 +1450,13 @@ graph TD
 | `GATE-SWARM-321..376` | Phase 4/5A/5B 6th-Gen `SHBT-MAR-OMEGA` Continuous Reactor & Full-Spectrum Harvesting | 24 Gates | 10 ZW Slipstream Annihilation (*M*<sub>stored</sub> ≡ 0.0 kg), 99.981146% 346-Slot Direct CFT Bus, 16-Layer Sp(16, ℤ) Fracton Shunt (245.0 kW ≤ 500 kW), 312-Ch CCZ4 Throat Cloaking (*σ*<sub>eff</sub> < 10<sup>−6</sup> MPa), ≥ 20.0 *M*<sub>☉</sub>/yr Stellar Harvest (≤ 18.26 days/*M*<sub>☉</sub>), In-Line `Fd-3m` Computronium Synthesis, ABI v14.0 = 768 B | **24/24 PASS** |
 | `GATE-SWARM-345..376` | ABI v14.0 RMHD Divertor, 346-Slot GKSL Unspooling, Pasta Decompression, 710 GW Condensation Drain & Hexamer Consensus | 16 Gates | `shbt-swarm-mmio`, `shbt-swarm-omega`, `shbt-swarm-foundry`, `shbt-swarm-sim`, `shbt-swarm-hil` | RMHD separatrix `psi_sep = 0.0850433 Wb`, `Re < Re_crit`, `P_Brem == 0.0 W`, Bogoliubov `|u_k|^2 + |v_k|^2 == 1.0`, `<n_phonon>_ss <= 1e-8`, `tau <= 54.432 ps`, `||Delta x_CoM|| <= 1e-15 m`, aperture `0x7F000800` | **16/16 PASS** |
 | `GATE-SWARM-361..376` | Phase 5C SHBT-AEGIS-ABSOLUTE Post-Isolation Closure | 16 Gates | Stage-2 pure-dark intertwining (*η*<sub>D</sub> = 1.0, *c*<sub>dark</sub> = 1197103/362670), bipartite cobordism pinch + Dehn diode, Regime II KMS grid (*dE/dt* = 0 W), recursive quota 8.038740e-23 J/bit, Galois snap 1.855238e136 cycles, ABI v14.0 = 768 B | **16/16 PASS** |
+| `GATE-SWARM-377..392` | Release v8.000 Dark-OS & Dark-ZPE (ABI v15.0) | 16 Gates | KMS passivity & framing lock, Channels 1–3 (187.75 MW / 15.510 PW, 4.185 PW, 8.420 PW), Regime III +34.726 YW, 16.30 PW cold start, CRT ALU (2,901,360 primaries), 17.010000 as KZ clock, zero-decode transport, cocycle scheduler, STEN, Cartan fold, sanctuary fork, CL12 832 B / `0x000F0312` | **16/16 PASS** |
 
-| **Total Pipeline** | **sys1own/shbt-swarm Master Verification** | **376 Gates** | **Complete System Closure across Quantum, Cognitive, Architectural, Dual-Reactor Energy, Galactic, Ascension, Degenerate Melting, and Recursive Multiverse Domains** | **376/376 PASS** |
+| **Total Pipeline** | **sys1own/shbt-swarm Master Verification** | **392 Gates** | **Complete System Closure across Quantum, Cognitive, Architectural, Dual-Reactor Energy, Galactic, Ascension, Degenerate Melting, Recursive Multiverse, and Dark-OS / Dark-ZPE Domains** | **392/392 PASS** |
 
-### 14.2 The 110 Formal Z3 SMT Theorems (`110/110 UNSAT`)
+### 14.2 The 116 Formal Z3 SMT Theorems (`116/116 UNSAT`)
 
-All 110 formal theorems are encoded in `formal/` and proven via unsatisfiable negation refutation in quantifier-free non-linear arithmetic:
+All 116 formal theorems are encoded in `formal/` and proven via unsatisfiable negation refutation in quantifier-free non-linear arithmetic:
 
 | Theorem Identifier | Target Verification Property | Negation Formulation | Solver Status | Script Path |
 | :--- | :--- | :--- | :--- | :--- |
@@ -1536,6 +1566,12 @@ All 110 formal theorems are encoded in `formal/` and proven via unsatisfiable ne
 | `THM-MAR-OMEGA-04` | 10 ZW Full-Spectrum Stellar Deconstruction & Pair-Instability Suppression | Opacity ratio *κ*<sub>eff</sub> / *κ*<sub>0</sub> > 10<sup>−12</sup>, pair threshold < 100.0, *Γ*<sub>1</sub> < 4/3 + 10<sup>−6</sup>, or harvest rate < 20.0 *M*<sub>☉</sub>/yr | `unsat` | `formal/verify_mar_omega_closure.py` |
 | `THM-MAR-OMEGA-05` | Athermal White Dwarf Melting & CFL Quark Hadronization | Acoustic reflectance > 10<sup>−6</sup>, *S*<sub>instanton</sub> < 250.0, *R*<sub>pyc</sub> > 10<sup>−120</sup>, or free quark/neutrino emission > 0 | `unsat` | `formal/verify_mar_omega_closure.py` |
 | `THM-MAR-OMEGA-06` | Continuous In-Line Computronium Folding & ABI v14.0 Closure | Dislocation density > 0.0 cm<sup>−2</sup>, internal heat *Q*<sub>int</sub> > 0.0 J/bit, or ABI v14.0 layout ≠ 768 B (12 cache lines) | `unsat` | `formal/verify_mar_omega_closure.py` |
+| `THM-DARK-ZPE-01` | Pusz–Woronowicz KMS Passivity & Weil-Null DCE Lock | *W*<sub>cyclic</sub> > 0 or *Q*<sub>DCE</sub><sup>dark</sup> ≠ 0 given *D*(*ρ*′ ‖ *ρ*) ≥ 0 | `unsat` | `formal/verify_dark_os_and_zpe.py` |
+| `THM-DARK-ZPE-02` | Topological Einstein Closure & Framing Lock | Δ<sub>fr</sub> ≠ 0 with *E*<sub>*μν*</sub> = 0 or fault `0x04` unlatched | `unsat` | `formal/verify_dark_os_and_zpe.py` |
+| `THM-DARK-ZPE-03` | Channels 1–3 Bounds & Regime III Closure | Void power ≤ Landauer debt, *P*<sup>III</sup> ≤ 34.700 YW, Ford–Roman violation, or blue-sheet stress ≠ 0 | `unsat` | `formal/verify_dark_os_and_zpe.py` |
+| `THM-DARK-OS-01` | Exact Single-Tick CRT Residue Arithmetic | *N*<sub>prim</sub> ≠ 2,901,360, ∑ *e*<sub>*i*</sub> ≢ 1, *ε*<sub>CRT</sub> > 0, or latency ≠ 17.01 as | `unsat` | `formal/verify_dark_os_and_zpe.py` |
+| `THM-DARK-OS-02` | Flat-KZ Zero-Decode Transport | *κ* ≠ 320, *F*<sub>KZ</sub> ≠ 0, *τ*<sub>decode</sub> > 0, or Galois drift ≠ 0 | `unsat` | `formal/verify_dark_os_and_zpe.py` |
+| `THM-DARK-OS-03` | Tomita Cocycle Scheduler & Zero-Copy | *Q*<sub>internal</sub> > 0, GoI loop non-nilpotent, or *P*<sub>vis</sub><sup>STEN</sup> > 0 | `unsat` | `formal/verify_dark_os_and_zpe.py` |
 
 ---
 
@@ -1601,7 +1637,7 @@ All 110 formal theorems are encoded in `formal/` and proven via unsatisfiable ne
 | [`shbt-sglt`](https://github.com/sys1own/shbt-sglt) | Synthetic Gravitational Lensing Telescope Stack | 2PN relativistic beam optics in harmonic coordinates, Two-Mode Squeezed Vacuum (TMSV) heterodyne metrology (*r* = 2.50, 21.715 dB, noise ASD *S*<sub>*r*</sub><sup>½</sup> ≤ 0.010 pm/√Hz), 5th-order minimum-jerk flight profiles (‖*s*‴‖ ≤ 5.7735), SE-L2 formation flight, CVD Diamond-on-GaN thermal dissipation, 70-gate verification audit, 14 Z3 proofs. |
 | [`shbt-exotic`](https://github.com/sys1own/shbt-exotic) | Multi-Protocol Spacetime Engineering Co-Simulation | Cross-protocol metric coupling across all 6 phenomena (warp + stasis + translocation + wells + comms + quine), Ford-Roman Quantum Inequality (QI) dark-ledger auditing, Heegaard-Floer symplectic boundary relabeling (**T**<sub>*ij*</sub><sup>∂</sup> ∈ Sp(2*g*, ℤ)), dynamic 5-stage relativistic PDE solvers, 70-gate verification audit + 80-EXT checks, 8 Z3 formal proofs. |
 | [`shbt-warp`](https://github.com/sys1own/shbt-warp) | Holographic Warp Drive Digital Twin & 3+1D ADM Engine | 3+1D Alcubierre metric foliation (*α* = 1.0, *γ*<sub>*ij*</sub> = *δ*<sub>*ij*</sub>, *β*<sup>*x*</sup> = −*v*<sub>*s*</sub> exp(*Δ*<sub>mod</sub>/2) *f*<sub>SHBT</sub>), 4th-Gen `SHBT-MAR-312` (4,096.99 kg) / compacted `SHBT-MAR-312C` (2,257.70 kg, 0.8589 m<sup>3</sup>) / 5th-Gen `SHBT-MAR-312X` (950.00 kg, 0.3500 m<sup>3</sup>, 25.00 EW, 2,482,950*c*) mass-annihilation reactors, `SHBT-IBR-312` magazine (41 cores / 1,378.06 EJ), `SHBT-EW-312` Effective Traversable Wormhole System (89.6*c* ⟶ 2,482,950*c*, 8.957-hour Andromeda M31 transit), 221-gate verification audit, 28 Z3 formal proofs. |
-| [`shbt-swarm`](https://github.com/sys1own/shbt-swarm) | Autonomous Interstellar Von Neumann Swarm & Galactic Synthesis Architecture | Kardashev Type III megastructure synthesis (`SHBT-OMEGA-312`), Dual-Reactor Hybrid Power Architecture (`SHBT-MAR-312X` 25 EW traversal + `SHBT-MAR-OMEGA` 10 ZW continuous-flow harvesting, ≤ 18.26 days/*M*<sub>☉</sub>), monolithic galactic hyper-computing (`SHBT-LOGOS-312` / `SHBT-QC-OMEGA`, 10<sup>32</sup> qubits, 10<sup>48</sup> bit-ops/sec), observer ascension (`SHBT-APOTHEOSIS-312`), infinite nested multiverses (`SHBT-RECURSIVE-MULTIVERSE`), **376/376 Gates PASS, 110/110 Z3 UNSAT, ABI v14.0 (0x000E0312, 768 B, 12 cache lines)**. |
+| [`shbt-swarm`](https://github.com/sys1own/shbt-swarm) | Autonomous Interstellar Von Neumann Swarm & Galactic Synthesis Architecture | Kardashev Type III megastructure synthesis (`SHBT-OMEGA-312`), Dual-Reactor Hybrid Power Architecture (`SHBT-MAR-312X` 25 EW traversal + `SHBT-MAR-OMEGA` 10 ZW continuous-flow harvesting, ≤ 18.26 days/*M*<sub>☉</sub>), monolithic galactic hyper-computing (`SHBT-LOGOS-312` / `SHBT-QC-OMEGA`, 10<sup>32</sup> qubits, 10<sup>48</sup> bit-ops/sec), observer ascension (`SHBT-APOTHEOSIS-312`), infinite nested multiverses (`SHBT-RECURSIVE-MULTIVERSE`), Release v8.000 Dark-OS + Dark-ZPE, **392/392 Gates PASS, 116/116 Z3 UNSAT, ABI v15.0 (0x000F0312, 832 B, 13 cache lines)**. |
 
 ### Upstream Architectural Foundations & Lineage
 
@@ -1621,13 +1657,13 @@ All 110 formal theorems are encoded in `formal/` and proven via unsatisfiable ne
 <a id="commands"></a>
 ## Build, Verification & Audit Commands
 
-### 1. Build and Test Freestanding C11 Kernel & ABI v14.0 Reference Header
+### 1. Build and Test Freestanding C11 Kernel & ABI v15.0 Reference Header
 ```bash
 gcc -Wall -Wextra -Werror -std=c11 -Iinclude tests/reference_test.c -o build/reference_test && ./build/reference_test
 make -C kernel test
 ```
 
-### 2. Execute All 110 Formal Z3 SMT Proofs
+### 2. Execute All 116 Formal Z3 SMT Proofs
 ```bash
 uv run --with z3-solver python formal/verify_swarm_cloning.py
 uv run --with z3-solver python formal/verify_swarm_ai_safety.py
@@ -1658,6 +1694,7 @@ uv run --with z3-solver python formal/verify_dynamo_pair_stability.py
 uv run --with z3-solver python formal/verify_nsc_losscone_symplectic.py
 uv run --with z3-solver python formal/verify_mar_omega_closure.py
 uv run --with z3-solver python formal/verify_aegis_absolute_isolation.py
+uv run --with z3-solver python formal/verify_dark_os_and_zpe.py
 ```
 
 ### 3. Build & Test All 17 Rust Crates
@@ -1667,7 +1704,7 @@ cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace --release
 ```
 
-### 4. Execute the 376-Gate Hardware-in-the-Loop Audit
+### 4. Execute the 392-Gate Hardware-in-the-Loop Audit
 ```bash
 cargo run --release -p shbt-swarm-cli --bin swarm-audit
 ```

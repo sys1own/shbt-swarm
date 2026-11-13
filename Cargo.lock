@@ -22,6 +22,7 @@ name = "shbt-swarm-apotheosis"
 version = "0.4.312"
 dependencies = [
  "shbt-swarm-core",
+ "shbt-swarm-logos",
 ]
 
 [[package]]

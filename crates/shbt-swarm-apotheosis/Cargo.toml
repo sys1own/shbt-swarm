@@ -6,3 +6,4 @@ license.workspace = true
 
 [dependencies]
 shbt-swarm-core = { path = "../shbt-swarm-core" }
+shbt-swarm-logos = { path = "../shbt-swarm-logos" }

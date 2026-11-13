@@ -33,11 +33,13 @@ pub use cfl_hadronize::{
 
 
 pub use dynkin_router::{
-    BoundaryState346, DynamicFramingCompensator as DynFramingCompensator, DynkinRouter346,
+    BoundaryState346, DarkOsCartanCompileReport, DarkOsCartanCompiler,
+    DynamicFramingCompensator as DynFramingCompensator, DynkinRouter346,
     FramingCompensationReport, FramingFault, So10Weight, Su2Weight, Su3Weight, C_BRAID_BASE,
-    DENOM_SO10, DENOM_SU2, DENOM_SU3, GOLDEN_RATIO_PHI, K_L, K_PARENT, K_Q, NUM_DYNKIN_SLOTS,
-    NUM_FIBONACCI_CHANNELS, SO10_SLOT_END, SO10_SLOT_START, SU2_SLOT_END, SU2_SLOT_START,
-    SU3_SLOT_END, SU3_SLOT_START,
+    DARK_OS_CRYSTALLOGRAPHIC_SPACE_GROUPS, DARK_OS_KZ_CLOCK_FEMTO_AS,
+    DARK_ZPE_FOUNDRY_REACTIVE_BUFFER_JOULES, DENOM_SO10, DENOM_SU2, DENOM_SU3, GOLDEN_RATIO_PHI,
+    K_L, K_PARENT, K_Q, NUM_DYNKIN_SLOTS, NUM_FIBONACCI_CHANNELS, SO10_SLOT_END, SO10_SLOT_START,
+    SU2_SLOT_END, SU2_SLOT_START, SU3_SLOT_END, SU3_SLOT_START,
 };
 
 pub use lattice_projector::{

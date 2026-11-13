@@ -18,6 +18,7 @@ pub mod crowbar_smes;
 pub mod hbt_pic_rotator;
 pub mod warp_soliton_coupling;
 pub mod eda_export;
+pub mod dark_zpe_magazine;
 #[path = "../../warp-power-battery/src/divertor_rmhd.rs"]
 pub mod divertor_rmhd;
 #[path = "../../warp-power-battery/src/mar_omega_flow.rs"]
@@ -34,6 +35,7 @@ pub use crowbar_smes::*;
 pub use hbt_pic_rotator::*;
 pub use warp_soliton_coupling::*;
 pub use eda_export::*;
+pub use dark_zpe_magazine::*;
 
 /// Exact 8-subsystem masses in grams (summing to 950,000 g = 950.00 kg).
 pub const MASS_SUB1_SEED_DIE_G: u64           = 12_500;   // 12.50 kg (P6_3/mmc)

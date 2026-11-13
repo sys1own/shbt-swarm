@@ -30,14 +30,16 @@ int main(void) {
     assert(sizeof(shbt_swarm_mmio_t) == 128U);
     assert(sizeof(shbt_mmio_cacheline_10_divertor_t) == 64U);
     assert(sizeof(shbt_aegis_absolute_cl11_t) == 64U);
+    assert(sizeof(shbt_dark_os_zpe_cl12_t) == 64U);
     assert(sizeof(shbt_swarm_cl5_foundry_t) == 64U);
     assert(sizeof(shbt_swarm_cl5_elysium_biosphere_t) == 64U);
-    assert(sizeof(shbt_swarm_mmio_regs_t) == 768U);
+    assert(sizeof(shbt_swarm_mmio_regs_t) == 832U);
     assert(sizeof(shbt_mar_omega_aperture_t) == 256U);
     assert(sizeof(shbt_universal_harvest_aperture_t) == 256U);
     assert(sizeof(shbt_swarm_mmio_v12_t) == 704U);
     assert(sizeof(shbt_swarm_mmio_v13_t) == 704U);
     assert(sizeof(shbt_swarm_mmio_v14_t) == 768U);
+    assert(sizeof(shbt_swarm_mmio_v15_t) == 832U);
     assert(sizeof(shbt_nested_sim_mmio_regs_t) == 128U);
     assert(offsetof(shbt_swarm_mmio_regs_t, abi_version) == 0x00C0U);
     assert(offsetof(shbt_swarm_mmio_regs_t, chiral_ee_q16) == 0x0100U);
@@ -49,6 +51,8 @@ int main(void) {
     assert(offsetof(shbt_swarm_mmio_regs_t, power_bus_arbiter_flags) == 0x0268U);
     assert(offsetof(shbt_swarm_mmio_regs_t, cl10_divertor) == 0x0280U);
     assert(offsetof(shbt_swarm_mmio_regs_t, cl11_aegis_absolute) == 0x02C0U);
+    assert(offsetof(shbt_swarm_mmio_regs_t, cl12_dark_os_zpe) == 0x0300U);
+    assert(offsetof(shbt_dark_os_zpe_cl12_t, zpe_ch1_dm_power_w) == 0x20U);
     assert(sizeof(shbt_galactic_aperture_mmio_t) == 256U);
     assert(sizeof(shbt_dense_matter_mmio_t) == 160U);
     assert(sizeof(shbt_mera_gal_addr_t) == 64U);
@@ -67,14 +71,16 @@ int main(void) {
     assert(sizeof(shbt_apoth_ext_ctrl_t) == 32U);
 
     /* Verify Phase 5B, Phase 6 & v13.0 ABI & control definitions */
-    assert(SHBT_SWARM_ABI_VERSION == 0x000E0312U);
+    assert(SHBT_SWARM_ABI_VERSION == 0x000F0312U);
     assert(SHBT_SWARM_ABI_VERSION_V12 == 0x000C0312U);
     assert(SHBT_SWARM_ABI_VERSION_V13 == 0x000D0312U);
-    assert(SHBT_SWARM_FORMAL_PROOFS_COUNT == 110U);
-    assert(SHBT_SWARM_HIL_GATES_COUNT == 376U);
-    assert(SHBT_SWARM_MMIO_TOTAL_SIZE == 768U);
-    assert(SHBT_SWARM_MMIO_TOTAL_SIZE_BYTES == 768U);
-    assert(SHBT_SWARM_MMIO_CACHELINE_COUNT == 12U);
+    assert(SHBT_SWARM_ABI_VERSION_V14 == 0x000E0312U);
+    assert(SHBT_SWARM_ABI_VERSION_V15 == 0x000F0312U);
+    assert(SHBT_SWARM_FORMAL_PROOFS_COUNT == 116U);
+    assert(SHBT_SWARM_HIL_GATES_COUNT == 392U);
+    assert(SHBT_SWARM_MMIO_TOTAL_SIZE == 832U);
+    assert(SHBT_SWARM_MMIO_TOTAL_SIZE_BYTES == 832U);
+    assert(SHBT_SWARM_MMIO_CACHELINE_COUNT == 13U);
     assert(SHBT_SWARM_CACHE_LINE_BYTES == 64U);
     assert(SHBT_MMIO_BASE_MAR_OMEGA == 0x7F000600ULL);
     assert(SHBT_MMIO_BASE_UNIVERSAL_HARVEST == 0x7F000700ULL);

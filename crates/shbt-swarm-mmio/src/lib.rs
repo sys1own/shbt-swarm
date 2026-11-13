@@ -18,21 +18,23 @@ use shbt_swarm_core::{
 pub const SHBT_SWARM_MMIO_BASE_ADDR: u64 = 0x8000_0000;
 pub const SHBT_SWARM_STINESPRING_BASE_ADDR: u64 = 0x7002_0000;
 pub const SHBT_SWARM_STINESPRING_FRAME_BYTES: usize = 135_168;
-pub const SHBT_SWARM_ABI_VERSION: u32 = 0x000E_0312;
+pub const SHBT_SWARM_ABI_VERSION: u32 = 0x000F_0312;
 pub const SHBT_SWARM_ABI_VERSION_V12: u32 = 0x000C_0312;
 pub const SHBT_SWARM_ABI_VERSION_V13: u32 = 0x000D_0312;
 pub const SHBT_SWARM_ABI_VERSION_V14: u32 = 0x000E_0312;
+pub const SHBT_SWARM_ABI_VERSION_V15: u32 = 0x000F_0312;
 pub const SHBT_SWARM_MMIO_MAGIC: u32 = 0x5348_4254;
-pub const SHBT_SWARM_MMIO_TOTAL_SIZE: usize = 768;
-pub const SHBT_SWARM_MMIO_TOTAL_SIZE_BYTES: usize = 768;
+pub const SHBT_SWARM_MMIO_TOTAL_SIZE: usize = 832;
+pub const SHBT_SWARM_MMIO_TOTAL_SIZE_BYTES: usize = 832;
 pub const SHBT_SWARM_CACHE_LINE_BYTES: usize = 64;
 pub const SHBT_SWARM_MMIO_CACHELINE_BYTES: usize = 64;
-pub const SHBT_SWARM_MMIO_CACHELINE_COUNT: usize = 12;
+pub const SHBT_SWARM_MMIO_CACHELINE_COUNT: usize = 13;
 pub const SHBT_SWARM_MMIO_ABI_V14_MAGIC: u32 = 0x000E_0312;
+pub const SHBT_SWARM_MMIO_ABI_V15_MAGIC: u32 = 0x000F_0312;
 pub const SHBT_SWARM_CHANNELS_TOTAL: u32 = 312;
 pub const SHBT_SWARM_CFT_SLOTS_TOTAL: u32 = 346;
-pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 110;
-pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 376;
+pub const SHBT_SWARM_FORMAL_PROOFS_COUNT: u32 = 116;
+pub const SHBT_SWARM_HIL_GATES_COUNT: u32 = 392;
 pub const SHBT_SWARM_DIVERTOR_BASE_ADDR: u64 = 0x7F00_0800;
 
 pub const DIV_STATUS_LAMINAR: u32 = 1 << 0;
@@ -79,6 +81,19 @@ pub const SHBT_ADM_MONOPOLE_ZERO_Q32_32: i64 = 0;
 pub const SHBT_LOG10_S_MATRIX_ZERO_SENTINEL: i64 = -35_184_372_088_832_000;
 pub const SHBT_LOG10_BOGOLIUBOV_FLOOR_Q16_48: i64 = -33_776_997_205_278_720;
 pub const SHBT_DARK_GRID_1P8E56J_UQ32_32: u64 = 0x0ABA_9500_0000_0000;
+pub const SHBT_DARK_OS_NATIVE_VOA_LOCK: u32 = 1 << 0;
+pub const SHBT_DARK_OS_ZERO_DECODE_ACTIVE: u32 = 1 << 1;
+pub const SHBT_DARK_OS_COCYCLE_SCHED_EN: u32 = 1 << 2;
+pub const SHBT_DARK_ZPE_KMS_PASSIVITY_GUARD: u32 = 1 << 3;
+pub const SHBT_DARK_ZPE_CH1_DM_RELAX_EN: u32 = 1 << 4;
+pub const SHBT_DARK_ZPE_CH2_CASIMIR_EN: u32 = 1 << 5;
+pub const SHBT_DARK_ZPE_CH3_ERGOTROPY_EN: u32 = 1 << 6;
+pub const SHBT_DARK_ZPE_REGIME_III_ACTIVE: u32 = 1 << 7;
+pub const SHBT_DARK_OS_KZ_CLOCK_FEMTO_AS: u64 = 17_010_000;
+pub const SHBT_DARK_ZPE_CH1_DM_POWER_W_NOMINAL: u64 = 187_750_000;
+pub const SHBT_DARK_ZPE_CH2_CH3_POWER_PACKED_NOMINAL: u64 = 0x0000_20E4_0000_051A;
+pub const SHBT_DARK_ZPE_REGIME_III_NET_MILLI_YW: u64 = 34_726;
+pub const SHBT_DARK_OS_CL12_SECDED_SYNDROME_NOMINAL: u64 = 0x0000_0000_5348_4254;
 
 #[inline]
 const fn abs_f64(x: f64) -> f64 {
@@ -334,6 +349,9 @@ pub struct ShbtSwarmMmioRegs {
 
     // Cache Line 11 (0x02C0..0x02FF): ABI v14.0 SHBT-AEGIS-ABSOLUTE Isolation Registers (64 bytes)
     pub cl11_aegis_absolute: ShbtAegisAbsoluteCl11,
+
+    // Cache Line 12 (0x0300..0x033F): ABI v15.0 Dark-OS / Dark-ZPE Registers (64 bytes)
+    pub cl12_dark_os_zpe: ShbtDarkOsZpeCl12,
 }
 
 impl ShbtSwarmMmioRegs {
@@ -407,8 +425,36 @@ const _: () = {
     assert!(offset_of!(ShbtAegisAbsoluteCl11, cl11_secded_syndrome) == 0x38);
 };
 
+#[repr(C, align(64))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtDarkOsZpeCl12 {
+    pub dark_os_abi_magic: u32,
+    pub dark_os_zpe_ctrl_flags: u32,
+    pub voa_crt_primary_state: u64,
+    pub kz_clock_period_femto_as: u64,
+    pub tqec_decode_stall_as: u64,
+    pub zpe_ch1_dm_power_w: u64,
+    pub zpe_ch2_ch3_power_packed: u64,
+    pub regime_iii_net_milli_yw: u64,
+    pub cl12_secded_syndrome: u64,
+}
+
 const _: () = {
-    assert!(size_of::<ShbtSwarmMmioRegs>() == 768);
+    assert!(size_of::<ShbtDarkOsZpeCl12>() == 64);
+    assert!(align_of::<ShbtDarkOsZpeCl12>() == 64);
+    assert!(offset_of!(ShbtDarkOsZpeCl12, dark_os_abi_magic) == 0x00);
+    assert!(offset_of!(ShbtDarkOsZpeCl12, dark_os_zpe_ctrl_flags) == 0x04);
+    assert!(offset_of!(ShbtDarkOsZpeCl12, voa_crt_primary_state) == 0x08);
+    assert!(offset_of!(ShbtDarkOsZpeCl12, kz_clock_period_femto_as) == 0x10);
+    assert!(offset_of!(ShbtDarkOsZpeCl12, tqec_decode_stall_as) == 0x18);
+    assert!(offset_of!(ShbtDarkOsZpeCl12, zpe_ch1_dm_power_w) == 0x20);
+    assert!(offset_of!(ShbtDarkOsZpeCl12, zpe_ch2_ch3_power_packed) == 0x28);
+    assert!(offset_of!(ShbtDarkOsZpeCl12, regime_iii_net_milli_yw) == 0x30);
+    assert!(offset_of!(ShbtDarkOsZpeCl12, cl12_secded_syndrome) == 0x38);
+};
+
+const _: () = {
+    assert!(size_of::<ShbtSwarmMmioRegs>() == 832);
     assert!(align_of::<ShbtSwarmMmioRegs>() == 64);
     assert!(offset_of!(ShbtSwarmMmioRegs, abi_version) == 0x00C0);
     assert!(offset_of!(ShbtSwarmMmioRegs, chiral_ee_q16) == 0x0100);
@@ -425,6 +471,7 @@ const _: () = {
     assert!(offset_of!(ShbtSwarmMmioRegs, power_bus_arbiter_flags) == 0x0268);
     assert!(offset_of!(ShbtSwarmMmioRegs, cl10_divertor) == 0x0280);
     assert!(offset_of!(ShbtSwarmMmioRegs, cl11_aegis_absolute) == 0x02C0);
+    assert!(offset_of!(ShbtSwarmMmioRegs, cl12_dark_os_zpe) == 0x0300);
 };
 
 #[repr(C, packed)]
@@ -830,7 +877,7 @@ impl ShbtSwarmMmioRegs {
             omega_bondi_hoyle_msun_yr: 20.0,
             power_bus_arbiter_flags: SHBT_POWER_BUS_OMEGA_ACTIVE | SHBT_POWER_BUS_ARBITER_LOCKED,
             hil_gates_pass_mask: 0xFFFF_FFFF,
-            hil_status_code: 0x0000_0376,
+            hil_status_code: 0x0000_0392,
             crc64_iso_checksum: 0x3120_000E_0376_006E,
             cl10_divertor: ShbtMmioCacheline10Divertor {
                 divertor_separatrix_psi_q16: 5573,
@@ -863,6 +910,24 @@ impl ShbtSwarmMmioRegs {
                 bogoliubov_airgap_q16_48: SHBT_LOG10_BOGOLIUBOV_FLOOR_Q16_48,
                 dark_grid_exergy_q32_32: SHBT_DARK_GRID_1P8E56J_UQ32_32,
                 cl11_secded_syndrome: 0,
+            },
+            cl12_dark_os_zpe: ShbtDarkOsZpeCl12 {
+                dark_os_abi_magic: SHBT_SWARM_MMIO_ABI_V15_MAGIC,
+                dark_os_zpe_ctrl_flags: SHBT_DARK_OS_NATIVE_VOA_LOCK
+                    | SHBT_DARK_OS_ZERO_DECODE_ACTIVE
+                    | SHBT_DARK_OS_COCYCLE_SCHED_EN
+                    | SHBT_DARK_ZPE_KMS_PASSIVITY_GUARD
+                    | SHBT_DARK_ZPE_CH1_DM_RELAX_EN
+                    | SHBT_DARK_ZPE_CH2_CASIMIR_EN
+                    | SHBT_DARK_ZPE_CH3_ERGOTROPY_EN
+                    | SHBT_DARK_ZPE_REGIME_III_ACTIVE,
+                voa_crt_primary_state: 0,
+                kz_clock_period_femto_as: SHBT_DARK_OS_KZ_CLOCK_FEMTO_AS,
+                tqec_decode_stall_as: 0,
+                zpe_ch1_dm_power_w: SHBT_DARK_ZPE_CH1_DM_POWER_W_NOMINAL,
+                zpe_ch2_ch3_power_packed: SHBT_DARK_ZPE_CH2_CH3_POWER_PACKED_NOMINAL,
+                regime_iii_net_milli_yw: SHBT_DARK_ZPE_REGIME_III_NET_MILLI_YW,
+                cl12_secded_syndrome: SHBT_DARK_OS_CL12_SECDED_SYNDROME_NOMINAL,
             },
         }
     }
@@ -900,6 +965,12 @@ impl ShbtSwarmMmioRegs {
     #[inline]
     #[allow(clippy::approx_constant)]
     pub const fn new_nominal_v14() -> Self {
+        Self::new_nominal_v7()
+    }
+
+    #[inline]
+    #[allow(clippy::approx_constant)]
+    pub const fn new_nominal_v15() -> Self {
         Self::new_nominal_v7()
     }
 
@@ -1204,13 +1275,23 @@ pub struct ShbtSwarmMmioV14 {
     pub cl11_aegis_absolute: ShbtAegisAbsoluteCl11,
 }
 
+/// Master 832-byte ABI v15.0 aperture with Cache Line 12 appended.
+#[repr(C, align(64))]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ShbtSwarmMmioV15 {
+    pub legacy_v14: ShbtSwarmMmioV14,
+    pub cl12_dark_os_zpe: ShbtDarkOsZpeCl12,
+}
+
 pub type ShbtSwarmMmioV12 = ShbtSwarmMmioV13;
 
 const _: () = {
     assert!(size_of::<ShbtSwarmMmioV13>() == 704);
     assert!(size_of::<ShbtSwarmMmioV14>() == 768);
-    assert!(align_of::<ShbtSwarmMmioV14>() == 64);
+    assert!(size_of::<ShbtSwarmMmioV15>() == 832);
+    assert!(align_of::<ShbtSwarmMmioV15>() == 64);
     assert!(offset_of!(ShbtSwarmMmioV14, cl11_aegis_absolute) == 0x02C0);
+    assert!(offset_of!(ShbtSwarmMmioV15, cl12_dark_os_zpe) == 0x0300);
     assert!(align_of::<ShbtSwarmMmioV13>() == 64);
     assert!(offset_of!(ShbtSwarmMmioV13, mar_omega) == 0x0040);
     assert!(offset_of!(ShbtSwarmMmioV13, universal_harvest) == 0x0140);
@@ -1661,15 +1742,24 @@ mod tests {
 
     #[test]
     fn test_v12_nominal_and_fault_invariants() {
-        assert_eq!(core::mem::size_of::<ShbtSwarmMmioRegs>(), 768);
+        assert_eq!(core::mem::size_of::<ShbtSwarmMmioRegs>(), 832);
         assert_eq!(core::mem::size_of::<ShbtMarOmegaAperture>(), 256);
         assert_eq!(core::mem::size_of::<ShbtUniversalHarvestAperture>(), 256);
         assert_eq!(core::mem::size_of::<ShbtMmioCacheline10Divertor>(), 64);
         assert_eq!(core::mem::size_of::<ShbtAegisAbsoluteCl11>(), 64);
+        assert_eq!(core::mem::size_of::<ShbtDarkOsZpeCl12>(), 64);
         assert_eq!(core::mem::size_of::<ShbtSwarmMmioV13>(), 704);
         assert_eq!(core::mem::size_of::<ShbtSwarmMmioV14>(), 768);
+        assert_eq!(core::mem::size_of::<ShbtSwarmMmioV15>(), 832);
         assert_eq!(core::mem::size_of::<ShbtSwarmMmioV12>(), 704);
         assert_eq!(core::mem::offset_of!(ShbtSwarmMmioRegs, cl11_aegis_absolute), 0x02C0);
+        assert_eq!(core::mem::offset_of!(ShbtSwarmMmioRegs, cl12_dark_os_zpe), 0x0300);
+
+        let regs = ShbtSwarmMmioRegs::new_nominal_v15();
+        assert_eq!(regs.abi_version, SHBT_SWARM_ABI_VERSION);
+        assert_eq!(regs.cl12_dark_os_zpe.dark_os_abi_magic, SHBT_SWARM_MMIO_ABI_V15_MAGIC);
+        assert_eq!(regs.cl12_dark_os_zpe.zpe_ch1_dm_power_w, 187_750_000);
+        assert_eq!(regs.cl12_dark_os_zpe.regime_iii_net_milli_yw, 34_726);
 
         let mut regs = ShbtSwarmMmioRegs::new_nominal_v13();
         assert_eq!(regs.abi_version, SHBT_SWARM_ABI_VERSION);

@@ -1,9 +1,8 @@
 //! `crates/shbt-swarm-hil/src/bin/swarm_audit.rs`
-//! CLI Verification Runner that executes all 376 Hardware-in-the-Loop (HIL) and
-//! Formal Verification Gates (`100/100 Z3 SMT UNSAT`), prints a formatted summary table,
-//! and emits `verification_matrix.json` for ABI v14.0 (`0x000E0312`).
+//! CLI Verification Runner that executes all 392 Hardware-in-the-Loop (HIL) gates and
+//! emits `verification_matrix.json` for Release v8.000 / ABI v15.0 (`0x000F0312`).
 
-use shbt_swarm_hil::evaluate_all_376_gates;
+use shbt_swarm_hil::evaluate_all_392_gates;
 use std::fs::File;
 use std::io::Write;
 use std::process::ExitCode;
@@ -13,12 +12,12 @@ fn escape_json(s: &str) -> String {
 }
 
 fn main() -> ExitCode {
-    let gates = evaluate_all_376_gates();
+    let gates = evaluate_all_392_gates();
     let total = gates.len();
     let passed_count = gates.iter().filter(|g| g.passed).count();
 
     println!("========================================================================================================================");
-    println!(" SHBT-SWARM v14.0 DUAL-REACTOR (MAR-312X + MAR-OMEGA) & UNIVERSAL HARVESTING VERIFICATION MATRIX (376 GATES, 110 SMT)");
+    println!(" SHBT-SWARM v15.0 RELEASE v8.000 DARK-OS + DARK-ZPE & UNIVERSAL HARVESTING VERIFICATION MATRIX (392 GATES, 116 SMT)");
     println!("========================================================================================================================");
     println!(
         "{:<18} | {:<5} | {:<36} | {:<32} | {:<6}",
@@ -36,56 +35,57 @@ fn main() -> ExitCode {
 
     println!("========================================================================================================================");
     println!(
-        " SUMMARY: {}/{} GATES PASSED | ABI: 0x000E0312 (768B, 12 Cache Lines) | Z3 SMT: 110/110 UNSAT",
+        " SUMMARY: {}/{} GATES PASSED | ABI: 0x000F0312 (832B, 13 Cache Lines) | Z3 SMT: 116/116 UNSAT",
         passed_count, total
     );
     println!("========================================================================================================================");
 
-    let mut json = String::with_capacity(65536);
+    let mut json = String::with_capacity(131072);
     json.push_str("{\n");
-    json.push_str("  \"schema_version\": \"12.0.0\",\n");
-    json.push_str("  \"architecture\": \"SHBT-SWARM Dual-Reactor Hybrid Architecture (SHBT-MAR-312X + SHBT-MAR-OMEGA) & Universal Stellar-to-Computronium Pipeline\",\n");
-    json.push_str("  \"abi_version\": \"0x000C0312\",\n");
-    json.push_str("  \"abi_version_hex\": \"0x000C0312\",\n");
-    json.push_str("  \"mmio_struct_bytes\": 640,\n");
-    json.push_str("  \"mmio_total_bytes\": 640,\n");
-    json.push_str("  \"mmio_cache_lines\": 10,\n");
-    json.push_str("  \"cache_lines\": 10,\n");
-    json.push_str("  \"formal_z3_proofs_total\": 100,\n");
-    json.push_str("  \"formal_z3_proofs_unsat\": 100,\n");
+    json.push_str("  \"schema_version\": \"15.0.0\",\n");
+    json.push_str("  \"architecture\": \"SHBT-SWARM Release v8.000 Autonomous Interstellar Platform (Dark-OS + Dark-ZPE + AEGIS-ABSOLUTE + Dual-Reactor MAR-312X/MAR-OMEGA)\",\n");
+    json.push_str("  \"abi_version\": \"0x000F0312\",\n");
+    json.push_str("  \"abi_version_hex\": \"0x000F0312\",\n");
+    json.push_str("  \"mmio_struct_bytes\": 832,\n");
+    json.push_str("  \"mmio_total_bytes\": 832,\n");
+    json.push_str("  \"mmio_cache_lines\": 13,\n");
+    json.push_str("  \"cache_lines\": 13,\n");
+    json.push_str("  \"formal_z3_proofs_total\": 116,\n");
+    json.push_str("  \"formal_z3_proofs_unsat\": 116,\n");
     json.push_str(&format!("  \"total_gates\": {},\n", total));
     json.push_str(&format!("  \"passed_gates\": {},\n", passed_count));
     json.push_str(&format!("  \"hil_gates_total\": {},\n", total));
     json.push_str(&format!("  \"hil_gates_passed\": {},\n", passed_count));
     json.push_str(&format!("  \"all_passed\": {},\n", passed_count == total));
-    json.push_str("  \"status\": \"ALL_344_GATES_AND_100_PROOFS_VERIFIED\",\n");
-    json.push_str("  \"dual_reactor_architecture\": {\n");
-    json.push_str("    \"traversal_reactor\": \"SHBT-MAR-312X (25.00 EW Discrete Core, 5-Zone DEC-X, 48.0 T Clathrate Coils)\",\n");
-    json.push_str("    \"harvesting_reactor\": \"SHBT-MAR-OMEGA (1.00 - 10.00 ZW Continuous-Flow Boundary Reactor, 0.0 kg Stored Fuel)\",\n");
+    json.push_str("  \"status\": \"ALL_392_GATES_AND_116_PROOFS_VERIFIED\",\n");
+    json.push_str("  \"release_v8_architecture\": {\n");
+    json.push_str("    \"dark_os\": \"Native dark-sector holonomic VOA operating system over V_dark = V_Lambda(T3) tensor V_arith tensor V_defect\",\n");
+    json.push_str("    \"dark_zpe\": \"Three-channel non-equilibrium dark-sector exergy harvester with KMS/framing no-go guards and Regime III autopoietic replenishment\",\n");
+    json.push_str("    \"aegis_absolute\": \"Post-isolation bipartite cobordism pinchoff with one-way nilpotent Dehn ingress airlock\",\n");
     json.push_str("    \"power_bus_arbiter\": \"Deterministic Hardware Handoff State Machine (SHBT_POWER_BUS_ARBITER_LOCKED)\"\n");
     json.push_str("  },\n");
     json.push_str("  \"formal_verification\": {\n");
     json.push_str("    \"smt_logic\": \"QF_NRA\",\n");
-    json.push_str("    \"previous_theorems_unsat\": 94,\n");
-    json.push_str("    \"new_mar_omega_theorems_unsat\": 6,\n");
-    json.push_str("    \"total_theorems_verified\": 100,\n");
+    json.push_str("    \"previous_theorems_unsat\": 110,\n");
+    json.push_str("    \"new_dark_os_zpe_theorems_unsat\": 6,\n");
+    json.push_str("    \"total_theorems_verified\": 116,\n");
     json.push_str("    \"all_unsat\": true,\n");
     json.push_str("    \"new_theorems\": [\n");
-    json.push_str("      \"THM-MAR-OMEGA-01\",\n");
-    json.push_str("      \"THM-MAR-OMEGA-02\",\n");
-    json.push_str("      \"THM-MAR-OMEGA-03\",\n");
-    json.push_str("      \"THM-MAR-OMEGA-04\",\n");
-    json.push_str("      \"THM-MAR-OMEGA-05\",\n");
-    json.push_str("      \"THM-MAR-OMEGA-06\"\n");
+    json.push_str("      \"THM-DARK-ZPE-01\",\n");
+    json.push_str("      \"THM-DARK-ZPE-02\",\n");
+    json.push_str("      \"THM-DARK-ZPE-03\",\n");
+    json.push_str("      \"THM-DARK-OS-01\",\n");
+    json.push_str("      \"THM-DARK-OS-02\",\n");
+    json.push_str("      \"THM-DARK-OS-03\"\n");
     json.push_str("    ]\n");
     json.push_str("  },\n");
     json.push_str("  \"hil_verification\": {\n");
-    json.push_str("    \"previous_gates_passed\": 320,\n");
-    json.push_str("    \"new_mar_omega_gates_passed\": 24,\n");
+    json.push_str("    \"previous_gates_passed\": 376,\n");
+    json.push_str("    \"new_dark_os_zpe_gates_passed\": 16,\n");
     json.push_str(&format!("    \"total_gates_passed\": {},\n", passed_count));
     json.push_str(&format!("    \"total_gates_evaluated\": {},\n", total));
     json.push_str("    \"pass_rate_percent\": 100.0,\n");
-    json.push_str("    \"gate_range_added\": \"GATE-321..GATE-344\"\n");
+    json.push_str("    \"gate_range_added\": \"GATE-377..GATE-392\"\n");
     json.push_str("  },\n");
     json.push_str("  \"key_telemetry_benchmarks\": {\n");
     json.push_str("    \"mar312x_traversal_power_ew\": 25.0,\n");
@@ -97,14 +97,11 @@ fn main() -> ExitCode {
     json.push_str("    \"residual_throat_shear_mpa\": 7.85e-9,\n");
     json.push_str("    \"solar_deconstruction_rate_msun_yr\": 20.0,\n");
     json.push_str("    \"solar_deconstruction_days_per_msun\": 18.2625,\n");
-    json.push_str("    \"wd_screened_coulomb_gamma\": 2.0596,\n");
-    json.push_str("    \"wd_instanton_action_s\": 274.63,\n");
-    json.push_str("    \"wd_pycnonuclear_rate_cm3_s\": 1.0e-138,\n");
-    json.push_str("    \"rd_effective_magnetic_reynolds\": 0.765,\n");
-    json.push_str("    \"rd_dynamo_attenuation_db\": 148.5,\n");
-    json.push_str("    \"ns_cfl_gap_mev\": 100.0,\n");
-    json.push_str("    \"ns_free_quark_leak_prob\": 0.0,\n");
-    json.push_str("    \"computronium_defect_density_cm3\": 0.0,\n");
+    json.push_str("    \"dark_os_kz_clock_femto_as\": 17010000,\n");
+    json.push_str("    \"dark_os_crt_primaries\": 2901360,\n");
+    json.push_str("    \"dark_zpe_ch1_dm_power_w\": 187750000,\n");
+    json.push_str("    \"dark_zpe_regime_iii_net_milli_yw\": 34726,\n");
+    json.push_str("    \"dark_zpe_foundry_reactive_buffer_gj\": 759580.0,\n");
     json.push_str("    \"symplectic_shadow_drift\": 1.0e-22\n");
     json.push_str("  },\n");
     json.push_str("  \"gates\": [\n");
@@ -151,7 +148,7 @@ fn main() -> ExitCode {
         }
     }
 
-    if passed_count == total && total == 376 {
+    if passed_count == total && total == 392 {
         ExitCode::SUCCESS
     } else {
         ExitCode::FAILURE

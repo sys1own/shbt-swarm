@@ -10,6 +10,8 @@
 //!   Sugawara clock `tau_KZ = 17.010000 as`, and `(U_dark M_dark)^2 = 0`.
 #![forbid(unsafe_code)]
 
+use crate::dark_os_kernel::DarkOsKernel;
+
 pub const LOGOS_SATURATED_BIT_OPS_PER_SEC: f64 = 1.080e92;
 pub const DARK_WEIL_PRIMARY_MODULES: u64 = 2_901_360;
 pub const C_DARK_COMP_NUM: u64 = 1_197_103;
@@ -45,6 +47,7 @@ pub struct DarkHolonomicCore {
     pub unipotent_shear_upper_left: f64,
     pub unipotent_shear_lower_right: f64,
     pub symplectic_form_residual: f64,
+    pub dark_os: DarkOsKernel,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -80,6 +83,7 @@ impl DarkHolonomicCore {
             unipotent_shear_upper_left: 1.0,
             unipotent_shear_lower_right: 1.0,
             symplectic_form_residual: 0.0,
+            dark_os: DarkOsKernel::new(),
         }
     }
 

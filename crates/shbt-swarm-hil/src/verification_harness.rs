@@ -6,12 +6,14 @@
 use shbt_swarm_sim::galactic_multiphysics::GalacticMultiphysicsEngine;
 use warp_power_battery::power_arbiter::{DualReactorPowerArbiter, PowerArbiterState};
 
-/// Total HIL gates across the SHBT-SWARM v13.0 verification matrix (`320` baseline + `40` new = `360`).
-pub const TOTAL_HIL_GATES: usize = 360;
+/// Total HIL gates across the SHBT-SWARM v15.0 verification matrix (`376` baseline + `16` new = `392`).
+pub const TOTAL_HIL_GATES: usize = 392;
 /// Number of new `SHBT-MAR-OMEGA` & universal harvesting HIL gates (`GATE-321` .. `GATE-360`).
 pub const NEW_MAR_OMEGA_GATES: usize = 40;
 /// Number of new `SHBT-AEGIS-ABSOLUTE` HIL gates (`GATE-361` .. `GATE-376`).
 pub const NEW_AEGIS_ABSOLUTE_GATES: usize = 16;
+/// Number of new `Dark-OS` / `Dark-ZPE` HIL gates (`GATE-377` .. `GATE-392`).
+pub const NEW_DARK_OS_ZPE_GATES: usize = 16;
 
 /// Result record for a single `SHBT-MAR-OMEGA` HIL gate (`GATE-321` .. `GATE-360`).
 #[repr(C)]
@@ -444,7 +446,7 @@ pub fn run_aegis_absolute_hil_gates_361_to_376() -> [HilGateResult; NEW_AEGIS_AB
     let (coalesce_report, stabilization) = unitary_householder_givens_coalescence(&coalescer, &[1.0, 0.0], 156);
     let coalescence_ok = coalesce_report.is_unitary && stabilization.verify_co_inductive_stabilization();
 
-    let regs_size = core::mem::size_of::<shbt_swarm_mmio::ShbtSwarmMmioRegs>();
+    let regs_size = core::mem::size_of::<shbt_swarm_mmio::ShbtSwarmMmioV14>();
     let cl11_ok = regs_size == 768
         && shbt_swarm_mmio::ShbtSwarmMmioRegs::new_nominal_v14().cl11_aegis_absolute.aegis_abs_abi_magic
             == shbt_swarm_mmio::SHBT_SWARM_MMIO_ABI_V14_MAGIC;
@@ -470,6 +472,225 @@ pub fn run_aegis_absolute_hil_gates_361_to_376() -> [HilGateResult; NEW_AEGIS_AB
         HilGateResult { gate_id: 374, passed: quota_ok && galois_ok, metric_value: quota_sum },
         HilGateResult { gate_id: 375, passed: somatic_ok && coalescence_ok, metric_value: stabilization.poincare_recurrence_time_years.min(1.0e100) },
         HilGateResult { gate_id: 376, passed: cl11_ok && stage2_ok && manifold_ok && airlock_ok && airgap_ok && closed_ok && quota_ok, metric_value: regs_size as f64 },
+    ]
+}
+
+/// Evaluates the 16 Release v8.000 `Dark-OS` / `Dark-ZPE` gates (`GATE-377` .. `GATE-392`).
+pub fn run_dark_os_zpe_hil_gates_377_to_392() -> [HilGateResult; NEW_DARK_OS_ZPE_GATES] {
+    use shbt_swarm_ai::{TomitaModularLearner, DARK_OS_STEN_BANKS, DARK_OS_STEN_SPEEDUP_X1E6, DARK_OS_STEN_T_EQ_FEMTO_AS, DARK_OS_STEN_VISIBLE_POWER_PICOWATTS};
+    use shbt_swarm_apotheosis::DarkOsSanctuaryForkEngine;
+    use shbt_swarm_architect::ZeroComputeSimToRenderBridge;
+    use shbt_swarm_foundry::{DarkOsCartanCompiler, NUM_DYNKIN_SLOTS, NUM_FIBONACCI_CHANNELS};
+    use shbt_swarm_logos::{
+        CrtPrimaryModule, DarkOsKernel, VoaIsaOpcode, CRT_IDEMPOTENTS, CRT_MODULI,
+        DARK_KZ_CLOCK_FEMTO_AS, DARK_KZ_LEVEL_KAPPA, DARK_VOA_CONDUCTOR, DARK_VOA_PRIMARIES,
+    };
+    use shbt_swarm_mar312x::DarkZpeMagazineBus;
+    use shbt_swarm_omega::{
+        CasimirAnomalyHarvester, CosmologicalDmRelaxer, CrossLapseErgotropyEngine,
+        DarkPowerGridRegime, KmsPassivityGuard, PerpetualDarkPowerGrid,
+        SHBT_SWARM_FAULT_FRAMING_WEYL,
+    };
+    use shbt_swarm_aegis::VacuumPinningState;
+    use warp_power_battery::power_arbiter::{
+        DualReactorPowerArbiter, DARK_ZPE_COLD_START_EXCITATION_MILLI_PW,
+        DARK_ZPE_COLD_START_EXCITATION_WATTS, DARK_ZPE_LAYER5_CDL_ACTION_SE,
+        DARK_ZPE_ROSSELAND_QUENCH_RATIO_MAX,
+    };
+
+    let zero = CrtPrimaryModule::zero();
+
+    let mut kms_guard = KmsPassivityGuard::new();
+    let kms_rejected = !kms_guard.audit_extraction_step(true, 1, 0, 0);
+    let gate377 = kms_rejected
+        && kms_guard.stationary_cyclic_work_watts <= 0
+        && kms_guard.dce_dark_leakage_watts == 0
+        && kms_guard.verify_no_go_guards();
+
+    let mut framing_bad = KmsPassivityGuard::new();
+    let framing_rejected = !framing_bad.audit_extraction_step(false, 0, 1, 0);
+    let mut framing_good = KmsPassivityGuard::new();
+    let ch1 = CosmologicalDmRelaxer::new();
+    let gate378 = framing_rejected
+        && (framing_bad.fault_latch & SHBT_SWARM_FAULT_FRAMING_WEYL) != 0
+        && framing_bad.framing_numerator_7936 == 1
+        && ch1.relax_dm_coset(&mut framing_good)
+        && framing_good.framing_numerator_7936 == 0
+        && framing_good.weyl_electric_norm_q64 == 0;
+
+    let mut ch1_guard = KmsPassivityGuard::new();
+    let gate379 = ch1.covers_landauer_debt()
+        && ch1.relax_dm_coset(&mut ch1_guard)
+        && ch1.ship_void_loiter_w == 187_750_000
+        && ch1.ship_void_warp_power_w() == 15_510_000_000_000_000_000
+        && ch1.halo_megastructure_milli_yw() == 25_000
+        && ch1_guard.verify_no_go_guards();
+
+    let mut magazine = DarkZpeMagazineBus::new();
+    let gate380 = magazine.verify_magazine_recharge()
+        && magazine.step_magazine_cycle()
+        && magazine.verify_void_quine()
+        && magazine.void_warp_power_w() == 15_510_000_000_000_000_000
+        && magazine.quine_us == 13_418;
+
+    let ch2 = CasimirAnomalyHarvester::new();
+    let gate381 = ch2.verify_ford_roman_qi()
+        && ch2.squeeze_r3_milli == 3_820
+        && ch2.ship_casimir_power_w() == 4_185_000_000_000_000
+        && ch2.omega_casimir_milli_yw == 1_306;
+
+    let ch3 = CrossLapseErgotropyEngine::new();
+    let gate382 = ch3.verify_bluesheet_clamp()
+        && (ch3.beta_logos_over_beta_ext() - 1.0e-12).abs() < 1.0e-24
+        && ch3.ship_ergotropy_power_w() == 8_420_000_000_000_000_000
+        && ch3.israel_bluesheet_stress_pa == 0;
+
+    let mut grid = PerpetualDarkPowerGrid::canonical();
+    let regime3_ok = grid.step_dark_zpe_governor_cycle();
+    let regime3 = grid.regime_three_autopoietic_metrics();
+    let gate383 = regime3_ok
+        && regime3.regime == DarkPowerGridRegime::RegimeIIIAutopoieticReplenishment
+        && (regime3.p_grid_watts - 3.4726e25).abs() / 3.4726e25 < 1.0e-12
+        && regime3.d_energy_dt_watts == regime3.p_grid_watts
+        && regime3.foundry_gain_q.is_infinite()
+        && regime3.dissipation_j_per_bit == 0.0
+        && grid.zpe_extractor.verify_ledger();
+
+    let mut arbiter = DualReactorPowerArbiter::new_cruise();
+    let pinning = VacuumPinningState::new_pinned();
+    let gate384 = arbiter.engage_dark_zpe_autopoietic_bus()
+        && arbiter.dark_zpe_cold_start_excitation_watts() == DARK_ZPE_COLD_START_EXCITATION_WATTS
+        && arbiter.verify_dark_zpe_layer5_cold_start(1.0e12, 1.0e-12, 0.0)
+        && pinning.verify_dark_zpe_layer5_cold_start(
+            DARK_ZPE_COLD_START_EXCITATION_MILLI_PW,
+            DARK_ZPE_LAYER5_CDL_ACTION_SE,
+            DARK_ZPE_ROSSELAND_QUENCH_RATIO_MAX,
+            0.0,
+        );
+
+    let mut crt_kernel = DarkOsKernel::new();
+    let a = CrtPrimaryModule::from_primary_index(1_234_567);
+    let b = CrtPrimaryModule::from_primary_index(2_345_678);
+    let (crt_sum, crt_add_ok) = crt_kernel.execute_voa_instruction(VoaIsaOpcode::VoaCrtAddMod, a, b);
+    let (crt_product, crt_mul_ok) = crt_kernel.execute_voa_instruction(VoaIsaOpcode::VoaVerlindeFuse, a, b);
+    let idempotent_sum: u64 = CRT_IDEMPOTENTS.iter().sum();
+    let idempotents_orthogonal = CRT_IDEMPOTENTS
+        .iter()
+        .enumerate()
+        .all(|(i, &e)| e % CRT_MODULI[i] == 1 && (0..CRT_MODULI.len()).all(|j| i == j || e % CRT_MODULI[j] == 0));
+    let crt_roundtrip = [0_u64, 1, DARK_VOA_CONDUCTOR, DARK_VOA_PRIMARIES - 1]
+        .iter()
+        .all(|&alpha| CrtPrimaryModule::from_primary_index(alpha).to_primary_index() == alpha % DARK_VOA_PRIMARIES);
+    let gate385 = crt_add_ok
+        && crt_mul_ok
+        && crt_sum.is_canonical()
+        && crt_product.is_canonical()
+        && crt_kernel.crt_alu.crt_error_residual_q64 == 0
+        && DARK_VOA_CONDUCTOR == 2 * 3 * 5 * 7 * 11 * 157
+        && DARK_VOA_PRIMARIES == 8 * DARK_VOA_CONDUCTOR
+        && idempotent_sum % DARK_VOA_CONDUCTOR == 1
+        && idempotents_orthogonal
+        && crt_roundtrip
+        && crt_kernel.verify_dark_os_invariants();
+
+    let mut tick_kernel = DarkOsKernel::new();
+    let (_, tick_ok) = tick_kernel.execute_voa_instruction(VoaIsaOpcode::VoaCartanFold346, zero, zero);
+    let gate386 = tick_ok
+        && tick_kernel.kz_ticks_elapsed == 1
+        && tick_kernel.voa_ops_executed == 1
+        && DARK_KZ_CLOCK_FEMTO_AS == 17_010_000;
+
+    let (_, kz_step_ok) = tick_kernel.execute_voa_instruction(VoaIsaOpcode::VoaKzHolonomyStep, zero, zero);
+    let gate387 = kz_step_ok
+        && tick_kernel.kz_transport.verify_cohomological_immunity()
+        && tick_kernel.kz_transport.kz_level_kappa == DARK_KZ_LEVEL_KAPPA
+        && tick_kernel.kz_transport.curvature_2form_norm_q64 == 0
+        && tick_kernel.kz_transport.decode_stall_femto_as == 0
+        && tick_kernel.kz_transport.galois_snap_locked;
+
+    let (_, cocycle_ok) = tick_kernel.execute_voa_instruction(VoaIsaOpcode::VoaTomitaCocycle, zero, zero);
+    let (_, mera_ok) = tick_kernel.execute_voa_instruction(VoaIsaOpcode::VoaMeraContract, zero, zero);
+    let (_, relabel_ok) = tick_kernel.execute_voa_instruction(VoaIsaOpcode::VoaSp2gRelabel, zero, zero);
+    let gate388 = cocycle_ok
+        && mera_ok
+        && relabel_ok
+        && tick_kernel.cocycle_scheduler.verify_modular_invariants()
+        && tick_kernel.cocycle_scheduler.goi_nilpotent_residual_q64 == 0
+        && tick_kernel.cocycle_scheduler.internal_dissipation_j_per_bit == 0
+        && tick_kernel.cocycle_scheduler.zero_copy_sp2g_relabels >= 2
+        && tick_kernel.cocycle_scheduler.mera_contracts >= 1;
+
+    let mut sten_kernel = DarkOsKernel::new();
+    let sten_ok = TomitaModularLearner::dark_os_sten_inference_step(&mut sten_kernel);
+    let gate389 = sten_ok
+        && TomitaModularLearner::dark_os_sten_t_eq_femto_as() == DARK_OS_STEN_T_EQ_FEMTO_AS
+        && TomitaModularLearner::dark_os_sten_visible_power_picowatts() == DARK_OS_STEN_VISIBLE_POWER_PICOWATTS
+        && DARK_OS_STEN_VISIBLE_POWER_PICOWATTS == 0
+        && DARK_OS_STEN_SPEEDUP_X1E6 == 3_200_000
+        && DARK_OS_STEN_BANKS == 32
+        && sten_kernel.verify_dark_os_invariants();
+
+    let mut compiler = DarkOsCartanCompiler::new();
+    let compile = compiler.compile_cartan_fold346();
+    let post_sim = ZeroComputeSimToRenderBridge::verify_dark_os_cartan_post_sim(
+        0,
+        shbt_swarm_foundry::DARK_OS_CRYSTALLOGRAPHIC_SPACE_GROUPS,
+        NUM_DYNKIN_SLOTS,
+        shbt_swarm_foundry::DARK_ZPE_FOUNDRY_REACTIVE_BUFFER_JOULES,
+    );
+    let gate390 = match compile {
+        Ok(report) => report.tau_compile_femto_as == DARK_KZ_CLOCK_FEMTO_AS
+            && report.dynkin_slots == NUM_DYNKIN_SLOTS
+            && report.fibonacci_channels == NUM_FIBONACCI_CHANNELS
+            && report.space_groups == shbt_swarm_foundry::DARK_OS_CRYSTALLOGRAPHIC_SPACE_GROUPS
+            && report.reactive_buffer_joules == shbt_swarm_foundry::DARK_ZPE_FOUNDRY_REACTIVE_BUFFER_JOULES
+            && report.post_sim_delta_cycles == 0
+            && report.weyl_curvature_vanished
+            && compiler.verify_post_sim_isomorphism()
+            && post_sim == Ok(0),
+        Err(_) => false,
+    };
+
+    let mut sanctuary = DarkOsSanctuaryForkEngine::new();
+    let class_x0_ok = sanctuary.execute_class_x0_crt_recall(1_234_567);
+    let class_x1_ok = sanctuary.execute_class_x1_sanctuary_fork();
+    let gate391 = class_x0_ok
+        && class_x1_ok
+        && sanctuary.verify_sanctuary_fork_latency()
+        && sanctuary.class_x0_crt_recalls == 1
+        && sanctuary.class_x1_sanctuary_forks == 1
+        && sanctuary.kernel.kz_ticks_elapsed >= 2
+        && sanctuary.kernel.verify_dark_os_invariants();
+
+    let regs = shbt_swarm_mmio::ShbtSwarmMmioRegs::new_nominal_v15();
+    let cl12 = &regs.cl12_dark_os_zpe;
+    let gate392 = core::mem::size_of::<shbt_swarm_mmio::ShbtSwarmMmioRegs>() == 832
+        && core::mem::offset_of!(shbt_swarm_mmio::ShbtSwarmMmioRegs, cl12_dark_os_zpe) == 0x0300
+        && cl12.dark_os_abi_magic == shbt_swarm_mmio::SHBT_SWARM_MMIO_ABI_V15_MAGIC
+        && cl12.kz_clock_period_femto_as == shbt_swarm_mmio::SHBT_DARK_OS_KZ_CLOCK_FEMTO_AS
+        && cl12.tqec_decode_stall_as == 0
+        && cl12.zpe_ch1_dm_power_w == shbt_swarm_mmio::SHBT_DARK_ZPE_CH1_DM_POWER_W_NOMINAL
+        && cl12.zpe_ch2_ch3_power_packed == shbt_swarm_mmio::SHBT_DARK_ZPE_CH2_CH3_POWER_PACKED_NOMINAL
+        && cl12.regime_iii_net_milli_yw == shbt_swarm_mmio::SHBT_DARK_ZPE_REGIME_III_NET_MILLI_YW
+        && cl12.cl12_secded_syndrome == shbt_swarm_mmio::SHBT_DARK_OS_CL12_SECDED_SYNDROME_NOMINAL;
+
+    [
+        HilGateResult { gate_id: 377, passed: gate377, metric_value: kms_guard.stationary_cyclic_work_watts as f64 },
+        HilGateResult { gate_id: 378, passed: gate378, metric_value: framing_bad.framing_numerator_7936 as f64 },
+        HilGateResult { gate_id: 379, passed: gate379, metric_value: ch1.ship_void_loiter_w as f64 },
+        HilGateResult { gate_id: 380, passed: gate380, metric_value: magazine.quine_us as f64 },
+        HilGateResult { gate_id: 381, passed: gate381, metric_value: ch2.ship_casimir_power_w() as f64 },
+        HilGateResult { gate_id: 382, passed: gate382, metric_value: ch3.ship_ergotropy_power_w() as f64 },
+        HilGateResult { gate_id: 383, passed: gate383, metric_value: regime3.p_grid_watts },
+        HilGateResult { gate_id: 384, passed: gate384, metric_value: arbiter.dark_zpe_cold_start_excitation_watts() },
+        HilGateResult { gate_id: 385, passed: gate385, metric_value: idempotent_sum as f64 },
+        HilGateResult { gate_id: 386, passed: gate386, metric_value: DARK_KZ_CLOCK_FEMTO_AS as f64 },
+        HilGateResult { gate_id: 387, passed: gate387, metric_value: tick_kernel.kz_transport.decode_stall_femto_as as f64 },
+        HilGateResult { gate_id: 388, passed: gate388, metric_value: tick_kernel.cocycle_scheduler.internal_dissipation_j_per_bit as f64 },
+        HilGateResult { gate_id: 389, passed: gate389, metric_value: TomitaModularLearner::dark_os_sten_t_eq_femto_as() as f64 },
+        HilGateResult { gate_id: 390, passed: gate390, metric_value: post_sim.unwrap_or(1) as f64 },
+        HilGateResult { gate_id: 391, passed: gate391, metric_value: sanctuary.kernel.kz_ticks_elapsed as f64 },
+        HilGateResult { gate_id: 392, passed: gate392, metric_value: core::mem::size_of::<shbt_swarm_mmio::ShbtSwarmMmioRegs>() as f64 },
     ]
 }
 

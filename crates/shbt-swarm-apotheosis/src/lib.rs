@@ -19,6 +19,7 @@ pub mod qualia_cobordism;
 pub mod nested_sim;
 pub mod nested_cbf;
 pub mod somatic_bridge;
+pub mod dark_os_sanctuary;
 
 pub use qnd_ascension::{LindbladianPurifier, QndError};
 pub use horizon_deflect::{CausalDecouplingBifurcation, DeflectionError};
@@ -39,6 +40,10 @@ pub use nested_cbf::{
 pub use somatic_bridge::{
     actual_post_pinch_dark_dissipation_j_per_bit, symplectic_landauer_quota_j_per_bit,
     SomaticBridgeClass, SomaticBridgeController, SomaticBridgeState,
+};
+pub use dark_os_sanctuary::{
+    DarkOsSanctuaryForkEngine, DARK_OS_CLASS_X1_STREAM_FIDELITY_FLOOR,
+    DARK_OS_SANCTUARY_FORK_FEMTO_AS,
 };
 
 use core::marker::PhantomData;

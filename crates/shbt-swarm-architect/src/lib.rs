@@ -70,6 +70,25 @@ impl ZeroComputeSimToRenderBridge {
         // 1:1 isometric mapping: Delta C_post-sim == 0 FLOPs/gates
         Ok(0)
     }
+
+    /// Verifies Release v8 Dark-OS Cartan compilation reaches render with zero post-sim cycles.
+    #[inline]
+    pub const fn verify_dark_os_cartan_post_sim(
+        post_sim_delta_cycles: u64,
+        compiled_space_groups: u16,
+        dynkin_slots: usize,
+        reactive_buffer_joules: u64,
+    ) -> Result<u64, u32> {
+        if post_sim_delta_cycles == 0
+            && compiled_space_groups == 230
+            && dynkin_slots == shbt_swarm_foundry::NUM_DYNKIN_SLOTS
+            && reactive_buffer_joules == shbt_swarm_foundry::DARK_ZPE_FOUNDRY_REACTIVE_BUFFER_JOULES
+        {
+            Ok(0)
+        } else {
+            Err(FAULT_SIM_TO_RENDER_HASH_MISMATCH)
+        }
+    }
 }
 
 /// WP-2.2 & WP-3: Holographic MERA-DAG Planetary Architect & 1g Habitat Metric Controller.

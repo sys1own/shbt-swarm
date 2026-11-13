@@ -122,6 +122,18 @@ impl GalacticSynthesisSimulation {
         self.causal_horizon_isolated = true;
         Ok(())
     }
+
+    /// Executes one Release v8 Dark-ZPE governor cycle and one Dark-OS VOA channel commit.
+    pub fn step_release_v8_dark_os_zpe(&mut self) -> bool {
+        let zpe_ok = self.power_grid.step_dark_zpe_governor_cycle();
+        let zero = CrtPrimaryModule::zero();
+        let (_, dark_os_ok) = self.logos_core.dark_holonomic.dark_os.execute_voa_instruction(
+            VoaIsaOpcode::VoaZpeCh1Relax,
+            zero,
+            zero,
+        );
+        zpe_ok && dark_os_ok && self.power_grid.zpe_extractor.regime_iii_active
+    }
 }
 
 #[cfg(test)]
