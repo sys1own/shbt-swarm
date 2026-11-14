@@ -64,7 +64,7 @@ fn main() {
         }
     }
 
-    println!("  ABI Version            : 0x{:08X} (v15.0 / Release v8.000)", regs.abi_version);
+    println!("  ABI Version            : 0x{:08X} (v15.0 / Release v8.100)", regs.abi_version);
     println!("  MMIO Footprint         : {} bytes ({} cache lines, align {}B)", regs_size, regs_size / 64, regs_align);
     println!("  Dark-OS KZ Clock       : {} femto-as (17.010000 as)", regs.cl12_dark_os_zpe.kz_clock_period_femto_as);
     println!("  Dark-ZPE Channel-1     : {} W ship DM relaxation", regs.cl12_dark_os_zpe.zpe_ch1_dm_power_w);
@@ -82,7 +82,7 @@ fn main() {
     let mut json = String::with_capacity(131072);
     json.push_str("{\n");
     json.push_str("  \"schema_version\": \"15.0.0\",\n");
-    json.push_str("  \"architecture\": \"SHBT-SWARM Release v8.000 Autonomous Interstellar Platform (Dark-OS + Dark-ZPE + AEGIS-ABSOLUTE + Dual-Reactor MAR-312X/MAR-OMEGA)\",\n");
+    json.push_str("  \"architecture\": \"SHBT-SWARM Release v8.100 Autonomous Interstellar Platform (Dark-OS + Dark-ZPE + AEGIS-ABSOLUTE + Dual-Reactor MAR-312X/MAR-OMEGA)\",\n");
     json.push_str("  \"abi_version\": \"0x000F0312\",\n");
     json.push_str("  \"abi_version_hex\": \"0x000F0312\",\n");
     json.push_str("  \"mmio_struct_bytes\": 832,\n");

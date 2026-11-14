@@ -2,7 +2,7 @@
  * include/shbt_swarm_mmio.h
  * Bare-Metal C11 Register, Cognitive, Universal Synthesis & MAR-312X Reactor Specification
  * Phase 5C: SHBT-AEGIS-ABSOLUTE Causal Horizon Isolation (SHBT-MAR-312X)
- * Base Physical Address: 0x70000000 / 0x80000000 (832-Byte 13-Cacheline ABI v15.0 Contract)
+ * Base Physical Address: 0x70000000 / 0x80000000 (832-Byte 13-Cacheline ABI v15.1 Contract)
  */
 
 #ifndef SHBT_SWARM_MMIO_H
@@ -15,7 +15,7 @@
 #include "shbt_nested_sim_abi.h"
 
 #define SHBT_SWARM_MMIO_MAGIC              0x53484254UL /* "SHBT" */
-#define SHBT_SWARM_ABI_VERSION             0x000F0312U /* ABI v15.0 */
+#define SHBT_SWARM_ABI_VERSION             0x000F0312U /* ABI v15.1 */
 #define SHBT_SWARM_ABI_VERSION_V12         0x000C0312UL
 #define SHBT_SWARM_ABI_VERSION_V13         0x000D0312UL
 #define SHBT_SWARM_ABI_VERSION_V14         0x000E0312UL
@@ -735,9 +735,9 @@ typedef struct SHBT_ALIGN64 {
     volatile uint64_t cl11_secded_syndrome;        /* 0x02F8: 7x Hamming(72,64) syndromes + CRC8 */
 } shbt_aegis_absolute_cl11_t;
 
-/* === CACHELINE 12 (Offsets 0x0300 .. 0x033F): ABI v15.0 Dark-OS / Dark-ZPE Registers (64 bytes) === */
+/* === CACHELINE 12 (Offsets 0x0300 .. 0x033F): ABI v15.1 Dark-OS / Dark-ZPE Registers (64 bytes) === */
 typedef struct SHBT_ALIGN64 {
-    volatile uint32_t dark_os_abi_magic;        /* 0x0300: 0x000F0312 (ABI v15.0 magic) */
+    volatile uint32_t dark_os_abi_magic;        /* 0x0300: 0x000F0312 (ABI v15.1 magic) */
     volatile uint32_t dark_os_zpe_ctrl_flags;   /* 0x0304: Dark-OS & Dark-ZPE latch flags */
     volatile uint64_t voa_crt_primary_state;    /* 0x0308: Active primary [0..2901359] & VOA opcode */
     volatile uint64_t kz_clock_period_femto_as; /* 0x0310: 17,010,000 femto-as (17.010000 as) */
@@ -825,8 +825,8 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
 
     /* --- Cache Line 3 (0x00C0..0x00FF): Microkernel Control & Audit Header --- */
     uint32_t abi_version;                     /* 0x00C0: 0x000F0312 */
-    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 122 */
-    uint32_t hil_gates_pass_count;            /* 0x00C8: 400 */
+    uint32_t formal_proofs_unsat_count;       /* 0x00C4: 128 */
+    uint32_t hil_gates_pass_count;            /* 0x00C8: 408 */
     uint32_t active_phase_mask;               /* 0x00CC: 0x000000FF (Phases 1..6 + 5C) */
     uint64_t heartbeat_monotonic_ticks;       /* 0x00D0: Cycle counter */
     uint64_t reserved_v6_pad[5];              /* 0x00D8..0x00FF: Pad to 0x0100 */
@@ -889,7 +889,7 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     double   omega_throat_shear_mpa;          /* 0x0258: < 1.0e-6 MPa (7.85e-9 MPa) */
     double   omega_bondi_hoyle_msun_yr;       /* 0x0260: >= 20.0 M_sun/yr */
     uint64_t power_bus_arbiter_flags;         /* 0x0268: Dual-Reactor Arbiter state flags */
-    uint32_t hil_gates_pass_mask;             /* 0x0270: 32-bit HIL pass-mask window (400/400 PASS) */
+    uint32_t hil_gates_pass_mask;             /* 0x0270: 32-bit HIL pass-mask window (408/408 PASS) */
     uint32_t hil_status_code;                 /* 0x0274: 0x00000400 (400/400 PASS) */
     uint64_t crc64_iso_checksum;              /* 0x0278: CRC-64-ISO hardware seal */
 
@@ -899,7 +899,7 @@ typedef struct __attribute__((aligned(64))) shbt_swarm_mmio_regs {
     /* === CACHELINE 11 (Offsets 0x02C0 .. 0x02FF): ABI v14.0 SHBT-AEGIS-ABSOLUTE Isolation Registers (64 bytes) === */
     shbt_aegis_absolute_cl11_t cl11_aegis_absolute;
 
-    /* === CACHELINE 12 (Offsets 0x0300 .. 0x033F): ABI v15.0 Dark-OS / Dark-ZPE Registers (64 bytes) === */
+    /* === CACHELINE 12 (Offsets 0x0300 .. 0x033F): ABI v15.1 Dark-OS / Dark-ZPE Registers (64 bytes) === */
     shbt_dark_os_zpe_cl12_t cl12_dark_os_zpe;
 } shbt_swarm_mmio_regs_t;
 
@@ -1363,7 +1363,7 @@ typedef struct __attribute__((aligned(64))) {
 
 typedef shbt_swarm_mmio_v14_t shbt_swarm_mmio_v14;
 
-/* --- Master 832-Byte ABI v15.0 Contract (13 Cache Lines) --- */
+/* --- Master 832-Byte ABI v15.1 Contract (13 Cache Lines) --- */
 typedef struct __attribute__((aligned(64))) {
     shbt_swarm_mmio_v14_t legacy_v14;
     shbt_dark_os_zpe_cl12_t cl12_dark_os_zpe;
@@ -1401,8 +1401,8 @@ _Static_assert(sizeof(shbt_swarm_mmio_v14_t) == 768U, "ABI v14.0 MMIO struct mus
 _Static_assert(alignof(shbt_swarm_mmio_v14_t) == 64U, "ABI v14.0 MMIO struct must be 64-byte aligned");
 _Static_assert(offsetof(shbt_swarm_mmio_v14_t, cl11_aegis_absolute) == 704U, "Cache Line 11 must start at offset 0x02C0");
 _Static_assert(sizeof(shbt_dark_os_zpe_cl12_t) == 64U, "Cache Line 12 (shbt_dark_os_zpe_cl12_t) must equal 64 bytes");
-_Static_assert(sizeof(shbt_swarm_mmio_v15_t) == 832U, "ABI v15.0 MMIO struct must equal 832 bytes (13 cache lines)");
-_Static_assert(alignof(shbt_swarm_mmio_v15_t) == 64U, "ABI v15.0 MMIO struct must be 64-byte aligned");
+_Static_assert(sizeof(shbt_swarm_mmio_v15_t) == 832U, "ABI v15.1 MMIO struct must equal 832 bytes (13 cache lines)");
+_Static_assert(alignof(shbt_swarm_mmio_v15_t) == 64U, "ABI v15.1 MMIO struct must be 64-byte aligned");
 _Static_assert(offsetof(shbt_swarm_mmio_v15_t, cl12_dark_os_zpe) == 768U, "Cache Line 12 must start at byte offset 768 (0x0300)");
 _Static_assert(offsetof(shbt_swarm_mmio_v13_t, mar_omega) == 64U, "MAR-OMEGA aperture must start at Cache Line 1 (0x040)");
 _Static_assert(offsetof(shbt_swarm_mmio_v13_t, harvest) == 320U, "Universal Harvest aperture must start at Cache Line 5 (0x140)");
