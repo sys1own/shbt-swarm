@@ -9,14 +9,16 @@ pub mod vacuum_pinning;
 pub mod cobordism_pinch;
 pub mod dehn_ingress_airlock;
 pub use cobordism_pinch::{
-    CobordismPinchController, MAX_GW_MEMORY_RESIDUAL_NORM, SHBT_AEGIS_ADM_MONOPOLE_NULL_LOCK,
+    CobordismPinchController, DaiFreedCobordismAnomalyVerifier, DaiFreedAnomalyReport,
+    MAX_GW_MEMORY_RESIDUAL_NORM, SHBT_AEGIS_ADM_MONOPOLE_NULL_LOCK,
 };
 pub use vacuum_pinning::{
     VacuumPinningState, MAX_FRAMING_DEFECT_TOL, MAX_HARVEST_EXPOSURE_SEC_PER_MSUN,
     MIN_CDL_INSTANTON_ACTION_SE, SHBT_AEGIS_VACUUM_DECAY_LOCK,
 };
 pub use dehn_ingress_airlock::{
-    BipartiteCobordismManifold, NilpotentDehnIngressAirlock, BIPARTITE_POCKET_COUNT,
+    BipartiteCobordismManifold, NilpotentDehnIngressAirlock, IsometricDehnAscensionBridge, IsometricDehnAscensionReport,
+    BIPARTITE_POCKET_COUNT,
     BIPARTITE_INTERIOR_GENERA_COUNT, DEHN_INGRESS_VALIDATION_LATENCY_AS,
 };
 

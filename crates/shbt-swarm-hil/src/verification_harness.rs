@@ -3,6 +3,12 @@
 //! `SHBT-MAR-OMEGA`), Full-Spectrum Stellar-to-Computronium Harvesting (`GATE-321` .. `GATE-344`),
 //! and MAR-OMEGA 6th-Gen Continuous Boundary & Harvesting Upgrade (`GATE-345` .. `GATE-360`).
 
+use shbt_swarm_omega::AsymptoticDeSitterHorizonEngine;
+use shbt_swarm_cloner::NonLocalCosmicWebHomologyPuller;
+use shbt_swarm_logos::{LogarithmicVoaMiyamotoIntertwiner, CyclotomicMatrix5x5, GaloisCrtNormProjector};
+use shbt_swarm_aegis::{DaiFreedCobordismAnomalyVerifier, IsometricDehnAscensionBridge};
+use shbt_swarm_apotheosis::CrtSymplecticNashResolver;
+
 use shbt_swarm_cloner::void_baryon_unfolder::InverseStinespringVoidUnfolder;
 use shbt_swarm_logos::dark_os_kernel::{
     CoInductiveGenusGovernor, CyclotomicMatrix2x2, DirectVoaAutopoieticNucleator,
@@ -15,7 +21,7 @@ use shbt_swarm_sim::galactic_multiphysics::GalacticMultiphysicsEngine;
 use warp_power_battery::power_arbiter::{DualReactorPowerArbiter, PowerArbiterState};
 
 /// Total HIL gates across the SHBT-SWARM v15.0 verification matrix (`376` baseline + `16` Dark-OS/ZPE + `8` Closures = `400`).
-pub const TOTAL_HIL_GATES: usize = 400;
+pub const TOTAL_HIL_GATES: usize = 408;
 /// Number of new `SHBT-MAR-OMEGA` & universal harvesting HIL gates (`GATE-321` .. `GATE-360`).
 pub const NEW_MAR_OMEGA_GATES: usize = 40;
 /// Number of new `SHBT-AEGIS-ABSOLUTE` HIL gates (`GATE-361` .. `GATE-376`).
@@ -24,6 +30,7 @@ pub const NEW_AEGIS_ABSOLUTE_GATES: usize = 16;
 pub const NEW_DARK_OS_ZPE_GATES: usize = 16;
 /// Number of new Release v8.000 Post-Audit Closure HIL gates (`GATE-393` .. `GATE-400`).
 pub const NEW_DARK_V8_CLOSURE_GATES: usize = 8;
+pub const NEW_DARK_V8_100_CLOSURE_GATES: usize = 8;
 
 /// Result record for a single `SHBT-MAR-OMEGA` HIL gate (`GATE-321` .. `GATE-360`).
 #[repr(C)]
@@ -771,6 +778,95 @@ pub fn run_dark_v8_closure_hil_gates_393_to_400() -> [HilGateResult; NEW_DARK_V8
         HilGateResult { gate_id: 398, passed: gate_398, metric_value: void_audit.total_daughter_payload_kg },
         HilGateResult { gate_id: 399, passed: gate_399, metric_value: nucleator.required_doublings },
         HilGateResult { gate_id: 400, passed: gate_400, metric_value: nucleator.in_ledger_total_nucleation_s },
+    ]
+}
+
+
+/// Executes the 8 Release v8.100 First-Principles Closure gates:
+/// GATE-SWARM-401 through GATE-SWARM-408 (expanding suite from 400/400 to 408/408 PASS).
+pub fn run_dark_v8_100_closure_hil_gates_401_to_408() -> [HilGateResult; NEW_DARK_V8_100_CLOSURE_GATES] {
+    // GATE-SWARM-401: Asymptotic de Sitter Freeze-Out Immunity & Bipartite NESS (+34.726 YW) (THM-DARK-V8-07)
+    let ds_engine = AsymptoticDeSitterHorizonEngine::new();
+    let rep_early = ds_engine.audit_epoch(1.0 / 21.0);
+    let rep_late = ds_engine.audit_epoch(1.0e6);
+    let fp = ds_engine.export_fixed_point_state(1.0);
+    let gate_401 = (rep_early.p_net_yw - 34.726).abs() < 1e-9
+        && (rep_late.p_net_yw - 34.726).abs() < 1e-9
+        && rep_late.freeze_out_immune
+        && fp.p_net_milli_yw == 34_726
+        && fp.single_bath_passivity_enforced;
+
+    // GATE-SWARM-402: Non-Local Cosmic-Web Homology Pulling & Warp Bogoliubov Compensation (THM-DARK-V8-08)
+    let puller = NonLocalCosmicWebHomologyPuller::new();
+    let rep_void_rest = puller.audit_soliton_unfold(0.0, -0.995);
+    let rep_void_warp = puller.audit_soliton_unfold(2_482_950.0, -0.995);
+    let gate_402 = rep_void_rest.effective_homology_density_ratio >= puller.cardy_capacity_floor
+        && rep_void_warp.uninterrupted_recharge_achieved
+        && rep_void_warp.parasitic_particle_integral == 0.0
+        && rep_void_warp.delta_b_minus_l_total == 0
+        && rep_void_warp.delta_q_em_total == 0
+        && rep_void_warp.visible_neutrino_flux == 0.0;
+
+    // GATE-SWARM-403: Semisimple-to-Logarithmic VOA Decomposition & Miyamoto Pseudo-Trace (THM-DARK-V8-09)
+    let intertwiner = LogarithmicVoaMiyamotoIntertwiner::new();
+    let miyamoto_audit = intertwiner.audit_miyamoto_trace();
+    let gate_403 = miyamoto_audit.miyamoto_pseudo_trace_on_phys == 0
+        && miyamoto_audit.logarithmic_leakage_epsilon == 0
+        && miyamoto_audit.neumann_resolvent_terms_count == 2
+        && miyamoto_audit.ep2_nilpotent_order == 2
+        && miyamoto_audit.brst_cohomology_preserved;
+
+    // GATE-SWARM-404: 5x5 Fibonacci 2-Qubit Entangling Gates in M_5(Z[zeta_10]) & Zero-Leakage (THM-DARK-V8-10 Part 1)
+    let lam = CyclotomicMatrix5x5::LAMBDA_ENTANGLE;
+    let s1 = CyclotomicMatrix5x5::SIGMA_1;
+    let s3 = CyclotomicMatrix5x5::SIGMA_3;
+    let gate_404 = lam.verify_zero_leakage()
+        && lam.mul(lam) == CyclotomicMatrix5x5::IDENTITY
+        && s1.mul(s3) == s3.mul(s1);
+
+    // GATE-SWARM-405: 1-Tick Galois-Norm CRT Unit Projector across 6 Prime Lanes (THM-DARK-V8-10 Part 2)
+    let proj = GaloisCrtNormProjector::new();
+    let test_val = 1_234_567u64;
+    let residues = proj.project_weight_1_tick(test_val);
+    let reconstructed = proj.reconstruct_residue(residues);
+    let gate_405 = reconstructed == (test_val % GaloisCrtNormProjector::N_PRIM_DARK)
+        && GaloisCrtNormProjector::N_PRIM_DARK == 2_901_360;
+
+    // GATE-SWARM-406: Non-Perturbative Dai-Freed Global Anomaly Cancellation & Spin-Cobordism (THM-DARK-V8-11)
+    let dai_freed = DaiFreedCobordismAnomalyVerifier::new();
+    let rep_df = dai_freed.verify_dai_freed_anomaly_cancellation(1);
+    let gate_406 = rep_df.gravitational_cs_mod_24 == 0
+        && rep_df.total_eta_aps_mod_1 == 0
+        && rep_df.dai_freed_phase_is_identity
+        && rep_df.spin_cobordism_trivialized;
+
+    // GATE-SWARM-407: Stinespring-Dilated Isometric Dehn Ascension Bridge (F >= 1 - 10^-122) (THM-DARK-V8-12 Part 1)
+    let bridge = IsometricDehnAscensionBridge::new();
+    let rep_bridge = bridge.verify_isometric_ascension(true);
+    let gate_407 = rep_bridge.global_n_plus_squared_zero
+        && rep_bridge.partial_isometry_preserved
+        && rep_bridge.subjective_stream_fidelity >= 1.0 - 1.0e-122
+        && rep_bridge.delta_n_copies == 0
+        && rep_bridge.reverse_channel_annihilated;
+
+    // GATE-SWARM-408: 1-Tick CRT Symplectic Nash Resolver for 10^30 Concurrent Observers (THM-DARK-V8-12 Part 2)
+    let resolver = CrtSymplecticNashResolver::new();
+    let remnants: [u8; 6] = [7, 2, 4, 3, 9, 100];
+    let rep_nash = resolver.resolve_nash_equilibrium(1_000_000_000_000_000_000, remnants);
+    let gate_408 = rep_nash.nash_equilibrium_certified
+        && rep_nash.cross_tenant_leakage_norm == 0
+        && rep_nash.floating_point_iterations == 0
+        && rep_nash.resolution_latency_femto_as == 17_010_000;
+
+    [
+        HilGateResult { gate_id: 401, passed: gate_401, metric_value: rep_late.p_net_yw },
+        HilGateResult { gate_id: 402, passed: gate_402, metric_value: rep_void_warp.effective_homology_density_ratio },
+        HilGateResult { gate_id: 403, passed: gate_403, metric_value: miyamoto_audit.neumann_resolvent_terms_count as f64 },
+        HilGateResult { gate_id: 404, passed: gate_404, metric_value: if gate_404 { 1.0 } else { 0.0 } },
+        HilGateResult { gate_id: 405, passed: gate_405, metric_value: reconstructed as f64 },
+        HilGateResult { gate_id: 406, passed: gate_406, metric_value: rep_df.gravitational_cs_mod_24 as f64 },
+        HilGateResult { gate_id: 407, passed: gate_407, metric_value: rep_bridge.subjective_stream_fidelity },
+        HilGateResult { gate_id: 408, passed: gate_408, metric_value: rep_nash.reconstructed_nash_shear_s as f64 },
     ]
 }
 

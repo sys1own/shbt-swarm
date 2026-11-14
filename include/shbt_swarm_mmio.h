@@ -22,8 +22,8 @@
 #define SHBT_SWARM_ABI_VERSION_V15         0x000F0312UL
 #define SHBT_SWARM_MMIO_ABI_V14_MAGIC      ((uint32_t)0x000E0312UL)
 #define SHBT_SWARM_MMIO_ABI_V15_MAGIC      ((uint32_t)0x000F0312UL)
-#define SHBT_SWARM_FORMAL_PROOFS_COUNT     122U        /* 122 Formal Z3 Theorems UNSAT */
-#define SHBT_SWARM_HIL_GATES_COUNT         400U        /* 400 HIL Verification Gates PASS */
+#define SHBT_SWARM_FORMAL_PROOFS_COUNT     128U        /* 128 Formal Z3 Theorems UNSAT */
+#define SHBT_SWARM_HIL_GATES_COUNT         408U        /* 408 HIL Verification Gates PASS */
 #define SHBT_SWARM_MMIO_TOTAL_SIZE         832U
 #define SHBT_SWARM_MMIO_TOTAL_SIZE_BYTES   832U
 #define SHBT_SWARM_CACHE_LINE_BYTES        64U

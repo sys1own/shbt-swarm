@@ -1,8 +1,8 @@
 //! `crates/shbt-swarm-hil/src/bin/swarm_audit.rs`
 //! CLI Verification Runner that executes all 400 Hardware-in-the-Loop (HIL) gates and
-//! emits `verification_matrix.json` for Release v8.000 / ABI v15.0 (`0x000F0312`).
+//! emits `verification_matrix.json` for Release v8.100 / ABI v15.0 (`0x000F0312`).
 
-use shbt_swarm_hil::evaluate_all_400_gates;
+use shbt_swarm_hil::evaluate_all_408_gates;
 use std::fs::File;
 use std::io::Write;
 use std::process::ExitCode;
@@ -12,12 +12,12 @@ fn escape_json(s: &str) -> String {
 }
 
 fn main() -> ExitCode {
-    let gates = evaluate_all_400_gates();
+    let gates = evaluate_all_408_gates();
     let total = gates.len();
     let passed_count = gates.iter().filter(|g| g.passed).count();
 
     println!("========================================================================================================================");
-    println!(" SHBT-SWARM v15.0 RELEASE v8.000 DARK-OS + DARK-ZPE & UNIVERSAL HARVESTING VERIFICATION MATRIX (400 GATES, 122 SMT)");
+    println!(" SHBT-SWARM v15.0 RELEASE v8.100 DARK-OS + DARK-ZPE & UNIVERSAL HARVESTING VERIFICATION MATRIX (408 GATES, 128 SMT)");
     println!("========================================================================================================================");
     println!(
         "{:<18} | {:<5} | {:<36} | {:<32} | {:<6}",
@@ -35,7 +35,7 @@ fn main() -> ExitCode {
 
     println!("========================================================================================================================");
     println!(
-        " SUMMARY: {}/{} GATES PASSED | ABI: 0x000F0312 (832B, 13 Cache Lines) | Z3 SMT: 122/122 UNSAT",
+        " SUMMARY: {}/{} GATES PASSED | ABI: 0x000F0312 (832B, 13 Cache Lines) | Z3 SMT: 128/128 UNSAT",
         passed_count, total
     );
     println!("========================================================================================================================");
@@ -43,7 +43,7 @@ fn main() -> ExitCode {
     let mut json = String::with_capacity(131072);
     json.push_str("{\n");
     json.push_str("  \"schema_version\": \"15.0.0\",\n");
-    json.push_str("  \"architecture\": \"SHBT-SWARM Release v8.000 Autonomous Interstellar Platform (Dark-OS + Dark-ZPE + AEGIS-ABSOLUTE + Dual-Reactor MAR-312X/MAR-OMEGA)\",\n");
+    json.push_str("  \"architecture\": \"SHBT-SWARM Release v8.100 Autonomous Interstellar Platform (Dark-OS + Dark-ZPE + AEGIS-ABSOLUTE + Dual-Reactor MAR-312X/MAR-OMEGA)\",\n");
     json.push_str("  \"abi_version\": \"0x000F0312\",\n");
     json.push_str("  \"abi_version_hex\": \"0x000F0312\",\n");
     json.push_str("  \"mmio_struct_bytes\": 832,\n");
@@ -148,7 +148,7 @@ fn main() -> ExitCode {
         }
     }
 
-    if passed_count == total && total == 400 {
+    if passed_count == total && total == 408 {
         ExitCode::SUCCESS
     } else {
         ExitCode::FAILURE

@@ -20,6 +20,7 @@ pub mod nested_sim;
 pub mod nested_cbf;
 pub mod somatic_bridge;
 pub mod dark_os_sanctuary;
+pub use dark_os_sanctuary::*;
 
 pub use qnd_ascension::{LindbladianPurifier, QndError};
 pub use horizon_deflect::{CausalDecouplingBifurcation, DeflectionError};

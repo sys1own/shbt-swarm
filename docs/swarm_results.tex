@@ -1,12 +1,12 @@
 % AUTO-GENERATED from verification_matrix.json (swarm-audit). Do not edit manually.
-% 400 HIL gates, ABI v15.0 (0x000F0312), 832 bytes / 13 cache lines, 122/122 Z3 UNSAT.
+% 408 HIL gates, ABI v15.1 (0x000F0312), 832 bytes / 13 cache lines, 128/128 Z3 UNSAT.
 \clearpage
-\section*{Appendix A: 400-Gate Hardware-in-the-Loop Verification Matrix}
+\section*{Appendix A: 408-Gate Hardware-in-the-Loop Verification Matrix}
 
 {\scriptsize
 \setlength{\tabcolsep}{2.5pt}
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}p{0.21\linewidth}>{\raggedright\arraybackslash}p{0.32\linewidth}>{\raggedright\arraybackslash}p{0.23\linewidth}p{0.05\linewidth}@{}}
-\caption{400-Gate Hardware-in-the-Loop Verification Matrix (400/400 PASS).}\label{tab:hil-gates-400}\\
+\caption{408-Gate Hardware-in-the-Loop Verification Matrix (408/408 PASS).}\label{tab:hil-gates-408}\\
 \toprule
 \textbf{Gate ID} & \textbf{Subsystem} & \textbf{Invariant Criterion} & \textbf{Measured Value} & \textbf{Status} \\
 \midrule
@@ -420,6 +420,14 @@
 \texttt{GATE-SWARM-398} & WP-8.14 Baryon-Free Void Matter Unfolding \& Thm 2 & M\_clone = 16406.59 kg \textless{}= 16600 kg, Delta\_M\_ADM == 0, Delta(B-L) == 0 & 16406.59 kg \textless{}= 16600 kg / Delta(B-L) == 0 verified & PASS \\
 \texttt{GATE-SWARM-399} & WP-8.15 Direct VOA Autopoietic Nucleator Invariants & M\_fe57 == 0, M\_stellar == 0, V\_vol == 0, N\_double = 116.653411 & 0 kg / 0 m\textasciicircum 3 / 116.65 doublings verified & PASS \\
 \texttt{GATE-SWARM-400} & WP-8.16 Exponential Bootstrap Doubling Schedule & tau\_in\_ledger = 1.565255 s, tau\_vessel = 7189.748 s (1.997 h) & 1.565 s / 1.997 h verified & PASS \\
+\texttt{GATE-SWARM-401} & WP-8.17 Asymptotic de Sitter Freeze-Out Immunity & chi\_dS in [0, 1], P\_net == +34.726 YW, W\_single \textless{}= 0, W\_bipartite \textgreater{} 0 & +34.726 YW NESS verified & PASS \\
+\texttt{GATE-SWARM-402} & WP-8.18 Cosmic-Web Homology Pulling \& Warp Bogoliubov & rho\_eff == 1.0 \textgreater{}\textgreater{} 0.00696738, parasitic mode == 0, v\_s \textless{}= 2482950 c & rho\_eff \textgreater{}= floor / 0 parasitic verified & PASS \\
+\texttt{GATE-SWARM-403} & WP-8.19 Semisimple-to-Logarithmic VOA Miyamoto Trace & Tr\_V(N\_EP2) == 0 on H\_phys, eps\_log == 0, resolvent terms == 2 & Miyamoto trace == 0 / 2 terms verified & PASS \\
+\texttt{GATE-SWARM-404} & WP-8.20 5x5 Fibonacci 2-Qubit Entangling in M\_5(Z[zeta\_10]) & Lambda\_entangle zero-leakage into \textbar{}NC\textgreater{}, F\_tilde\textasciicircum 2 == I\_5 & zero-leakage / F\textasciicircum 2 == I verified & PASS \\
+\texttt{GATE-SWARM-405} & WP-8.21 1-Tick Galois-Norm CRT Unit Projector & 6 lanes \{16, 3, 5, 7, 11, 157\}, 1-tick resolution in 17.01 as & 6 lanes / 1-tick CRT verified & PASS \\
+\texttt{GATE-SWARM-406} & WP-8.22 Non-Perturbative Dai-Freed Anomaly Cancellation & eta\_APS\textasciicircum tot in Z, c\_diff \% 24 == 0, Dai-Freed phase == +1 & eta in Z / phase == +1 verified & PASS \\
+\texttt{GATE-SWARM-407} & WP-8.23 Stinespring-Dilated Isometric Dehn Ascension & N\_+\textasciicircum 2 == 0, V\_iso\textasciicircum dag V\_iso == I, F\_stream \textgreater{}= 1 - 10\textasciicircum -122 & N\_+\textasciicircum 2 == 0 / F \textgreater{}= 1 - 10\textasciicircum -122 verified & PASS \\
+\texttt{GATE-SWARM-408} & WP-8.24 1-Tick CRT Symplectic Nash Resolver & 10\textasciicircum 30 deities, u\_P = Sym\_g(Z/D\_cond Z), 1-tick resolution & 10\textasciicircum 30 deities / 1-tick Nash verified & PASS \\
 \end{longtable}
 }
 \clearpage

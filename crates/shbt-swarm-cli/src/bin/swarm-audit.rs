@@ -1,9 +1,9 @@
 //! `crates/shbt-swarm-cli/src/bin/swarm-audit.rs`
 //! Master Hardware-in-the-Loop (HIL) Audit & Verification Matrix Generator for `shbt-swarm`
-//! Release v8.000 / ABI v15.0 (`0x000F0312`), 832-Byte MMIO (13 Cache Lines),
-//! 122/122 Z3 SMT Proofs, and 400/400 HIL Gates.
+//! Release v8.100 / ABI v15.1 (`0x000F0312`), 832-Byte MMIO (13 Cache Lines),
+//! 128/128 Z3 SMT Proofs, and 408/408 HIL Gates.
 
-use shbt_swarm_hil::evaluate_all_400_gates;
+use shbt_swarm_hil::evaluate_all_408_gates;
 use shbt_swarm_mmio::{
     ShbtAegisAbsoluteCl11, ShbtDarkOsZpeCl12, ShbtMarOmegaAperture, ShbtMmioCacheline10Divertor,
     ShbtSwarmMmioRegs, ShbtSwarmMmioV14, ShbtSwarmMmioV15, ShbtUniversalHarvestAperture,
@@ -20,7 +20,7 @@ fn escape_json(s: &str) -> String {
 
 fn main() {
     println!("================================================================================");
-    println!("  SHBT-SWARM v15.0 RELEASE v8.000 DARK-OS + DARK-ZPE MASTER HIL AUDIT ENGINE     ");
+    println!("  SHBT-SWARM v15.0 RELEASE v8.100 DARK-OS + DARK-ZPE MASTER HIL AUDIT ENGINE     ");
     println!("================================================================================");
 
     let regs_size = size_of::<ShbtSwarmMmioRegs>();
@@ -42,8 +42,8 @@ fn main() {
     assert_eq!(harvest_size, 256, "ShbtUniversalHarvestAperture must be 256 bytes");
     assert_eq!(divertor_size, 64, "ShbtMmioCacheline10Divertor must be 64 bytes");
     assert_eq!(SHBT_SWARM_ABI_VERSION, 0x000F_0312);
-    assert_eq!(SHBT_SWARM_FORMAL_PROOFS_COUNT, 122);
-    assert_eq!(SHBT_SWARM_HIL_GATES_COUNT, 400);
+    assert_eq!(SHBT_SWARM_FORMAL_PROOFS_COUNT, 128);
+    assert_eq!(SHBT_SWARM_HIL_GATES_COUNT, 408);
     assert_eq!(SHBT_SWARM_MMIO_CACHELINE_COUNT, 13);
 
     let mut regs = ShbtSwarmMmioRegs::new_nominal_v15();
@@ -52,8 +52,8 @@ fn main() {
     assert_eq!(regs.cl12_dark_os_zpe.dark_os_abi_magic, shbt_swarm_mmio::SHBT_SWARM_MMIO_ABI_V15_MAGIC);
     assert_eq!(fault_mask, 0, "Nominal v15 MMIO register invariant check failed");
 
-    let gates = evaluate_all_400_gates();
-    assert_eq!(gates.len(), 400, "Expected exactly 400 HIL gates");
+    let gates = evaluate_all_408_gates();
+    assert_eq!(gates.len(), 408, "Expected exactly 408 HIL gates");
 
     let mut passed_count = 0usize;
     for gate in &gates {
@@ -76,7 +76,7 @@ fn main() {
     println!("  HIL Verification Gates : {}/{} GATES PASS", passed_count, gates.len());
     println!("================================================================================");
 
-    assert_eq!(passed_count, 400, "All 400 HIL gates must pass");
+    assert_eq!(passed_count, 408, "All 408 HIL gates must pass");
 
     let total = gates.len();
     let mut json = String::with_capacity(131072);
